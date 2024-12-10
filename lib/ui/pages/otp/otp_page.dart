@@ -71,9 +71,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                       fieldWidth: 45,
                       fieldHeight: 45,
                       otpPinFieldDecoration: OtpPinFieldDecoration.custom,
-                      onSubmit: (text) {
-                        print(text);
-                      },
+                      onSubmit: (text) {},
                       onChange: (text) {},
                     ),
                     const SizedBox(height: 40),

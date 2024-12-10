@@ -44,5 +44,13 @@ class AppRouter extends RootStackRouter {
         ),
       ]
     ),
+    AutoRoute(
+      page: ProductDetailsRoute.page,
+      path: '/product-details',
+    ),
+    AutoRoute(
+      page: RestaurantRoute.page,
+      path: '/restaurant',
+    ),
   ];
 }

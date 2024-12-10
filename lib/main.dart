@@ -17,6 +17,7 @@ class App extends StatelessWidget {
     return ProviderScope(
       child: MaterialApp.router(
         title: "Instant Scraper",
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
           fontFamily: 'SofiaPro',

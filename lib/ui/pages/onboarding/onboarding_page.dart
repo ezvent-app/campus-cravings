@@ -111,7 +111,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 ElevatedButton(
                   onPressed: () {
                     if(_currentPage == 0){
-                      print(_currentPage);
                       _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
                     } else {
                       context.replaceRoute(const LoginRoute());
