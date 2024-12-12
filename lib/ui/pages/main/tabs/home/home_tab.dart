@@ -3,6 +3,7 @@ import 'package:campus_cravings/constants/app_colors.dart';
 import 'package:campus_cravings/ui/pages/main/tabs/home/widgets/categories_horizontal_widget.dart';
 import 'package:campus_cravings/ui/pages/main/tabs/home/widgets/nearby_restaurants_widget.dart';
 import 'package:campus_cravings/ui/pages/main/tabs/home/widgets/popular_horizontal_widget.dart';
+import 'package:campus_cravings/ui/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,28 +38,14 @@ class _HomeTabState extends ConsumerState<HomeTab> {
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Row(
                 children: [
-                  Expanded(
-                    child: TextFormField(
-                      style: const TextStyle(fontSize: 17),
-                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: AppColors.textFieldBorder, width: 1.5),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: AppColors.textFieldBorder, width: 1.5),
-                        ),
-                        hintText: 'Search',
-                        hintStyle: const TextStyle(color: Color(0xFFB4B0B0), fontSize: 17),
-                        prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 50),
-                        prefixIcon: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: ImageIcon(AssetImage('assets/images/png/search_icon.png'), color: Color(0xFFB4B0B0), size: 30),
-                        ),
+                  const Expanded(
+                    child: CustomTextField(
+                      style: TextStyle(fontSize: 17),
+                      hintText: 'Search',
+                      hintStyle: TextStyle(color: Color(0xFFB4B0B0), fontSize: 17),
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: ImageIcon(AssetImage('assets/images/png/search_icon.png'), color: Color(0xFFB4B0B0), size: 30),
                       ),
                     ),
                   ),
