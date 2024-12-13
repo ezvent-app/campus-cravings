@@ -26,6 +26,7 @@ class _AddressFormPageState extends ConsumerState<AddressFormPage> {
                   child: Container(
                     decoration: const BoxDecoration(color: Colors.grey),
                     width: double.infinity,
+                    child: const Center(child: Text('Map Widget Here')),
                   ),
                 ),
                 Positioned.fill(

@@ -89,6 +89,7 @@ class _DeliverToPageState extends ConsumerState<DeliverToPage> {
                               borderRadius: BorderRadius.circular(12),
                               color: Colors.grey,
                             ),
+                            child: const Center(child: Text('Map Widget Here'),),
                           ),
                           const Divider(height: 48, color: AppColors.dividerColor),
                           Container(
@@ -191,6 +192,7 @@ class _DeliverToPageState extends ConsumerState<DeliverToPage> {
               margin: const EdgeInsets.only(left: 25, right: 25, bottom: 36),
               child: ElevatedButton(
                 onPressed: (){
+                  context.maybePop();
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

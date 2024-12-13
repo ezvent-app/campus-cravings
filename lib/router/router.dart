@@ -64,5 +64,17 @@ class AppRouter extends RootStackRouter {
       page: AddressFormRoute.page,
       path: '/address-form',
     ),
+    AutoRoute(
+      page: PaymentMethodsRoute.page,
+      path: '/payment-methods',
+    ),
+    AutoRoute(
+      page: NewCardRoute.page,
+      path: '/new-card',
+    ),
+    AutoRoute(
+      page: ProfileFormRoute.page,
+      path: '/profile_form',
+    ),
   ];
 }

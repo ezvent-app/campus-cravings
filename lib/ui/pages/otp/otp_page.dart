@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:campus_cravings/constants/app_colors.dart';
+import 'package:campus_cravings/router/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
@@ -80,6 +81,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                       height: 48,
                       child: ElevatedButton(
                         onPressed: (){
+                          context.pushRoute(ProfileFormRoute(newUser: true));
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
