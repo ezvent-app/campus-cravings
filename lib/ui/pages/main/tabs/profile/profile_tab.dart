@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:campus_cravings/constants/app_colors.dart';
+import 'package:campus_cravings/router/router.gr.dart';
 import 'package:campus_cravings/ui/pages/main/tabs/profile/widgets/profile_group_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,18 +40,23 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                           ),
                         ),
                         const SizedBox(width: 20),
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Andrew Ainsley",
                               style: TextStyle(fontSize: 21),
                             ),
-                            SizedBox(height: 5),
-                            Text(
-                              "View Profile",
-                              style: TextStyle(
-                                color: AppColors.lightText
+                            const SizedBox(height: 5),
+                            GestureDetector(
+                              onTap: (){
+                                context.pushRoute(ProfileFormRoute(newUser: false));
+                              },
+                              child: const Text(
+                                "Edit Profile",
+                                style: TextStyle(
+                                  color: AppColors.lightText
+                                ),
                               ),
                             ),
                           ],
@@ -83,17 +89,23 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                   ProfileOption(
                     icon: 'payment_method_icon',
                     label: 'Payment Methods',
-                    onPressed: (){},
+                    onPressed: (){
+                      context.pushRoute(PaymentMethodsRoute(fromCheckout: false));
+                    },
                   ),
                   ProfileOption(
                     icon: 'saved_addresses_icon',
                     label: 'Saved Addresses',
-                    onPressed: (){},
+                    onPressed: (){
+                      context.pushRoute(const SavedAddressesRoute());
+                    },
                   ),
                   ProfileOption(
                     icon: 'promo_offers_icon',
                     label: 'Promo Offers',
-                    onPressed: (){},
+                    onPressed: (){
+                      context.pushRoute(const PromoCodeRoute());
+                    },
                   ),
                 ],
               ),
@@ -102,7 +114,9 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                   ProfileOption(
                     icon: 'settings_icon',
                     label: 'Settings',
-                    onPressed: (){},
+                    onPressed: (){
+                      context.pushRoute(const SettingsRoute());
+                    },
                   ),
                   ProfileOption(
                     icon: 'refer_friend_icon',

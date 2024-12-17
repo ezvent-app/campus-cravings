@@ -296,7 +296,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: (){
-                            context.pushRoute(const PaymentMethodsRoute());
+                            context.pushRoute(PaymentMethodsRoute(fromCheckout: true));
                           },
                           borderRadius: BorderRadius.circular(24),
                           child: const Padding(

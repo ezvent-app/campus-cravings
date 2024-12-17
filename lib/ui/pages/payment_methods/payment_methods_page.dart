@@ -7,7 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @RoutePage()
 class PaymentMethodsPage extends ConsumerStatefulWidget {
-  const PaymentMethodsPage({super.key});
+  final bool fromCheckout;
+  const PaymentMethodsPage({super.key, required this.fromCheckout});
 
   @override
   ConsumerState createState() => _PaymentMethodsPageState();
@@ -152,7 +153,7 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage> {
                 ],
               ),
             ),
-            Container(
+            if(widget.fromCheckout) Container(
               width: double.infinity,
               height: 48,
               margin: const EdgeInsets.only(left: 25, right: 25, bottom: 36),

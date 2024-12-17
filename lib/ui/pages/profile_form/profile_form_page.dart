@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:campus_cravings/constants/app_colors.dart';
+import 'package:campus_cravings/router/router.gr.dart';
 import 'package:campus_cravings/ui/widgets/custom_text_field.dart';
 import 'package:campus_cravings/ui/widgets/png_asset.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,18 @@ class ProfileFormPage extends ConsumerStatefulWidget {
 }
 
 class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
+  final List<String> _roles = ['Student', 'Faculty'];
+  late String _selectedRole;
+
+  @override
+  void initState() {
+    _selectedRole = _roles.first;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -48,26 +58,29 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 50),
-                  SizedBox(
-                    width: 64,
-                    height: 64,
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          decoration: const BoxDecoration(
-                            color: Colors.grey,
-                            shape: BoxShape.circle
+                  Center(
+                    child: SizedBox(
+                      width: 64,
+                      height: 64,
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 64,
+                            height: 64,
+                            decoration: const BoxDecoration(
+                              color: Colors.grey,
+                              shape: BoxShape.circle
+                            ),
                           ),
-                        ),
-                        const Align(
-                          alignment: Alignment.bottomRight,
-                          child: PngAsset('edit_profile_icon'),
-                        )
-                      ],
+                          const Align(
+                            alignment: Alignment.bottomRight,
+                            child: PngAsset('edit_profile_icon'),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 50),
@@ -81,6 +94,42 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   const SizedBox(height: 16),
                   const CustomTextField(
                     label: 'Enter Phone Number',
+                  ),
+                  const SizedBox(height: 16),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 3),
+                    child: Text(
+                      'Select Role',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.lightText,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  DropdownButtonFormField<String>(
+                    items: _roles.map((e) {
+                      return DropdownMenuItem(value: e, child: Text(e));
+                    }).toList(),
+                    value: _selectedRole,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedRole = value!;
+                      });
+                    },
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    iconEnabledColor: AppColors.primary,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: AppColors.textFieldBorder, width: 1.5),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: AppColors.textFieldBorder, width: 1.5),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -117,17 +166,22 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                     margin: const EdgeInsets.only(bottom: 36),
                     child: ElevatedButton(
                       onPressed: (){
+                        if(widget.newUser){
+                          context.pushRoute(const DeliverySetupRoute());
+                        } else {
+                          context.maybePop();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         backgroundColor: AppColors.primary,
                         foregroundColor: AppColors.background,// Splash color
                       ),
-                      child: const Text(
-                        'Next',
-                        style: TextStyle(
+                      child: Text(
+                        widget.newUser ? 'Next' : 'Save',
+                        style: const TextStyle(
                           fontWeight: FontWeight.w500,
                         ),
                       ),

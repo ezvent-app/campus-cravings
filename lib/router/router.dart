@@ -76,5 +76,33 @@ class AppRouter extends RootStackRouter {
       page: ProfileFormRoute.page,
       path: '/profile_form',
     ),
+    AutoRoute(
+      page: DeliverySetupRoute.page,
+      path: '/delivery-setup',
+    ),
+    AutoRoute(
+      page: AddPayoutRoute.page,
+      path: '/add-payout',
+    ),
+    AutoRoute(
+      page: SavedAddressesRoute.page,
+      path: '/saved-addresses',
+    ),
+    AutoRoute(
+      page: PromoCodeRoute.page,
+      path: '/promo-code',
+    ),
+    AutoRoute(
+      page: SettingsRoute.page,
+      path: '/settings',
+    ),
+    AutoRoute(
+      page: NotificationsRoute.page,
+      path: '/notifications',
+    ),
+    AutoRoute(
+      page: ChangePasswordRoute.page,
+      path: '/change-password',
+    ),
   ];
 }

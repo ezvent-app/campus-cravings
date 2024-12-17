@@ -62,7 +62,7 @@ class _DeliverToPageState extends ConsumerState<DeliverToPage> {
                             ),
                             child: const Row(
                               children: [
-                                const PngAsset('current_location_icon', height: 52, width: 52,),
+                                PngAsset('current_location_icon', height: 52, width: 52,),
                                 Expanded(
                                   flex: 2,
                                   child: Padding(

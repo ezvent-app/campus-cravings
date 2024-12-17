@@ -4,12 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileGroupButton extends ConsumerWidget {
   final List<ProfileOption> options;
-  const ProfileGroupButton({super.key, required this.options});
+  final double topMargin;
+  const ProfileGroupButton({super.key, required this.options, this.topMargin = 30});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      margin: const EdgeInsets.only(top: 30),
+      margin: EdgeInsets.only(top: topMargin),
       width: double.infinity,
       decoration: BoxDecoration(
         color: const Color(0xFFF5F5F5),
@@ -22,7 +23,9 @@ class ProfileGroupButton extends ConsumerWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: (){},
+              onTap: () {
+                option.onPressed();
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 child: Row(

@@ -63,9 +63,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       ),
                     ],
                   ),
-                  Column(
+                  const Column(
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,13 +168,13 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           ],
                         ),
                       ),
-                      const SizeSelectorWidget(),
+                      SizeSelectorWidget(),
                       Padding(
-                        padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+                        padding: EdgeInsets.only(left: 25, right: 25, bottom: 25),
                         child: CustomTextField(
                           maxLines: 3,
                           hintText: 'Note to Restaurant (optional)',
-                          hintStyle: const TextStyle(color: Color(0xff9E9E9E)),
+                          hintStyle: TextStyle(color: Color(0xff9E9E9E)),
                         ),
                       ),
                     ],
