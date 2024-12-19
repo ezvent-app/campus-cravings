@@ -456,6 +456,7 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                 margin: const EdgeInsets.only(left: 25, right: 25, bottom: 36),
                 child: ElevatedButton(
                   onPressed: (){
+                    context.pushRoute(const PlacingOrderRoute());
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

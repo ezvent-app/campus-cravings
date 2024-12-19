@@ -104,5 +104,13 @@ class AppRouter extends RootStackRouter {
       page: ChangePasswordRoute.page,
       path: '/change-password',
     ),
+    AutoRoute(
+      page: PlacingOrderRoute.page,
+      path: '/placing-order',
+    ),
+    AutoRoute(
+      page: DeliveringRoute.page,
+      path: '/delivering',
+    ),
   ];
 }
