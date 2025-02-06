@@ -1,0 +1,36 @@
+
+
+import 'package:campus_cravings/src/src.dart';
+
+class BaseWrapper extends ConsumerWidget {
+  final String label;
+  final Widget child;
+  final bool hasHorizontalPadding;
+  const BaseWrapper({
+    super.key,
+    this.label = '',
+    required this.child,
+    this.hasHorizontalPadding = true,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            CustomAppBar(label: label),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: hasHorizontalPadding ? 25 : 0,
+                ),
+                child: child,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

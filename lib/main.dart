@@ -1,7 +1,4 @@
-import 'package:campus_cravings/constants/app_colors.dart';
-import 'package:campus_cravings/router/router.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'src/src.dart';
 
 void main() {
   runApp(App());
@@ -15,12 +12,13 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderScope(
       child: MaterialApp.router(
-        title: "Instant Scraper",
+        title: "Campus Cravings",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
           fontFamily: 'SofiaPro',
-          colorScheme: const ColorScheme.light(primary: AppColors.primary).copyWith(surface: AppColors.background),
+          colorScheme: const ColorScheme.light(primary: AppColors.primary)
+              .copyWith(surface: AppColors.background),
         ),
         routerConfig: _appRouter.config(),
       ),
