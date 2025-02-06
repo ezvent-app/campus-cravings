@@ -22,7 +22,7 @@ import 'package:campus_cravings/src/ui/pages/delivering/delivering_page.dart'
     as _i6;
 import 'package:campus_cravings/src/ui/pages/delivery_setup/delivery_setup_page.dart'
     as _i7;
-import 'package:campus_cravings/src/ui/pages/login/login_page.dart' as _i9;
+import 'package:campus_cravings/src/ui/pages/auth/login/login_page.dart' as _i9;
 import 'package:campus_cravings/src/ui/pages/main/main_page.dart' as _i10;
 import 'package:campus_cravings/src/ui/pages/main/pages/change_password/change_password_page.dart'
     as _i3;
@@ -50,12 +50,13 @@ import 'package:campus_cravings/src/ui/pages/new_card/new_card_page.dart'
     as _i11;
 import 'package:campus_cravings/src/ui/pages/onboarding/onboarding_page.dart'
     as _i13;
-import 'package:campus_cravings/src/ui/pages/otp/otp_page.dart' as _i15;
+import 'package:campus_cravings/src/ui/pages/auth/otp/otp_page.dart' as _i15;
 import 'package:campus_cravings/src/ui/pages/payment_methods/payment_methods_page.dart'
     as _i16;
 import 'package:campus_cravings/src/ui/pages/profile_form/profile_form_page.dart'
     as _i19;
-import 'package:campus_cravings/src/ui/pages/sign_up/sign_up_page.dart' as _i25;
+import 'package:campus_cravings/src/ui/pages/auth/sign_up/sign_up_page.dart'
+    as _i25;
 import 'package:flutter/material.dart' as _i27;
 
 /// generated route for
@@ -224,7 +225,7 @@ class LoginRoute extends _i26.PageRouteInfo<void> {
   static _i26.PageInfo page = _i26.PageInfo(
     name,
     builder: (data) {
-      return const _i9.LoginPage();
+      return _i9.LoginPage();
     },
   );
 }
@@ -519,6 +520,23 @@ class ProfileTabRoute extends _i26.PageRouteInfo<void> {
   );
 }
 
+class StudentProfileDetailsRoute extends _i26.PageRouteInfo<void> {
+  const StudentProfileDetailsRoute({List<_i26.PageRouteInfo>? children})
+      : super(
+          LoginRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoginRoute';
+
+  static _i26.PageInfo page = _i26.PageInfo(
+    name,
+    builder: (data) {
+      return _i9.LoginPage();
+    },
+  );
+}
+
 /// generated route for
 /// [_i21.PromoCodePage]
 class PromoCodeRoute extends _i26.PageRouteInfo<void> {
@@ -609,7 +627,7 @@ class SignUpRoute extends _i26.PageRouteInfo<void> {
   static _i26.PageInfo page = _i26.PageInfo(
     name,
     builder: (data) {
-      return const _i25.SignUpPage();
+      return _i25.SignUpPage();
     },
   );
 }

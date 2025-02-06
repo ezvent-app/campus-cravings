@@ -1,31 +1,26 @@
 import 'package:campus_cravings/src/src.dart';
 
-
 @RoutePage()
-class OtpPage extends ConsumerStatefulWidget {
+class OtpPage extends ConsumerWidget {
   const OtpPage({super.key});
 
   @override
-  ConsumerState createState() => _OtpPageState();
-}
-
-class _OtpPageState extends ConsumerState<OtpPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = AppLocalizations.of(context)!;
     return BaseWrapper(
-      label: 'Verification',
+      label: locale.verification,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "We've send you the verification code on",
+          Text(
+            locale.sendVerificationCode,
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 12,
               color: AppColors.lightText,
             ),
           ),
-          const SizedBox(height: 5),
+          height(5),
           const Text(
             'sample@email.com',
             style: TextStyle(
@@ -33,7 +28,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
               fontSize: 13,
             ),
           ),
-          const SizedBox(height: 30),
+          height(30),
           OtpPinField(
             maxLength: 6,
             otpPinFieldStyle: const OtpPinFieldStyle(
@@ -42,56 +37,41 @@ class _OtpPageState extends ConsumerState<OtpPage> {
               filledFieldBackgroundColor: AppColors.otpPinColor,
               fieldBorderRadius: 8,
               fieldBorderWidth: 1,
-              textStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+              textStyle: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: Dimensions.fontSizeExtraLarge),
             ),
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            fieldWidth: 45,
-            fieldHeight: 45,
+            fieldWidth: 40,
+            fieldHeight: 40,
             otpPinFieldDecoration: OtpPinFieldDecoration.custom,
             onSubmit: (text) {},
             onChange: (text) {},
           ),
-          const SizedBox(height: 40),
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: () {
-                context.pushRoute(ProfileFormRoute(newUser: true));
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.background, // Splash color
-              ),
-              child: const Text(
-                'Continue',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+          height(40),
+          RoundedButtonWidget(
+            btnTitle: locale.continueNext,
+            onTap: () => context.pushRoute(ProfileFormRoute(newUser: true)),
           ),
-          const SizedBox(height: 40),
+          height(40),
           Center(
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  "Get code in 04:30   ",
+                Text(
+                  "${locale.getCodeIn} 04:30   ",
                   style: TextStyle(
-                      fontSize: 12,
+                      fontSize: Dimensions.fontSizeSmall,
                       fontWeight: FontWeight.w500,
                       color: AppColors.lightText),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {},
-                  child: const Text(
-                    "Resend",
+                  child: Text(
+                    locale.resend,
                     style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
+                      fontSize: Dimensions.fontSizeSmall,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.black,
                     ),
                   ),

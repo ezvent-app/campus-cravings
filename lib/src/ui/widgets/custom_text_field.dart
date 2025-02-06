@@ -36,7 +36,7 @@ class CustomTextField extends ConsumerWidget {
             child: Text(
               label!,
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: Dimensions.fontSizeSmall,
                 color: AppColors.lightText,
                 fontWeight: FontWeight.w500,
               ),
@@ -55,14 +55,15 @@ class CustomTextField extends ConsumerWidget {
             hintText: hintText,
             hintStyle: hintStyle,
             suffixIcon: suffixIcon,
-            contentPadding: const EdgeInsets.all(15),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+            contentPadding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Dimensions.radiusDefault)),
             enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                 borderSide: const BorderSide(
                     color: AppColors.textFieldBorder, width: 1.5)),
             focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                 borderSide: const BorderSide(
                     color: AppColors.textFieldBorder, width: 1.5)),
             prefixIconConstraints:

@@ -1,7 +1,4 @@
-
-
 import 'package:campus_cravings/src/src.dart';
-
 
 @RoutePage()
 class OnboardingPage extends ConsumerStatefulWidget {
@@ -45,27 +42,26 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       body: Column(
         children: [
           Expanded(
-            flex: 4,
+            flex: 5,
             child: PageView(
+              physics: BouncingScrollPhysics(),
               controller: _pageController,
-              onPageChanged: (int page) {
-                setState(() {
-                  _currentPage = page; // Update the current page index
-                });
-              },
+              onPageChanged: (int page) => setState(() => _currentPage = page),
               children: const [
                 PngAsset('onboarding_1'),
                 PngAsset('onboarding_2'),
+                PngAsset('onboarding_3'),
               ],
             ),
           ),
           SmoothPageIndicator(
             controller: _pageController, // PageController
-            count: 2,
+            count: 3,
             effect: const ExpandingDotsEffect(
               activeDotColor: AppColors.accent,
               dotColor: AppColors.accentLight,
@@ -73,6 +69,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               dotWidth: 7,
             ),
           ),
+          height(10),
           Expanded(
             flex: 4,
             child: Column(
@@ -83,24 +80,31 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                       milliseconds: 0), // Duration of fade transition
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                        horizontal: Dimensions.paddingSizeLarge,
+                        vertical: Dimensions.paddingSizeSmall),
                     child: Column(
                       children: [
                         Text(
                           _currentPage == 0
-                              ? 'Your Campus. Your Cravings. Delivered.'
-                              : 'Earn with Campus Cravings',
+                              ? locale.onboardingTitle1
+                              : _currentPage == 1
+                                  ? locale.onboardingTitle2
+                                  : locale.onboardingTitle3,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 36),
+                          style: TextStyle(
+                              fontSize: Dimensions.fontSizeExtraLarge),
                         ),
-                        height(10),
+                        height(15),
                         Text(
                           _currentPage == 0
-                              ? 'Get all your favorite campus meals, snacks, and drinks delivered anywhere on campus.'
-                              : 'Deliver food, earn cash, and support your campus community!',
+                              ? locale.onboardingDesc1
+                              : _currentPage == 1
+                                  ? locale.onboardingDesc2
+                                  : locale.onboardingDesc3,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 17,
+                          style: TextStyle(
+                            fontSize: Dimensions.fontSizeDefault,
+                            fontWeight: FontWeight.w400,
                             color: AppColors.lightText,
                           ),
                         ),
@@ -109,26 +113,22 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   ),
                 ),
                 const Spacer(),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_currentPage == 0) {
-                      _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeIn);
-                    } else {
-                      context.replaceRoute(const LoginRoute());
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(20),
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.background // Splash color
-                      ),
-                  child: const Icon(Icons.arrow_forward,
-                      color: Colors.white, size: 30),
+                Card(
+                  shape: StadiumBorder(),
+                  color: AppColors.primary,
+                  child: Padding(
+                    padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
+                    child: IconButton(
+                        onPressed: () => _currentPage == 0
+                            ? _pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeIn)
+                            : context.replaceRoute(const LoginRoute()),
+                        icon: Icon(Icons.arrow_forward,
+                            color: Colors.white, size: 30)),
+                  ),
                 ),
-                const SizedBox(height: 40)
+                height(40)
               ],
             ),
           ),

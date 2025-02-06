@@ -10,3 +10,5 @@ export 'package:simple_animations/animation_builder/mirror_animation_builder.dar
 export 'package:slide_to_act/slide_to_act.dart';
 export 'package:otp_pin_field/otp_pin_field.dart';
 export 'package:smooth_page_indicator/smooth_page_indicator.dart';
+export 'package:flutter_localizations/flutter_localizations.dart';
+export 'package:flutter_gen/gen_l10n/app_localizations.dart';

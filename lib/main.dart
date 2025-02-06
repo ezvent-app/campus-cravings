@@ -14,6 +14,8 @@ class App extends StatelessWidget {
       child: MaterialApp.router(
         title: "Campus Cravings",
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: ThemeData(
           useMaterial3: true,
           fontFamily: 'SofiaPro',

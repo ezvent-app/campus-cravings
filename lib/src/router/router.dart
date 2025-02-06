@@ -26,6 +26,10 @@ class AppRouter extends RootStackRouter {
           page: OtpRoute.page,
           path: '/otp',
         ),
+        AutoRoute(
+          page: StudentProfileDetailsRoute.page,
+          path: '/stdProfileDetails',
+        ),
         AutoRoute(page: MainRoute.page, path: '/main', children: [
           AutoRoute(
             page: HomeTabRoute.page,
