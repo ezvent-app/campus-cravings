@@ -11,7 +11,6 @@ class App extends StatelessWidget {
   App({super.key});
   final _appRouter = AppRouter();
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ProviderScope(

@@ -18,6 +18,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   bool _showPassword = false;
   @override
   Widget build(BuildContext context) {
+    final size=MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(

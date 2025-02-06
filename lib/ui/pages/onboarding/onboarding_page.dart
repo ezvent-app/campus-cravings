@@ -17,9 +17,8 @@ class OnboardingPage extends ConsumerStatefulWidget {
 class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   final _pageController = PageController();
 
-
   int _currentPage = 0;
-  double _opacity = 1.0;  // Initial opacity of the text
+  double _opacity = 1.0; // Initial opacity of the text
 
   @override
   void initState() {
@@ -68,9 +67,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             ),
           ),
           SmoothPageIndicator(
-            controller: _pageController,  // PageController
-            count:  2,
-            effect:  const ExpandingDotsEffect(
+            controller: _pageController, // PageController
+            count: 2,
+            effect: const ExpandingDotsEffect(
               activeDotColor: AppColors.accent,
               dotColor: AppColors.accentLight,
               dotHeight: 7,
@@ -78,24 +77,29 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 4,
             child: Column(
               children: [
                 AnimatedOpacity(
                   opacity: _opacity,
-                  duration: const Duration(milliseconds: 0), // Duration of fade transition
+                  duration: const Duration(
+                      milliseconds: 0), // Duration of fade transition
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     child: Column(
                       children: [
                         Text(
-                          _currentPage == 0 ? 'Your Campus. Your Cravings. Delivered.' : 'Earn with Campus Cravings',
+                          _currentPage == 0
+                              ? 'Your Campus. Your Cravings. Delivered.'
+                              : 'Earn with Campus Cravings',
                           textAlign: TextAlign.center,
                           style: const TextStyle(fontSize: 36),
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          _currentPage == 0 ? 'Get all your favorite campus meals, snacks, and drinks delivered anywhere on campus.'
+                          _currentPage == 0
+                              ? 'Get all your favorite campus meals, snacks, and drinks delivered anywhere on campus.'
                               : 'Deliver food, earn cash, and support your campus community!',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
@@ -110,19 +114,22 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 const Spacer(),
                 ElevatedButton(
                   onPressed: () {
-                    if(_currentPage == 0){
-                      _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+                    if (_currentPage == 0) {
+                      _pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeIn);
                     } else {
                       context.replaceRoute(const LoginRoute());
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(20),
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.background// Splash color
-                  ),
-                  child: const Icon(Icons.arrow_forward, color: Colors.white, size: 30),
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(20),
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.background // Splash color
+                      ),
+                  child: const Icon(Icons.arrow_forward,
+                      color: Colors.white, size: 30),
                 ),
                 const SizedBox(height: 40)
               ],

@@ -1,3 +1,5 @@
-class Config{
+
+
+class Config {
   static bool alwaysShowOnboarding = false;
 }
