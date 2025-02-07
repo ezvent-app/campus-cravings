@@ -1,20 +1,20 @@
-
-
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class OrdersTab extends ConsumerStatefulWidget {
-  const OrdersTab({super.key});
+class OrdersTabPage extends ConsumerStatefulWidget {
+  const OrdersTabPage({super.key});
 
   @override
   ConsumerState createState() => _OrdersTabState();
 }
 
-class _OrdersTabState extends ConsumerState<OrdersTab> {
+class _OrdersTabState extends ConsumerState<OrdersTabPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('Orders'),),
+      body: Center(
+        child: Text('Orders'),
+      ),
     );
   }
 }

@@ -91,23 +91,22 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                   ? locale.onboardingTitle2
                                   : locale.onboardingTitle3,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: Dimensions.fontSizeExtraLarge),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(
+                                  fontSize: Dimensions.fontSizeExtraLarge,
+                                  fontWeight: FontWeight.w500),
                         ),
                         height(15),
                         Text(
-                          _currentPage == 0
-                              ? locale.onboardingDesc1
-                              : _currentPage == 1
-                                  ? locale.onboardingDesc2
-                                  : locale.onboardingDesc3,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: Dimensions.fontSizeDefault,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.lightText,
-                          ),
-                        ),
+                            _currentPage == 0
+                                ? locale.onboardingDesc1
+                                : _currentPage == 1
+                                    ? locale.onboardingDesc2
+                                    : locale.onboardingDesc3,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyMedium),
                       ],
                     ),
                   ),
@@ -123,7 +122,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                             ? _pageController.nextPage(
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeIn)
-                            : context.replaceRoute(const LoginRoute()),
+                            : context.replaceRoute(LoginRoute()),
                         icon: Icon(Icons.arrow_forward,
                             color: Colors.white, size: 30)),
                   ),

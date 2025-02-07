@@ -11,23 +11,18 @@ class DeliverySetupPage extends ConsumerStatefulWidget {
 class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return BaseWrapper(
-      label: 'Delivery Set-up',
+      label: locale.deliveryProfile,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CustomTextField(label: 'Enter Social Security Number'),
-          const SizedBox(height: 16),
-          const Padding(
+          CustomTextField(label: locale.socialSecurityNumber),
+          height(16),
+          Padding(
             padding: EdgeInsets.only(bottom: 3),
-            child: Text(
-              'National ID / Proof of Work Permission',
-              style: TextStyle(
-                fontSize: 12,
-                color: AppColors.lightText,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            child: Text(locale.nationalID,
+                style: Theme.of(context).textTheme.bodySmall),
           ),
           OutlinedButton(
             onPressed: () {},
@@ -36,7 +31,7 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 foregroundColor: const Color(0xff525252)),
-            child: const Text('Upload Or Capture Image'),
+            child: Text(locale.uploadCaptureImage),
           ),
           Row(
             children: [
@@ -54,93 +49,49 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                   ),
                 ),
               ),
-              const Text(
-                'I agree with ',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff6C7278)),
+              Text(
+                locale.iAgreeWith,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
-              GestureDetector(
+              InkWell(
                 onTap: () {},
-                child: const Text(
-                  'Terms and Conditions',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff070707),
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
+                child: Text(locale.termsConditions,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: AppColors.black,
+                          decoration: TextDecoration.underline,
+                        )),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          height(16),
           RichText(
             text: TextSpan(
               children: [
-                const TextSpan(
-                  text: 'Disclaimer: ',
-                  style: TextStyle(
-                    fontFamily: 'SofiaPro',
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
-                  ),
-                ),
-                const TextSpan(
-                  text:
-                      'Your Social Security Number and ID are required for background checks, work eligibility verification, and compliance with legal regulations, and will be securely stored as per our ',
-                  style: TextStyle(
-                    fontFamily: 'SofiaPro',
-                    fontSize: 13,
-                    height: 1.5,
-                    color: Color(0xFF979797),
-                  ),
-                ),
                 TextSpan(
-                  text: 'Privacy Policy',
-                  style: const TextStyle(
-                      fontFamily: 'SofiaPro',
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
-                      decoration: TextDecoration.underline),
+                    text: locale.disclaimer,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: AppColors.black,
+                        )),
+                TextSpan(
+                    text: locale.socialSecurityInfo,
+                    style: Theme.of(context).textTheme.bodySmall),
+                TextSpan(
+                  text: locale.privacyPolicy,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: AppColors.black,
+                        decoration: TextDecoration.underline,
+                      ),
                   recognizer: TapGestureRecognizer()..onTap = () {},
                 ),
-                const TextSpan(
-                  text: '.',
-                  style: TextStyle(
-                    fontFamily: 'SofiaPro',
-                    fontSize: 13,
-                    height: 1.5,
-                    color: Color(0xFF979797),
-                  ),
-                )
+                TextSpan(
+                    text: '.', style: Theme.of(context).textTheme.bodySmall)
               ],
             ),
           ),
-          const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: () {
-                context.pushRoute(const AddPayoutRoute());
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.background, // Splash color
-              ),
-              child: const Text(
-                'Next',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
+          height(24),
+          RoundedButtonWidget(
+            btnTitle: locale.next,
+            onTap: () => context.pushRoute(const AddPayoutRoute()),
           ),
         ],
       ),

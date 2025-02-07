@@ -12,22 +12,14 @@ class OtpPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            locale.sendVerificationCode,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 12,
-              color: AppColors.lightText,
-            ),
-          ),
+          Text(locale.sendVerificationCode,
+              style: Theme.of(context).textTheme.bodySmall),
           height(5),
-          const Text(
-            'sample@email.com',
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 13,
-            ),
-          ),
+          Text('sample@email.com',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(fontSize: 13, color: AppColors.black)),
           height(30),
           OtpPinField(
             maxLength: 6,

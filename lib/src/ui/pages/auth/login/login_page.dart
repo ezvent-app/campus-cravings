@@ -28,21 +28,11 @@ class LoginPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     height(3),
-                    Text(
-                      locale.signIntoAccount,
-                      style: TextStyle(
-                          fontSize: Dimensions.fontSizeMoreOverLarge,
-                          fontWeight: FontWeight.w700),
-                    ),
+                    Text(locale.signIntoAccount,
+                        style: Theme.of(context).textTheme.titleLarge),
                     height(5),
-                    Text(
-                      locale.enterEmailAndPassword,
-                      style: TextStyle(
-                        fontSize: Dimensions.fontSizeSmall,
-                        color: AppColors.lightText,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    Text(locale.enterEmailAndPassword,
+                        style: Theme.of(context).textTheme.bodySmall),
                     height(20),
                     CustomTextField(
                       label: locale.universityEmail,
@@ -58,10 +48,10 @@ class LoginPage extends StatelessWidget {
                         onPressed: () {},
                         child: Text(
                           locale.forgotPassword,
-                          style: TextStyle(
-                              fontSize: Dimensions.fontSizeSmall,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.accent),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: AppColors.accent),
                         ),
                       ),
                     ),
@@ -74,7 +64,7 @@ class LoginPage extends StatelessWidget {
                     AccountInfoRowWidget(
                         title: locale.dontHaveAccount,
                         btnTitle: locale.signUp,
-                        onTap: () => context.pushRoute(const SignUpRoute()))
+                        onTap: () => context.pushRoute(SignUpRoute()))
                   ],
                 ),
               ),

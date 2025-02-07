@@ -16,12 +16,7 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        theme: ThemeData(
-          useMaterial3: true,
-          fontFamily: 'SofiaPro',
-          colorScheme: const ColorScheme.light(primary: AppColors.primary)
-              .copyWith(surface: AppColors.background),
-        ),
+        theme: lightTheme,
         routerConfig: _appRouter.config(),
       ),
     );

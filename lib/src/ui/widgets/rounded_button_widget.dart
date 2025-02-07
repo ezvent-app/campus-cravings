@@ -15,17 +15,12 @@ class RoundedButtonWidget extends StatelessWidget {
       height: 48,
       child: ElevatedButton(
         onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.background, // Splash color
-        ),
         child: Text(
           btnTitle,
-          style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: Dimensions.fontSizeDefault),
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium!
+              .copyWith(color: AppColors.white),
         ),
       ),
     );

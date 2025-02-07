@@ -38,5 +38,20 @@
   "yourMinors" : "Your Minor(s)",
   "clubsOrganizations" : "Clubs or Organizations You're Involved In",
   "aboutYou" : "About You (Bio)",
-  "whatDoYouWant" : "What do you want people you deliver to know about you?"
+  "whatDoYouWant" : "What do you want people you deliver to know about you?",
+  "deliveryProfile" : "Delivery Profile",
+  "socialSecurityNumber" : "Enter Social Security Number",
+  "nationalID" : "National ID / Proof of Work Permission",
+  "uploadCaptureImage" : "Upload Or Capture Image",
+  "iAgreeWith" : "I agree with ",
+  "termsConditions" : "Terms and Conditions",
+  "disclaimer" : "Disclaimer: ",
+  "socialSecurityInfo" : "Your Social Security Number and ID are required for background checks, work eligibility verification, and compliance with legal regulations, and will be securely stored as per our ",
+  "privacyPolicy" : "Privacy Policy",
+  "addPayoutDetails" : "Add Payout Details",
+  "selectBank" : "Select Bank",
+  "fullName" : "Full Name",
+  "accountNumber" : "Account Number",
+  "selectBank" : "Select Bank",
+  "selectBank" : "Select Bank"
 }

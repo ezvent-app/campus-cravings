@@ -1,14 +1,14 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class HomeTab extends ConsumerStatefulWidget {
-  const HomeTab({super.key});
+class HomeTabPage extends ConsumerStatefulWidget {
+  const HomeTabPage({super.key});
 
   @override
   ConsumerState createState() => _HomeTabState();
 }
 
-class _HomeTabState extends ConsumerState<HomeTab> {
+class _HomeTabState extends ConsumerState<HomeTabPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -1,16 +1,14 @@
-
-
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class ProfileTab extends ConsumerStatefulWidget {
-  const ProfileTab({super.key});
+class ProfileTabPage extends ConsumerStatefulWidget {
+  const ProfileTabPage({super.key});
 
   @override
   ConsumerState createState() => _ProfileTabState();
 }
 
-class _ProfileTabState extends ConsumerState<ProfileTab> {
+class _ProfileTabState extends ConsumerState<ProfileTabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,11 +27,13 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                           width: 60,
                           height: 60,
                           decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(20)
-                          ),
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(20)),
                           child: const Center(
-                            child: Icon(Icons.person, size: 35,),
+                            child: Icon(
+                              Icons.person,
+                              size: 35,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -46,14 +46,13 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                             ),
                             const SizedBox(height: 5),
                             GestureDetector(
-                              onTap: (){
-                                context.pushRoute(ProfileFormRoute(newUser: false));
+                              onTap: () {
+                                context.pushRoute(
+                                    ProfileFormRoute(newUser: false));
                               },
                               child: const Text(
                                 "Edit Profile",
-                                style: TextStyle(
-                                  color: AppColors.lightText
-                                ),
+                                style: TextStyle(color: AppColors.lightText),
                               ),
                             ),
                           ],
@@ -62,19 +61,25 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                     ),
                   ),
                   Container(
-                    width: 40, height: 40,
+                    width: 40,
+                    height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
-                      border: Border.all(color: const Color(0xFFF4F4F4), width: 2),
+                      border:
+                          Border.all(color: const Color(0xFFF4F4F4), width: 2),
                     ),
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(8),
-                        onTap: (){},
+                        onTap: () {},
                         child: const Center(
-                          child: Icon(Icons.keyboard_arrow_down,size: 30, color: Color(0xff443A39),),
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            size: 30,
+                            color: Color(0xff443A39),
+                          ),
                         ),
                       ),
                     ),
@@ -86,21 +91,22 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                   ProfileOption(
                     icon: 'payment_method_icon',
                     label: 'Payment Methods',
-                    onPressed: (){
-                      context.pushRoute(PaymentMethodsRoute(fromCheckout: false));
+                    onPressed: () {
+                      context
+                          .pushRoute(PaymentMethodsRoute(fromCheckout: false));
                     },
                   ),
                   ProfileOption(
                     icon: 'saved_addresses_icon',
                     label: 'Saved Addresses',
-                    onPressed: (){
+                    onPressed: () {
                       context.pushRoute(const SavedAddressesRoute());
                     },
                   ),
                   ProfileOption(
                     icon: 'promo_offers_icon',
                     label: 'Promo Offers',
-                    onPressed: (){
+                    onPressed: () {
                       context.pushRoute(const PromoCodeRoute());
                     },
                   ),
@@ -111,19 +117,19 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                   ProfileOption(
                     icon: 'settings_icon',
                     label: 'Settings',
-                    onPressed: (){
+                    onPressed: () {
                       context.pushRoute(const SettingsRoute());
                     },
                   ),
                   ProfileOption(
                     icon: 'refer_friend_icon',
                     label: 'Refer a Friend/s',
-                    onPressed: (){},
+                    onPressed: () {},
                   ),
                   ProfileOption(
                     icon: 'help_icon',
                     label: 'Help',
-                    onPressed: (){},
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -132,7 +138,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                   ProfileOption(
                     icon: 'logout_icon',
                     label: 'Log Out',
-                    onPressed: (){},
+                    onPressed: () {},
                   ),
                 ],
               ),

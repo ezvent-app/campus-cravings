@@ -1,17 +1,15 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class ProfileFormPage extends ConsumerStatefulWidget {
-  final bool newUser;
-  const ProfileFormPage({super.key, required this.newUser});
+class StudentProfileDetailsPage extends ConsumerStatefulWidget {
+  const StudentProfileDetailsPage({super.key});
 
   @override
   ConsumerState createState() => _ProfileFormPageState();
 }
 
-class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
- 
-
+class _ProfileFormPageState extends ConsumerState<StudentProfileDetailsPage> {
+  List majors = [];
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
@@ -26,27 +24,13 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   bottom: Dimensions.paddingSizeDefault),
               child: Row(
                 children: [
-                  if (!widget.newUser)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.paddingSizeDefault),
-                      child: IconButton(
-                        onPressed: () => context.maybePop(),
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          size: 28,
-                        ),
-                      ),
-                    )
-                  else
-                    width(25),
                   Padding(
-                    padding: EdgeInsets.only(top: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeDefault,
+                    ),
                     child: Text(
                       locale.studentProfileDetails,
-                      style: const TextStyle(
-                          fontSize: Dimensions.fontSizeExtraLarge,
-                          fontWeight: FontWeight.w800),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   )
                 ],
@@ -65,6 +49,26 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   height(16),
                   CustomTextField(
                     label: locale.yourMajors,
+                    onSubmitted: (value) => setState(() => majors.add(value)),
+                  ),
+                  height(5),
+                  Wrap(
+                    children: majors
+                        .map((i) => Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: InputChip(
+                                label: Text(
+                                  i,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(color: AppColors.black),
+                                ),
+                                onDeleted: () =>
+                                    setState(() => majors.remove(i)),
+                              ),
+                            ))
+                        .toList(),
                   ),
                   height(16),
                   CustomTextField(

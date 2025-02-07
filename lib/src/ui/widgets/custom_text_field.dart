@@ -11,9 +11,13 @@ class CustomTextField extends ConsumerWidget {
   final Widget? prefixIcon;
   final int maxLines;
   final EdgeInsets? contentPadding;
+  final ValueChanged<String>? onChanged;
+  final Function(dynamic)? onSubmitted;
   const CustomTextField({
     super.key,
     this.label,
+    this.onSubmitted,
+    this.onChanged,
     this.dismissOnTapOutside = true,
     this.obscureText = false,
     this.hintText,
@@ -33,16 +37,11 @@ class CustomTextField extends ConsumerWidget {
         if (label != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 3),
-            child: Text(
-              label!,
-              style: const TextStyle(
-                fontSize: Dimensions.fontSizeSmall,
-                color: AppColors.lightText,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            child: Text(label!, style: Theme.of(context).textTheme.bodySmall),
           ),
         TextFormField(
+          onChanged: onChanged,
+          onFieldSubmitted: onSubmitted,
           obscureText: obscureText,
           onTapOutside: (event) {
             if (dismissOnTapOutside) {

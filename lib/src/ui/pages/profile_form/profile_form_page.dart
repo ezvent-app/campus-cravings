@@ -51,9 +51,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                     padding: EdgeInsets.only(top: widget.newUser ? 12 : 4),
                     child: Text(
                       widget.newUser ? locale.profileSetUp : locale.editProfile,
-                      style: const TextStyle(
-                          fontSize: Dimensions.fontSizeExtraLarge,
-                          fontWeight: FontWeight.w800),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   )
                 ],
@@ -111,42 +109,17 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   height(16),
                   Padding(
                     padding: EdgeInsets.only(bottom: 3),
-                    child: Text(
-                      locale.selectRole,
-                      style: TextStyle(
-                        fontSize: Dimensions.fontSizeSmall,
-                        color: AppColors.lightText,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    child: Text(locale.selectRole,
+                        style: Theme.of(context).textTheme.bodySmall),
                   ),
-                  DropdownButtonFormField<String>(
-                    items: _roles.map((e) {
-                      return DropdownMenuItem(value: e, child: Text(e));
-                    }).toList(),
-                    value: _selectedRole,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedRole = value!;
-                      });
-                    },
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    iconEnabledColor: AppColors.primary,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: AppColors.textFieldBorder, width: 1.5),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            color: AppColors.textFieldBorder, width: 1.5),
-                      ),
-                    ),
-                  ),
+                  DropDownWidget(
+                      universitiesList: _roles,
+                      onChange: (value) {
+                        setState(() {
+                          _selectedRole = value!;
+                        });
+                      },
+                      hintText: locale.selectRole),
                   height(12),
                   Row(
                     children: [
@@ -178,7 +151,8 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   RoundedButtonWidget(
                       btnTitle: widget.newUser ? locale.next : locale.save,
                       onTap: () => widget.newUser
-                          ? context.pushRoute(const DeliverySetupRoute())
+                          ? context
+                              .pushRoute(const StudentProfileDetailsRoute())
                           : context.maybePop()),
                 ],
               ),

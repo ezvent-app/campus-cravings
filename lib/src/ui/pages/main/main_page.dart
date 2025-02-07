@@ -1,5 +1,3 @@
-
-
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
@@ -16,6 +14,8 @@ class _MainPageState extends ConsumerState<MainPage> {
     return AutoTabsRouter.tabBar(
       routes: const [
         HomeTabRoute(),
+        OrdersTabRoute(),
+        ProfileTabRoute(),
         OrdersTabRoute(),
         ProfileTabRoute(),
       ],
@@ -39,32 +39,40 @@ class _MainPageState extends ConsumerState<MainPage> {
                   controller: tabController,
                   tabs: [
                     Tab(
-                      icon: PngAsset(
-                        'home_icon',
-                        width: 25,
-                        color: tabController.index == 0
-                            ? Colors.black
-                            : AppColors.unselectedTabIconColor,
-                      ),
-                    ),
+                        icon: SvgAssets(
+                      Images.home,
+                      color: tabController.index == 0
+                          ? AppColors.black
+                          : AppColors.unselectedTabIconColor,
+                    )),
                     Tab(
-                      icon: PngAsset(
-                        'orders_icon',
-                        width: 25,
-                        color: tabController.index == 1
-                            ? Colors.black
-                            : AppColors.unselectedTabIconColor,
-                      ),
-                    ),
+                        icon: SvgAssets(
+                      Images.docs,
+                      color: tabController.index == 1
+                          ? AppColors.black
+                          : AppColors.unselectedTabIconColor,
+                    )),
                     Tab(
-                      icon: PngAsset(
-                        'profile_icon',
-                        width: 25,
-                        color: tabController.index == 2
-                            ? Colors.black
-                            : AppColors.unselectedTabIconColor,
-                      ),
-                    ),
+                        icon: SvgAssets(
+                      Images.cart,
+                      color: tabController.index == 2
+                          ? AppColors.black
+                          : AppColors.unselectedTabIconColor,
+                    )),
+                    Tab(
+                        icon: SvgAssets(
+                      Images.delivery,
+                      color: tabController.index == 3
+                          ? AppColors.black
+                          : AppColors.unselectedTabIconColor,
+                    )),
+                    Tab(
+                        icon: SvgAssets(
+                      Images.profile,
+                      color: tabController.index == 4
+                          ? AppColors.black
+                          : AppColors.unselectedTabIconColor,
+                    )),
                   ],
                 ),
               ),

@@ -32,30 +32,17 @@ class SignUpPage extends StatelessWidget {
                     height(3),
                     Text(
                       locale.signUp,
-                      style: TextStyle(
-                          fontSize: Dimensions.fontSizeMoreOverLarge,
-                          fontWeight: FontWeight.w700),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     height(5),
-                    Text(
-                      locale.createAccount,
-                      style: TextStyle(
-                        fontSize: Dimensions.fontSizeSmall,
-                        color: AppColors.lightText,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    Text(locale.createAccount,
+                        style: Theme.of(context).textTheme.bodySmall),
                     height(20),
-                    Text(
-                      locale.selectUniversity,
-                      style: const TextStyle(
-                        fontSize: Dimensions.fontSizeSmall,
-                        color: AppColors.lightText,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    Text(locale.selectUniversity,
+                        style: Theme.of(context).textTheme.bodySmall),
                     height(3),
-                    UniversityDropDownWidget(
+                    DropDownWidget(
+                      hintText: locale.selectUniversity,
                       universitiesList: ["Villanova University"],
                       onChange: (value) {},
                     ),

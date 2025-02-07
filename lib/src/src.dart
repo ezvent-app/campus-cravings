@@ -12,3 +12,6 @@ export 'package:otp_pin_field/otp_pin_field.dart';
 export 'package:smooth_page_indicator/smooth_page_indicator.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
 export 'package:flutter_gen/gen_l10n/app_localizations.dart';
+export './theme/theme.dart';
+export 'package:flutter/services.dart';
+export 'package:flutter_svg/svg.dart';
