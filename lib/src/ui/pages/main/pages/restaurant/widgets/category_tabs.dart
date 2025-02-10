@@ -1,5 +1,3 @@
-
-
 import 'package:campus_cravings/src/src.dart';
 
 class CategoryTabs extends ConsumerStatefulWidget {
@@ -10,7 +8,8 @@ class CategoryTabs extends ConsumerStatefulWidget {
   ConsumerState createState() => _CategoryTabsState();
 }
 
-class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProviderStateMixin {
+class _CategoryTabsState extends ConsumerState<CategoryTabs>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   late List<String> _categories;
   late bool _expandedTabBar;
@@ -23,7 +22,6 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
     }
     _expandedTabBar = _categories.length > 3;
     _tabController = TabController(length: _categories.length, vsync: this);
-    // TODO: implement initState
     super.initState();
   }
 
@@ -43,8 +41,11 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
             child: Align(
               alignment: Alignment.centerLeft,
               child: TabBar(
-                indicatorSize: _expandedTabBar ? TabBarIndicatorSize.label : TabBarIndicatorSize.tab,
-                tabAlignment: _expandedTabBar ? TabAlignment.start : TabAlignment.fill,
+                indicatorSize: _expandedTabBar
+                    ? TabBarIndicatorSize.label
+                    : TabBarIndicatorSize.tab,
+                tabAlignment:
+                    _expandedTabBar ? TabAlignment.start : TabAlignment.fill,
                 isScrollable: _expandedTabBar,
                 indicator: const UnderlineTabIndicator(
                   borderSide: BorderSide(
@@ -61,7 +62,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
                     child: Text(
                       e == 'recommended' ? 'Picked For You' : e,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -73,101 +74,112 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: _categories.map((e) {
-                final categorizedProducts = widget.products.where((product) {
-                  return product.categories!.contains(e);
-                }).toList();
-                return ListView(
-                  padding: const EdgeInsets.only(top: 24),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Text(
-                        e == 'recommended' ? 'Picked For You' : e,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
+              children: _categories.map(
+                (e) {
+                  final categorizedProducts = widget.products.where((product) {
+                    return product.categories!.contains(e);
+                  }).toList();
+                  return ListView(
+                    padding: const EdgeInsets.only(top: 24),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          e == 'recommended' ? 'Picked For You' : e,
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.black),
                         ),
                       ),
-                    ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: categorizedProducts.length,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                      itemBuilder: (context, index) {
-                        return Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(color: Colors.black12, blurRadius: 20)
-                            ],
-                            borderRadius: BorderRadius.circular(28)
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(28),
-                              onTap: (){
-                                context.pushRoute(ProductDetailsRoute(product: categorizedProducts[index]));
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Row(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(24),
-                                      child: const PngAsset(
-                                        'mock_product_1',
-                                        fit: BoxFit.cover,
-                                        height: 100,
-                                        width: 100,
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: categorizedProducts.length,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 20),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black12, blurRadius: 20)
+                                ],
+                                borderRadius: BorderRadius.circular(28)),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(28),
+                                onTap: () {
+                                  context.pushRoute(ProductDetailsRoute(
+                                      product: categorizedProducts[index]));
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Row(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(24),
+                                        child: const PngAsset(
+                                          'mock_product_1',
+                                          fit: BoxFit.cover,
+                                          height: 100,
+                                          width: 100,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            categorizedProducts[index].name,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 16,
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              categorizedProducts[index].name,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 16,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 3),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  '\$${categorizedProducts[index].price.toStringAsFixed(2)}',
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 16,
+                                            const SizedBox(height: 3),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    '\$${categorizedProducts[index].price.toStringAsFixed(2)}',
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 16,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              const PngAsset('add_icon', width: 20, height: 20,)
-                                            ],
-                                          ),
-                                        ],
+                                                const PngAsset(
+                                                  'add_icon',
+                                                  width: 20,
+                                                  height: 20,
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }, separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(height: 20);
-                      },
-                    ),
-                  ],
-                );
-              },).toList(),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(height: 20);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ).toList(),
             ),
           ),
         ],

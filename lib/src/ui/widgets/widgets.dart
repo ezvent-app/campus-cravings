@@ -6,3 +6,4 @@ export 'png_asset.dart';
 export 'rounded_button_widget.dart';
 export 'drop_down_widget.dart';
 export 'svg_assets.dart';
+export 'cart_counter_widget.dart';

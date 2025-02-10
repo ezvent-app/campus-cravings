@@ -53,12 +53,11 @@ class _MainPageState extends ConsumerState<MainPage> {
                           : AppColors.unselectedTabIconColor,
                     )),
                     Tab(
-                        icon: SvgAssets(
-                      Images.cart,
-                      color: tabController.index == 2
-                          ? AppColors.black
-                          : AppColors.unselectedTabIconColor,
-                    )),
+                        icon: CartCounterWidget(
+                            count: 2,
+                            color: tabController.index == 2
+                                ? AppColors.black
+                                : AppColors.unselectedTabIconColor)),
                     Tab(
                         icon: SvgAssets(
                       Images.delivery,

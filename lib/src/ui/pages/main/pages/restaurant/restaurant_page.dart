@@ -1,5 +1,3 @@
-
-
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
@@ -21,36 +19,60 @@ class _RestaurantPageState extends ConsumerState<RestaurantPage> {
               margin: const EdgeInsets.only(bottom: 30),
               width: double.infinity,
               height: 350,
-              child: const PngAsset('mock_product_1', fit: BoxFit.fitWidth)),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/png/mock_product_1.png"),
+                      fit: BoxFit.fitWidth)),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, top: 60),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: AppColors.dividerColor,
+                        )),
+                    CartCounterWidget(
+                      count: 5,
+                      color: AppColors.dividerColor,
+                    )
+                  ],
+                ),
+              )),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Bamonte's",
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600
-                  ),
+                const Text(
+                  "Bamonte's",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                 ),
                 const Divider(color: AppColors.dividerColor, height: 32),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if(kMockFeatured.distance != null) const Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: PngAsset('location_pin'),
-                    ),
+                    if (kMockFeatured.distance != null)
+                      const Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: PngAsset(
+                          'location_pin',
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if(kMockFeatured.distance != null) Text(
-                          '${kMockFeatured.distance!.floor()} ${kMockFeatured.distance == 1 ? 'mile' : 'miles'} away',
-                          style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500
+                        if (kMockFeatured.distance != null)
+                          Text(
+                            '${kMockFeatured.distance!.floor()} ${kMockFeatured.distance == 1 ? 'mile' : 'miles'} away',
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w500),
                           ),
-                        ),
                         const SizedBox(height: 3),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,12 +86,18 @@ class _RestaurantPageState extends ConsumerState<RestaurantPage> {
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10,),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
                               width: 2,
                               height: 20,
                               color: AppColors.lightText,
                             ),
-                            const PngAsset('travel_icon', width: 25),
+                            const PngAsset(
+                              'travel_icon',
+                              width: 25,
+                              height: 20,
+                            ),
                             const SizedBox(width: 10),
                             Text(
                               '\$${kMockFeatured.price.toStringAsFixed(2)}',
@@ -94,5 +122,4 @@ class _RestaurantPageState extends ConsumerState<RestaurantPage> {
       ),
     );
   }
-
 }

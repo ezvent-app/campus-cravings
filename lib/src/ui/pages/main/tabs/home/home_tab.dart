@@ -16,6 +16,29 @@ class _HomeTabState extends ConsumerState<HomeTabPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            height(20),
+            Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                margin: EdgeInsets.symmetric(horizontal: 25),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Deliver with Us",
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          Icon(Icons.arrow_forward)
+                        ]),
+                    Text(
+                      "6 orders are ready for you to pick up! Start earning with Campus Cravings today.",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )
+                  ]),
+                )),
             const Padding(
               padding: EdgeInsets.all(25),
               child: Text(
@@ -60,7 +83,7 @@ class _HomeTabState extends ConsumerState<HomeTabPage> {
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(8),
-                        onTap: () {},
+                        onTap: () => showSortBottomSheet(context),
                         child: const Center(
                           child: ImageIcon(
                               AssetImage('assets/images/png/filter_icon.png'),
