@@ -118,7 +118,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   child: Padding(
                     padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
                     child: IconButton(
-                        onPressed: () => _currentPage == 0
+                        onPressed: () => _currentPage == 0 || _currentPage == 1
                             ? _pageController.nextPage(
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeIn)

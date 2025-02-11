@@ -35,15 +35,10 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage> {
                             ),
                           ),
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(top: 4),
-                          child: Text(
-                            'Payment Methods',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
+                          child: Text('Payment Methods',
+                              style: Theme.of(context).textTheme.titleMedium),
                         )
                       ],
                     ),
@@ -162,7 +157,7 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage> {
                 margin: const EdgeInsets.only(left: 25, right: 25, bottom: 36),
                 child: ElevatedButton(
                   onPressed: () {
-                    context.maybePop();
+                    context.pushRoute(const PlacingOrderRoute());
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

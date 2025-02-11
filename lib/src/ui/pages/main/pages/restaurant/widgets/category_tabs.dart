@@ -56,7 +56,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                 dividerColor: const Color(0xFFF6F6F6),
                 dividerHeight: 4,
                 controller: _tabController,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 5),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 10),
                 tabs: _categories.map((e) {
                   return Tab(
                     child: Text(
@@ -81,6 +81,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                   }).toList();
                   return ListView(
                     padding: const EdgeInsets.only(top: 24),
+                    physics: BouncingScrollPhysics(),
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),

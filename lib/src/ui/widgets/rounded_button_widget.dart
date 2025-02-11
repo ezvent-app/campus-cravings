@@ -17,10 +17,10 @@ class RoundedButtonWidget extends StatelessWidget {
         onPressed: onTap,
         child: Text(
           btnTitle,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium!
-              .copyWith(color: AppColors.white),
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: AppColors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w700),
         ),
       ),
     );

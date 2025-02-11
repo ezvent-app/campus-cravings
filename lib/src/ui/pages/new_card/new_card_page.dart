@@ -1,5 +1,3 @@
-
-
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
@@ -27,19 +25,17 @@ class _NewCardPageState extends ConsumerState<NewCardPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: IconButton(
-                            onPressed: ()=> context.maybePop(),
-                            icon: const Icon(Icons.arrow_back, size: 28,),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 4),
-                          child: Text(
-                            'Add New Card',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
+                            onPressed: () => context.maybePop(),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              size: 28,
                             ),
                           ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 4),
+                          child: Text('Add New Card',
+                              style: Theme.of(context).textTheme.titleMedium),
                         )
                       ],
                     ),
@@ -48,18 +44,30 @@ class _NewCardPageState extends ConsumerState<NewCardPage> {
                     padding: EdgeInsets.only(left: 25, right: 25, top: 45),
                     child: Column(
                       children: [
-                        CustomTextField(label: 'Full Name',),
+                        CustomTextField(
+                          label: 'Full Name',
+                        ),
                         SizedBox(height: 16),
                         CustomTextField(
                           label: 'Card Number',
-                          // suffixIcon: ImageIcon(AssetImage('assets/images/png/mastercard_icon.png')),
+                          suffixIcon: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: PngAsset('mastercard_icon',
+                                height: 30, width: 18),
+                          ),
                         ),
                         SizedBox(height: 16),
                         Row(
                           children: [
-                            Expanded(child: CustomTextField(label: 'Expires',)),
+                            Expanded(
+                                child: CustomTextField(
+                              label: 'Expires',
+                            )),
                             SizedBox(width: 16),
-                            Expanded(child: CustomTextField(label: 'CVV',)),
+                            Expanded(
+                                child: CustomTextField(
+                              label: 'CVV',
+                            )),
                           ],
                         )
                       ],
@@ -73,13 +81,14 @@ class _NewCardPageState extends ConsumerState<NewCardPage> {
               height: 48,
               margin: const EdgeInsets.only(left: 25, right: 25, bottom: 36),
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: () {
                   context.maybePop();
                 },
                 style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
                   backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.background,// Splash color
+                  foregroundColor: AppColors.background, // Splash color
                 ),
                 child: const Text(
                   'Save',

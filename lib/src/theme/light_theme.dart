@@ -142,8 +142,10 @@ ThemeData lightTheme = ThemeData.light().copyWith(
         color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: Dimensions.fontSizeExtraLarge),
-    titleSmall: TextStyle(color: Colors.black),
-    bodyLarge: TextStyle(color: Colors.grey),
+    titleSmall: TextStyle(
+        color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700),
+    bodyLarge: TextStyle(
+        color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500),
     bodyMedium: TextStyle(
       fontSize: Dimensions.fontSizeDefault,
       fontWeight: FontWeight.w400,

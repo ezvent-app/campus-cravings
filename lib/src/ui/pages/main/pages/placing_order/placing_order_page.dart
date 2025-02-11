@@ -17,21 +17,14 @@ class _PlacingOrderPageState extends ConsumerState<PlacingOrderPage> {
       label: 'Searching',
       child: Column(
         children: [
-          const Text(
-            'Placing your order on the restaurant',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Text('Placing your order on the restaurant',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontWeight: FontWeight.w600)),
           const SizedBox(height: 5),
-          const Text(
-            'Reaching out to active students nearby!',
-            style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Color(0xff616161)),
-          ),
+          Text('Reaching out to active students nearby!',
+              style: Theme.of(context).textTheme.bodyLarge),
           Expanded(
             child: Stack(
               children: [

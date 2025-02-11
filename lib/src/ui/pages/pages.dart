@@ -1,7 +1,7 @@
 export './add_payout/add_payout_page.dart';
 export './address_form/address_form_page.dart';
-export './checkout/pages/pages_route.dart';
-export './delivering/widgets/widgets.dart';
+export './checkout/check_out.dart';
+export 'checkout/pages/delivering/widgets/widgets.dart';
 export './delivery_setup/delivery_setup_page.dart';
 export './new_card/new_card_page.dart';
 export './onboarding/onboarding_page.dart';

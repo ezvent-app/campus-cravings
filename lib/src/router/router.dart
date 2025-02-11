@@ -1,5 +1,4 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:campus_cravings/src/router/router.gr.dart';
+import 'package:campus_cravings/src/src.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends RootStackRouter {
@@ -63,6 +62,18 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: CheckoutRoute.page,
           path: '/checkout',
+        ),
+        AutoRoute(
+          page: CheckOutChatRoute.page,
+          path: '/checkout_chat_page',
+        ),
+        AutoRoute(
+          page: CheckoutAddressRoute.page,
+          path: '/check_out_address-page',
+        ),
+        AutoRoute(
+          page: CheckOutMapOrderTrackingRoute.page,
+          path: '/check_out_map_order_tracking-page',
         ),
         AutoRoute(
           page: DeliverToRoute.page,
