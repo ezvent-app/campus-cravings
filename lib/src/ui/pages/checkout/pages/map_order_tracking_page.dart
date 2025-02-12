@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:campus_cravings/src/src.dart'; // Import your relevant assets and widgets
+import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
 class CheckOutMapOrderTrackingPage extends StatelessWidget {

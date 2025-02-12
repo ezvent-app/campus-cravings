@@ -52,23 +52,26 @@ class _ProfileFormPageState extends ConsumerState<StudentProfileDetailsPage> {
                     onSubmitted: (value) => setState(() => majors.add(value)),
                   ),
                   height(5),
-                  Wrap(
-                    children: majors
-                        .map((i) => Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: InputChip(
-                                label: Text(
-                                  i,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(color: AppColors.black),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * .9,
+                    child: Wrap(
+                      children: majors
+                          .map((i) => Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: InputChip(
+                                  label: Text(
+                                    i,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(color: AppColors.black),
+                                  ),
+                                  onDeleted: () =>
+                                      setState(() => majors.remove(i)),
                                 ),
-                                onDeleted: () =>
-                                    setState(() => majors.remove(i)),
-                              ),
-                            ))
-                        .toList(),
+                              ))
+                          .toList(),
+                    ),
                   ),
                   height(16),
                   CustomTextField(

@@ -9,7 +9,7 @@ class AnimatedDeliveryDetailsWrapper extends ConsumerStatefulWidget {
 
 class _AnimatedDeliveryDetailsWrapperState
     extends ConsumerState<AnimatedDeliveryDetailsWrapper> {
-  final double _minHeight = 320;
+  final double _minHeight = 340;
   late double _height;
   late double _maxHeight;
   bool _dragging = false;

@@ -6,12 +6,14 @@ class Dimensions {
   static const double fontSizeLarge = 16;
   static const double fontSizeExtraLarge = 20;
   static const double fontSizeOverLarge = 25;
+  static const double fontSizeOnboarding = 28;
   static const double fontSizeMoreOverLarge = 32;
 
   static const double paddingSizeExtraSmall = 5.0;
   static const double paddingSizeSmall = 10.0;
   static const double paddingSizeDefault = 15.0;
   static const double paddingSizeLarge = 20.0;
+
   static const double paddingSizeExtraLarge = 25.0;
   static const double paddingSizeExtremeLarge = 30.0;
 

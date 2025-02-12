@@ -18,6 +18,18 @@ class AppRouter extends RootStackRouter {
           path: '/login',
         ),
         AutoRoute(
+          page: ForgetPasswordRoute.page,
+          path: '/forget_password',
+        ),
+        AutoRoute(
+          page: ForgetPasswordOTPRoute.page,
+          path: '/forget_password_OTP',
+        ),
+        AutoRoute(
+          page: NewPasswordRoute.page,
+          path: '/new_password',
+        ),
+        AutoRoute(
           page: SignUpRoute.page,
           path: '/sign-up',
         ),
@@ -37,6 +49,10 @@ class AppRouter extends RootStackRouter {
           AutoRoute(
             page: OrdersTabRoute.page,
             path: 'orders',
+          ),
+          AutoRoute(
+            page: OrdersDetailsRoute.page,
+            path: 'orders_details',
           ),
           AutoRoute(
             page: ProfileTabRoute.page,
@@ -66,6 +82,10 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: CheckOutChatRoute.page,
           path: '/checkout_chat_page',
+        ),
+        AutoRoute(
+          page: DeliveryManProfileRoute.page,
+          path: '/delivery_man_profile_page',
         ),
         AutoRoute(
           page: CheckoutAddressRoute.page,

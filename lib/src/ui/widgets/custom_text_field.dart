@@ -10,12 +10,14 @@ class CustomTextField extends ConsumerWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final int maxLines;
+  final TextEditingController? controller;
   final EdgeInsets? contentPadding;
   final ValueChanged<String>? onChanged;
   final Function(dynamic)? onSubmitted;
   const CustomTextField({
     super.key,
     this.label,
+    this.controller,
     this.onSubmitted,
     this.onChanged,
     this.dismissOnTapOutside = true,
@@ -48,8 +50,13 @@ class CustomTextField extends ConsumerWidget {
               FocusScope.of(context).unfocus();
             }
           },
-          style: style,
+          style: style ??
+              Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: AppColors.black),
           maxLines: maxLines,
+          obscuringCharacter: "*",
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: hintStyle,

@@ -45,7 +45,8 @@ class LoginPage extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () =>
+                            context.pushRoute(ForgetPasswordRoute()),
                         child: Text(
                           locale.forgotPassword,
                           style: Theme.of(context)

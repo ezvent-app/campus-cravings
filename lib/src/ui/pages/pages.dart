@@ -9,3 +9,4 @@ export './payment_methods/payment_methods_page.dart';
 export './profile_form/profile_form_page.dart';
 export './main/main_paths.dart';
 export './auth/auth.dart';
+export './main/tabs/orders/orders_path.dart';

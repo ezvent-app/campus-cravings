@@ -95,7 +95,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                               .textTheme
                               .titleLarge!
                               .copyWith(
-                                  fontSize: Dimensions.fontSizeExtraLarge,
+                                  fontSize: Dimensions.fontSizeOnboarding,
                                   fontWeight: FontWeight.w500),
                         ),
                         height(15),
@@ -106,7 +106,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                     ? locale.onboardingDesc2
                                     : locale.onboardingDesc3,
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyMedium),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(fontSize: 15)),
                       ],
                     ),
                   ),

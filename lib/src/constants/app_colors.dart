@@ -13,6 +13,7 @@ class AppColors {
   static const otpPinBorderColor = Color(0xFFC9C9C7);
   static const unselectedTabIconColor = Color(0xFF9E9E9E);
   static const dividerColor = Color(0xFFEEEEEE);
+  static const yellow = Color(0xffFFD029);
 
   static const shade = Color(0xFF272B30);
   static const textField2 = Color(0xFF282829);

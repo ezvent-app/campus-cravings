@@ -12,8 +12,11 @@ class DeliveryDetailsWidget extends ConsumerStatefulWidget {
 
 class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
   List stars = [1, 2, 3, 4, 5];
+  List tipsList = [1, 5, 10, 15];
+  int selectedIndex = -1;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -33,14 +36,17 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
             ),
           ),
         ),
-        Center(
-          child: Text("View Profile",
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: AppColors.black,
-                  decoration: TextDecoration.underline)),
+        TextButton(
+          onPressed: () => context.pushRoute(DeliveryManProfileRoute()),
+          child: Center(
+            child: Text("View Profile",
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: AppColors.black,
+                    decoration: TextDecoration.underline)),
+          ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 45, vertical: 12),
+          padding: EdgeInsets.symmetric(horizontal: 45),
           child: Text(
               'Your order is in good hands with a fellow Computer Science student!',
               textAlign: TextAlign.center,
@@ -49,17 +55,21 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                   .bodyMedium!
                   .copyWith(color: AppColors.black)),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-              stars.length,
-              (i) => Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                    child: Icon(
-                      Icons.star,
-                      color: i == 4 ? AppColors.dividerColor : Colors.amber,
-                    ),
-                  )),
+        height(10),
+        InkWell(
+          onTap: () => orderReviewSheetMethod(context),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+                stars.length,
+                (i) => Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Icon(
+                        Icons.star,
+                        color: i == 4 ? AppColors.dividerColor : Colors.amber,
+                      ),
+                    )),
+          ),
         ),
         height(15),
         Padding(
@@ -105,6 +115,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
             ],
           ),
         ),
+
         Container(
           margin: const EdgeInsets.only(top: 19),
           height: 10,
@@ -124,6 +135,40 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Container(
+                        height: size.height * .25,
+                        padding: EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Delivery Complete',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                        fontSize: 21,
+                                        fontWeight: FontWeight.w800)),
+                            height(5),
+                            Container(
+                              height: size.height * .17,
+                              width: size.width,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                      fit: BoxFit.fitWidth,
+                                      image: NetworkImage(
+                                          "https://s3-alpha-sig.figma.com/img/4f41/2318/07c864fa1ad0906cecdac853a6d4d38f?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=gbKWIlt239MAe2JvBH5lU31hP94h8Yk9EGf~u3oYUxIS5xAO0h7irSRwtfbneeBzZRjUJ8h9lRLJ8o9kQ0eJY7IRkNlTnjLP361dRw6Gxe8n5CpxfXHAfwDpHpUF2dUAR19j927ZPOpMzCsrWRTxkFCBLozGEOGe0L6084D6wznpQ4RPRZBf2p83L2FFHWB1JuI-ZF4X~C5CW7APtbaSihPpbN9sD-Q3Jt7eex99oul~SN0JKp~RpX7-mL6mwijT1afUyw~3AnHMNJHnxOhFFv9AXpv5UqebhhrnwAnnQDiAVJ9q1bKkykz3aJdC5hPGgdcuIGAva5j6qADz7NxUNQ__"))),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 19),
+                        height: 10,
+                        color: widget.isMinHeight
+                            ? Colors.white
+                            : const Color(0xFFF5F5F5),
+                      ),
                       Text('Delivery details',
                           style: Theme.of(context)
                               .textTheme
@@ -288,6 +333,137 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
           ),
         )
       ],
+    );
+  }
+
+  Future<dynamic> orderReviewSheetMethod(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return Card(
+            margin: EdgeInsets.all(10),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "How was your Order?",
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      width(50),
+                      IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: Icon(
+                            Icons.clear,
+                            color: AppColors.email,
+                          ))
+                    ],
+                  ),
+                  Text(
+                    "If you don’t mind, tell us how was service. This review will be used to improve our service to be better.",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  height(20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                        5,
+                        (i) => InkWell(
+                              onTap: () {
+                                setState(() {
+                                  stars = List.generate(stars.length,
+                                      (j) => j <= i ? i : stars[j]);
+                                });
+                              },
+                              child: Container(
+                                  width: 50,
+                                  height: 50,
+                                  margin: EdgeInsets.symmetric(horizontal: 5),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey.shade100),
+                                  child: PngAsset("emoji$i")),
+                            )),
+                  ),
+                  height(20),
+                  Text(
+                    "Want to leave tip for Robert",
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: AppColors.lightText,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Wrap(
+                    children: List.generate(
+                        tipsList.length,
+                        (i) => InkWell(
+                            borderRadius: BorderRadius.circular(15),
+                            onTap: () {
+                              setState(() {
+                                selectedIndex = i;
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Container(
+                                width: 150,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                      color: selectedIndex == i
+                                          ? AppColors.black
+                                          : Colors.grey),
+                                ),
+                                child: Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Text(
+                                      "\$${tipsList[i]}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            color: selectedIndex == i
+                                                ? AppColors.black
+                                                : Colors.grey,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ))),
+                  ),
+                  height(20),
+                  Text(
+                    "Cmmment",
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: AppColors.lightText,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  height(5),
+                  CustomTextField(
+                    maxLines: 5,
+                  ),
+                  height(100),
+                  RoundedButtonWidget(btnTitle: "Continue", onTap: () {})
+                ],
+              ),
+            ),
+          );
+        });
+      },
     );
   }
 }
