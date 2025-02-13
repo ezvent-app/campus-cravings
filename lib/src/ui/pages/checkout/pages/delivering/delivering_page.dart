@@ -1,21 +1,17 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class DeliveringPage extends ConsumerStatefulWidget {
+class DeliveringPage extends StatelessWidget {
   const DeliveringPage({super.key});
 
   @override
-  ConsumerState createState() => _DeliveringPageState();
-}
-
-class _DeliveringPageState extends ConsumerState<DeliveringPage> {
-  @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Stack(
       children: [
         BaseWrapper(
           hasHorizontalPadding: false,
-          label: 'For Delivering',
+          label: locale.forDelivering,
           child: Column(
             children: [
               Padding(
@@ -23,7 +19,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Picking up your order...',
+                    Text(locale.pickingUpYourorder,
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium!
@@ -31,10 +27,10 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                                 fontSize: Dimensions.fontSizeExtraLarge,
                                 fontWeight: FontWeight.w800)),
                     const SizedBox(height: 5),
-                    const Row(
+                    Row(
                       children: [
                         Text(
-                          'Arriving at ',
+                          locale.arrivingAt,
                           style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w400,

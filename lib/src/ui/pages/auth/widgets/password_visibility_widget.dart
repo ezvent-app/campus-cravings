@@ -5,16 +5,19 @@ class PasswordWidget extends StatelessWidget {
     super.key,
     required this.password,
     required this.passwordTitle,
+    this.onChanged,
   });
 
   final ValueNotifier<bool> password;
   final String passwordTitle;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: password,
       builder: (context, value, child) => CustomTextField(
+        onChanged: onChanged,
         label: passwordTitle,
         obscureText: !value,
         suffixIcon: IconButton(

@@ -7,6 +7,7 @@ class OtpPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
+
     return BaseWrapper(
       label: locale.verification,
       child: Column(
@@ -37,13 +38,20 @@ class OtpPage extends ConsumerWidget {
             fieldWidth: 40,
             fieldHeight: 40,
             otpPinFieldDecoration: OtpPinFieldDecoration.custom,
-            onSubmit: (text) {},
-            onChange: (text) {},
+            onSubmit: (text) => ref.read(otpProvider.notifier).state = text,
+            onChange: (text) => ref.read(otpProvider.notifier).state = text,
           ),
           height(40),
-          RoundedButtonWidget(
-            btnTitle: locale.continueNext,
-            onTap: () => context.pushRoute(ProfileFormRoute(newUser: true)),
+          Consumer(
+            builder: (context, ref, child) {
+              final otp = ref.watch(otpProvider);
+              return RoundedButtonWidget(
+                btnTitle: locale.continueNext,
+                onTap: otp.length != 6
+                    ? null
+                    : () => context.pushRoute(ProfileFormRoute(newUser: true)),
+              );
+            },
           ),
           height(40),
           Center(
@@ -76,3 +84,5 @@ class OtpPage extends ConsumerWidget {
     );
   }
 }
+
+final otpProvider = StateProvider<String>((ref) => '');

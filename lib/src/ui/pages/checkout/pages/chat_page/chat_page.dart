@@ -6,6 +6,7 @@ class CheckOutChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text('Robert Fox'),
@@ -77,7 +78,7 @@ class CheckOutChatPage extends StatelessWidget {
                   child: TextField(
                     onChanged: (value) {},
                     decoration: InputDecoration(
-                      hintText: 'Type a message...',
+                      hintText: locale.typeMessage,
                     ),
                   ),
                 ),
@@ -87,7 +88,7 @@ class CheckOutChatPage extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(height: 20)
+            height(20)
           ],
         ),
       ),

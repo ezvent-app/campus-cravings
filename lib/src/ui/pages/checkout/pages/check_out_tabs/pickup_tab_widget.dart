@@ -7,6 +7,7 @@ class PickUpTabWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       physics: BouncingScrollPhysics(),
@@ -23,7 +24,7 @@ class PickUpTabWidget extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(.08),
+                  color: Colors.black.withValues(alpha: .08),
                   blurRadius: 15,
                 ),
               ],
@@ -32,7 +33,7 @@ class PickUpTabWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Order Summary',
+                  locale.orderSummary,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Column(
@@ -115,7 +116,8 @@ class PickUpTabWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               color: Colors.white,
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(.08), blurRadius: 15)
+                BoxShadow(
+                    color: Colors.black.withValues(alpha: .08), blurRadius: 15)
               ],
             ),
             child: Material(
@@ -125,7 +127,7 @@ class PickUpTabWidget extends StatelessWidget {
                   context.pushRoute(PaymentMethodsRoute(fromCheckout: true));
                 },
                 borderRadius: BorderRadius.circular(24),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.all(24),
                   child: Row(
                     children: [
@@ -139,7 +141,7 @@ class PickUpTabWidget extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           child: Text(
-                            'Payment\nMethod',
+                            locale.paymentMethod,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -184,16 +186,17 @@ class PickUpTabWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               color: Colors.white,
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(.08), blurRadius: 15)
+                BoxShadow(
+                    color: Colors.black.withValues(alpha: .08), blurRadius: 15)
               ],
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Text(
-                      'Total',
+                      locale.total,
                       style: TextStyle(
                         color: Color(0xff424242),
                         fontSize: 14,
@@ -237,8 +240,8 @@ class PickUpTabWidget extends StatelessWidget {
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.background, // Splash color
               ),
-              child: const Text(
-                'Place Order - \$24.00',
+              child: Text(
+                '${locale.placeOrder} - \$24.00',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                 ),

@@ -1,8 +1,8 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class OrdersDetailsPage extends StatelessWidget {
-  const OrdersDetailsPage({super.key});
+class RidersDetailsPage extends StatelessWidget {
+  const RidersDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -159,8 +159,8 @@ class OrdersDetailsPage extends StatelessWidget {
   }
 }
 
-class OrdersInfoWidget extends StatelessWidget {
-  const OrdersInfoWidget({
+class RidersInfoWidget extends StatelessWidget {
+  const RidersInfoWidget({
     super.key,
     required this.title,
     required this.desc,

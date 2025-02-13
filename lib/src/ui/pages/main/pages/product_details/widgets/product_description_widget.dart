@@ -16,6 +16,7 @@ class _ProductDescriptionWidgetState
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: RichText(
@@ -36,7 +37,8 @@ class _ProductDescriptionWidgetState
             ),
             if (description.length > 40)
               TextSpan(
-                text: ' Read ${_expanded ? 'Less' : 'More'}',
+                text:
+                    ' ${locale.read} ${_expanded ? locale.less : locale.more}',
                 style: const TextStyle(
                   fontFamily: 'SofiaPro',
                   fontSize: 12,

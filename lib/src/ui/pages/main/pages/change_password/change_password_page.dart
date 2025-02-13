@@ -1,36 +1,30 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class ChangePasswordPage extends ConsumerStatefulWidget {
+class ChangePasswordPage extends ConsumerWidget {
   const ChangePasswordPage({super.key});
 
   @override
-  ConsumerState createState() => _ChangePasswordPageState();
-}
-
-class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
-  @override
-  Widget build(BuildContext context) {
-    return const BaseWrapper(
-      label: 'Change Password',
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = AppLocalizations.of(context)!;
+    return BaseWrapper(
+      label: locale.changePassword,
       child: Column(
+        spacing: 20,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomTextField(
-            label: 'Enter Old Password',
+            label: locale.enterOldPassword,
             obscureText: true,
           ),
-          SizedBox(height: 16),
           CustomTextField(
-            label: 'Enter New Password',
+            label: locale.enterNewPassword,
             obscureText: true,
           ),
-          SizedBox(height: 16),
           CustomTextField(
-            label: 'Confirm New Password',
+            label: locale.confirmNewPassword,
             obscureText: true,
           ),
-          SizedBox(height: 16),
         ],
       ),
     );

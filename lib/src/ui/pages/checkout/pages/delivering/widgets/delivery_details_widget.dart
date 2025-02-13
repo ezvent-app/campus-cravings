@@ -17,6 +17,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final locale = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -39,7 +40,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
         TextButton(
           onPressed: () => context.pushRoute(DeliveryManProfileRoute()),
           child: Center(
-            child: Text("View Profile",
+            child: Text(locale.viewProfile,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: AppColors.black,
                     decoration: TextDecoration.underline)),
@@ -47,8 +48,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 45),
-          child: Text(
-              'Your order is in good hands with a fellow Computer Science student!',
+          child: Text(locale.yourOrderGoodHandsFellowComputerScienceStudent,
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
@@ -103,7 +103,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 17, vertical: 8),
                     child: Text(
-                      'Send a message',
+                      locale.sendMessage,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
@@ -141,7 +141,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Delivery Complete',
+                            Text(locale.deliveryComplete,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall!
@@ -169,15 +169,15 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                             ? Colors.white
                             : const Color(0xFFF5F5F5),
                       ),
-                      Text('Delivery details',
+                      Text(locale.deliveryDetails,
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall!
                               .copyWith(
                                   fontSize: 21, fontWeight: FontWeight.w800)),
                       height(24),
-                      const Text(
-                        'Address',
+                      Text(
+                        locale.address,
                         style: TextStyle(
                           color: Color(0xff434044),
                           fontSize: 14,
@@ -195,7 +195,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Order summary',
+                          Text(locale.orderSummary,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall!
@@ -204,7 +204,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                                       fontWeight: FontWeight.w800)),
                           TextButton(
                               onPressed: () {},
-                              child: Text("View details",
+                              child: Text(locale.viewDetails,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -260,7 +260,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                                               )),
                                       Row(
                                         children: [
-                                          Text('Show more ',
+                                          Text(locale.showMore,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleSmall!
@@ -288,7 +288,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Total',
+                            Text(locale.total,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall!
@@ -322,7 +322,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                   decoration: BoxDecoration(
                       color: const Color(0xffF5F5F5),
                       borderRadius: BorderRadius.circular(100)),
-                  child: Text('Add delivery note',
+                  child: Text(locale.addDeliveryNote,
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -337,6 +337,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
   }
 
   Future<dynamic> orderReviewSheetMethod(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -344,121 +345,127 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
       isScrollControlled: true,
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
-          return Card(
-            margin: EdgeInsets.all(10),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "How was your Order?",
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      width(50),
-                      IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: Icon(
-                            Icons.clear,
-                            color: AppColors.email,
-                          ))
-                    ],
-                  ),
-                  Text(
-                    "If you don’t mind, tell us how was service. This review will be used to improve our service to be better.",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  height(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                        5,
-                        (i) => InkWell(
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * .78,
+            child: Card(
+              margin: EdgeInsets.all(10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          locale.howWasYourOrder,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        width(50),
+                        IconButton(
+                            onPressed: () =>
+                                context.replaceRoute(HomeTabRoute()),
+                            icon: Icon(
+                              Icons.clear,
+                              color: AppColors.email,
+                            ))
+                      ],
+                    ),
+                    Text(
+                      locale.reviewAboutService,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    height(20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                          5,
+                          (i) => InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    stars = List.generate(stars.length,
+                                        (j) => j <= i ? i : stars[j]);
+                                  });
+                                },
+                                child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.grey.shade100),
+                                    child: PngAsset("emoji$i")),
+                              )),
+                    ),
+                    height(20),
+                    Text(
+                      "${locale.wantToLeaveTipFor} Robert",
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: AppColors.lightText,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Wrap(
+                      children: List.generate(
+                          tipsList.length,
+                          (i) => InkWell(
+                              borderRadius: BorderRadius.circular(15),
                               onTap: () {
                                 setState(() {
-                                  stars = List.generate(stars.length,
-                                      (j) => j <= i ? i : stars[j]);
+                                  selectedIndex = i;
                                 });
                               },
-                              child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Container(
+                                  width: 150,
+                                  height: 70,
                                   decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.grey.shade100),
-                                  child: PngAsset("emoji$i")),
-                            )),
-                  ),
-                  height(20),
-                  Text(
-                    "Want to leave tip for Robert",
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: AppColors.lightText,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Wrap(
-                    children: List.generate(
-                        tipsList.length,
-                        (i) => InkWell(
-                            borderRadius: BorderRadius.circular(15),
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = i;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Container(
-                                width: 150,
-                                height: 70,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  border: Border.all(
-                                      color: selectedIndex == i
-                                          ? AppColors.black
-                                          : Colors.grey),
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      "\$${tipsList[i]}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(
-                                            color: selectedIndex == i
-                                                ? AppColors.black
-                                                : Colors.grey,
-                                          ),
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: selectedIndex == i
+                                            ? AppColors.black
+                                            : Colors.grey),
+                                  ),
+                                  child: Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Text(
+                                        "\$${tipsList[i]}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                              color: selectedIndex == i
+                                                  ? AppColors.black
+                                                  : Colors.grey,
+                                            ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ))),
-                  ),
-                  height(20),
-                  Text(
-                    "Cmmment",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: AppColors.lightText,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  height(5),
-                  CustomTextField(
-                    maxLines: 5,
-                  ),
-                  height(100),
-                  RoundedButtonWidget(btnTitle: "Continue", onTap: () {})
-                ],
+                              ))),
+                    ),
+                    height(20),
+                    Text(
+                      locale.comment,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: AppColors.lightText,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    height(5),
+                    CustomTextField(
+                      maxLines: 5,
+                    ),
+                    height(30),
+                    RoundedButtonWidget(
+                      btnTitle: locale.continueNext,
+                      onTap: () => context.replaceRoute(HomeTabRoute()),
+                    )
+                  ],
+                ),
               ),
             ),
           );

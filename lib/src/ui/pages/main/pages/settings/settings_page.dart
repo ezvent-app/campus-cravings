@@ -1,20 +1,14 @@
-
-
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class SettingsPage extends ConsumerStatefulWidget {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
-  ConsumerState createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends ConsumerState<SettingsPage> {
-  @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return BaseWrapper(
-      label: 'Settings',
+      label: locale.settings,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -23,22 +17,22 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             options: [
               ProfileOption(
                 icon: 'notification_icon',
-                label: 'Notifications',
-                onPressed: (){
+                label: locale.notifications,
+                onPressed: () {
                   context.pushRoute(const NotificationsRoute());
                 },
               ),
               ProfileOption(
                 icon: 'change_password_icon',
-                label: 'Change Password',
-                onPressed: (){
+                label: locale.changePassword,
+                onPressed: () {
                   context.pushRoute(const ChangePasswordRoute());
                 },
               ),
               ProfileOption(
                 icon: 'change_language_icon',
-                label: 'Change Language',
-                onPressed: (){},
+                label: locale.changeLanguage,
+                onPressed: () {},
               ),
             ],
           ),

@@ -16,13 +16,14 @@ class ProfileDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Service rating',
+            locale.serviceRating,
             style: Theme.of(context).textTheme.titleSmall,
           ),
           height(10),
@@ -41,7 +42,7 @@ class ProfileDetailsWidget extends StatelessWidget {
           ),
           ServiceRowWidget(
             image: 'user',
-            title: "About",
+            title: locale.about,
           ),
           Text(
             "Hi! I’m passionate about coding and love participating in hackathons. When I’m not coding, you’ll find me playing chess or exploring new coffee spots!",
@@ -56,10 +57,10 @@ class ProfileDetailsWidget extends StatelessWidget {
           ),
           ServiceRowWidget(
             image: 'books',
-            title: "Education Discipline",
+            title: locale.educationDiscipline,
           ),
           Text(
-            "Your Major(s)",
+            locale.yourMajors,
             style: Theme.of(context).textTheme.bodySmall,
           ),
           Wrap(
@@ -78,7 +79,7 @@ class ProfileDetailsWidget extends StatelessWidget {
           ),
           height(10),
           Text(
-            "Your Minor(s)",
+            locale.yourMinors,
             style: Theme.of(context).textTheme.bodySmall!,
           ),
           Wrap(
@@ -97,7 +98,7 @@ class ProfileDetailsWidget extends StatelessWidget {
           ),
           ServiceRowWidget(
             image: 'target',
-            title: "Clubs or organizations",
+            title: locale.clubOrganizations,
           ),
           Wrap(
             spacing: 8,

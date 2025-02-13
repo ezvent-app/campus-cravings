@@ -1,29 +1,43 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class ForgetPasswordPage extends StatelessWidget {
+class ForgetPasswordPage extends ConsumerWidget {
   ForgetPasswordPage({super.key});
   final TextEditingController emailController = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
 
     return BaseWrapper(
-      label: "Forget Password",
+      label: locale.forgetPassword,
       child: Column(
         spacing: 20,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomTextField(
             controller: emailController,
-            label: 'Enter Your Email',
+            label: locale.enterYourEmail,
+            onChanged: (value) =>
+                ref.read(forgetPasswordProvider.notifier).state = value,
           ),
           height(20),
-          RoundedButtonWidget(
-              btnTitle: locale.next,
-              onTap: () => context.pushRoute(ForgetPasswordOTPRoute())),
+          Consumer(
+            builder: (context, ref, child) {
+              var passwordProvider = ref.watch(forgetPasswordProvider);
+              return RoundedButtonWidget(
+                  btnTitle: locale.next,
+                  onTap: passwordProvider.isNotEmpty
+                      ? () {
+                          context.pushRoute(ForgetPasswordOTPRoute());
+                          ref.read(forgetPasswordProvider.notifier).state = '';
+                        }
+                      : null);
+            },
+          )
         ],
       ),
     );
   }
 }
+
+final forgetPasswordProvider = StateProvider<String>((ref) => '');

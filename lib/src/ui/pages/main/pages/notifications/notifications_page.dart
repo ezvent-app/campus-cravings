@@ -1,18 +1,14 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class NotificationsPage extends ConsumerStatefulWidget {
+class NotificationsPage extends ConsumerWidget {
   const NotificationsPage({super.key});
 
   @override
-  ConsumerState createState() => _NotificationsPageState();
-}
-
-class _NotificationsPageState extends ConsumerState<NotificationsPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = AppLocalizations.of(context)!;
     return BaseWrapper(
-      label: 'Notifications',
+      label: locale.notifications,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -24,25 +20,25 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
             ),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Push Notifications",
+                        locale.pushNotifications,
                         style:
                             TextStyle(fontSize: 15, color: Color(0xff2E3138)),
                       ),
-                      SizedBox(height: 12),
+                      height(12),
                       Text(
-                        "We highly recommend enabling notifications to stay updated on all your order statuses in real time.",
+                        locale.enableNotifications,
                         style:
                             TextStyle(fontSize: 14, color: Color(0xff878E9B)),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 15),
+                width(15),
                 Switch(
                   value: true,
                   onChanged: (value) {},
@@ -50,7 +46,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          height(24),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -59,25 +55,25 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
             ),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "SMS Notifications",
+                        locale.smsNotifications,
                         style:
                             TextStyle(fontSize: 15, color: Color(0xff2E3138)),
                       ),
-                      SizedBox(height: 12),
+                      height(12),
                       Text(
-                        "Stay in the loop! Enable SMS notifications to receive real-time updates about your order statuses.",
+                        locale.enableSMSNotifications,
                         style:
                             TextStyle(fontSize: 14, color: Color(0xff878E9B)),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 15),
+                width(15),
                 Switch(
                   value: true,
                   onChanged: (value) {},
@@ -85,7 +81,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          height(24),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -94,25 +90,25 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
             ),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Email Notifications",
+                        locale.emailNotifications,
                         style:
                             TextStyle(fontSize: 15, color: Color(0xff2E3138)),
                       ),
                       SizedBox(height: 12),
                       Text(
-                        "Don’t miss a thing! Turn on email notifications for detailed updates on all your orders.",
+                        locale.dontMissEmailNotifications,
                         style:
                             TextStyle(fontSize: 14, color: Color(0xff878E9B)),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 15),
+                width(15),
                 Switch(
                   value: true,
                   onChanged: (value) {},
@@ -120,7 +116,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          height(24),
         ],
       ),
     );

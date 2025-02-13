@@ -6,13 +6,14 @@ class OrdersTabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
-            'Orders',
+            locale.orders,
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
@@ -48,7 +49,7 @@ class OrdersTabPage extends StatelessWidget {
                       height: 44,
                       alignment: Alignment.center,
                       child: Text(
-                        'Current',
+                        locale.current,
                       ),
                     ),
                   ),
@@ -57,7 +58,7 @@ class OrdersTabPage extends StatelessWidget {
                       height: 44,
                       alignment: Alignment.center,
                       child: Text(
-                        'History',
+                        locale.history,
                       ),
                     ),
                   ),

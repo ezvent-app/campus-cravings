@@ -1,29 +1,25 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class PlacingOrderPage extends ConsumerStatefulWidget {
-  const PlacingOrderPage({super.key});
+class PlacingOrderPage extends ConsumerWidget {
+  PlacingOrderPage({super.key});
 
-  @override
-  ConsumerState createState() => _PlacingOrderPageState();
-}
-
-class _PlacingOrderPageState extends ConsumerState<PlacingOrderPage> {
   final GlobalKey<SlideActionState> _key = GlobalKey();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = AppLocalizations.of(context)!;
     return BaseWrapper(
       hasHorizontalPadding: false,
-      label: 'Searching',
+      label: locale.searching,
       child: Column(
         children: [
-          Text('Placing your order on the restaurant',
+          Text(locale.placeYourOrderOnTheRestaurant,
               style: Theme.of(context)
                   .textTheme
                   .titleMedium!
                   .copyWith(fontWeight: FontWeight.w600)),
           const SizedBox(height: 5),
-          Text('Reaching out to active students nearby!',
+          Text(locale.reachingOutToActiveStudentzNearby,
               style: Theme.of(context).textTheme.bodyLarge),
           Expanded(
             child: Stack(
@@ -63,8 +59,8 @@ class _PlacingOrderPageState extends ConsumerState<PlacingOrderPage> {
                               );
                             },
                             tween: ColorTween(
-                                begin: Colors.black.withOpacity(.2),
-                                end: Colors.black.withOpacity(.05)),
+                                begin: Colors.black.withValues(alpha: .2),
+                                end: Colors.black.withValues(alpha: .05)),
                             duration: const Duration(seconds: 1),
                           ),
                           MirrorAnimationBuilder<Color?>(
@@ -77,15 +73,15 @@ class _PlacingOrderPageState extends ConsumerState<PlacingOrderPage> {
                               );
                             },
                             tween: ColorTween(
-                                begin: Colors.black.withOpacity(.4),
-                                end: Colors.black.withOpacity(.3)),
+                                begin: Colors.black.withValues(alpha: .4),
+                                end: Colors.black.withValues(alpha: .3)),
                             duration: const Duration(seconds: 1),
                           ),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 129),
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.black.withOpacity(.4)),
+                                color: Colors.black.withValues(alpha: .4)),
                           ),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 156),
@@ -102,7 +98,7 @@ class _PlacingOrderPageState extends ConsumerState<PlacingOrderPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 80, vertical: 48),
                       child: SlideAction(
-                        text: '       Slide to Cancel',
+                        text: locale.slideToCancel,
                         textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

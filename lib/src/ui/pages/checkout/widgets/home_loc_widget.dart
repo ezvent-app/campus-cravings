@@ -11,11 +11,12 @@ class HomeLocationWidget extends StatelessWidget {
   final String title, subTitle;
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Material(
       color: Colors.transparent,
       child: InkWell(
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
-        onTap: () => context.pushRoute(const DeliverToRoute()),
+        onTap: () {},
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Row(
@@ -44,7 +45,7 @@ class HomeLocationWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                               color: const Color(0xFFEBEBEB),
                               borderRadius: BorderRadius.circular(6)),
-                          child: Text('Default',
+                          child: Text(locale.defaultValue,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
@@ -62,7 +63,7 @@ class HomeLocationWidget extends StatelessWidget {
               Icon(
                 icon,
                 color: AppColors.accent,
-                size: 30,
+                size: 25,
               )
             ],
           ),

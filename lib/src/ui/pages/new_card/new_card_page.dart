@@ -1,16 +1,12 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class NewCardPage extends ConsumerStatefulWidget {
+class NewCardPage extends StatelessWidget {
   const NewCardPage({super.key});
 
   @override
-  ConsumerState createState() => _NewCardPageState();
-}
-
-class _NewCardPageState extends ConsumerState<NewCardPage> {
-  @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -34,22 +30,22 @@ class _NewCardPageState extends ConsumerState<NewCardPage> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 4),
-                          child: Text('Add New Card',
+                          child: Text(locale.addNewCard,
                               style: Theme.of(context).textTheme.titleMedium),
                         )
                       ],
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 25, right: 25, top: 45),
                     child: Column(
                       children: [
                         CustomTextField(
-                          label: 'Full Name',
+                          label: locale.fullName,
                         ),
                         SizedBox(height: 16),
                         CustomTextField(
-                          label: 'Card Number',
+                          label: locale.cardNumber,
                           suffixIcon: Padding(
                             padding: EdgeInsets.all(5),
                             child: PngAsset('mastercard_icon',
@@ -61,12 +57,12 @@ class _NewCardPageState extends ConsumerState<NewCardPage> {
                           children: [
                             Expanded(
                                 child: CustomTextField(
-                              label: 'Expires',
+                              label: locale.expires,
                             )),
                             SizedBox(width: 16),
                             Expanded(
                                 child: CustomTextField(
-                              label: 'CVV',
+                              label: locale.cvv,
                             )),
                           ],
                         )
@@ -90,8 +86,8 @@ class _NewCardPageState extends ConsumerState<NewCardPage> {
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.background, // Splash color
                 ),
-                child: const Text(
-                  'Save',
+                child: Text(
+                  locale.save,
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                   ),

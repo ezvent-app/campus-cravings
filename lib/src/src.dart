@@ -15,3 +15,4 @@ export 'package:flutter_gen/gen_l10n/app_localizations.dart';
 export './theme/theme.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_svg/svg.dart';
+export './providers/providers.dart';

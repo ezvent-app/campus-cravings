@@ -1,16 +1,12 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class ProfileTabPage extends ConsumerStatefulWidget {
+class ProfileTabPage extends StatelessWidget {
   const ProfileTabPage({super.key});
 
   @override
-  ConsumerState createState() => _ProfileTabState();
-}
-
-class _ProfileTabState extends ConsumerState<ProfileTabPage> {
-  @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFFFBFBFA),
       body: SafeArea(
@@ -50,8 +46,8 @@ class _ProfileTabState extends ConsumerState<ProfileTabPage> {
                                 context.pushRoute(
                                     ProfileFormRoute(newUser: false));
                               },
-                              child: const Text(
-                                "Edit Profile",
+                              child: Text(
+                                locale.editProfile,
                                 style: TextStyle(color: AppColors.lightText),
                               ),
                             ),
@@ -90,7 +86,7 @@ class _ProfileTabState extends ConsumerState<ProfileTabPage> {
                 options: [
                   ProfileOption(
                     icon: 'payment_method_icon',
-                    label: 'Payment Methods',
+                    label: locale.paymentMethods,
                     onPressed: () {
                       context
                           .pushRoute(PaymentMethodsRoute(fromCheckout: false));
@@ -98,14 +94,14 @@ class _ProfileTabState extends ConsumerState<ProfileTabPage> {
                   ),
                   ProfileOption(
                     icon: 'saved_addresses_icon',
-                    label: 'Saved Addresses',
+                    label: locale.savedAddresses,
                     onPressed: () {
                       context.pushRoute(const SavedAddressesRoute());
                     },
                   ),
                   ProfileOption(
                     icon: 'promo_offers_icon',
-                    label: 'Promo Offers',
+                    label: locale.promoOffers,
                     onPressed: () {
                       context.pushRoute(const PromoCodeRoute());
                     },
@@ -116,19 +112,19 @@ class _ProfileTabState extends ConsumerState<ProfileTabPage> {
                 options: [
                   ProfileOption(
                     icon: 'settings_icon',
-                    label: 'Settings',
+                    label: locale.settings,
                     onPressed: () {
                       context.pushRoute(const SettingsRoute());
                     },
                   ),
                   ProfileOption(
                     icon: 'refer_friend_icon',
-                    label: 'Refer a Friend/s',
+                    label: locale.referFriend,
                     onPressed: () {},
                   ),
                   ProfileOption(
                     icon: 'help_icon',
-                    label: 'Help',
+                    label: locale.help,
                     onPressed: () {},
                   ),
                 ],
@@ -137,7 +133,7 @@ class _ProfileTabState extends ConsumerState<ProfileTabPage> {
                 options: [
                   ProfileOption(
                     icon: 'logout_icon',
-                    label: 'Log Out',
+                    label: locale.logOut,
                     onPressed: () {},
                   ),
                 ],

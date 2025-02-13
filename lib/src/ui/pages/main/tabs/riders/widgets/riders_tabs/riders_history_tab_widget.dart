@@ -1,14 +1,14 @@
 import 'package:campus_cravings/src/src.dart';
 
-class HistoryTabWidget extends StatelessWidget {
-  const HistoryTabWidget({
+class RidersHistoryTabWidget extends StatelessWidget {
+  const RidersHistoryTabWidget({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-
+    final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       physics: BouncingScrollPhysics(),
@@ -18,6 +18,7 @@ class HistoryTabWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              HistoryChartWidget(size: size),
               Column(
                 children: List.generate(
                   4,

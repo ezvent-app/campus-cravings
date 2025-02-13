@@ -7,7 +7,7 @@ class RoundedButtonWidget extends StatelessWidget {
     required this.onTap,
   });
   final String btnTitle;
-  final VoidCallback onTap;
+  final Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

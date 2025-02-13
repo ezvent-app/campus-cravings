@@ -51,6 +51,10 @@ class AppRouter extends RootStackRouter {
             path: 'orders',
           ),
           AutoRoute(
+            page: RidersTabRoute.page,
+            path: 'riders',
+          ),
+          AutoRoute(
             page: OrdersDetailsRoute.page,
             path: 'orders_details',
           ),

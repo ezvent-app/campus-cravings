@@ -14,3 +14,4 @@ export '../main/pages/settings/settings_page.dart';
 export './tabs/home/widgets/widgets.dart';
 export './tabs/orders/orders_tab.dart';
 export './tabs/profile/widgets/widgets.dart';
+export './tabs/riders/riders_path.dart';

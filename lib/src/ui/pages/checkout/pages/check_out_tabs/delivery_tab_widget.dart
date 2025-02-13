@@ -7,6 +7,7 @@ class DeliveryTabWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       physics: BouncingScrollPhysics(),
@@ -33,7 +34,7 @@ class DeliveryTabWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Deliver to',
+                        locale.deliverTo,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       SizedBox(height: 20),
@@ -42,7 +43,7 @@ class DeliveryTabWidget extends StatelessWidget {
                   ),
                 ),
                 HomeLocationWidget(
-                  title: "Home",
+                  title: locale.home,
                   subTitle: '5259 Blue Bill Park, PC 4627',
                 ),
               ],
@@ -58,7 +59,7 @@ class DeliveryTabWidget extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(.08),
+                  color: Colors.black.withValues(alpha: .08),
                   blurRadius: 15,
                 ),
               ],
@@ -67,7 +68,7 @@ class DeliveryTabWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Order Summary',
+                  locale.orderSummary,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Column(
@@ -164,7 +165,8 @@ class DeliveryTabWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               color: Colors.white,
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(.08), blurRadius: 15)
+                BoxShadow(
+                    color: Colors.black.withValues(alpha: .08), blurRadius: 15)
               ],
             ),
             child: Material(
@@ -174,7 +176,7 @@ class DeliveryTabWidget extends StatelessWidget {
                   context.pushRoute(PaymentMethodsRoute(fromCheckout: true));
                 },
                 borderRadius: BorderRadius.circular(24),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.all(24),
                   child: Row(
                     children: [
@@ -188,7 +190,7 @@ class DeliveryTabWidget extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           child: Text(
-                            'Payment\nMethod',
+                            locale.paymentMethod,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -233,16 +235,17 @@ class DeliveryTabWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               color: Colors.white,
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(.08), blurRadius: 15)
+                BoxShadow(
+                    color: Colors.black.withValues(alpha: .08), blurRadius: 15)
               ],
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Text(
-                      'Subtotal',
+                      locale.subTotal,
                       style: TextStyle(
                         color: Color(0xff424242),
                         fontSize: 14,
@@ -269,7 +272,7 @@ class DeliveryTabWidget extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Delivery Fee',
+                      locale.deliveryFee,
                       style: TextStyle(
                         color: Color(0xff424242),
                         fontSize: 14,
@@ -294,7 +297,7 @@ class DeliveryTabWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  '+ Add Tip',
+                  '+ ${locale.addTip}',
                   style: TextStyle(
                     color: AppColors.accent,
                     fontSize: 14,
@@ -308,7 +311,7 @@ class DeliveryTabWidget extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Total',
+                      locale.total,
                       style: TextStyle(
                         color: Color(0xff424242),
                         fontSize: 14,
@@ -352,8 +355,8 @@ class DeliveryTabWidget extends StatelessWidget {
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.background, // Splash color
               ),
-              child: const Text(
-                'Place Order - \$26.00',
+              child: Text(
+                '${locale.placeOrder} - \$26.00',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                 ),

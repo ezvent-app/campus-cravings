@@ -1,16 +1,12 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class RestaurantPage extends ConsumerStatefulWidget {
+class RestaurantPage extends ConsumerWidget {
   const RestaurantPage({super.key});
 
   @override
-  ConsumerState createState() => _RestaurantPageState();
-}
-
-class _RestaurantPageState extends ConsumerState<RestaurantPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +65,7 @@ class _RestaurantPageState extends ConsumerState<RestaurantPage> {
                       children: [
                         if (kMockFeatured.distance != null)
                           Text(
-                            '${kMockFeatured.distance!.floor()} ${kMockFeatured.distance == 1 ? 'mile' : 'miles'} away',
+                            '${kMockFeatured.distance!.floor()} ${kMockFeatured.distance == 1 ? locale.mile : locale.miles} ${locale.away}',
                             style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w500),
                           ),
@@ -77,8 +73,8 @@ class _RestaurantPageState extends ConsumerState<RestaurantPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Delivery Available',
+                            Text(
+                              locale.deliveryAvailable,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.lightText,

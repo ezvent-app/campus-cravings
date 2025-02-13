@@ -10,6 +10,7 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return SizedBox(
       height: size.height * .53,
       child: Stack(
@@ -38,7 +39,7 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
                         ),
                         width(20),
                         Text(
-                          'Profile',
+                          locale.profile,
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!
@@ -94,7 +95,7 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Achievements",
+                        locale.achievements,
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             color: AppColors.black,
                             fontWeight: FontWeight.w500),
@@ -112,7 +113,7 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
                           children: [
                             AchievmentsRowWidget(
                               image: "runner",
-                              title: "Miles",
+                              title: locale.miles,
                               value: "1032",
                             ),
                             SizedBox(
@@ -122,7 +123,7 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
                                 )),
                             AchievmentsRowWidget(
                               image: "stopwatch",
-                              title: "Hours",
+                              title: locale.hours,
                               value: "169",
                             ),
                           ],

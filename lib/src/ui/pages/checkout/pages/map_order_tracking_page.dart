@@ -12,6 +12,7 @@ class CheckOutMapOrderTrackingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       body: Stack(
         children: [
@@ -29,8 +30,8 @@ class CheckOutMapOrderTrackingPage extends StatelessWidget {
                     icon: Icon(Icons.arrow_back)),
               )),
           Positioned(
-              bottom: 390,
-              top: 410,
+              bottom: 410,
+              top: 390,
               right: 10,
               child: SizedBox(
                 width: 50,
@@ -65,23 +66,22 @@ class CheckOutMapOrderTrackingPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomTextField(
-                      label: 'Enter Building',
+                      label: locale.enterBuilding,
                     ),
                     height(20),
                     CustomTextField(
-                      label: 'Enter Floor',
+                      label: locale.enterFloor,
                     ),
                     height(20),
                     CustomTextField(
-                      label: 'Enter Room Number',
+                      label: locale.enterRoomNumber,
                     ),
                     height(20),
 
                     // Confirm Button Section
                     RoundedButtonWidget(
-                      btnTitle: "Confirm",
-                      onTap: () => context
-                          .pushRoute(PaymentMethodsRoute(fromCheckout: true)),
+                      btnTitle: locale.confirm,
+                      onTap: () => context.pushRoute(PlacingOrderRoute()),
                     ),
                     height(40),
                   ],

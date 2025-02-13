@@ -1,18 +1,14 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class SavedAddressesPage extends ConsumerStatefulWidget {
+class SavedAddressesPage extends ConsumerWidget {
   const SavedAddressesPage({super.key});
 
   @override
-  ConsumerState createState() => _SavedAddressesPageState();
-}
-
-class _SavedAddressesPageState extends ConsumerState<SavedAddressesPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = AppLocalizations.of(context)!;
     return BaseWrapper(
-      label: 'Saved Addresses',
+      label: locale.savedAddresses,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -22,7 +18,8 @@ class _SavedAddressesPageState extends ConsumerState<SavedAddressesPage> {
               borderRadius: BorderRadius.circular(24),
               color: Colors.white,
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(.08), blurRadius: 15)
+                BoxShadow(
+                    color: Colors.black.withValues(alpha: .08), blurRadius: 15)
               ],
             ),
             child: Row(
@@ -39,8 +36,8 @@ class _SavedAddressesPageState extends ConsumerState<SavedAddressesPage> {
                     children: [
                       Row(
                         children: [
-                          const Text(
-                            'Home',
+                          Text(
+                            locale.home,
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 18,
@@ -53,8 +50,8 @@ class _SavedAddressesPageState extends ConsumerState<SavedAddressesPage> {
                             decoration: BoxDecoration(
                                 color: const Color(0xFFEBEBEB),
                                 borderRadius: BorderRadius.circular(6)),
-                            child: const Text(
-                              'Default',
+                            child: Text(
+                              locale.defaultValue,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 10,
@@ -84,7 +81,8 @@ class _SavedAddressesPageState extends ConsumerState<SavedAddressesPage> {
               borderRadius: BorderRadius.circular(24),
               color: Colors.white,
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(.08), blurRadius: 15)
+                BoxShadow(
+                    color: Colors.black.withValues(alpha: .08), blurRadius: 15)
               ],
             ),
             child: Row(
@@ -101,8 +99,8 @@ class _SavedAddressesPageState extends ConsumerState<SavedAddressesPage> {
                     children: [
                       Row(
                         children: [
-                          const Text(
-                            'Home',
+                          Text(
+                            locale.home,
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 18,
@@ -115,8 +113,8 @@ class _SavedAddressesPageState extends ConsumerState<SavedAddressesPage> {
                             decoration: BoxDecoration(
                                 color: const Color(0xFFEBEBEB),
                                 borderRadius: BorderRadius.circular(6)),
-                            child: const Text(
-                              'Default',
+                            child: Text(
+                              locale.defaultValue,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 10,
@@ -151,8 +149,8 @@ class _SavedAddressesPageState extends ConsumerState<SavedAddressesPage> {
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.background, // Splash color
               ),
-              child: const Text(
-                'Add New Address',
+              child: Text(
+                locale.addNewAddress,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                 ),

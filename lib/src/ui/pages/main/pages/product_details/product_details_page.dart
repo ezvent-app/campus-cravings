@@ -21,6 +21,7 @@ final List<String> productImages = [
 class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       body: Column(
         children: [
@@ -116,7 +117,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       ),
                     ],
                   ),
-                  const Column(
+                  Column(
                     children: [
                       Padding(
                         padding:
@@ -160,7 +161,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Calories',
+                                          locale.calories,
                                           style: TextStyle(
                                             color: Color(0xff27261E),
                                             fontWeight: FontWeight.w500,
@@ -177,7 +178,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                               padding: EdgeInsets.only(
                                                   top: 5, left: 5),
                                               child: Text(
-                                                '150 Kcal',
+                                                '150 ${locale.kCal}',
                                                 style: TextStyle(
                                                     color: Color(0xff27261E),
                                                     fontWeight: FontWeight.w600,
@@ -195,7 +196,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Time',
+                                          locale.time,
                                           style: TextStyle(
                                             color: Color(0xff27261E),
                                             fontWeight: FontWeight.w500,
@@ -212,7 +213,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                               padding: EdgeInsets.only(
                                                   top: 5, left: 5),
                                               child: Text(
-                                                '15m',
+                                                '15${locale.m}',
                                                 style: TextStyle(
                                                     color: Color(0xff27261E),
                                                     fontWeight: FontWeight.w600,
@@ -237,7 +238,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             EdgeInsets.only(left: 25, right: 25, bottom: 25),
                         child: CustomTextField(
                           maxLines: 3,
-                          hintText: 'Note to Restaurant (optional)',
+                          hintText: locale.noteToRestaurant,
                           hintStyle: TextStyle(color: Color(0xff9E9E9E)),
                         ),
                       ),
@@ -254,11 +255,11 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20)]),
             child: Row(
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '2 Items',
+                      '2 ${locale.items}',
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
                     ),
@@ -274,7 +275,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                   height: 49,
                   child: ElevatedButton.icon(
                     onPressed: () {},
-                    label: const Text('Add to Cart'),
+                    label: Text(locale.addToCart),
                     icon: const ImageIcon(
                         AssetImage('assets/images/png/shopping_cart_icon.png'),
                         size: 15),

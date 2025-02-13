@@ -1,7 +1,7 @@
 import 'package:campus_cravings/src/src.dart';
 
-class CurrentOrdersTabWidget extends StatelessWidget {
-  const CurrentOrdersTabWidget({
+class DeliveryOrdersTabWidget extends StatelessWidget {
+  const DeliveryOrdersTabWidget({
     super.key,
   });
 

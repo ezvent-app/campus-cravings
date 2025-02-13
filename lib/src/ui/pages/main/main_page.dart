@@ -16,7 +16,7 @@ class _MainPageState extends ConsumerState<MainPage> {
         HomeTabRoute(),
         OrdersTabRoute(),
         ProfileTabRoute(),
-        OrdersTabRoute(),
+        RidersTabRoute(),
         ProfileTabRoute(),
       ],
       builder: (context, child, tabController) {

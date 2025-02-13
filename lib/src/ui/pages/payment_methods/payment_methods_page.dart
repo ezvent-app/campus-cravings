@@ -1,18 +1,14 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class PaymentMethodsPage extends ConsumerStatefulWidget {
+class PaymentMethodsPage extends StatelessWidget {
   final bool fromCheckout;
-  const PaymentMethodsPage({super.key, required this.fromCheckout});
+  PaymentMethodsPage({super.key, required this.fromCheckout});
 
-  @override
-  ConsumerState createState() => _PaymentMethodsPageState();
-}
-
-class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage> {
   final paymentMethods = ['card', 'venmo', 'venmo', 'venmo', 'venmo'];
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -37,7 +33,7 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 4),
-                          child: Text('Payment Methods',
+                          child: Text(locale.paymentMethods,
                               style: Theme.of(context).textTheme.titleMedium),
                         )
                       ],
@@ -135,12 +131,12 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        GestureDetector(
+                        InkWell(
                           onTap: () {
                             context.pushRoute(const NewCardRoute());
                           },
-                          child: const Text(
-                            '+ Add New Card',
+                          child: Text(
+                            '+ ${locale.addNewCard}',
                             style: TextStyle(fontSize: 15),
                           ),
                         )
@@ -150,23 +146,21 @@ class _PaymentMethodsPageState extends ConsumerState<PaymentMethodsPage> {
                 ],
               ),
             ),
-            if (widget.fromCheckout)
+            if (fromCheckout)
               Container(
                 width: double.infinity,
                 height: 48,
                 margin: const EdgeInsets.only(left: 25, right: 25, bottom: 36),
                 child: ElevatedButton(
-                  onPressed: () {
-                    context.pushRoute(const PlacingOrderRoute());
-                  },
+                  onPressed: () => context.pushRoute(PlacingOrderRoute()),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.background, // Splash color
                   ),
-                  child: const Text(
-                    'Apply',
+                  child: Text(
+                    locale.apply,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                     ),

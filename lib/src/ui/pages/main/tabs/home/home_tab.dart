@@ -1,16 +1,12 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class HomeTabPage extends ConsumerStatefulWidget {
+class HomeTabPage extends StatelessWidget {
   const HomeTabPage({super.key});
 
   @override
-  ConsumerState createState() => _HomeTabState();
-}
-
-class _HomeTabState extends ConsumerState<HomeTabPage> {
-  @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -28,7 +24,7 @@ class _HomeTabState extends ConsumerState<HomeTabPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Deliver with Us",
+                            locale.deliverwithUs,
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                           Icon(Icons.arrow_forward)
@@ -39,10 +35,10 @@ class _HomeTabState extends ConsumerState<HomeTabPage> {
                     )
                   ]),
                 )),
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(25),
               child: Text(
-                'Discover',
+                locale.discover,
                 style: TextStyle(
                   color: Color(0xff443A39),
                   fontSize: 36,
@@ -54,10 +50,10 @@ class _HomeTabState extends ConsumerState<HomeTabPage> {
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: CustomTextField(
                       style: TextStyle(fontSize: 17),
-                      hintText: 'Search',
+                      hintText: locale.search,
                       hintStyle:
                           TextStyle(color: Color(0xFFB4B0B0), fontSize: 17),
                       prefixIcon: Padding(

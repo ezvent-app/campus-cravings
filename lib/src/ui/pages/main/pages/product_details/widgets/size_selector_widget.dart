@@ -1,5 +1,3 @@
-
-
 import 'package:campus_cravings/src/src.dart';
 
 class SizeSelectorWidget extends ConsumerStatefulWidget {
@@ -15,32 +13,29 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
     ProductSize(label: 'Size M', value: 0),
     ProductSize(label: 'Size L', value: 4),
   ];
-  
+
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
             Padding(
               padding: EdgeInsets.only(left: 25, right: 15),
               child: Text(
-                'Size',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500
-                ),
+                locale.size,
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
             ),
             Expanded(
               child: Text(
-                'Choose anyone from the options',
+                locale.chooseAnyoneFromTheOptions,
                 style: TextStyle(
                     color: Color(0xff878E9B),
                     fontSize: 15,
-                    fontWeight: FontWeight.w400
-                ),
+                    fontWeight: FontWeight.w400),
               ),
             ),
           ],
@@ -53,13 +48,14 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
           itemBuilder: (context, index) {
             final size = sizes[index];
             return InkWell(
-              onTap: (){
+              onTap: () {
                 setState(() {
                   _selectedSize = index;
                 });
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 25),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 25),
                 child: Row(
                   children: [
                     Container(
@@ -67,25 +63,22 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                       height: 20,
                       margin: const EdgeInsets.only(right: 12),
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: _selectedSize == index ? AppColors.accent : AppColors.dividerColor,
-                          width: _selectedSize == index ? 6 : 1,
-                        )
-                      ),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: _selectedSize == index
+                                ? AppColors.accent
+                                : AppColors.dividerColor,
+                            width: _selectedSize == index ? 6 : 1,
+                          )),
                     ),
                     Text(
                       size.label,
-                      style: const TextStyle(
-                          color: Color(0xff2E3138)
-                      ),
+                      style: const TextStyle(color: Color(0xff2E3138)),
                     ),
                     const Spacer(),
                     Text(
                       '+${size.value.toStringAsFixed(2)}\$',
-                      style: const TextStyle(
-                        color: Color(0xff2E3138)
-                      ),
+                      style: const TextStyle(color: Color(0xff2E3138)),
                     ),
                   ],
                 ),
@@ -106,12 +99,12 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
   }
 }
 
-class ProductSize{
+class ProductSize {
   final String label;
   final double value;
-  
+
   const ProductSize({
-   required this.label, 
-   required this.value, 
+    required this.label,
+    required this.value,
   });
 }

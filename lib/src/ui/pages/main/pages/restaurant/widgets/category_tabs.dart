@@ -33,6 +33,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Expanded(
       child: Column(
         children: [
@@ -60,7 +61,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                 tabs: _categories.map((e) {
                   return Tab(
                     child: Text(
-                      e == 'recommended' ? 'Picked For You' : e,
+                      e == 'recommended' ? locale.pickedForYou : e,
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
@@ -86,7 +87,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Text(
-                          e == 'recommended' ? 'Picked For You' : e,
+                          e == 'recommended' ? locale.pickedForYou : e,
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,

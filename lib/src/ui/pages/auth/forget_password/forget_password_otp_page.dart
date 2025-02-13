@@ -7,6 +7,7 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
+
     return BaseWrapper(
       label: locale.verification,
       child: Column(
@@ -37,13 +38,25 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
             fieldWidth: 40,
             fieldHeight: 40,
             otpPinFieldDecoration: OtpPinFieldDecoration.custom,
-            onSubmit: (text) {},
-            onChange: (text) {},
+            onSubmit: (text) =>
+                ref.read(forgetOTPProvider.notifier).state = text,
+            onChange: (text) =>
+                ref.read(forgetOTPProvider.notifier).state = text,
           ),
           height(40),
-          RoundedButtonWidget(
-            btnTitle: locale.continueNext,
-            onTap: () => context.pushRoute(NewPasswordRoute()),
+          Consumer(
+            builder: (context, ref, child) {
+              var otp = ref.watch(forgetOTPProvider);
+              return RoundedButtonWidget(
+                btnTitle: locale.continueNext,
+                onTap: otp.length != 6
+                    ? null
+                    : () {
+                        context.pushRoute(NewPasswordRoute());
+                        ref.read(forgetOTPProvider.notifier).state = '';
+                      },
+              );
+            },
           ),
           height(40),
           Center(
@@ -76,3 +89,5 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
     );
   }
 }
+
+final forgetOTPProvider = StateProvider<String>((ref) => '');

@@ -1,8 +1,8 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class CheckoutPage extends StatelessWidget {
-  const CheckoutPage({super.key});
+class RidersTabPage extends StatelessWidget {
+  const RidersTabPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +11,9 @@ class CheckoutPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
-            locale.checkoutOrders,
+            locale.campusDelivery,
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
@@ -48,7 +49,7 @@ class CheckoutPage extends StatelessWidget {
                       height: 44,
                       alignment: Alignment.center,
                       child: Text(
-                        locale.delivery,
+                        locale.deliveryOrders,
                       ),
                     ),
                   ),
@@ -57,7 +58,7 @@ class CheckoutPage extends StatelessWidget {
                       height: 44,
                       alignment: Alignment.center,
                       child: Text(
-                        locale.pickup,
+                        locale.history,
                       ),
                     ),
                   ),
@@ -67,8 +68,8 @@ class CheckoutPage extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  DeliveryTabWidget(),
-                  PickUpTabWidget(),
+                  DeliveryOrdersTabWidget(),
+                  RidersHistoryTabWidget(),
                 ],
               ),
             ),
