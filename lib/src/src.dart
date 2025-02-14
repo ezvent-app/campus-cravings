@@ -16,3 +16,5 @@ export './theme/theme.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_svg/svg.dart';
 export './providers/providers.dart';
+export 'package:camera/camera.dart';
+export 'dart:io';

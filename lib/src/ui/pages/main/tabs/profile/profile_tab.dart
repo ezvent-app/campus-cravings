@@ -36,12 +36,12 @@ class ProfileTabPage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Andrew Ainsley",
-                              style: TextStyle(fontSize: 21),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            const SizedBox(height: 5),
-                            GestureDetector(
+                            height(5),
+                            InkWell(
                               onTap: () {
                                 context.pushRoute(
                                     ProfileFormRoute(newUser: false));

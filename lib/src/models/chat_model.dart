@@ -27,3 +27,22 @@ List<ChatModel> chatsList = [
       timestamp: "3:12 pm",
       isRead: false),
 ];
+
+List<ChatModel> helpCenterChatsList = [
+  ChatModel(
+      message:
+          "Hi, I didn’t receive my order. It says delivered, but I didn’t get it.",
+      timestamp: "3:12 pm",
+      isRead: false),
+  ChatModel(
+      message:
+          "Hi, we’re sorry to hear that! Let me check the details for your order. Can you please share your order ID?",
+      timestamp: "3:12 pm",
+      isRead: false),
+  ChatModel(message: "Sure, it’s #12345.", timestamp: "3:12 pm", isRead: true),
+  ChatModel(
+      message:
+          "Thank you! I see your order was marked delivered 10 minutes ago to Dorm 210. Could you double-check if it was left at the door or with someone nearby?",
+      timestamp: "3:12 pm",
+      isRead: false),
+];
