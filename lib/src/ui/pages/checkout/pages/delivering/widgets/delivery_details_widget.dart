@@ -192,27 +192,13 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                               .copyWith(color: AppColors.black)),
                       const Divider(color: Color(0xFFF5F5F5), thickness: 1),
                       const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(locale.orderSummary,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall!
-                                  .copyWith(
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.w800)),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text(locale.viewDetails,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.accent)))
-                        ],
-                      ),
+                      Text(locale.orderSummary,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.w800)),
                       const SizedBox(height: 2),
                       const Text(
                         'Cafe Shop',
@@ -397,7 +383,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.grey.shade100),
-                                    child: PngAsset("emoji$i")),
+                                    child: SvgAssets("emoji$i")),
                               )),
                     ),
                     height(20),

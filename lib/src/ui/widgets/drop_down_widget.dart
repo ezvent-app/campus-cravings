@@ -18,6 +18,7 @@ class DropDownWidget extends StatelessWidget {
       builder: (context) {
         return DropdownButtonFormField(
           style: Theme.of(context).textTheme.bodyMedium,
+          icon: Icon(Icons.keyboard_arrow_down),
           decoration: InputDecoration(
             hintText: hintText,
           ),

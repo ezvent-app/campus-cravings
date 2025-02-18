@@ -265,8 +265,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     ),
                     Text(
                       '\$ 12.99',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          color: AppColors.black),
                     ),
                   ],
                 ),

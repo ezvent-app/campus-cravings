@@ -9,88 +9,94 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i37;
-import 'package:campus_cravings/src/src.dart' as _i38;
+import 'package:auto_route/auto_route.dart' as _i40;
+import 'package:campus_cravings/src/src.dart' as _i41;
 import 'package:campus_cravings/src/ui/pages/add_payout/add_payout_page.dart'
     as _i1;
 import 'package:campus_cravings/src/ui/pages/address_form/address_form_page.dart'
     as _i2;
 import 'package:campus_cravings/src/ui/pages/auth/forget_password/forget_password_otp_page.dart'
-    as _i12;
+    as _i14;
 import 'package:campus_cravings/src/ui/pages/auth/forget_password/forget_password_page.dart'
-    as _i13;
-import 'package:campus_cravings/src/ui/pages/auth/forget_password/new_password_page.dart'
-    as _i18;
-import 'package:campus_cravings/src/ui/pages/auth/login/login_page.dart'
     as _i15;
-import 'package:campus_cravings/src/ui/pages/auth/otp/otp_page.dart' as _i23;
-import 'package:campus_cravings/src/ui/pages/auth/sign_up/sign_up_page.dart'
-    as _i35;
-import 'package:campus_cravings/src/ui/pages/checkout/checkout_page.dart'
-    as _i7;
-import 'package:campus_cravings/src/ui/pages/checkout/pages/chat_page/chat_page.dart'
-    as _i4;
-import 'package:campus_cravings/src/ui/pages/checkout/pages/check_out_address_page.dart'
-    as _i6;
-import 'package:campus_cravings/src/ui/pages/checkout/pages/deliver_to/deliver_to_page.dart'
-    as _i8;
-import 'package:campus_cravings/src/ui/pages/checkout/pages/delivering/delivering_page.dart'
-    as _i9;
-import 'package:campus_cravings/src/ui/pages/checkout/pages/delivery_man_profile_page/delivery_man_profile_page.dart'
-    as _i10;
-import 'package:campus_cravings/src/ui/pages/checkout/pages/map_order_tracking_page.dart'
-    as _i5;
-import 'package:campus_cravings/src/ui/pages/delivery_setup/delivery_setup_page.dart'
-    as _i11;
-import 'package:campus_cravings/src/ui/pages/main/main_page.dart' as _i16;
-import 'package:campus_cravings/src/ui/pages/main/pages/change_password/change_password_page.dart'
-    as _i3;
-import 'package:campus_cravings/src/ui/pages/main/pages/notifications/notifications_page.dart'
+import 'package:campus_cravings/src/ui/pages/auth/forget_password/new_password_page.dart'
+    as _i22;
+import 'package:campus_cravings/src/ui/pages/auth/login/login_page.dart'
     as _i19;
+import 'package:campus_cravings/src/ui/pages/auth/otp/otp_page.dart' as _i27;
+import 'package:campus_cravings/src/ui/pages/auth/sign_up/sign_up_page.dart'
+    as _i38;
+import 'package:campus_cravings/src/ui/pages/checkout/checkout_page.dart'
+    as _i8;
+import 'package:campus_cravings/src/ui/pages/checkout/pages/chat_page/chat_page.dart'
+    as _i5;
+import 'package:campus_cravings/src/ui/pages/checkout/pages/check_out_address_page.dart'
+    as _i7;
+import 'package:campus_cravings/src/ui/pages/checkout/pages/deliver_to/deliver_to_page.dart'
+    as _i10;
+import 'package:campus_cravings/src/ui/pages/checkout/pages/delivering/delivering_page.dart'
+    as _i11;
+import 'package:campus_cravings/src/ui/pages/checkout/pages/delivery_man_profile_page/delivery_man_profile_page.dart'
+    as _i12;
+import 'package:campus_cravings/src/ui/pages/checkout/pages/map_order_tracking_page.dart'
+    as _i6;
+import 'package:campus_cravings/src/ui/pages/delivery_setup/delivery_setup_page.dart'
+    as _i13;
+import 'package:campus_cravings/src/ui/pages/main/main_page.dart' as _i20;
 import 'package:campus_cravings/src/ui/pages/main/pages/placing_order/placing_order_page.dart'
-    as _i25;
-import 'package:campus_cravings/src/ui/pages/main/pages/product_details/product_details_page.dart'
-    as _i26;
-import 'package:campus_cravings/src/ui/pages/main/pages/promo_code/promo_code_page.dart'
     as _i29;
-import 'package:campus_cravings/src/ui/pages/main/pages/restaurant/restaurant_page.dart'
+import 'package:campus_cravings/src/ui/pages/main/pages/product_details/product_details_page.dart'
     as _i30;
-import 'package:campus_cravings/src/ui/pages/main/pages/saved_addresses/saved_addresses_page.dart'
-    as _i33;
-import 'package:campus_cravings/src/ui/pages/main/pages/settings/settings_page.dart'
+import 'package:campus_cravings/src/ui/pages/main/pages/restaurant/restaurant_page.dart'
     as _i34;
 import 'package:campus_cravings/src/ui/pages/main/tabs/home/home_tab.dart'
-    as _i14;
+    as _i18;
 import 'package:campus_cravings/src/ui/pages/main/tabs/orders/orders_tab.dart'
-    as _i22;
+    as _i26;
 import 'package:campus_cravings/src/ui/pages/main/tabs/orders/pages/orders_details_page.dart'
-    as _i21;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/profile_tab.dart'
-    as _i28;
-import 'package:campus_cravings/src/ui/pages/main/tabs/riders/pages/riders_details_page.dart'
-    as _i31;
-import 'package:campus_cravings/src/ui/pages/main/tabs/riders/riders_tab.dart'
-    as _i32;
-import 'package:campus_cravings/src/ui/pages/new_card/new_card_page.dart'
+    as _i25;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/change_language/change_language_page.dart'
+    as _i3;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/change_password/change_password_page.dart'
+    as _i4;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/help/help_page.dart'
     as _i17;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/help/pages/contact_support_page/contact_support_page.dart'
+    as _i9;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/help/pages/help_order_page/help_order_page.dart'
+    as _i16;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/notifications/notifications_page.dart'
+    as _i23;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/payment_methods/payment_methods_page.dart'
+    as _i28;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/promo_code/promo_code_page.dart'
+    as _i33;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/saved_addresses/saved_addresses_page.dart'
+    as _i37;
+import 'package:campus_cravings/src/ui/pages/main/tabs/profile/profile_tab.dart'
+    as _i32;
+import 'package:campus_cravings/src/ui/pages/main/tabs/riders/pages/riders_details_page.dart'
+    as _i35;
+import 'package:campus_cravings/src/ui/pages/main/tabs/riders/riders_tab.dart'
+    as _i36;
+import 'package:campus_cravings/src/ui/pages/new_card/new_card_page.dart'
+    as _i21;
 import 'package:campus_cravings/src/ui/pages/onboarding/onboarding_page.dart'
-    as _i20;
-import 'package:campus_cravings/src/ui/pages/payment_methods/payment_methods_page.dart'
     as _i24;
 import 'package:campus_cravings/src/ui/pages/profile_form/profile_form_page.dart'
-    as _i27;
+    as _i31;
 import 'package:campus_cravings/src/ui/pages/profile_form/student_profile_details_page.dart'
-    as _i36;
+    as _i39;
 
 /// generated route for
 /// [_i1.AddPayoutPage]
-class AddPayoutRoute extends _i37.PageRouteInfo<void> {
-  const AddPayoutRoute({List<_i37.PageRouteInfo>? children})
+class AddPayoutRoute extends _i40.PageRouteInfo<void> {
+  const AddPayoutRoute({List<_i40.PageRouteInfo>? children})
     : super(AddPayoutRoute.name, initialChildren: children);
 
   static const String name = 'AddPayoutRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       return const _i1.AddPayoutPage();
@@ -100,13 +106,13 @@ class AddPayoutRoute extends _i37.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.AddressFormPage]
-class AddressFormRoute extends _i37.PageRouteInfo<void> {
-  const AddressFormRoute({List<_i37.PageRouteInfo>? children})
+class AddressFormRoute extends _i40.PageRouteInfo<void> {
+  const AddressFormRoute({List<_i40.PageRouteInfo>? children})
     : super(AddressFormRoute.name, initialChildren: children);
 
   static const String name = 'AddressFormRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       return const _i2.AddressFormPage();
@@ -115,44 +121,60 @@ class AddressFormRoute extends _i37.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.ChangePasswordPage]
-class ChangePasswordRoute extends _i37.PageRouteInfo<void> {
-  const ChangePasswordRoute({List<_i37.PageRouteInfo>? children})
+/// [_i3.ChangeLanguagePage]
+class ChangeLanguageRoute extends _i40.PageRouteInfo<void> {
+  const ChangeLanguageRoute({List<_i40.PageRouteInfo>? children})
+    : super(ChangeLanguageRoute.name, initialChildren: children);
+
+  static const String name = 'ChangeLanguageRoute';
+
+  static _i40.PageInfo page = _i40.PageInfo(
+    name,
+    builder: (data) {
+      return const _i3.ChangeLanguagePage();
+    },
+  );
+}
+
+/// generated route for
+/// [_i4.ChangePasswordPage]
+class ChangePasswordRoute extends _i40.PageRouteInfo<void> {
+  const ChangePasswordRoute({List<_i40.PageRouteInfo>? children})
     : super(ChangePasswordRoute.name, initialChildren: children);
 
   static const String name = 'ChangePasswordRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i3.ChangePasswordPage();
+      return const _i4.ChangePasswordPage();
     },
   );
 }
 
 /// generated route for
-/// [_i4.CheckOutChatPage]
-class CheckOutChatRoute extends _i37.PageRouteInfo<void> {
-  const CheckOutChatRoute({List<_i37.PageRouteInfo>? children})
+/// [_i5.CheckOutChatPage]
+class CheckOutChatRoute extends _i40.PageRouteInfo<void> {
+  const CheckOutChatRoute({List<_i40.PageRouteInfo>? children})
     : super(CheckOutChatRoute.name, initialChildren: children);
 
   static const String name = 'CheckOutChatRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i4.CheckOutChatPage();
+      return const _i5.CheckOutChatPage();
     },
   );
 }
 
 /// generated route for
-/// [_i5.CheckOutMapOrderTrackingPage]
+/// [_i6.CheckOutMapOrderTrackingPage]
 class CheckOutMapOrderTrackingRoute
-    extends _i37.PageRouteInfo<CheckOutMapOrderTrackingRouteArgs> {
+    extends _i40.PageRouteInfo<CheckOutMapOrderTrackingRouteArgs> {
   CheckOutMapOrderTrackingRoute({
-    _i38.Key? key,
-    List<_i37.PageRouteInfo>? children,
+    _i41.Key? key,
+    List<_i40.PageRouteInfo>? children,
   }) : super(
          CheckOutMapOrderTrackingRoute.name,
          args: CheckOutMapOrderTrackingRouteArgs(key: key),
@@ -161,13 +183,13 @@ class CheckOutMapOrderTrackingRoute
 
   static const String name = 'CheckOutMapOrderTrackingRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<CheckOutMapOrderTrackingRouteArgs>(
         orElse: () => const CheckOutMapOrderTrackingRouteArgs(),
       );
-      return _i5.CheckOutMapOrderTrackingPage(key: args.key);
+      return _i6.CheckOutMapOrderTrackingPage(key: args.key);
     },
   );
 }
@@ -175,7 +197,7 @@ class CheckOutMapOrderTrackingRoute
 class CheckOutMapOrderTrackingRouteArgs {
   const CheckOutMapOrderTrackingRouteArgs({this.key});
 
-  final _i38.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -184,121 +206,137 @@ class CheckOutMapOrderTrackingRouteArgs {
 }
 
 /// generated route for
-/// [_i6.CheckoutAddressPage]
-class CheckoutAddressRoute extends _i37.PageRouteInfo<void> {
-  const CheckoutAddressRoute({List<_i37.PageRouteInfo>? children})
+/// [_i7.CheckoutAddressPage]
+class CheckoutAddressRoute extends _i40.PageRouteInfo<void> {
+  const CheckoutAddressRoute({List<_i40.PageRouteInfo>? children})
     : super(CheckoutAddressRoute.name, initialChildren: children);
 
   static const String name = 'CheckoutAddressRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i6.CheckoutAddressPage();
+      return const _i7.CheckoutAddressPage();
     },
   );
 }
 
 /// generated route for
-/// [_i7.CheckoutPage]
-class CheckoutRoute extends _i37.PageRouteInfo<void> {
-  const CheckoutRoute({List<_i37.PageRouteInfo>? children})
+/// [_i8.CheckoutPage]
+class CheckoutRoute extends _i40.PageRouteInfo<void> {
+  const CheckoutRoute({List<_i40.PageRouteInfo>? children})
     : super(CheckoutRoute.name, initialChildren: children);
 
   static const String name = 'CheckoutRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i7.CheckoutPage();
+      return const _i8.CheckoutPage();
     },
   );
 }
 
 /// generated route for
-/// [_i8.DeliverToPage]
-class DeliverToRoute extends _i37.PageRouteInfo<void> {
-  const DeliverToRoute({List<_i37.PageRouteInfo>? children})
+/// [_i9.ContactSupportPage]
+class ContactSupportRoute extends _i40.PageRouteInfo<void> {
+  const ContactSupportRoute({List<_i40.PageRouteInfo>? children})
+    : super(ContactSupportRoute.name, initialChildren: children);
+
+  static const String name = 'ContactSupportRoute';
+
+  static _i40.PageInfo page = _i40.PageInfo(
+    name,
+    builder: (data) {
+      return const _i9.ContactSupportPage();
+    },
+  );
+}
+
+/// generated route for
+/// [_i10.DeliverToPage]
+class DeliverToRoute extends _i40.PageRouteInfo<void> {
+  const DeliverToRoute({List<_i40.PageRouteInfo>? children})
     : super(DeliverToRoute.name, initialChildren: children);
 
   static const String name = 'DeliverToRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i8.DeliverToPage();
+      return const _i10.DeliverToPage();
     },
   );
 }
 
 /// generated route for
-/// [_i9.DeliveringPage]
-class DeliveringRoute extends _i37.PageRouteInfo<void> {
-  const DeliveringRoute({List<_i37.PageRouteInfo>? children})
+/// [_i11.DeliveringPage]
+class DeliveringRoute extends _i40.PageRouteInfo<void> {
+  const DeliveringRoute({List<_i40.PageRouteInfo>? children})
     : super(DeliveringRoute.name, initialChildren: children);
 
   static const String name = 'DeliveringRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i9.DeliveringPage();
+      return const _i11.DeliveringPage();
     },
   );
 }
 
 /// generated route for
-/// [_i10.DeliveryManProfilePage]
-class DeliveryManProfileRoute extends _i37.PageRouteInfo<void> {
-  const DeliveryManProfileRoute({List<_i37.PageRouteInfo>? children})
+/// [_i12.DeliveryManProfilePage]
+class DeliveryManProfileRoute extends _i40.PageRouteInfo<void> {
+  const DeliveryManProfileRoute({List<_i40.PageRouteInfo>? children})
     : super(DeliveryManProfileRoute.name, initialChildren: children);
 
   static const String name = 'DeliveryManProfileRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i10.DeliveryManProfilePage();
+      return const _i12.DeliveryManProfilePage();
     },
   );
 }
 
 /// generated route for
-/// [_i11.DeliverySetupPage]
-class DeliverySetupRoute extends _i37.PageRouteInfo<void> {
-  const DeliverySetupRoute({List<_i37.PageRouteInfo>? children})
+/// [_i13.DeliverySetupPage]
+class DeliverySetupRoute extends _i40.PageRouteInfo<void> {
+  const DeliverySetupRoute({List<_i40.PageRouteInfo>? children})
     : super(DeliverySetupRoute.name, initialChildren: children);
 
   static const String name = 'DeliverySetupRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i11.DeliverySetupPage();
+      return const _i13.DeliverySetupPage();
     },
   );
 }
 
 /// generated route for
-/// [_i12.ForgetPasswordOTPPage]
-class ForgetPasswordOTPRoute extends _i37.PageRouteInfo<void> {
-  const ForgetPasswordOTPRoute({List<_i37.PageRouteInfo>? children})
+/// [_i14.ForgetPasswordOTPPage]
+class ForgetPasswordOTPRoute extends _i40.PageRouteInfo<void> {
+  const ForgetPasswordOTPRoute({List<_i40.PageRouteInfo>? children})
     : super(ForgetPasswordOTPRoute.name, initialChildren: children);
 
   static const String name = 'ForgetPasswordOTPRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i12.ForgetPasswordOTPPage();
+      return const _i14.ForgetPasswordOTPPage();
     },
   );
 }
 
 /// generated route for
-/// [_i13.ForgetPasswordPage]
-class ForgetPasswordRoute extends _i37.PageRouteInfo<ForgetPasswordRouteArgs> {
-  ForgetPasswordRoute({_i38.Key? key, List<_i37.PageRouteInfo>? children})
+/// [_i15.ForgetPasswordPage]
+class ForgetPasswordRoute extends _i40.PageRouteInfo<ForgetPasswordRouteArgs> {
+  ForgetPasswordRoute({_i41.Key? key, List<_i40.PageRouteInfo>? children})
     : super(
         ForgetPasswordRoute.name,
         args: ForgetPasswordRouteArgs(key: key),
@@ -307,13 +345,13 @@ class ForgetPasswordRoute extends _i37.PageRouteInfo<ForgetPasswordRouteArgs> {
 
   static const String name = 'ForgetPasswordRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<ForgetPasswordRouteArgs>(
         orElse: () => const ForgetPasswordRouteArgs(),
       );
-      return _i13.ForgetPasswordPage(key: args.key);
+      return _i15.ForgetPasswordPage(key: args.key);
     },
   );
 }
@@ -321,7 +359,7 @@ class ForgetPasswordRoute extends _i37.PageRouteInfo<ForgetPasswordRouteArgs> {
 class ForgetPasswordRouteArgs {
   const ForgetPasswordRouteArgs({this.key});
 
-  final _i38.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -330,25 +368,57 @@ class ForgetPasswordRouteArgs {
 }
 
 /// generated route for
-/// [_i14.HomeTabPage]
-class HomeTabRoute extends _i37.PageRouteInfo<void> {
-  const HomeTabRoute({List<_i37.PageRouteInfo>? children})
-    : super(HomeTabRoute.name, initialChildren: children);
+/// [_i16.HelpOrderPage]
+class HelpOrderRoute extends _i40.PageRouteInfo<void> {
+  const HelpOrderRoute({List<_i40.PageRouteInfo>? children})
+    : super(HelpOrderRoute.name, initialChildren: children);
 
-  static const String name = 'HomeTabRoute';
+  static const String name = 'HelpOrderRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i14.HomeTabPage();
+      return const _i16.HelpOrderPage();
     },
   );
 }
 
 /// generated route for
-/// [_i15.LoginPage]
-class LoginRoute extends _i37.PageRouteInfo<LoginRouteArgs> {
-  LoginRoute({_i38.Key? key, List<_i37.PageRouteInfo>? children})
+/// [_i17.HelpPage]
+class HelpRoute extends _i40.PageRouteInfo<void> {
+  const HelpRoute({List<_i40.PageRouteInfo>? children})
+    : super(HelpRoute.name, initialChildren: children);
+
+  static const String name = 'HelpRoute';
+
+  static _i40.PageInfo page = _i40.PageInfo(
+    name,
+    builder: (data) {
+      return const _i17.HelpPage();
+    },
+  );
+}
+
+/// generated route for
+/// [_i18.HomeTabPage]
+class HomeTabRoute extends _i40.PageRouteInfo<void> {
+  const HomeTabRoute({List<_i40.PageRouteInfo>? children})
+    : super(HomeTabRoute.name, initialChildren: children);
+
+  static const String name = 'HomeTabRoute';
+
+  static _i40.PageInfo page = _i40.PageInfo(
+    name,
+    builder: (data) {
+      return const _i18.HomeTabPage();
+    },
+  );
+}
+
+/// generated route for
+/// [_i19.LoginPage]
+class LoginRoute extends _i40.PageRouteInfo<LoginRouteArgs> {
+  LoginRoute({_i41.Key? key, List<_i40.PageRouteInfo>? children})
     : super(
         LoginRoute.name,
         args: LoginRouteArgs(key: key),
@@ -357,13 +427,13 @@ class LoginRoute extends _i37.PageRouteInfo<LoginRouteArgs> {
 
   static const String name = 'LoginRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<LoginRouteArgs>(
         orElse: () => const LoginRouteArgs(),
       );
-      return _i15.LoginPage(key: args.key);
+      return _i19.LoginPage(key: args.key);
     },
   );
 }
@@ -371,7 +441,7 @@ class LoginRoute extends _i37.PageRouteInfo<LoginRouteArgs> {
 class LoginRouteArgs {
   const LoginRouteArgs({this.key});
 
-  final _i38.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -380,41 +450,41 @@ class LoginRouteArgs {
 }
 
 /// generated route for
-/// [_i16.MainPage]
-class MainRoute extends _i37.PageRouteInfo<void> {
-  const MainRoute({List<_i37.PageRouteInfo>? children})
+/// [_i20.MainPage]
+class MainRoute extends _i40.PageRouteInfo<void> {
+  const MainRoute({List<_i40.PageRouteInfo>? children})
     : super(MainRoute.name, initialChildren: children);
 
   static const String name = 'MainRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i16.MainPage();
+      return const _i20.MainPage();
     },
   );
 }
 
 /// generated route for
-/// [_i17.NewCardPage]
-class NewCardRoute extends _i37.PageRouteInfo<void> {
-  const NewCardRoute({List<_i37.PageRouteInfo>? children})
+/// [_i21.NewCardPage]
+class NewCardRoute extends _i40.PageRouteInfo<void> {
+  const NewCardRoute({List<_i40.PageRouteInfo>? children})
     : super(NewCardRoute.name, initialChildren: children);
 
   static const String name = 'NewCardRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i17.NewCardPage();
+      return const _i21.NewCardPage();
     },
   );
 }
 
 /// generated route for
-/// [_i18.NewPasswordPage]
-class NewPasswordRoute extends _i37.PageRouteInfo<NewPasswordRouteArgs> {
-  NewPasswordRoute({_i38.Key? key, List<_i37.PageRouteInfo>? children})
+/// [_i22.NewPasswordPage]
+class NewPasswordRoute extends _i40.PageRouteInfo<NewPasswordRouteArgs> {
+  NewPasswordRoute({_i41.Key? key, List<_i40.PageRouteInfo>? children})
     : super(
         NewPasswordRoute.name,
         args: NewPasswordRouteArgs(key: key),
@@ -423,13 +493,13 @@ class NewPasswordRoute extends _i37.PageRouteInfo<NewPasswordRouteArgs> {
 
   static const String name = 'NewPasswordRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<NewPasswordRouteArgs>(
         orElse: () => const NewPasswordRouteArgs(),
       );
-      return _i18.NewPasswordPage(key: args.key);
+      return _i22.NewPasswordPage(key: args.key);
     },
   );
 }
@@ -437,7 +507,7 @@ class NewPasswordRoute extends _i37.PageRouteInfo<NewPasswordRouteArgs> {
 class NewPasswordRouteArgs {
   const NewPasswordRouteArgs({this.key});
 
-  final _i38.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -446,92 +516,92 @@ class NewPasswordRouteArgs {
 }
 
 /// generated route for
-/// [_i19.NotificationsPage]
-class NotificationsRoute extends _i37.PageRouteInfo<void> {
-  const NotificationsRoute({List<_i37.PageRouteInfo>? children})
+/// [_i23.NotificationsPage]
+class NotificationsRoute extends _i40.PageRouteInfo<void> {
+  const NotificationsRoute({List<_i40.PageRouteInfo>? children})
     : super(NotificationsRoute.name, initialChildren: children);
 
   static const String name = 'NotificationsRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i19.NotificationsPage();
+      return const _i23.NotificationsPage();
     },
   );
 }
 
 /// generated route for
-/// [_i20.OnboardingPage]
-class OnboardingRoute extends _i37.PageRouteInfo<void> {
-  const OnboardingRoute({List<_i37.PageRouteInfo>? children})
+/// [_i24.OnboardingPage]
+class OnboardingRoute extends _i40.PageRouteInfo<void> {
+  const OnboardingRoute({List<_i40.PageRouteInfo>? children})
     : super(OnboardingRoute.name, initialChildren: children);
 
   static const String name = 'OnboardingRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i20.OnboardingPage();
+      return const _i24.OnboardingPage();
     },
   );
 }
 
 /// generated route for
-/// [_i21.OrdersDetailsPage]
-class OrdersDetailsRoute extends _i37.PageRouteInfo<void> {
-  const OrdersDetailsRoute({List<_i37.PageRouteInfo>? children})
+/// [_i25.OrdersDetailsPage]
+class OrdersDetailsRoute extends _i40.PageRouteInfo<void> {
+  const OrdersDetailsRoute({List<_i40.PageRouteInfo>? children})
     : super(OrdersDetailsRoute.name, initialChildren: children);
 
   static const String name = 'OrdersDetailsRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i21.OrdersDetailsPage();
+      return const _i25.OrdersDetailsPage();
     },
   );
 }
 
 /// generated route for
-/// [_i22.OrdersTabPage]
-class OrdersTabRoute extends _i37.PageRouteInfo<void> {
-  const OrdersTabRoute({List<_i37.PageRouteInfo>? children})
+/// [_i26.OrdersTabPage]
+class OrdersTabRoute extends _i40.PageRouteInfo<void> {
+  const OrdersTabRoute({List<_i40.PageRouteInfo>? children})
     : super(OrdersTabRoute.name, initialChildren: children);
 
   static const String name = 'OrdersTabRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i22.OrdersTabPage();
+      return const _i26.OrdersTabPage();
     },
   );
 }
 
 /// generated route for
-/// [_i23.OtpPage]
-class OtpRoute extends _i37.PageRouteInfo<void> {
-  const OtpRoute({List<_i37.PageRouteInfo>? children})
+/// [_i27.OtpPage]
+class OtpRoute extends _i40.PageRouteInfo<void> {
+  const OtpRoute({List<_i40.PageRouteInfo>? children})
     : super(OtpRoute.name, initialChildren: children);
 
   static const String name = 'OtpRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i23.OtpPage();
+      return const _i27.OtpPage();
     },
   );
 }
 
 /// generated route for
-/// [_i24.PaymentMethodsPage]
-class PaymentMethodsRoute extends _i37.PageRouteInfo<PaymentMethodsRouteArgs> {
+/// [_i28.PaymentMethodsPage]
+class PaymentMethodsRoute extends _i40.PageRouteInfo<PaymentMethodsRouteArgs> {
   PaymentMethodsRoute({
-    _i38.Key? key,
+    _i41.Key? key,
     required bool fromCheckout,
-    List<_i37.PageRouteInfo>? children,
+    List<_i40.PageRouteInfo>? children,
   }) : super(
          PaymentMethodsRoute.name,
          args: PaymentMethodsRouteArgs(key: key, fromCheckout: fromCheckout),
@@ -540,11 +610,11 @@ class PaymentMethodsRoute extends _i37.PageRouteInfo<PaymentMethodsRouteArgs> {
 
   static const String name = 'PaymentMethodsRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<PaymentMethodsRouteArgs>();
-      return _i24.PaymentMethodsPage(
+      return _i28.PaymentMethodsPage(
         key: args.key,
         fromCheckout: args.fromCheckout,
       );
@@ -555,7 +625,7 @@ class PaymentMethodsRoute extends _i37.PageRouteInfo<PaymentMethodsRouteArgs> {
 class PaymentMethodsRouteArgs {
   const PaymentMethodsRouteArgs({this.key, required this.fromCheckout});
 
-  final _i38.Key? key;
+  final _i41.Key? key;
 
   final bool fromCheckout;
 
@@ -566,9 +636,9 @@ class PaymentMethodsRouteArgs {
 }
 
 /// generated route for
-/// [_i25.PlacingOrderPage]
-class PlacingOrderRoute extends _i37.PageRouteInfo<PlacingOrderRouteArgs> {
-  PlacingOrderRoute({_i38.Key? key, List<_i37.PageRouteInfo>? children})
+/// [_i29.PlacingOrderPage]
+class PlacingOrderRoute extends _i40.PageRouteInfo<PlacingOrderRouteArgs> {
+  PlacingOrderRoute({_i41.Key? key, List<_i40.PageRouteInfo>? children})
     : super(
         PlacingOrderRoute.name,
         args: PlacingOrderRouteArgs(key: key),
@@ -577,13 +647,13 @@ class PlacingOrderRoute extends _i37.PageRouteInfo<PlacingOrderRouteArgs> {
 
   static const String name = 'PlacingOrderRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<PlacingOrderRouteArgs>(
         orElse: () => const PlacingOrderRouteArgs(),
       );
-      return _i25.PlacingOrderPage(key: args.key);
+      return _i29.PlacingOrderPage(key: args.key);
     },
   );
 }
@@ -591,7 +661,7 @@ class PlacingOrderRoute extends _i37.PageRouteInfo<PlacingOrderRouteArgs> {
 class PlacingOrderRouteArgs {
   const PlacingOrderRouteArgs({this.key});
 
-  final _i38.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -600,12 +670,12 @@ class PlacingOrderRouteArgs {
 }
 
 /// generated route for
-/// [_i26.ProductDetailsPage]
-class ProductDetailsRoute extends _i37.PageRouteInfo<ProductDetailsRouteArgs> {
+/// [_i30.ProductDetailsPage]
+class ProductDetailsRoute extends _i40.PageRouteInfo<ProductDetailsRouteArgs> {
   ProductDetailsRoute({
-    _i38.Key? key,
-    required _i38.Product product,
-    List<_i37.PageRouteInfo>? children,
+    _i41.Key? key,
+    required _i41.Product product,
+    List<_i40.PageRouteInfo>? children,
   }) : super(
          ProductDetailsRoute.name,
          args: ProductDetailsRouteArgs(key: key, product: product),
@@ -614,11 +684,11 @@ class ProductDetailsRoute extends _i37.PageRouteInfo<ProductDetailsRouteArgs> {
 
   static const String name = 'ProductDetailsRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<ProductDetailsRouteArgs>();
-      return _i26.ProductDetailsPage(key: args.key, product: args.product);
+      return _i30.ProductDetailsPage(key: args.key, product: args.product);
     },
   );
 }
@@ -626,9 +696,9 @@ class ProductDetailsRoute extends _i37.PageRouteInfo<ProductDetailsRouteArgs> {
 class ProductDetailsRouteArgs {
   const ProductDetailsRouteArgs({this.key, required this.product});
 
-  final _i38.Key? key;
+  final _i41.Key? key;
 
-  final _i38.Product product;
+  final _i41.Product product;
 
   @override
   String toString() {
@@ -637,12 +707,12 @@ class ProductDetailsRouteArgs {
 }
 
 /// generated route for
-/// [_i27.ProfileFormPage]
-class ProfileFormRoute extends _i37.PageRouteInfo<ProfileFormRouteArgs> {
+/// [_i31.ProfileFormPage]
+class ProfileFormRoute extends _i40.PageRouteInfo<ProfileFormRouteArgs> {
   ProfileFormRoute({
-    _i38.Key? key,
+    _i41.Key? key,
     required bool newUser,
-    List<_i37.PageRouteInfo>? children,
+    List<_i40.PageRouteInfo>? children,
   }) : super(
          ProfileFormRoute.name,
          args: ProfileFormRouteArgs(key: key, newUser: newUser),
@@ -651,11 +721,11 @@ class ProfileFormRoute extends _i37.PageRouteInfo<ProfileFormRouteArgs> {
 
   static const String name = 'ProfileFormRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<ProfileFormRouteArgs>();
-      return _i27.ProfileFormPage(key: args.key, newUser: args.newUser);
+      return _i31.ProfileFormPage(key: args.key, newUser: args.newUser);
     },
   );
 }
@@ -663,7 +733,7 @@ class ProfileFormRoute extends _i37.PageRouteInfo<ProfileFormRouteArgs> {
 class ProfileFormRouteArgs {
   const ProfileFormRouteArgs({this.key, required this.newUser});
 
-  final _i38.Key? key;
+  final _i41.Key? key;
 
   final bool newUser;
 
@@ -674,121 +744,105 @@ class ProfileFormRouteArgs {
 }
 
 /// generated route for
-/// [_i28.ProfileTabPage]
-class ProfileTabRoute extends _i37.PageRouteInfo<void> {
-  const ProfileTabRoute({List<_i37.PageRouteInfo>? children})
+/// [_i32.ProfileTabPage]
+class ProfileTabRoute extends _i40.PageRouteInfo<void> {
+  const ProfileTabRoute({List<_i40.PageRouteInfo>? children})
     : super(ProfileTabRoute.name, initialChildren: children);
 
   static const String name = 'ProfileTabRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i28.ProfileTabPage();
+      return const _i32.ProfileTabPage();
     },
   );
 }
 
 /// generated route for
-/// [_i29.PromoCodePage]
-class PromoCodeRoute extends _i37.PageRouteInfo<void> {
-  const PromoCodeRoute({List<_i37.PageRouteInfo>? children})
+/// [_i33.PromoCodePage]
+class PromoCodeRoute extends _i40.PageRouteInfo<void> {
+  const PromoCodeRoute({List<_i40.PageRouteInfo>? children})
     : super(PromoCodeRoute.name, initialChildren: children);
 
   static const String name = 'PromoCodeRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i29.PromoCodePage();
+      return const _i33.PromoCodePage();
     },
   );
 }
 
 /// generated route for
-/// [_i30.RestaurantPage]
-class RestaurantRoute extends _i37.PageRouteInfo<void> {
-  const RestaurantRoute({List<_i37.PageRouteInfo>? children})
+/// [_i34.RestaurantPage]
+class RestaurantRoute extends _i40.PageRouteInfo<void> {
+  const RestaurantRoute({List<_i40.PageRouteInfo>? children})
     : super(RestaurantRoute.name, initialChildren: children);
 
   static const String name = 'RestaurantRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i30.RestaurantPage();
+      return const _i34.RestaurantPage();
     },
   );
 }
 
 /// generated route for
-/// [_i31.RidersDetailsPage]
-class RidersDetailsRoute extends _i37.PageRouteInfo<void> {
-  const RidersDetailsRoute({List<_i37.PageRouteInfo>? children})
+/// [_i35.RidersDetailsPage]
+class RidersDetailsRoute extends _i40.PageRouteInfo<void> {
+  const RidersDetailsRoute({List<_i40.PageRouteInfo>? children})
     : super(RidersDetailsRoute.name, initialChildren: children);
 
   static const String name = 'RidersDetailsRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i31.RidersDetailsPage();
+      return const _i35.RidersDetailsPage();
     },
   );
 }
 
 /// generated route for
-/// [_i32.RidersTabPage]
-class RidersTabRoute extends _i37.PageRouteInfo<void> {
-  const RidersTabRoute({List<_i37.PageRouteInfo>? children})
+/// [_i36.RidersTabPage]
+class RidersTabRoute extends _i40.PageRouteInfo<void> {
+  const RidersTabRoute({List<_i40.PageRouteInfo>? children})
     : super(RidersTabRoute.name, initialChildren: children);
 
   static const String name = 'RidersTabRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i32.RidersTabPage();
+      return const _i36.RidersTabPage();
     },
   );
 }
 
 /// generated route for
-/// [_i33.SavedAddressesPage]
-class SavedAddressesRoute extends _i37.PageRouteInfo<void> {
-  const SavedAddressesRoute({List<_i37.PageRouteInfo>? children})
+/// [_i37.SavedAddressesPage]
+class SavedAddressesRoute extends _i40.PageRouteInfo<void> {
+  const SavedAddressesRoute({List<_i40.PageRouteInfo>? children})
     : super(SavedAddressesRoute.name, initialChildren: children);
 
   static const String name = 'SavedAddressesRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i33.SavedAddressesPage();
+      return const _i37.SavedAddressesPage();
     },
   );
 }
 
 /// generated route for
-/// [_i34.SettingsPage]
-class SettingsRoute extends _i37.PageRouteInfo<void> {
-  const SettingsRoute({List<_i37.PageRouteInfo>? children})
-    : super(SettingsRoute.name, initialChildren: children);
-
-  static const String name = 'SettingsRoute';
-
-  static _i37.PageInfo page = _i37.PageInfo(
-    name,
-    builder: (data) {
-      return const _i34.SettingsPage();
-    },
-  );
-}
-
-/// generated route for
-/// [_i35.SignUpPage]
-class SignUpRoute extends _i37.PageRouteInfo<SignUpRouteArgs> {
-  SignUpRoute({_i38.Key? key, List<_i37.PageRouteInfo>? children})
+/// [_i38.SignUpPage]
+class SignUpRoute extends _i40.PageRouteInfo<SignUpRouteArgs> {
+  SignUpRoute({_i41.Key? key, List<_i40.PageRouteInfo>? children})
     : super(
         SignUpRoute.name,
         args: SignUpRouteArgs(key: key),
@@ -797,13 +851,13 @@ class SignUpRoute extends _i37.PageRouteInfo<SignUpRouteArgs> {
 
   static const String name = 'SignUpRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<SignUpRouteArgs>(
         orElse: () => const SignUpRouteArgs(),
       );
-      return _i35.SignUpPage(key: args.key);
+      return _i38.SignUpPage(key: args.key);
     },
   );
 }
@@ -811,7 +865,7 @@ class SignUpRoute extends _i37.PageRouteInfo<SignUpRouteArgs> {
 class SignUpRouteArgs {
   const SignUpRouteArgs({this.key});
 
-  final _i38.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -820,17 +874,17 @@ class SignUpRouteArgs {
 }
 
 /// generated route for
-/// [_i36.StudentProfileDetailsPage]
-class StudentProfileDetailsRoute extends _i37.PageRouteInfo<void> {
-  const StudentProfileDetailsRoute({List<_i37.PageRouteInfo>? children})
+/// [_i39.StudentProfileDetailsPage]
+class StudentProfileDetailsRoute extends _i40.PageRouteInfo<void> {
+  const StudentProfileDetailsRoute({List<_i40.PageRouteInfo>? children})
     : super(StudentProfileDetailsRoute.name, initialChildren: children);
 
   static const String name = 'StudentProfileDetailsRoute';
 
-  static _i37.PageInfo page = _i37.PageInfo(
+  static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i36.StudentProfileDetailsPage();
+      return const _i39.StudentProfileDetailsPage();
     },
   );
 }

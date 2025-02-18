@@ -134,7 +134,7 @@ class OrdersDetailsPage extends StatelessWidget {
                   ),
                   height(30),
                   InkWell(
-                    onTap: () {},
+                    onTap: () => context.pushRoute(ContactSupportRoute()),
                     child: Container(
                       width: size.width,
                       height: 46,

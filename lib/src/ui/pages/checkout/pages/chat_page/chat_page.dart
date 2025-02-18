@@ -9,7 +9,10 @@ class CheckOutChatPage extends StatelessWidget {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Robert Fox'),
+        title: Text(
+          "Robert Fox",
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(25),
@@ -28,11 +31,11 @@ class CheckOutChatPage extends StatelessWidget {
                           ? CrossAxisAlignment.end
                           : CrossAxisAlignment.start,
                       children: [
-                        Card(
-                          color: chat.isRead
-                              ? AppColors.black
-                              : AppColors.dividerColor,
-                          shape: RoundedRectangleBorder(
+                        Container(
+                          decoration: BoxDecoration(
+                              color: chat.isRead
+                                  ? AppColors.black
+                                  : AppColors.halfWhite,
                               borderRadius: chat.isRead
                                   ? BorderRadius.only(
                                       topLeft: Radius.circular(16),
@@ -59,7 +62,11 @@ class CheckOutChatPage extends StatelessWidget {
                             ? Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text(chat.timestamp),
+                                  Text(
+                                    chat.timestamp,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
                                   width(5),
                                   Icon(Icons.done_all)
                                 ],
@@ -75,15 +82,23 @@ class CheckOutChatPage extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    onChanged: (value) {},
-                    decoration: InputDecoration(
-                      hintText: locale.typeMessage,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: AppColors.halfWhite),
+                    child: TextField(
+                      onChanged: (value) {},
+                      decoration: InputDecoration(
+                        hintText: locale.typeMessage,
+                        hintStyle: Theme.of(context).textTheme.bodyMedium,
+                        border: InputBorder.none,
+                      ),
                     ),
                   ),
                 ),
+                width(12),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: SvgAssets("Navigation"),
                   onPressed: () {},
                 )
               ],

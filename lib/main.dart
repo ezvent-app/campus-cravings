@@ -23,7 +23,6 @@ class App extends StatelessWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         theme: lightTheme,
         routerConfig: _appRouter.config(),
-        // home: DeliveringPage(),
       ),
     );
   }

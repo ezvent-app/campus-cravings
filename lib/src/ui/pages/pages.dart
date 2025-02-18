@@ -5,7 +5,7 @@ export 'checkout/pages/delivering/widgets/widgets.dart';
 export './delivery_setup/delivery_setup_page.dart';
 export './new_card/new_card_page.dart';
 export './onboarding/onboarding_page.dart';
-export './payment_methods/payment_methods_page.dart';
+export 'main/tabs/profile/pages/payment_methods/payment_methods_page.dart';
 export './profile_form/profile_form_page.dart';
 export './main/main_paths.dart';
 export './auth/auth.dart';

@@ -182,6 +182,18 @@
   "deliveryComplete" : "Delivery Complete",
   "thankYouDeliveringOrderGreatJob" : "Thank you for delivering the order! Great job!",
   "ok" : "OK",
-  "retry" : "Retry"
-  
+  "retry" : "Retry",
+  "work" : "Work",
+  "order" : "Order",
+  "payment" : "Payment",
+  "promotion" : "Promotion",
+  "account" : "Account",
+  "refund" : "Refund",
+  "contactSupport" : "Contact Support",
+  "firstName" : "First Name",
+  "lastName" : "Last Name",
+  "phoneNumber" : "Phone Number",
+  "role" : "Role",
+  "registerDelivery" : "Register for Delivery",
+  "whatDoYouWantKnowAboutYou" : "What do you want people you deliver to know about you?"
 }

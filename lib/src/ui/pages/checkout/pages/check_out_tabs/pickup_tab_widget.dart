@@ -131,8 +131,8 @@ class PickUpTabWidget extends StatelessWidget {
                   padding: EdgeInsets.all(24),
                   child: Row(
                     children: [
-                      PngAsset(
-                        'payment_method2_icon',
+                      SvgAssets(
+                        'redWallet',
                         height: 24,
                         width: 24,
                       ),

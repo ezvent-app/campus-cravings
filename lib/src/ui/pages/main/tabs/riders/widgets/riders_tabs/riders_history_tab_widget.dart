@@ -28,7 +28,7 @@ class RidersHistoryTabWidget extends StatelessWidget {
                         const Divider(
                             color: AppColors.dividerColor, height: 40),
                         InkWell(
-                          onTap: () => context.pushRoute(OrdersDetailsRoute()),
+                          onTap: () {},
                           child: SizedBox(
                             height: 95,
                             child: Row(

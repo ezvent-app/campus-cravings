@@ -21,8 +21,8 @@ class HomeLocationWidget extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Row(
             children: [
-              const PngAsset(
-                'location_pin_circle',
+              const SvgAssets(
+                'location',
                 height: 52,
                 width: 52,
               ),

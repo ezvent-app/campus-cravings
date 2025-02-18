@@ -59,7 +59,11 @@ class CustomTextField extends ConsumerWidget {
           obscuringCharacter: "*",
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: hintStyle,
+            hintStyle: hintStyle ??
+                Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(color: AppColors.hintColor),
             suffixIcon: suffixIcon,
             contentPadding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
             border: OutlineInputBorder(

@@ -9,7 +9,7 @@ class AddPayoutPage extends ConsumerStatefulWidget {
 }
 
 class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
-  final paymentMethods = ['card', 'venmo', 'venmo', 'venmo', 'venmo'];
+  final paymentMethods = ['wallet', 'pp', 'apple'];
   final List<String> _banks = ['Bank of America'];
   late String _selectedBank;
 
@@ -70,8 +70,8 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
                     return Column(
                       children: [
                         Container(
-                          width: 60,
-                          height: 50,
+                          width: 80,
+                          height: 67,
                           padding: const EdgeInsets.all(
                               Dimensions.paddingSizeDefault),
                           decoration: BoxDecoration(
@@ -83,8 +83,8 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
                                   : AppColors.textFieldBorder,
                             ),
                           ),
-                          child: PngAsset(
-                            'payment_${category.toLowerCase()}_icon',
+                          child: SvgAssets(
+                            category,
                           ),
                         ),
                       ],

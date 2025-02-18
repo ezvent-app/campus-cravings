@@ -29,6 +29,7 @@ class ProfileTabPage extends StatelessWidget {
                             child: Icon(
                               Icons.person,
                               size: 35,
+                              color: AppColors.white,
                             ),
                           ),
                         ),
@@ -72,7 +73,7 @@ class ProfileTabPage extends StatelessWidget {
                         onTap: () {},
                         child: const Center(
                           child: Icon(
-                            Icons.keyboard_arrow_down,
+                            Icons.keyboard_arrow_right,
                             size: 30,
                             color: Color(0xff443A39),
                           ),
@@ -85,7 +86,7 @@ class ProfileTabPage extends StatelessWidget {
               ProfileGroupButton(
                 options: [
                   ProfileOption(
-                    icon: 'payment_method_icon',
+                    icon: 'paymentMethod',
                     label: locale.paymentMethods,
                     onPressed: () {
                       context
@@ -93,14 +94,14 @@ class ProfileTabPage extends StatelessWidget {
                     },
                   ),
                   ProfileOption(
-                    icon: 'saved_addresses_icon',
+                    icon: 'address',
                     label: locale.savedAddresses,
                     onPressed: () {
                       context.pushRoute(const SavedAddressesRoute());
                     },
                   ),
                   ProfileOption(
-                    icon: 'promo_offers_icon',
+                    icon: 'promo',
                     label: locale.promoOffers,
                     onPressed: () {
                       context.pushRoute(const PromoCodeRoute());
@@ -111,28 +112,39 @@ class ProfileTabPage extends StatelessWidget {
               ProfileGroupButton(
                 options: [
                   ProfileOption(
-                    icon: 'settings_icon',
-                    label: locale.settings,
+                    icon: 'notification',
+                    label: locale.notifications,
                     onPressed: () {
-                      context.pushRoute(const SettingsRoute());
+                      context.pushRoute(const NotificationsRoute());
                     },
                   ),
                   ProfileOption(
-                    icon: 'refer_friend_icon',
-                    label: locale.referFriend,
-                    onPressed: () {},
+                    icon: 'lock',
+                    label: locale.changePassword,
+                    onPressed: () {
+                      context.pushRoute(const ChangePasswordRoute());
+                    },
                   ),
                   ProfileOption(
-                    icon: 'help_icon',
+                    icon: 'locale',
+                    label: locale.changeLanguage,
+                    onPressed: () {
+                      context.pushRoute(const ChangeLanguageRoute());
+                    },
+                  ),
+                  ProfileOption(
+                    icon: 'help',
                     label: locale.help,
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pushRoute(const HelpRoute());
+                    },
                   ),
                 ],
               ),
               ProfileGroupButton(
                 options: [
                   ProfileOption(
-                    icon: 'logout_icon',
+                    icon: 'logout',
                     label: locale.logOut,
                     onPressed: () {},
                   ),

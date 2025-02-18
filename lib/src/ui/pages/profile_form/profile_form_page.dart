@@ -96,20 +96,26 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   ),
                   height(50),
                   CustomTextField(
-                    label: locale.enterFirstName,
+                    label: widget.newUser
+                        ? locale.enterFirstName
+                        : locale.firstName,
                   ),
                   height(16),
                   CustomTextField(
-                    label: locale.enterLastName,
+                    label:
+                        widget.newUser ? locale.enterLastName : locale.lastName,
                   ),
                   height(16),
                   CustomTextField(
-                    label: locale.enterPhoneNumber,
+                    label: widget.newUser
+                        ? locale.enterPhoneNumber
+                        : locale.phoneNumber,
                   ),
                   height(16),
                   Padding(
                     padding: EdgeInsets.only(bottom: 3),
-                    child: Text(locale.selectRole,
+                    child: Text(
+                        widget.newUser ? locale.selectRole : locale.role,
                         style: Theme.of(context).textTheme.bodySmall),
                   ),
                   DropDownWidget(
@@ -123,23 +129,32 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   height(12),
                   Row(
                     children: [
-                      Transform.scale(
-                        scale: 1.3,
-                        child: Checkbox(
-                          value: false,
-                          onChanged: (value) {},
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          side: WidgetStateBorderSide.resolveWith(
-                            (states) => const BorderSide(
-                                width: 1.0, color: Colors.grey),
-                          ),
-                        ),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final isActive = ref.watch(editProfileProvider);
+                          return Transform.scale(
+                            scale: 1.3,
+                            child: Checkbox(
+                              value: isActive,
+                              onChanged: (value) => ref
+                                  .read(editProfileProvider.notifier)
+                                  .state = value!,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              side: WidgetStateBorderSide.resolveWith(
+                                (states) => const BorderSide(
+                                    width: 1.0, color: Colors.grey),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       width(7),
                       Text(
-                        locale.registerForDelivery,
+                        widget.newUser
+                            ? locale.registerForDelivery
+                            : locale.registerDelivery,
                         style: TextStyle(
                             fontSize: Dimensions.fontSizeSmall,
                             fontWeight: FontWeight.w500,
@@ -148,12 +163,21 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                     ],
                   ),
                   height(18),
-                  RoundedButtonWidget(
-                      btnTitle: widget.newUser ? locale.next : locale.save,
-                      onTap: () => widget.newUser
-                          ? context
-                              .pushRoute(const StudentProfileDetailsRoute())
-                          : context.maybePop()),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final isActive = ref.watch(editProfileProvider);
+                      return RoundedButtonWidget(
+                          btnTitle: widget.newUser ? locale.next : locale.save,
+                          onTap: widget.newUser
+                              ? isActive
+                                  ? () => context
+                                      .pushRoute(StudentProfileDetailsRoute())
+                                  : () => context.pushRoute(const MainRoute())
+                              : isActive
+                                  ? () => context.maybePop()
+                                  : null);
+                    },
+                  )
                 ],
               ),
             ),
@@ -163,3 +187,5 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
     );
   }
 }
+
+final editProfileProvider = StateProvider<bool>((ref) => false);

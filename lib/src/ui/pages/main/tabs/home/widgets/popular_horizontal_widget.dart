@@ -25,9 +25,9 @@ class _PopularHorizontalWidgetState
           child: Text(
             'Popular Items',
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: AppColors.black),
           ),
         ),
         SizedBox(
@@ -65,7 +65,9 @@ class _PopularHorizontalWidgetState
                         Text(
                           category,
                           style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600),
+                              color: AppColors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600),
                         ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,7 +113,9 @@ class _PopularHorizontalWidgetState
                         const Text(
                           '\$6.90',
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black),
                         ),
                       ],
                     ),

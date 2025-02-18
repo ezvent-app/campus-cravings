@@ -19,9 +19,9 @@ class _NearbyRestaurantsWidgetState
           child: Text(
             'Restaurants Nearby',
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: AppColors.black),
           ),
         ),
         const SizedBox(height: 2),

@@ -14,6 +14,8 @@ class AppColors {
   static const unselectedTabIconColor = Color(0xFF9E9E9E);
   static const dividerColor = Color(0xFFEEEEEE);
   static const yellow = Color(0xffFFD029);
+  static const halfWhite = Color(0xffF5F5F5);
+  static const hintColor = Color(0xFFBEBEBE);
 
   static const shade = Color(0xFF272B30);
   static const textField2 = Color(0xFF282829);

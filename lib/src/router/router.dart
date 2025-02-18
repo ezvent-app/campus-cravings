@@ -124,6 +124,22 @@ class AppRouter extends RootStackRouter {
           path: '/delivery-setup',
         ),
         AutoRoute(
+          page: HelpOrderRoute.page,
+          path: '/help-order',
+        ),
+        AutoRoute(
+          page: ChangeLanguageRoute.page,
+          path: '/change-language',
+        ),
+        AutoRoute(
+          page: HelpRoute.page,
+          path: '/help',
+        ),
+        AutoRoute(
+          page: ContactSupportRoute.page,
+          path: '/contact-support',
+        ),
+        AutoRoute(
           page: AddPayoutRoute.page,
           path: '/add-payout',
         ),
@@ -134,10 +150,6 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: PromoCodeRoute.page,
           path: '/promo-code',
-        ),
-        AutoRoute(
-          page: SettingsRoute.page,
-          path: '/settings',
         ),
         AutoRoute(
           page: NotificationsRoute.page,
