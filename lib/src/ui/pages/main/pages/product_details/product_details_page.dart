@@ -169,8 +169,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                         ),
                                         Row(
                                           children: [
-                                            PngAsset(
-                                              'calorie_icon',
+                                            SvgAssets(
+                                              'calories',
                                               height: 16,
                                               width: 16,
                                             ),
@@ -204,8 +204,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                         ),
                                         Row(
                                           children: [
-                                            PngAsset(
-                                              'time2_icon',
+                                            SvgAssets(
+                                              'clock',
                                               height: 16,
                                               width: 16,
                                             ),
@@ -276,11 +276,15 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 SizedBox(
                   height: 49,
                   child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pushRoute(CheckoutRoute());
+                    },
                     label: Text(locale.addToCart),
-                    icon: const ImageIcon(
-                        AssetImage('assets/images/png/shopping_cart_icon.png'),
-                        size: 15),
+                    icon: SvgAssets(
+                      "shopping-cart",
+                      width: 16,
+                      height: 16,
+                    ),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),

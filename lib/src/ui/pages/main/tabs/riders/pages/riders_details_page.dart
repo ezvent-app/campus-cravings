@@ -56,65 +56,7 @@ class RidersDetailsPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Column(
-                    children: List.generate(
-                      3,
-                      (index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                color: const Color(0xffEFECF0),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 10),
-                                child: Text('1',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall!
-                                        .copyWith(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                        )),
-                              ),
-                              const SizedBox(width: 17),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Mixed Vegetable Salad',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall!
-                                          .copyWith(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500,
-                                          )),
-                                  Row(
-                                    children: [
-                                      Text(locale.showMore,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall!
-                                              .copyWith(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              )),
-                                      Icon(
-                                        Icons.keyboard_arrow_down,
-                                        size: 20,
-                                        color: Colors.black,
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  OrderSummaryWidget(locale: locale),
                   height(30),
                   Text(locale.imageSubmission,
                       style: Theme.of(context)

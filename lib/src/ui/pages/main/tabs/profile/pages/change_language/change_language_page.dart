@@ -65,7 +65,13 @@ class ChangeLanguagePage extends ConsumerWidget {
                 });
               },
             ),
-          )
+          ),
+          height(24),
+          RoundedButtonWidget(
+              btnTitle: locale.save,
+              onTap: () {
+                context.maybePop();
+              })
         ],
       ),
     );

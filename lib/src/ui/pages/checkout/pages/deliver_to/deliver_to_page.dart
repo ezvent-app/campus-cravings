@@ -181,12 +181,12 @@ class DeliverToPage extends StatelessWidget {
                           const EdgeInsets.only(left: 25, right: 25, top: 24),
                       child: ElevatedButton(
                         onPressed: () =>
-                            context.pushRoute(const AddressFormRoute()),
+                            context.pushRoute(CheckOutAddNewAddressRoute()),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           backgroundColor: const Color(0xffE7E7E7),
-                          foregroundColor: AppColors.primary, // Splash color
+                          foregroundColor: AppColors.primary,
                         ),
                         child: Text(
                           locale.addNewAddress,
@@ -200,11 +200,7 @@ class DeliverToPage extends StatelessWidget {
                 ),
               ),
             ),
-            const Divider(
-              height: 0,
-              color: AppColors.dividerColor,
-            ),
-            const SizedBox(height: 24),
+            height(24),
             Container(
               width: double.infinity,
               height: 48,

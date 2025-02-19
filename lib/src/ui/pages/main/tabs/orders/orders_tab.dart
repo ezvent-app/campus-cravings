@@ -21,7 +21,7 @@ class OrdersTabPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 border: Border.all(color: const Color(0xffE2E2E2)),

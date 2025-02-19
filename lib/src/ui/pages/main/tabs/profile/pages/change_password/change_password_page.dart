@@ -25,6 +25,12 @@ class ChangePasswordPage extends ConsumerWidget {
             label: locale.confirmNewPassword,
             obscureText: true,
           ),
+          height(24),
+          RoundedButtonWidget(
+              btnTitle: locale.save,
+              onTap: () {
+                context.maybePop();
+              })
         ],
       ),
     );

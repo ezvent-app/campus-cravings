@@ -1,12 +1,12 @@
 import 'package:campus_cravings/src/src.dart';
 
-class DeliveryTabWidget extends StatelessWidget {
+class DeliveryTabWidget extends ConsumerWidget {
   const DeliveryTabWidget({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -80,7 +80,7 @@ class DeliveryTabWidget extends StatelessWidget {
                           const Divider(
                               color: AppColors.dividerColor, height: 40),
                           SizedBox(
-                            height: 95,
+                            height: 100,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -91,8 +91,7 @@ class DeliveryTabWidget extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(16)),
                                 Expanded(
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 4),
+                                    padding: EdgeInsets.only(left: 15, top: 4),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -104,7 +103,10 @@ class DeliveryTabWidget extends StatelessWidget {
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .titleSmall),
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontWeight: FontWeight.w700,
+                                                    color: AppColors.black)),
                                         Spacer(),
                                         Row(
                                           mainAxisAlignment:
@@ -113,41 +115,17 @@ class DeliveryTabWidget extends StatelessWidget {
                                             Text(
                                               '\$12.00',
                                               overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Color(0xff4C4C4C),
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall,
                                             ),
-                                            index == 0
-                                                ? QuantitySelectorWidget()
-                                                : SizedBox()
+                                            QuantitySelectorWidget()
                                           ],
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
-                                index == 0
-                                    ? SizedBox()
-                                    : Container(
-                                        width: 32,
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          border: Border.all(
-                                              color: AppColors.black),
-                                        ),
-                                        child: Center(
-                                          child: Text('1x',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall!
-                                                  .copyWith(
-                                                      color: AppColors.black)),
-                                        ),
-                                      ),
                               ],
                             ),
                           ),
@@ -205,17 +183,16 @@ class DeliveryTabWidget extends StatelessWidget {
                         flex: 2,
                         child: Padding(
                           padding: EdgeInsets.only(right: 12),
-                          child: Text(
-                            'Villanova Vallet',
-                            textAlign: TextAlign.end,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Color(0xff212121),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          child: Text('Villanova Vallet',
+                              textAlign: TextAlign.end,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w600)),
                         ),
                       ),
                       Icon(
@@ -296,12 +273,15 @@ class DeliveryTabWidget extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-                Text(
-                  '+ ${locale.addTip}',
-                  style: TextStyle(
-                    color: AppColors.accent,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                TextButton(
+                  onPressed: () async => await orderTipSheetMethod(context),
+                  child: Text(
+                    '+ ${locale.addTip}',
+                    style: TextStyle(
+                      color: AppColors.accent,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
                 Divider(
@@ -353,7 +333,7 @@ class DeliveryTabWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.background, // Splash color
+                foregroundColor: AppColors.background,
               ),
               child: Text(
                 '${locale.placeOrder} - \$26.00',
@@ -367,4 +347,103 @@ class DeliveryTabWidget extends StatelessWidget {
       ),
     );
   }
+
+  Future<dynamic> orderTipSheetMethod(BuildContext context) {
+    List tipsList = [1, 5, 10, 15];
+    final locale = AppLocalizations.of(context)!;
+    return showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * .5,
+            child: Card(
+              margin: EdgeInsets.all(10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          locale.addTip,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        width(50),
+                        IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: Icon(
+                              Icons.clear,
+                              color: AppColors.email,
+                            ))
+                      ],
+                    ),
+                    height(20),
+                    Text(
+                      "${locale.wantToLeaveTipFor} Robert",
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: AppColors.lightText,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Consumer(builder: (context, ref, _) {
+                      var selectedIndex = ref.watch(tipsProvider);
+                      return Wrap(
+                        children: List.generate(
+                            tipsList.length,
+                            (i) => InkWell(
+                                borderRadius: BorderRadius.circular(15),
+                                onTap: () =>
+                                    ref.read(tipsProvider.notifier).state = i,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: Container(
+                                    width: 140,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: selectedIndex == i
+                                              ? AppColors.black
+                                              : Colors.grey),
+                                    ),
+                                    child: Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: Text(
+                                          "\$${tipsList[i]}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .copyWith(
+                                                color: selectedIndex == i
+                                                    ? AppColors.black
+                                                    : Colors.grey,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ))),
+                      );
+                    }),
+                    height(30),
+                    RoundedButtonWidget(
+                      btnTitle: locale.confirm,
+                      onTap: () => Navigator.pop(context),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
 }
+
+final tipsProvider = StateProvider((ref) => 0);

@@ -13,14 +13,21 @@ class PlacingOrderPage extends ConsumerWidget {
       label: locale.searching,
       child: Column(
         children: [
-          Text(locale.placeYourOrderOnTheRestaurant,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(fontWeight: FontWeight.w600)),
-          const SizedBox(height: 5),
-          Text(locale.reachingOutToActiveStudentzNearby,
-              style: Theme.of(context).textTheme.bodyLarge),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Text(locale.placeYourOrderOnTheRestaurant,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(fontWeight: FontWeight.w600)),
+                const SizedBox(height: 5),
+                Text(locale.reachingOutToActiveStudentzNearby,
+                    style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+          ),
           Expanded(
             child: Stack(
               children: [
@@ -84,21 +91,23 @@ class PlacingOrderPage extends ConsumerWidget {
                                 color: Colors.black.withValues(alpha: .4)),
                           ),
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 156),
+                            margin: const EdgeInsets.symmetric(horizontal: 145),
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 5),
-                              shape: BoxShape.circle,
-                              color: Colors.black,
-                            ),
+                                border:
+                                    Border.all(color: Colors.white, width: 5),
+                                shape: BoxShape.circle,
+                                color: Colors.black,
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        "https://s3-alpha-sig.figma.com/img/b271/70bb/8a7db32d95e2d59f88efb80e8417336c?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=U1TCftYFII4pIsidEmBhOUs96q6udmiVQ0z1YPKHJJVIjeh~m7r1gTCdGf3S4BIjHAEc9kRQ8fQ52UfUzwENj2Z~m07wfWB3juP9uNTyWdc5vTwW~OAvhjiaQpv9P26dbXTOL1Y~0JoCtG79QCMIKIj7rxV5IiM8wZjAFLAZptmXyP4S1O-miNft6j5CutQKKm-dcR8laXfyjXqsXc0OuVmkHbRuxVSLSrkBTsfoGSEXz7u6TTi5kwNyAResPYpa7VGC3gPrvx2IilBNP7obPKzZ126OBlwNN~hwG3VY9AF1E4gHblmLskYdulaJGBCNMOvtMeGdrWMD3W3-y5ElCw__"))),
                           ),
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 80, vertical: 48),
+                          horizontal: 60, vertical: 40),
                       child: SlideAction(
-                        text: locale.slideToCancel,
                         textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -106,22 +115,9 @@ class PlacingOrderPage extends ConsumerWidget {
                         ),
                         key: _key,
                         onSubmit: () {
-                          // Future.delayed(
-                          //   const Duration(seconds: 1), () => _key.currentState!.reset(),
-                          // );
-                          // context.maybePop();
                           context.pushRoute(const DeliveringRoute());
-                          // final grades = [80, 75, 70];
-                          // var total = 0;
-                          // for(var i = 0; i < grades.length; i++){
-                          //   total = total + grades[i];
-                          // }
-                          // print('Total: $total');
-                          // print('# of Subjects: ${grades.length}');
-                          // print('Average: ${total/grades.length}');
                           return null;
                         },
-                        // submittedIcon: const Icon(Icons.close, color: Colors.white,),
                         outerColor: Colors.white,
                         innerColor: Colors.black,
                         animationDuration: Duration.zero,
@@ -129,6 +125,7 @@ class PlacingOrderPage extends ConsumerWidget {
                           Icons.close,
                           color: Colors.white,
                         ),
+                        text: locale.slideToCancel,
                       ),
                     ),
                   ],

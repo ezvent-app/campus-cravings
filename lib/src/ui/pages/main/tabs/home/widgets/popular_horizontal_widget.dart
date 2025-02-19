@@ -20,25 +20,22 @@ class _PopularHorizontalWidgetState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(left: 25),
-          child: Text(
-            'Popular Items',
-            style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: AppColors.black),
-          ),
+          child: Text('Popular Items',
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  )),
         ),
         SizedBox(
           height: 227,
           width: double.infinity,
           child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
-            separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(width: 12),
+            separatorBuilder: (BuildContext context, int index) => width(12),
             itemBuilder: (BuildContext context, int index) {
               final category = products[index];
               return Column(
@@ -61,7 +58,7 @@ class _PopularHorizontalWidgetState
                           width: 90,
                           height: 90,
                         ),
-                        const SizedBox(height: 16),
+                        height(14),
                         Text(
                           category,
                           style: const TextStyle(
@@ -72,12 +69,12 @@ class _PopularHorizontalWidgetState
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const PngAsset(
-                              'time_icon',
+                            const SvgAssets(
+                              'linear_clock',
                               width: 10,
                               height: 10,
                             ),
-                            const SizedBox(width: 3),
+                            width(3),
                             const Text(
                               '25min',
                               style: TextStyle(
@@ -94,12 +91,12 @@ class _PopularHorizontalWidgetState
                                 color: Color(0xFFD9D9D9),
                               ),
                             ),
-                            const PngAsset(
-                              'rating_icon',
+                            const SvgAssets(
+                              'linear_star',
                               width: 10,
                               height: 10,
                             ),
-                            const SizedBox(width: 3),
+                            width(3),
                             const Text(
                               '4.7',
                               style: TextStyle(
@@ -109,13 +106,10 @@ class _PopularHorizontalWidgetState
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
-                        const Text(
+                        height(2),
+                        Text(
                           '\$6.90',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.black),
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ],
                     ),

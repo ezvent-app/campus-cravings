@@ -139,26 +139,23 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                                           children: [
                                             Text(
                                               categorizedProducts[index].name,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 16,
-                                              ),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall,
                                             ),
-                                            const SizedBox(height: 3),
+                                            height(7),
                                             Row(
                                               children: [
                                                 Expanded(
                                                   child: Text(
                                                     '\$${categorizedProducts[index].price.toStringAsFixed(2)}',
-                                                    style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 16,
-                                                    ),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleSmall,
                                                   ),
                                                 ),
-                                                const PngAsset(
-                                                  'add_icon',
+                                                const SvgAssets(
+                                                  'PlusButton',
                                                   width: 20,
                                                   height: 20,
                                                 )

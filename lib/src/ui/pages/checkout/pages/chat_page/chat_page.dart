@@ -20,6 +20,7 @@ class CheckOutChatPage extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: chatsList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {

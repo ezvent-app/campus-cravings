@@ -53,9 +53,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               controller: _pageController,
               onPageChanged: (int page) => setState(() => _currentPage = page),
               children: const [
-                PngAsset('onboarding_1'),
-                PngAsset('onboarding_2'),
-                PngAsset('onboarding_3'),
+                SvgAssets('onboarding_1'),
+                SvgAssets('onboarding_2'),
+                SvgAssets('onboarding_3'),
               ],
             ),
           ),

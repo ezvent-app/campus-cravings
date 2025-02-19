@@ -194,6 +194,12 @@
   "lastName" : "Last Name",
   "phoneNumber" : "Phone Number",
   "role" : "Role",
+  "addTip" : "Add a Tip",
+  "addNote" : "Add a Note",
+  "location" : "Location",
+  "saveAs" : "Save as",
+  "setDefault" : "Set as Default",
   "registerDelivery" : "Register for Delivery",
-  "whatDoYouWantKnowAboutYou" : "What do you want people you deliver to know about you?"
+  "whatDoYouWantKnowAboutYou" : "What do you want people you deliver to know about you?",
+  "addInstructionsToHelpDelivery" : "Add Instruction to Help with Delivery (Optional)"
 }

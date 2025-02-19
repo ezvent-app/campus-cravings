@@ -20,6 +20,7 @@ class ContactSupportPage extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: helpCenterChatsList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {

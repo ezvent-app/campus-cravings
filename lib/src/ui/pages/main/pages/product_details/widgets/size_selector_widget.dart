@@ -26,16 +26,16 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
               padding: EdgeInsets.only(left: 25, right: 15),
               child: Text(
                 locale.size,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: AppColors.black),
               ),
             ),
             Expanded(
               child: Text(
                 locale.chooseAnyoneFromTheOptions,
-                style: TextStyle(
-                    color: Color(0xff878E9B),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           ],

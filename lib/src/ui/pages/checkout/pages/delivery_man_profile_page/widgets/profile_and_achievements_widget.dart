@@ -82,9 +82,9 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-              top: 285,
-              left: 50,
-              right: 50,
+              top: 275,
+              left: 35,
+              right: 35,
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -100,9 +100,9 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
                             color: AppColors.black,
                             fontWeight: FontWeight.w500),
                       ),
-                      height(20),
+                      height(10),
                       Container(
-                        padding: EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.red.shade100),
                             borderRadius:
@@ -117,7 +117,7 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
                               value: "1032",
                             ),
                             SizedBox(
-                                height: 30,
+                                height: 40,
                                 child: VerticalDivider(
                                   color: AppColors.email,
                                 )),

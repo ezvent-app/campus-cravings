@@ -13,6 +13,8 @@ class DeliveryDetailsWidget extends ConsumerStatefulWidget {
 class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
   List stars = [1, 2, 3, 4, 5];
   List tipsList = [1, 5, 10, 15];
+  List emojis = ['😣', '☹️', '😶', '😃', '🤩'];
+
   int selectedIndex = -1;
   @override
   Widget build(BuildContext context) {
@@ -63,12 +65,13 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
             children: List.generate(
                 stars.length,
                 (i) => Padding(
-                      padding: const EdgeInsets.only(right: 5),
-                      child: Icon(
-                        Icons.star,
-                        color: i == 4 ? AppColors.dividerColor : Colors.amber,
-                      ),
-                    )),
+                    padding: const EdgeInsets.only(right: 5),
+                    child: SvgAssets(
+                      'star',
+                      width: 20,
+                      height: 20,
+                      color: i == 4 ? AppColors.dividerColor : AppColors.yellow,
+                    ))),
           ),
         ),
         height(15),
@@ -115,14 +118,11 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
             ],
           ),
         ),
-
         Container(
           margin: const EdgeInsets.only(top: 19),
           height: 10,
           color: widget.isMinHeight ? Colors.white : const Color(0xFFF5F5F5),
         ),
-
-        ///
         Expanded(
           child: SingleChildScrollView(
             controller: widget.scrollController,
@@ -136,7 +136,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: size.height * .25,
+                        height: size.height * .26,
                         padding: EdgeInsets.all(Dimensions.paddingSizeDefault),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,8 +197,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                               .textTheme
                               .titleSmall!
                               .copyWith(
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.w800)),
+                                  fontSize: 21, fontWeight: FontWeight.w800)),
                       const SizedBox(height: 2),
                       const Text(
                         'Cafe Shop',
@@ -209,66 +208,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Column(
-                        children: List.generate(
-                          4,
-                          (index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    color: const Color(0xffEFECF0),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 2, horizontal: 10),
-                                    child: Text('1',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall!
-                                            .copyWith(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
-                                            )),
-                                  ),
-                                  const SizedBox(width: 17),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Mixed Vegetable Salad',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall!
-                                              .copyWith(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w500,
-                                              )),
-                                      Row(
-                                        children: [
-                                          Text(locale.showMore,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall!
-                                                  .copyWith(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  )),
-                                          Icon(
-                                            Icons.keyboard_arrow_down,
-                                            size: 20,
-                                            color: Colors.black,
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                      OrderSummaryWidget(locale: locale),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 20),
                         child: Row(
@@ -300,19 +240,22 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                   height: 10,
                   color: const Color(0xFFF5F5F5),
                 ),
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 18, vertical: 25),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffF5F5F5),
-                      borderRadius: BorderRadius.circular(100)),
-                  child: Text(locale.addDeliveryNote,
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          )),
+                InkWell(
+                  onTap: () => deliveryNoteSheetMethod(context),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 18, vertical: 25),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: const Color(0xffF5F5F5),
+                        borderRadius: BorderRadius.circular(100)),
+                    child: Text(locale.addDeliveryNote,
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            )),
+                  ),
                 ),
               ],
             ),
@@ -332,7 +275,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
           return SizedBox(
-            height: MediaQuery.of(context).size.height * .78,
+            height: MediaQuery.of(context).size.height * .8,
             child: Card(
               margin: EdgeInsets.all(10),
               shape: RoundedRectangleBorder(
@@ -368,14 +311,9 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
-                          5,
+                          emojis.length,
                           (i) => InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    stars = List.generate(stars.length,
-                                        (j) => j <= i ? i : stars[j]);
-                                  });
-                                },
+                                onTap: () {},
                                 child: Container(
                                     width: 50,
                                     height: 50,
@@ -383,7 +321,13 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.grey.shade100),
-                                    child: SvgAssets("emoji$i")),
+                                    child: Center(
+                                        child: Text(
+                                      emojis[i].toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ))),
                               )),
                     ),
                     height(20),
@@ -406,7 +350,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                               child: Padding(
                                 padding: const EdgeInsets.all(5),
                                 child: Container(
-                                  width: 150,
+                                  width: 140,
                                   height: 70,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
@@ -443,7 +387,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                     ),
                     height(5),
                     CustomTextField(
-                      maxLines: 5,
+                      maxLines: 3,
                     ),
                     height(30),
                     RoundedButtonWidget(
@@ -458,5 +402,59 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
         });
       },
     );
+  }
+
+  Future<dynamic> deliveryNoteSheetMethod(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
+    return showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: Icon(
+                            Icons.arrow_back,
+                          )),
+                      width(10),
+                      Text(
+                        locale.addNote,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ],
+                  ),
+                  height(10),
+                  Container(
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: CustomTextField(
+                      hintText: locale.addInstructionsToHelpDelivery,
+                      maxLines: 7,
+                    ),
+                  ),
+                  Spacer(),
+                  RoundedButtonWidget(
+                    btnTitle: locale.continueNext,
+                    onTap: () => context.replaceRoute(HomeTabRoute()),
+                  ),
+                  height(20)
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

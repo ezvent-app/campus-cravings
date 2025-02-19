@@ -14,7 +14,7 @@ class AchievmentsRowWidget extends StatelessWidget {
     return Row(
       children: [
         PngAsset(image, width: 40, height: 40),
-        width(15),
+        width(10),
         Column(
           children: [
             Text(

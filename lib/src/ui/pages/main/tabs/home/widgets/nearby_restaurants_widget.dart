@@ -14,15 +14,13 @@ class _NearbyRestaurantsWidgetState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(left: 25, top: 10),
-          child: Text(
-            'Restaurants Nearby',
-            style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: AppColors.black),
-          ),
+          child: Text('Restaurants Nearby',
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  )),
         ),
         const SizedBox(height: 2),
         Column(

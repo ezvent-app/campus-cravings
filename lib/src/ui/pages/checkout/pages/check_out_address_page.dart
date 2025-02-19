@@ -10,7 +10,10 @@ class CheckoutAddressPage extends ConsumerWidget {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(locale.deliverTo),
+        title: Text(
+          locale.deliverTo,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -42,23 +45,23 @@ class CheckoutAddressPage extends ConsumerWidget {
               title: locale.home,
               subTitle: 'Times Square NYC, Manhattan, 27',
             ),
-            SizedBox(
-              width: size.width,
-              height: size.height * .08,
-              child: Card(
-                color: AppColors.dividerColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Center(
-                    child: Text(
-                      locale.addNewAddress,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall!
-                          .copyWith(fontWeight: FontWeight.w600, fontSize: 16),
-                    ),
+            Container(
+              width: double.infinity,
+              height: 48,
+              margin: const EdgeInsets.only(top: 24),
+              child: ElevatedButton(
+                onPressed: () =>
+                    context.pushRoute(CheckOutAddNewAddressRoute()),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  backgroundColor: const Color(0xffE7E7E7),
+                  foregroundColor: AppColors.primary,
+                ),
+                child: Text(
+                  locale.addNewAddress,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

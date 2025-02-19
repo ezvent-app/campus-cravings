@@ -39,7 +39,6 @@ ThemeData lightTheme = ThemeData.light().copyWith(
     elevation: 0,
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
-      statusBarColor: AppColors.accent,
     ),
   ),
   textButtonTheme: const TextButtonThemeData(

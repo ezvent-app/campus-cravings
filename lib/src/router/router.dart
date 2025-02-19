@@ -124,6 +124,10 @@ class AppRouter extends RootStackRouter {
           path: '/delivery-setup',
         ),
         AutoRoute(
+          page: CheckOutAddNewAddressRoute.page,
+          path: '/add_new-address',
+        ),
+        AutoRoute(
           page: HelpOrderRoute.page,
           path: '/help-order',
         ),

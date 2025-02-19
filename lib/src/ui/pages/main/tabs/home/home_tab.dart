@@ -1,4 +1,5 @@
 import 'package:campus_cravings/src/src.dart';
+import 'package:flutter/cupertino.dart';
 
 @RoutePage()
 class HomeTabPage extends StatelessWidget {
@@ -13,9 +14,16 @@ class HomeTabPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             height(20),
-            Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+            Container(
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(2, 3),
+                          blurRadius: 5,
+                          color: Colors.grey.withValues(alpha: .5))
+                    ],
+                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.white),
                 margin: EdgeInsets.symmetric(horizontal: 25),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
@@ -39,11 +47,10 @@ class HomeTabPage extends StatelessWidget {
               padding: EdgeInsets.all(25),
               child: Text(
                 locale.discover,
-                style: TextStyle(
-                  color: Color(0xff443A39),
-                  fontSize: 36,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(fontWeight: FontWeight.w500),
               ),
             ),
             Padding(
@@ -58,14 +65,14 @@ class HomeTabPage extends StatelessWidget {
                           TextStyle(color: Color(0xFFB4B0B0), fontSize: 17),
                       prefixIcon: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: ImageIcon(
-                            AssetImage('assets/images/png/search_icon.png'),
-                            color: Color(0xFFB4B0B0),
-                            size: 30),
+                        child: Icon(
+                          CupertinoIcons.search,
+                          color: AppColors.email,
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  width(16),
                   Container(
                     width: 57,
                     height: 57,
@@ -81,11 +88,11 @@ class HomeTabPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                         onTap: () => showSortBottomSheet(context),
                         child: const Center(
-                          child: ImageIcon(
-                              AssetImage('assets/images/png/filter_icon.png'),
-                              color: Color(0xff443A39),
-                              size: 30),
-                        ),
+                            child: SvgAssets(
+                          "filter",
+                          width: 24,
+                          height: 24,
+                        )),
                       ),
                     ),
                   ),
@@ -94,6 +101,7 @@ class HomeTabPage extends StatelessWidget {
             ),
             Expanded(
               child: ListView(
+                physics: BouncingScrollPhysics(),
                 children: const [
                   CategoriesHorizontalWidget(),
                   PopularHorizontalWidget(),

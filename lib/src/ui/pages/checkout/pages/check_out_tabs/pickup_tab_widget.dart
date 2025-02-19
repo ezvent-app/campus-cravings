@@ -45,7 +45,7 @@ class PickUpTabWidget extends StatelessWidget {
                           const Divider(
                               color: AppColors.dividerColor, height: 40),
                           SizedBox(
-                            height: 95,
+                            height: 100,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -56,8 +56,7 @@ class PickUpTabWidget extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(16)),
                                 Expanded(
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 4),
+                                    padding: EdgeInsets.only(left: 15, top: 4),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -69,34 +68,27 @@ class PickUpTabWidget extends StatelessWidget {
                                             overflow: TextOverflow.ellipsis,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .titleSmall),
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontWeight: FontWeight.w700,
+                                                    color: AppColors.black)),
                                         Spacer(),
-                                        Text(
-                                          '\$12.00',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Color(0xff4C4C4C),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '\$12.00',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall,
+                                            ),
+                                            QuantitySelectorWidget()
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 32,
-                                  height: 32,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: AppColors.black),
-                                  ),
-                                  child: Center(
-                                    child: Text('1x',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(color: AppColors.black)),
                                   ),
                                 ),
                               ],
@@ -156,17 +148,16 @@ class PickUpTabWidget extends StatelessWidget {
                         flex: 2,
                         child: Padding(
                           padding: EdgeInsets.only(right: 12),
-                          child: Text(
-                            'Villanova Vallet',
-                            textAlign: TextAlign.end,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Color(0xff212121),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                          child: Text('Villanova Vallet',
+                              textAlign: TextAlign.end,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w600)),
                         ),
                       ),
                       Icon(

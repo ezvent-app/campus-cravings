@@ -31,14 +31,13 @@ class ProfileDetailsWidget extends StatelessWidget {
             children: List.generate(
                 stars.length,
                 (i) => Padding(
-                      padding: const EdgeInsets.only(right: 7),
-                      child: Icon(
-                        Icons.star,
-                        color:
-                            i == 4 ? AppColors.dividerColor : AppColors.yellow,
-                        size: 40,
-                      ),
-                    )),
+                    padding: const EdgeInsets.only(right: 7),
+                    child: SvgAssets(
+                      'star',
+                      width: 35,
+                      height: 35,
+                      color: i == 4 ? AppColors.dividerColor : AppColors.yellow,
+                    ))),
           ),
           ServiceRowWidget(
             image: 'user',
@@ -97,7 +96,7 @@ class ProfileDetailsWidget extends StatelessWidget {
                 .toList(),
           ),
           ServiceRowWidget(
-            image: 'target',
+            image: 'Target',
             title: locale.clubOrganizations,
           ),
           Wrap(

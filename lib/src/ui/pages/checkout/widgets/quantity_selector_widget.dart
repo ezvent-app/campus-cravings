@@ -1,5 +1,3 @@
-
-
 import 'package:campus_cravings/src/src.dart';
 
 class QuantitySelectorWidget extends ConsumerStatefulWidget {
@@ -9,7 +7,8 @@ class QuantitySelectorWidget extends ConsumerStatefulWidget {
   ConsumerState createState() => _QuantitySelectorWidgetState();
 }
 
-class _QuantitySelectorWidgetState extends ConsumerState<QuantitySelectorWidget> {
+class _QuantitySelectorWidgetState
+    extends ConsumerState<QuantitySelectorWidget> {
   int value = 1;
   final int max = 10;
   @override
@@ -25,6 +24,7 @@ class _QuantitySelectorWidgetState extends ConsumerState<QuantitySelectorWidget>
           Container(
             width: 32,
             height: 32,
+            padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
@@ -32,11 +32,13 @@ class _QuantitySelectorWidgetState extends ConsumerState<QuantitySelectorWidget>
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: value <= 1 ? null : (){
-                  setState(() {
-                    value--;
-                  });
-                },
+                onTap: value <= 1
+                    ? null
+                    : () {
+                        setState(() {
+                          value--;
+                        });
+                      },
                 borderRadius: BorderRadius.circular(12),
                 child: Icon(
                   Icons.remove,
@@ -47,13 +49,10 @@ class _QuantitySelectorWidgetState extends ConsumerState<QuantitySelectorWidget>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               value.toString(),
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600
-              ),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           Container(
@@ -66,11 +65,13 @@ class _QuantitySelectorWidgetState extends ConsumerState<QuantitySelectorWidget>
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: value >= max ? null : (){
-                  setState(() {
-                    value++;
-                  });
-                },
+                onTap: value >= max
+                    ? null
+                    : () {
+                        setState(() {
+                          value++;
+                        });
+                      },
                 borderRadius: BorderRadius.circular(12),
                 child: Icon(
                   Icons.add,

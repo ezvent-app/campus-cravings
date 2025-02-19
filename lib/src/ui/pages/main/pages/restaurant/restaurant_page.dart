@@ -43,9 +43,9 @@ class RestaurantPage extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Bamonte's",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Divider(color: AppColors.dividerColor, height: 32),
                 Row(
@@ -53,9 +53,9 @@ class RestaurantPage extends ConsumerWidget {
                   children: [
                     if (kMockFeatured.distance != null)
                       const Padding(
-                        padding: EdgeInsets.only(right: 10),
-                        child: PngAsset(
-                          'location_pin',
+                        padding: EdgeInsets.only(right: 10, top: 3),
+                        child: SvgAssets(
+                          'redLoc',
                           width: 24,
                           height: 24,
                         ),
@@ -65,11 +65,12 @@ class RestaurantPage extends ConsumerWidget {
                       children: [
                         if (kMockFeatured.distance != null)
                           Text(
-                            '${kMockFeatured.distance!.floor()} ${kMockFeatured.distance == 1 ? locale.mile : locale.miles} ${locale.away}',
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
-                          ),
-                        const SizedBox(height: 3),
+                              '${kMockFeatured.distance!.floor()} ${kMockFeatured.distance == 1 ? locale.mile : locale.miles} ${locale.away}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(fontWeight: FontWeight.w500)),
+                        height(3),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -89,10 +90,10 @@ class RestaurantPage extends ConsumerWidget {
                               height: 20,
                               color: AppColors.lightText,
                             ),
-                            const PngAsset(
-                              'travel_icon',
-                              width: 25,
-                              height: 20,
+                            const SvgAssets(
+                              'bike',
+                              width: 24,
+                              height: 24,
                             ),
                             const SizedBox(width: 10),
                             Text(

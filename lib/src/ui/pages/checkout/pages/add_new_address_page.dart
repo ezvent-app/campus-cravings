@@ -1,8 +1,8 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class CheckOutMapOrderTrackingPage extends StatelessWidget {
-  CheckOutMapOrderTrackingPage({super.key});
+class CheckOutAddNewAddressPage extends StatelessWidget {
+  CheckOutAddNewAddressPage({super.key});
 
   // Text field controllers
   TextEditingController buildingController = TextEditingController();
@@ -13,11 +13,19 @@ class CheckOutMapOrderTrackingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locale = AppLocalizations.of(context)!;
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ));
     return Scaffold(
       body: Stack(
         children: [
           PngAsset(
             "map_image",
+            height: size.height,
+            fit: BoxFit.cover,
           ),
           Positioned(
               top: 50,
@@ -30,8 +38,8 @@ class CheckOutMapOrderTrackingPage extends StatelessWidget {
                     icon: Icon(Icons.arrow_back)),
               )),
           Positioned(
-              bottom: 420,
-              top: 350,
+              bottom: 470,
+              top: 300,
               right: 10,
               child: SizedBox(
                 width: 50,
@@ -66,22 +74,51 @@ class CheckOutMapOrderTrackingPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomTextField(
-                      label: locale.enterBuilding,
+                      label: locale.location,
+                    ),
+                    height(20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: CustomTextField(
+                            label: locale.enterFloor,
+                          ),
+                        ),
+                        width(20),
+                        Expanded(
+                          child: CustomTextField(
+                            label: locale.enterRoomNumber,
+                          ),
+                        ),
+                      ],
                     ),
                     height(20),
                     CustomTextField(
-                      label: locale.enterFloor,
+                      label: locale.saveAs,
+                      hintText: locale.home,
                     ),
-                    height(20),
-                    CustomTextField(
-                      label: locale.enterRoomNumber,
+                    height(10),
+                    Row(
+                      children: [
+                        Switch.adaptive(
+                          value: true,
+                          onChanged: (value) {},
+                        ),
+                        width(10),
+                        Text(
+                          locale.setDefault,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: AppColors.black),
+                        ),
+                      ],
                     ),
                     height(40),
-
-                    // Confirm Button Section
                     RoundedButtonWidget(
-                      btnTitle: locale.confirm,
-                      onTap: () => context.pushRoute(PlacingOrderRoute()),
+                      btnTitle: locale.save,
+                      onTap: () => Navigator.pop(context),
                     ),
                     height(20),
                   ],
