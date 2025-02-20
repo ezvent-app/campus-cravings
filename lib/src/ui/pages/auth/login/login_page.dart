@@ -2,12 +2,12 @@ import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
 // ignore: must_be_immutable
-class LoginPage extends StatelessWidget {
+class LoginPage extends ConsumerWidget {
   LoginPage({super.key});
 
   ValueNotifier<bool> password = ValueNotifier<bool>(false);
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
@@ -28,44 +28,79 @@ class LoginPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     height(3),
-                    Text(locale.signIntoAccount,
-                        style: Theme.of(context).textTheme.titleLarge),
+                    Text(
+                      locale.signIntoAccount,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                     height(5),
-                    Text(locale.enterEmailAndPassword,
-                        style: Theme.of(context).textTheme.bodySmall),
+                    Text(
+                      locale.enterEmailAndPassword,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                     height(20),
                     CustomTextField(
                       label: locale.universityEmail,
+                      textInputType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      onChanged: (value) {
+                        final email = ref.read(loginProvider);
+                        ref.read(loginProvider.notifier).state = {
+                          ...email,
+                          'email': value,
+                        };
+                      },
                     ),
                     height(20),
                     PasswordWidget(
-                        password: password,
-                        passwordTitle: locale.confirmPassword),
+                      password: password,
+                      passwordTitle: locale.confirmPassword,
+                      onChanged: (value) {
+                        final password = ref.read(loginProvider);
+                        ref.read(loginProvider.notifier).state = {
+                          ...password,
+                          'password': value,
+                        };
+                      },
+                    ),
                     height(5),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () =>
-                            context.pushRoute(ForgetPasswordRoute()),
+                        onPressed:
+                            () => context.pushRoute(ForgetPasswordRoute()),
                         child: Text(
                           locale.forgotPassword,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
+                          style: Theme.of(context).textTheme.bodySmall!
                               .copyWith(color: AppColors.accent),
                         ),
                       ),
                     ),
                     height(20),
-                    RoundedButtonWidget(
-                      btnTitle: locale.logIn,
-                      onTap: () => context.pushRoute(const MainRoute()),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        var loginNotifier = ref.watch(loginProvider);
+                        return RoundedButtonWidget(
+                          btnTitle: locale.logIn,
+                          onTap:
+                              loginNotifier['email']!.isNotEmpty &&
+                                      loginNotifier['password']!.isNotEmpty
+                                  ? () {
+                                    context.pushRoute(const MainRoute());
+                                    ref.read(loginProvider.notifier).state = {
+                                      'email': '',
+                                      'password': '',
+                                    };
+                                  }
+                                  : null,
+                        );
+                      },
                     ),
                     height(size.height * .12),
                     AccountInfoRowWidget(
-                        title: locale.dontHaveAccount,
-                        btnTitle: locale.signUp,
-                        onTap: () => context.pushRoute(SignUpRoute()))
+                      title: locale.dontHaveAccount,
+                      btnTitle: locale.signUp,
+                      onTap: () => context.pushRoute(SignUpRoute()),
+                    ),
                   ],
                 ),
               ),
@@ -76,3 +111,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+
+final loginProvider = StateProvider<Map<String, String>>(
+  (ref) => {'email': '', 'password': ''},
+);

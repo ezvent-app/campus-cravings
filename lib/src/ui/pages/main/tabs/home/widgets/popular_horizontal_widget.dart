@@ -13,7 +13,7 @@ class _PopularHorizontalWidgetState
     'Cheese Pizza',
     'Cheese Pizza',
     'Cheese Pizza',
-    'Cheese Pizza'
+    'Cheese Pizza',
   ];
   @override
   Widget build(BuildContext context) {
@@ -22,11 +22,13 @@ class _PopularHorizontalWidgetState
       children: [
         Padding(
           padding: EdgeInsets.only(left: 25),
-          child: Text('Popular Items',
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  )),
+          child: Text(
+            'Popular Items',
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
         SizedBox(
           height: 227,
@@ -34,6 +36,7 @@ class _PopularHorizontalWidgetState
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             scrollDirection: Axis.horizontal,
+            physics: BouncingScrollPhysics(),
             itemCount: products.length,
             separatorBuilder: (BuildContext context, int index) => width(12),
             itemBuilder: (BuildContext context, int index) {
@@ -42,29 +45,30 @@ class _PopularHorizontalWidgetState
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
+                      horizontal: 20,
+                      vertical: 15,
+                    ),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withValues(alpha: .08),
-                              blurRadius: 15)
-                        ]),
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: .08),
+                          blurRadius: 15,
+                        ),
+                      ],
+                    ),
                     child: Column(
                       children: [
-                        const PngAsset(
-                          'mock_product_2',
-                          width: 90,
-                          height: 90,
-                        ),
+                        const PngAsset('mock_product_2', width: 90, height: 90),
                         height(14),
                         Text(
                           category,
                           style: const TextStyle(
-                              color: AppColors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600),
+                            color: AppColors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,

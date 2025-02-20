@@ -25,17 +25,16 @@ class PaymentMethodsPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: IconButton(
                             onPressed: () => context.maybePop(),
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              size: 28,
-                            ),
+                            icon: const Icon(Icons.arrow_back, size: 28),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 4),
-                          child: Text(locale.paymentMethods,
-                              style: Theme.of(context).textTheme.titleMedium),
-                        )
+                          child: Text(
+                            locale.paymentMethods,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -47,8 +46,9 @@ class PaymentMethodsPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       scrollDirection: Axis.horizontal,
                       itemCount: paymentMethods.length,
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const SizedBox(width: 13),
+                      separatorBuilder:
+                          (BuildContext context, int index) =>
+                              const SizedBox(width: 13),
                       itemBuilder: (BuildContext context, int index) {
                         final category = paymentMethods[index];
                         return Column(
@@ -57,19 +57,23 @@ class PaymentMethodsPage extends StatelessWidget {
                               width: 80,
                               height: 65,
                               padding: const EdgeInsets.all(
-                                  Dimensions.paddingSizeDefault),
+                                Dimensions.paddingSizeDefault,
+                              ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
-                                    Dimensions.radiusDefault),
+                                  Dimensions.radiusDefault,
+                                ),
                                 border: Border.all(
-                                  color: index == 0
-                                      ? Colors.black
-                                      : AppColors.textFieldBorder,
+                                  color:
+                                      index == 0
+                                          ? Colors.black
+                                          : AppColors.textFieldBorder,
                                 ),
                               ),
-                              child: SvgAssets(
-                                category,
-                              ),
+                              child:
+                                  index > 2
+                                      ? PngAsset(category)
+                                      : SvgAssets(category),
                             ),
                           ],
                         );
@@ -91,18 +95,12 @@ class PaymentMethodsPage extends StatelessWidget {
                             padding: EdgeInsets.only(left: 15, right: 27),
                             child: Row(
                               children: [
-                                SvgAssets(
-                                  'visa',
-                                  height: 60,
-                                  width: 60,
-                                ),
+                                SvgAssets('visa', height: 60, width: 60),
                                 Spacer(),
                                 Text(
                                   '2121 6352 8465 ****',
-                                  style: TextStyle(
-                                    color: Color(0xFFC5C5C5),
-                                  ),
-                                )
+                                  style: TextStyle(color: Color(0xFFC5C5C5)),
+                                ),
                               ],
                             ),
                           ),
@@ -123,10 +121,8 @@ class PaymentMethodsPage extends StatelessWidget {
                                 Spacer(),
                                 Text(
                                   '2121 6352 8465 ****',
-                                  style: TextStyle(
-                                    color: Color(0xFFC5C5C5),
-                                  ),
-                                )
+                                  style: TextStyle(color: Color(0xFFC5C5C5)),
+                                ),
                               ],
                             ),
                           ),
@@ -139,12 +135,14 @@ class PaymentMethodsPage extends StatelessWidget {
                           child: Text(
                             '+ ${locale.addNewCard}',
                             style: TextStyle(
-                                fontSize: 15, color: AppColors.primary),
+                              fontSize: 15,
+                              color: AppColors.primary,
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -157,15 +155,14 @@ class PaymentMethodsPage extends StatelessWidget {
                   onPressed: () => context.pushRoute(PlacingOrderRoute()),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.background, // Splash color
                   ),
                   child: Text(
                     locale.apply,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
               ),

@@ -21,7 +21,7 @@ class RidersTabPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 border: Border.all(color: const Color(0xffE2E2E2)),
@@ -33,33 +33,31 @@ class RidersTabPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   color: AppColors.primary,
                 ),
+                labelPadding: EdgeInsets.symmetric(
+                  horizontal: Dimensions.paddingSizeSmall,
+                ),
                 unselectedLabelColor: Colors.black,
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: Colors.transparent,
                 dividerColor: Colors.transparent,
                 unselectedLabelStyle: TextStyle(color: AppColors.black),
                 labelColor: AppColors.white,
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: AppColors.white),
+                labelStyle: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(color: AppColors.white),
                 tabs: [
                   Tab(
                     child: Container(
                       height: 44,
                       alignment: Alignment.center,
-                      child: Text(
-                        locale.deliveryOrders,
-                      ),
+                      child: Text(locale.deliveryOrders),
                     ),
                   ),
                   Tab(
                     child: Container(
                       height: 44,
                       alignment: Alignment.center,
-                      child: Text(
-                        locale.history,
-                      ),
+                      child: Text(locale.history),
                     ),
                   ),
                 ],
@@ -67,10 +65,7 @@ class RidersTabPage extends StatelessWidget {
             ),
             Expanded(
               child: TabBarView(
-                children: [
-                  DeliveryOrdersTabWidget(),
-                  RidersHistoryTabWidget(),
-                ],
+                children: [DeliveryOrdersTabWidget(), RidersHistoryTabWidget()],
               ),
             ),
           ],

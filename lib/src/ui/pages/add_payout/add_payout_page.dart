@@ -24,113 +24,144 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
     final locale = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SafeArea(
+      appBar: AppBar(
+        title: Text(
+          locale.addPayoutDetails,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Dimensions.paddingSizeExtraLarge,
+          vertical: 8,
+        ),
         child: Column(
+          spacing: 16,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 20),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: IconButton(
-                      onPressed: () => context.maybePop(),
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        size: 28,
+            SizedBox(
+              height: 67,
+              width: double.infinity,
+              child: ListView.separated(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: paymentMethods.length,
+                separatorBuilder:
+                    (BuildContext context, int index) => width(13),
+                itemBuilder: (BuildContext context, int index) {
+                  final category = paymentMethods[index];
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(
+                      Dimensions.radiusDefault,
+                    ),
+                    onTap: () {
+                      final fullName = ref.read(paymentSetupProvider);
+                      ref.read(paymentSetupProvider.notifier).state = {
+                        ...fullName,
+                        'paymentMethod': category,
+                      };
+                    },
+                    child: Container(
+                      width: 80,
+                      height: 67,
+                      padding: const EdgeInsets.all(
+                        Dimensions.paddingSizeDefault,
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 4),
-                    child: Text(
-                      locale.addPayoutDetails,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: SizedBox(
-                height: 67,
-                width: double.infinity,
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Dimensions.paddingSizeExtraLarge),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: paymentMethods.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      width(13),
-                  itemBuilder: (BuildContext context, int index) {
-                    final category = paymentMethods[index];
-                    return Column(
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 67,
-                          padding: const EdgeInsets.all(
-                              Dimensions.paddingSizeDefault),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(Dimensions.radiusDefault),
-                            border: Border.all(
-                              color: index == 0
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          Dimensions.radiusDefault,
+                        ),
+                        border: Border.all(
+                          color:
+                              index == 0
                                   ? Colors.black
                                   : AppColors.textFieldBorder,
-                            ),
-                          ),
-                          child: SvgAssets(
-                            category,
-                          ),
                         ),
-                      ],
-                    );
-                  },
-                ),
+                      ),
+                      child: SvgAssets(category),
+                    ),
+                  );
+                },
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: Dimensions.paddingSizeExtraLarge),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 3),
-                    child: Text(locale.selectBank,
-                        style: Theme.of(context).textTheme.bodySmall),
-                  ),
-                  DropDownWidget(
-                      universitiesList: _banks,
-                      onChange: (value) {
-                        setState(() {
-                          _selectedBank = value!;
-                        });
-                      },
-                      hintText: locale.selectBank),
-                  height(16),
-                  CustomTextField(label: locale.fullName),
-                  height(16),
-                  CustomTextField(label: locale.accountNumber),
-                ],
+              padding: EdgeInsets.only(bottom: 3),
+              child: Text(
+                locale.selectBank,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-              child: RoundedButtonWidget(
-                btnTitle: locale.save,
-                onTap: () => context.pushRoute(const MainRoute()),
-              ),
+            DropDownWidget(
+              universitiesList: _banks,
+              onChange: (value) {
+                setState(() {
+                  _selectedBank = value!;
+                });
+
+                final bank = ref.read(paymentSetupProvider);
+                ref.read(paymentSetupProvider.notifier).state = {
+                  ...bank,
+                  'bank': value,
+                };
+              },
+              hintText: locale.selectBank,
             ),
-            height(40)
+
+            CustomTextField(
+              label: locale.fullName,
+              textInputAction: TextInputAction.next,
+
+              onChanged: (value) {
+                final fullName = ref.read(paymentSetupProvider);
+                ref.read(paymentSetupProvider.notifier).state = {
+                  ...fullName,
+                  'name': value,
+                };
+              },
+            ),
+            CustomTextField(
+              label: locale.accountNumber,
+              onChanged: (value) {
+                final accountNumber = ref.read(paymentSetupProvider);
+                ref.read(paymentSetupProvider.notifier).state = {
+                  ...accountNumber,
+                  'number': value,
+                };
+              },
+            ),
+            height(MediaQuery.of(context).size.height * .3),
+            Consumer(
+              builder: (context, ref, child) {
+                final payout = ref.watch(paymentSetupProvider);
+                return RoundedButtonWidget(
+                  btnTitle: locale.save,
+                  onTap:
+                      payout['paymentMethod']!.isNotEmpty &&
+                              payout['bank']!.isNotEmpty &&
+                              payout['name']!.isNotEmpty &&
+                              payout['number']!.isNotEmpty
+                          ? () {
+                            context.pushRoute(const MainRoute());
+                            ref.read(paymentSetupProvider.notifier).state = {
+                              'paymentMethod': '',
+                              'bank': '',
+                              'name': '',
+                              'number': '',
+                            };
+                          }
+                          : null,
+                );
+              },
+            ),
+            height(40),
           ],
         ),
       ),
     );
   }
 }
+
+final paymentSetupProvider = StateProvider<Map<String, String>>(
+  (ref) => {'paymentMethod': '', 'bank': '', 'name': '', 'number': ''},
+);

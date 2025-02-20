@@ -29,20 +29,19 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                  top: Dimensions.paddingSizeLarge,
-                  bottom: Dimensions.paddingSizeDefault),
+                top: Dimensions.paddingSizeLarge,
+                bottom: Dimensions.paddingSizeDefault,
+              ),
               child: Row(
                 children: [
                   if (!widget.newUser)
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.paddingSizeDefault),
+                        horizontal: Dimensions.paddingSizeDefault,
+                      ),
                       child: IconButton(
                         onPressed: () => context.maybePop(),
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          size: 28,
-                        ),
+                        icon: const Icon(Icons.arrow_back, size: 28),
                       ),
                     )
                   else
@@ -53,13 +52,14 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                       widget.newUser ? locale.profileSetUp : locale.editProfile,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: Dimensions.paddingSizeExtraLarge),
+                horizontal: Dimensions.paddingSizeExtraLarge,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -74,12 +74,15 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                             width: 64,
                             height: 64,
                             decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                        'https://s3-alpha-sig.figma.com/img/8929/f506/d6ef157302e2cf4908e7351bb791ad41?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=IrOWv2e5bGX0hD0Mb-WOpcUHEilpfImm3nnpYh~V3iQJ9i2ToXgmfiGUJ8X0Mu3M2ootT8HOD48F5HOG5ENt7fRU1eDH7OpI8cr~OfaT4b7b~CbvxCRIrMaeqSLjcN1~ZVLQ-X8U0KezpESVzGKidhjlJDj33RnOG~UpUT6AJb6f5ew39Way97cIeUQEC1bnwLDhVVDfd4-mt8Ulh0NhZM4oS2d4rloLq6SsD240s288F32VKnkOjsQ6vQNJP6IeKOAEXVeLaanSzBCVMD~-~7LM77Y7xpfWs6lvplOVhRA61Kqvh2vRU8UTWPle~V-ay4qRgOCA2eaZ0zlK6GYC3w__')),
-                                color: Colors.grey,
-                                shape: BoxShape.circle),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  'https://s3-alpha-sig.figma.com/img/8929/f506/d6ef157302e2cf4908e7351bb791ad41?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=IrOWv2e5bGX0hD0Mb-WOpcUHEilpfImm3nnpYh~V3iQJ9i2ToXgmfiGUJ8X0Mu3M2ootT8HOD48F5HOG5ENt7fRU1eDH7OpI8cr~OfaT4b7b~CbvxCRIrMaeqSLjcN1~ZVLQ-X8U0KezpESVzGKidhjlJDj33RnOG~UpUT6AJb6f5ew39Way97cIeUQEC1bnwLDhVVDfd4-mt8Ulh0NhZM4oS2d4rloLq6SsD240s288F32VKnkOjsQ6vQNJP6IeKOAEXVeLaanSzBCVMD~-~7LM77Y7xpfWs6lvplOVhRA61Kqvh2vRU8UTWPle~V-ay4qRgOCA2eaZ0zlK6GYC3w__',
+                                ),
+                              ),
+                              color: Colors.grey,
+                              shape: BoxShape.circle,
+                            ),
                           ),
                           Positioned(
                             right: 0,
@@ -89,43 +92,53 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                               width: 20,
                               height: 20,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ),
                   height(50),
                   CustomTextField(
-                    label: widget.newUser
-                        ? locale.enterFirstName
-                        : locale.firstName,
+                    textInputAction: TextInputAction.next,
+
+                    label:
+                        widget.newUser
+                            ? locale.enterFirstName
+                            : locale.firstName,
                   ),
                   height(16),
                   CustomTextField(
+                    textInputAction: TextInputAction.next,
+
                     label:
                         widget.newUser ? locale.enterLastName : locale.lastName,
                   ),
                   height(16),
                   CustomTextField(
-                    label: widget.newUser
-                        ? locale.enterPhoneNumber
-                        : locale.phoneNumber,
+                    textInputAction: TextInputAction.next,
+                    textInputType: TextInputType.number,
+                    label:
+                        widget.newUser
+                            ? locale.enterPhoneNumber
+                            : locale.phoneNumber,
                   ),
                   height(16),
                   Padding(
                     padding: EdgeInsets.only(bottom: 3),
                     child: Text(
-                        widget.newUser ? locale.selectRole : locale.role,
-                        style: Theme.of(context).textTheme.bodySmall),
+                      widget.newUser ? locale.selectRole : locale.role,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ),
                   DropDownWidget(
-                      universitiesList: _roles,
-                      onChange: (value) {
-                        setState(() {
-                          _selectedRole = value!;
-                        });
-                      },
-                      hintText: locale.selectRole),
+                    universitiesList: _roles,
+                    onChange: (value) {
+                      setState(() {
+                        _selectedRole = value!;
+                      });
+                    },
+                    hintText: locale.selectRole,
+                  ),
                   height(12),
                   Row(
                     children: [
@@ -136,15 +149,19 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                             scale: 1.3,
                             child: Checkbox(
                               value: isActive,
-                              onChanged: (value) => ref
-                                  .read(editProfileProvider.notifier)
-                                  .state = value!,
+                              onChanged:
+                                  (value) =>
+                                      ref
+                                          .read(editProfileProvider.notifier)
+                                          .state = value!,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
                               side: WidgetStateBorderSide.resolveWith(
                                 (states) => const BorderSide(
-                                    width: 1.0, color: Colors.grey),
+                                  width: 1.0,
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
                           );
@@ -156,10 +173,11 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                             ? locale.registerForDelivery
                             : locale.registerDelivery,
                         style: TextStyle(
-                            fontSize: Dimensions.fontSizeSmall,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff6C7278)),
-                      )
+                          fontSize: Dimensions.fontSizeSmall,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff6C7278),
+                        ),
+                      ),
                     ],
                   ),
                   height(18),
@@ -167,17 +185,20 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                     builder: (context, ref, child) {
                       final isActive = ref.watch(editProfileProvider);
                       return RoundedButtonWidget(
-                          btnTitle: widget.newUser ? locale.next : locale.save,
-                          onTap: widget.newUser
-                              ? isActive
-                                  ? () => context
-                                      .pushRoute(StudentProfileDetailsRoute())
-                                  : () => context.pushRoute(const MainRoute())
-                              : isActive
-                                  ? () => context.maybePop()
-                                  : null);
+                        btnTitle: widget.newUser ? locale.next : locale.save,
+                        onTap:
+                            widget.newUser
+                                ? isActive
+                                    ? () => context.pushRoute(
+                                      StudentProfileDetailsRoute(),
+                                    )
+                                    : () => context.pushRoute(const MainRoute())
+                                : isActive
+                                ? () => context.maybePop()
+                                : null,
+                      );
                     },
-                  )
+                  ),
                 ],
               ),
             ),

@@ -43,9 +43,14 @@ class _ConsumerDeliveryOrdersTabWidgetState
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final wdth = size.width;
+    final height = size.height;
+
+    double topPosition = height * 0.52;
+    double leftPosition = wdth * 0.85;
+    double buttonWidth = wdth * 0.8;
     return Stack(
       children: [
         Expanded(
@@ -57,39 +62,33 @@ class _ConsumerDeliveryOrdersTabWidgetState
         ),
         isAccept
             ? Positioned(
-                top: 400,
-                bottom: 110,
-                left: 210,
-                right: 10,
-                child: Card(
-                  color: AppColors.black,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  margin: EdgeInsets.all(10),
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        PngAsset(
-                          "navigation",
-                          width: 30,
-                          height: 30,
+              top: topPosition,
+              left: leftPosition - buttonWidth / 2,
+              child: Card(
+                color: AppColors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                margin: EdgeInsets.all(10),
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      SvgAssets("live_location", width: 28, height: 28),
+                      width(10),
+                      Text(
+                        "Navigation",
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          color: AppColors.white,
                         ),
-                        width(10),
-                        Text(
-                          "Navigation",
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall!
-                              .copyWith(color: AppColors.white),
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              )
+              ),
+            )
             : SizedBox(),
-        isAccept ? AnimatedRidersDeliveryDetailsWrapper() : SizedBox()
+        isAccept ? AnimatedRidersDeliveryDetailsWrapper() : SizedBox(),
       ],
     );
   }
@@ -119,9 +118,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                         width(10),
                         Text(
                           'Guaranteed',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
+                          style: Theme.of(context).textTheme.bodyMedium!
                               .copyWith(color: AppColors.black),
                         ),
                       ],
@@ -139,32 +136,28 @@ class _ConsumerDeliveryOrdersTabWidgetState
                             color: AppColors.black,
                           ),
                         ),
-                        Text('$countdown sec',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(color: AppColors.black)),
+                        Text(
+                          '$countdown sec',
+                          style: Theme.of(context).textTheme.bodyMedium!
+                              .copyWith(color: AppColors.black),
+                        ),
                       ],
                     ),
                   ],
                 ),
                 Text(
                   '1.2 mi',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: AppColors.black),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
                 ),
                 Text(
                   'Deliver by 2:38 PM',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: AppColors.black),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
                 ),
-                Divider(
-                  color: AppColors.dividerColor,
-                ),
+                Divider(color: AppColors.dividerColor),
                 Column(
                   children: [
                     Row(
@@ -176,8 +169,10 @@ class _ConsumerDeliveryOrdersTabWidgetState
                               margin: EdgeInsets.zero,
                               color: AppColors.buttonGradient1,
                               shape: StadiumBorder(),
-                              child: Icon(Icons.arrow_drop_down,
-                                  color: Colors.white),
+                              child: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.white,
+                              ),
                             ),
                             height(5),
                             _buildDottedLine(),
@@ -194,19 +189,21 @@ class _ConsumerDeliveryOrdersTabWidgetState
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Pickup',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(color: AppColors.black)),
-                              Text('Big Garden Salad',
-                                  style: Theme.of(context).textTheme.bodySmall),
+                              Text(
+                                'Pickup',
+                                style: Theme.of(context).textTheme.bodyMedium!
+                                    .copyWith(color: AppColors.black),
+                              ),
+                              Text(
+                                'Big Garden Salad',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                               height(48),
-                              Text('Customer Dropoff',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(color: AppColors.black)),
+                              Text(
+                                'Customer Dropoff',
+                                style: Theme.of(context).textTheme.bodyMedium!
+                                    .copyWith(color: AppColors.black),
+                              ),
                             ],
                           ),
                         ),
@@ -214,34 +211,36 @@ class _ConsumerDeliveryOrdersTabWidgetState
                     ),
                   ],
                 ),
-                Divider(
-                  color: AppColors.dividerColor,
-                ),
+                Divider(color: AppColors.dividerColor),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
-                        child: RoundedButtonWidget(
-                            btnTitle: "Accept",
-                            onTap: () {
-                              setState(() {
-                                isAccept = true;
-                              });
-                              Navigator.pop(context);
-                            })),
+                      child: RoundedButtonWidget(
+                        btnTitle: "Accept",
+                        onTap: () {
+                          setState(() {
+                            isAccept = true;
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
                     width(10),
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                           side: BorderSide(color: Colors.black),
                           padding: EdgeInsets.symmetric(vertical: 15),
                         ),
-                        child: Text('Decline',
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black)),
+                        child: Text(
+                          'Decline',
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
                       ),
                     ),
                   ],
@@ -256,19 +255,18 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
   Widget _buildDottedLine() {
     return Column(
-        children: List.generate(
-      5,
-      (index) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        child: Container(
-          width: 3,
-          height: 3,
-          decoration: BoxDecoration(
-            color: AppColors.black,
+      children: List.generate(
+        5,
+        (index) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          child: Container(
+            width: 3,
+            height: 3,
+            decoration: BoxDecoration(color: AppColors.black),
           ),
         ),
       ),
-    ));
+    );
   }
 }
 

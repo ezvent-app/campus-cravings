@@ -23,8 +23,9 @@ class ProfileTabPage extends StatelessWidget {
                           width: 60,
                           height: 60,
                           decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(20)),
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           child: const Center(
                             child: Icon(
                               Icons.person,
@@ -45,7 +46,8 @@ class ProfileTabPage extends StatelessWidget {
                             InkWell(
                               onTap: () {
                                 context.pushRoute(
-                                    ProfileFormRoute(newUser: false));
+                                  ProfileFormRoute(newUser: false),
+                                );
                               },
                               child: Text(
                                 locale.editProfile,
@@ -53,7 +55,7 @@ class ProfileTabPage extends StatelessWidget {
                               ),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -63,8 +65,10 @@ class ProfileTabPage extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
-                      border:
-                          Border.all(color: const Color(0xFFF4F4F4), width: 2),
+                      border: Border.all(
+                        color: const Color(0xFFF4F4F4),
+                        width: 2,
+                      ),
                     ),
                     child: Material(
                       color: Colors.transparent,
@@ -80,7 +84,7 @@ class ProfileTabPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
               ProfileGroupButton(
@@ -89,8 +93,9 @@ class ProfileTabPage extends StatelessWidget {
                     icon: 'paymentMethod',
                     label: locale.paymentMethods,
                     onPressed: () {
-                      context
-                          .pushRoute(PaymentMethodsRoute(fromCheckout: false));
+                      context.pushRoute(
+                        PaymentMethodsRoute(fromCheckout: false),
+                      );
                     },
                   ),
                   ProfileOption(
@@ -102,7 +107,7 @@ class ProfileTabPage extends StatelessWidget {
                   ),
                   ProfileOption(
                     icon: 'promo',
-                    label: locale.promoOffers,
+                    label: locale.promoCode,
                     onPressed: () {
                       context.pushRoute(const PromoCodeRoute());
                     },

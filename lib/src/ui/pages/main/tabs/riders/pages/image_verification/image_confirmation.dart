@@ -13,10 +13,9 @@ class ImageConfirmationPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           locale.confirmation,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(color: AppColors.white),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium!.copyWith(color: AppColors.white),
         ),
         backgroundColor: AppColors.black,
         foregroundColor: AppColors.white,
@@ -36,7 +35,7 @@ class ImageConfirmationPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(20),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
                   onPressed: () {
@@ -44,73 +43,70 @@ class ImageConfirmationPage extends StatelessWidget {
                       context: context,
                       builder: (context) {
                         return SimpleDialog(
-                            contentPadding: EdgeInsets.all(30),
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  PngAsset(
-                                    "happy",
-                                    width: 160,
-                                    height: 160,
-                                  ),
-                                  Text(
-                                    locale.deliveryComplete,
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
-                                  height(10),
-                                  Text(
-                                    locale.thankYouDeliveringOrderGreatJob,
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  height(30),
-                                  RoundedButtonWidget(
-                                      btnTitle: locale.ok,
-                                      onTap: () =>
-                                          context.replaceRoute(MainRoute()))
-                                ],
-                              ),
-                            ]);
+                          contentPadding: EdgeInsets.all(30),
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                PngAsset("happy", width: 160, height: 160),
+                                Text(
+                                  locale.deliveryComplete,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                                height(10),
+                                Text(
+                                  locale.thankYouDeliveringOrderGreatJob,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                height(30),
+                                RoundedButtonWidget(
+                                  btnTitle: locale.ok,
+                                  onTap:
+                                      () => context.replaceRoute(MainRoute()),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
                       },
                     );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                   ),
                   child: Text(
                     locale.submit,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(color: Colors.black), // Text color
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: Colors.black,
+                    ), // Text color
                   ),
                 ),
+                width(20),
                 OutlinedButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     side: BorderSide(color: Colors.white),
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                   ),
                   child: Text(
                     locale.retry,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(color: Colors.white), // Text color
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      color: Colors.white,
+                    ), // Text color
                   ),
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

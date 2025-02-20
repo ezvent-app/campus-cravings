@@ -21,9 +21,10 @@ class _CategoriesHorizontalWidgetState
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             scrollDirection: Axis.horizontal,
+            physics: BouncingScrollPhysics(),
             itemCount: categories.length,
-            separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(width: 8),
+            separatorBuilder:
+                (BuildContext context, int index) => const SizedBox(width: 8),
             itemBuilder: (BuildContext context, int index) {
               final category = categories[index];
               return Column(
@@ -43,8 +44,10 @@ class _CategoriesHorizontalWidgetState
                     ),
                   ),
                   const SizedBox(height: 5),
-                  Text(category,
-                      style: const TextStyle(color: Color(0xff565C67))),
+                  Text(
+                    category,
+                    style: const TextStyle(color: Color(0xff565C67)),
+                  ),
                 ],
               );
             },

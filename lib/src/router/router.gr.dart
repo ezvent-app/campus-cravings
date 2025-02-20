@@ -77,8 +77,6 @@ import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/saved_addre
     as _i38;
 import 'package:campus_cravings/src/ui/pages/main/tabs/profile/profile_tab.dart'
     as _i33;
-import 'package:campus_cravings/src/ui/pages/main/tabs/riders/pages/riders_details_page.dart'
-    as _i36;
 import 'package:campus_cravings/src/ui/pages/main/tabs/riders/riders_tab.dart'
     as _i37;
 import 'package:campus_cravings/src/ui/pages/new_card/new_card_page.dart'
@@ -826,22 +824,6 @@ class RestaurantRoute extends _i41.PageRouteInfo<void> {
     name,
     builder: (data) {
       return const _i35.RestaurantPage();
-    },
-  );
-}
-
-/// generated route for
-/// [_i36.RidersDetailsPage]
-class RidersDetailsRoute extends _i41.PageRouteInfo<void> {
-  const RidersDetailsRoute({List<_i41.PageRouteInfo>? children})
-    : super(RidersDetailsRoute.name, initialChildren: children);
-
-  static const String name = 'RidersDetailsRoute';
-
-  static _i41.PageInfo page = _i41.PageInfo(
-    name,
-    builder: (data) {
-      return const _i36.RidersDetailsPage();
     },
   );
 }

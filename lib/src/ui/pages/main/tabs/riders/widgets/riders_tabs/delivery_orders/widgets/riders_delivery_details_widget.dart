@@ -1,7 +1,4 @@
-import 'dart:async';
 import 'package:campus_cravings/src/src.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RidersDeliveryDetailsWidget extends ConsumerStatefulWidget {
   final ScrollController scrollController;
@@ -40,12 +37,11 @@ class _RidersDeliveryDetailsWidgetState
                 ),
                 Text(
                   "Coffee House - Near Corr Hall",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: AppColors.black),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
                 ),
-                height(15),
+                height(10),
               ],
             ),
           ),
@@ -64,19 +60,16 @@ class _RidersDeliveryDetailsWidgetState
               Text(
                 locale.deliveryDetails,
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      fontSize: 21,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  fontSize: 21,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               height(20),
               OrdersInfoWidget(
                 title: locale.address,
                 desc: 'Flat / Suite / Floor: 174',
               ),
-              OrdersInfoWidget(
-                title: locale.orderNumber,
-                desc: '#162432',
-              ),
+              OrdersInfoWidget(title: locale.orderNumber, desc: '#162432'),
               const Divider(color: Color(0xFFF5F5F5)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,9 +77,9 @@ class _RidersDeliveryDetailsWidgetState
                   Text(
                     locale.orderSummary,
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          fontSize: 21,
-                          fontWeight: FontWeight.w800,
-                        ),
+                      fontSize: 21,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ],
               ),
@@ -100,73 +93,7 @@ class _RidersDeliveryDetailsWidgetState
                 ),
               ),
               SizedBox(height: 20),
-              Column(
-                children: List.generate(
-                  4,
-                  (index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            color: const Color(0xffEFECF0),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 2,
-                              horizontal: 10,
-                            ),
-                            child: Text(
-                              '1',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall!
-                                  .copyWith(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                          ),
-                          const SizedBox(width: 17),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Mixed Vegetable Salad',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall!
-                                    .copyWith(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    locale.showMore,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall!
-                                        .copyWith(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                  ),
-                                  const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 20,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
+              OrderSummaryWidget(locale: locale),
               Container(
                 height: 10,
                 color:
@@ -185,10 +112,9 @@ class _RidersDeliveryDetailsWidgetState
                       ),
                       title: Text(
                         "Ryder",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleSmall!
-                            .copyWith(fontWeight: FontWeight.w600),
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       subtitle: Text(
                         "Customer",
@@ -205,11 +131,7 @@ class _RidersDeliveryDetailsWidgetState
                               color: AppColors.black,
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
-                                child: PngAsset(
-                                  "call",
-                                  width: 30,
-                                  height: 30,
-                                ),
+                                child: PngAsset("call", width: 30, height: 30),
                               ),
                             ),
                           ),
@@ -234,11 +156,10 @@ class _RidersDeliveryDetailsWidgetState
                         ],
                       ),
                     ),
-                    height(20),
+                    height(40),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: SlideAction(
-                        text: locale.slideToEndDelivery,
                         textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -249,10 +170,11 @@ class _RidersDeliveryDetailsWidgetState
                           //   isStarted = false;
                           // });
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ImageCaptureScreen(),
-                              ));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImageCaptureScreen(),
+                            ),
+                          );
                           return null;
                         },
                         outerColor: Colors.white,
@@ -262,15 +184,21 @@ class _RidersDeliveryDetailsWidgetState
                           Images.cart,
                           color: AppColors.white,
                         ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Text(locale.slideToEndDelivery),
+                        ),
                       ),
                     ),
                   ],
                 )
               else
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
                   child: SlideAction(
-                    text: locale.slideToStartDelivery,
                     textStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -288,6 +216,10 @@ class _RidersDeliveryDetailsWidgetState
                     sliderButtonIcon: SvgAssets(
                       Images.cart,
                       color: AppColors.white,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(locale.slideToStartDelivery),
                     ),
                   ),
                 ),

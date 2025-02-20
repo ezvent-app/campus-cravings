@@ -44,16 +44,17 @@ class NewPasswordPage extends ConsumerWidget {
               var newPasswordState = ref.watch(newPasswordProvider);
               return RoundedButtonWidget(
                 btnTitle: locale.save,
-                onTap: (newPasswordState["new"]!.isNotEmpty &&
-                        newPasswordState["confirm"]!.isNotEmpty)
-                    ? () {
-                        context.replaceRoute(LoginRoute());
-                        ref.read(newPasswordProvider.notifier).state = {
-                          'new': '',
-                          'confirm': '',
-                        };
-                      }
-                    : null,
+                onTap:
+                    (newPasswordState["new"]!.isNotEmpty &&
+                            newPasswordState["confirm"]!.isNotEmpty)
+                        ? () {
+                          context.replaceRoute(LoginRoute());
+                          ref.read(newPasswordProvider.notifier).state = {
+                            'new': '',
+                            'confirm': '',
+                          };
+                        }
+                        : null,
               );
             },
           ),
@@ -63,5 +64,6 @@ class NewPasswordPage extends ConsumerWidget {
   }
 }
 
-final newPasswordProvider =
-    StateProvider<Map<String, String>>((ref) => {"new": '', 'confirm': ''});
+final newPasswordProvider = StateProvider<Map<String, String>>(
+  (ref) => {"new": '', 'confirm': ''},
+);

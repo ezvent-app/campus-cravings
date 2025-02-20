@@ -16,23 +16,63 @@ class ChangePasswordPage extends ConsumerWidget {
           CustomTextField(
             label: locale.enterOldPassword,
             obscureText: true,
+            onChanged: (value) {
+              final currentState = ref.read(changePasswordProvider);
+              ref.read(changePasswordProvider.notifier).state = {
+                ...currentState,
+                "old": value,
+              };
+            },
           ),
           CustomTextField(
             label: locale.enterNewPassword,
             obscureText: true,
+            onChanged: (value) {
+              final currentState = ref.read(changePasswordProvider);
+              ref.read(changePasswordProvider.notifier).state = {
+                ...currentState,
+                "new": value,
+              };
+            },
           ),
           CustomTextField(
             label: locale.confirmNewPassword,
             obscureText: true,
+            onChanged: (value) {
+              final currentState = ref.read(changePasswordProvider);
+              ref.read(changePasswordProvider.notifier).state = {
+                ...currentState,
+                "confirm": value,
+              };
+            },
           ),
           height(24),
-          RoundedButtonWidget(
-              btnTitle: locale.save,
-              onTap: () {
-                context.maybePop();
-              })
+          Consumer(
+            builder: (context, ref, child) {
+              final password = ref.watch(changePasswordProvider);
+              return RoundedButtonWidget(
+                btnTitle: locale.save,
+                onTap:
+                    (password["new"]!.isNotEmpty &&
+                                password["confirm"]!.isNotEmpty) &&
+                            password["old"]!.isNotEmpty
+                        ? () {
+                          ref.read(newPasswordProvider.notifier).state = {
+                            'old': '',
+                            'new': '',
+                            'confirm': '',
+                          };
+                        }
+                        : null,
+              );
+            },
+          ),
         ],
       ),
     );
   }
 }
+
+final changePasswordProvider = StateProvider<Map<String, String>>(
+  (ref) => {"old": '', 'new': '', 'confirm': ''},
+);

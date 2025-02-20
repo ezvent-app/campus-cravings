@@ -37,8 +37,11 @@ class _AnimatedRidersDeliveryDetailsWrapperState
   @override
   Widget build(BuildContext context) {
     if (_height == _minHeight && _scrollController.positions.isNotEmpty) {
-      _scrollController.animateTo(0,
-          duration: const Duration(milliseconds: 200), curve: Curves.easeOut);
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+      );
     }
     double opacity = ((_height - _minHeight) / (_maxHeight - _minHeight)) * 0.7;
     opacity = opacity < 0 ? 0 : (opacity > 0.7 ? 0.7 : opacity);
@@ -54,16 +57,18 @@ class _AnimatedRidersDeliveryDetailsWrapperState
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 color: Colors.white,
               ),
-              duration:
-                  Duration(milliseconds: _dragging ? 0 : _animationDuration),
+              duration: Duration(
+                milliseconds: _dragging ? 0 : _animationDuration,
+              ),
             ),
           Align(
             alignment: Alignment.bottomCenter,
             child: AnimatedContainer(
               height: _height,
               curve: Curves.easeOut,
-              duration:
-                  Duration(milliseconds: _dragging ? 0 : _animationDuration),
+              duration: Duration(
+                milliseconds: _dragging ? 0 : _animationDuration,
+              ),
               width: double.infinity,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -97,9 +102,7 @@ class _AnimatedRidersDeliveryDetailsWrapperState
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(
-                          width: 40,
-                        ),
+                        const SizedBox(width: 40),
                         Container(
                           // color: Colors.red,
                           color: Colors.white,
@@ -109,16 +112,16 @@ class _AnimatedRidersDeliveryDetailsWrapperState
                             width: 50,
                             margin: const EdgeInsets.only(top: 9, bottom: 18),
                             decoration: BoxDecoration(
-                                color: const Color(0xffD9D9D9),
-                                borderRadius: BorderRadius.circular(29)),
+                              color: const Color(0xffD9D9D9),
+                              borderRadius: BorderRadius.circular(29),
+                            ),
                           ),
                         ),
                         if (_height != _maxHeight)
-                          const SizedBox(
-                            width: 40,
-                          )
+                          const SizedBox(width: 40)
                         else
-                          GestureDetector(
+                          InkWell(
+                            borderRadius: BorderRadius.circular(100),
                             onTap: () {
                               setState(() {
                                 _height = _minHeight;
@@ -130,11 +133,9 @@ class _AnimatedRidersDeliveryDetailsWrapperState
                                 color: Colors.white,
                               ),
                               width: 40,
-                              child: const Icon(
-                                Icons.close,
-                              ),
+                              child: const Icon(Icons.close),
                             ),
-                          )
+                          ),
                       ],
                     ),
                   ),

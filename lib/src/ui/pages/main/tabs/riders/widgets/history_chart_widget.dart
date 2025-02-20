@@ -2,29 +2,28 @@ import 'package:campus_cravings/src/src.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class HistoryChartWidget extends StatelessWidget {
-  const HistoryChartWidget({
-    super.key,
-    required this.size,
-  });
+  const HistoryChartWidget({super.key, required this.size});
 
   final Size size;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: 7),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.dividerColor),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                offset: Offset(-1, 1),
-                color: AppColors.dividerColor,
-                blurRadius: 1)
-          ]),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.dividerColor),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(-1, 1),
+            color: AppColors.dividerColor,
+            blurRadius: 1,
+          ),
+        ],
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(13),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,41 +36,39 @@ class HistoryChartWidget extends StatelessWidget {
                   children: [
                     Text(
                       "Total Revenue",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(color: AppColors.black),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
                     ),
                     Text(
                       "\$20",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall!
-                          .copyWith(fontSize: 22, fontWeight: FontWeight.w700),
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(
-                  width: size.width * .25,
-                  height: size.height * .05,
+                  width: size.width * .29,
+                  height: size.height * .06,
                   child: DropdownButtonFormField<String>(
                     padding: EdgeInsets.zero,
-                    icon: PngAsset(
-                      'arrow_down',
-                      width: 20,
-                      height: 20,
-                    ),
+                    icon: Icon(Icons.keyboard_arrow_down, size: 20),
                     value: 'Daily',
                     style: Theme.of(context).textTheme.bodyMedium!,
-                    items: ['Daily', 'Weekly', 'Monthly']
-                        .map((String value) => DropdownMenuItem(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: Theme.of(context).textTheme.bodySmall,
+                    items:
+                        ['Daily', 'Weekly', 'Monthly']
+                            .map(
+                              (String value) => DropdownMenuItem(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
                               ),
-                            ))
-                        .toList(),
+                            )
+                            .toList(),
                     onChanged: (value) {},
                   ),
                 ),
@@ -85,12 +82,15 @@ class HistoryChartWidget extends StatelessWidget {
                 LineChartData(
                   gridData: FlGridData(show: false),
                   titlesData: FlTitlesData(
-                    leftTitles:
-                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles:
-                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles:
-                        AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    rightTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
@@ -98,13 +98,13 @@ class HistoryChartWidget extends StatelessWidget {
                           switch (value.toInt()) {
                             case 0:
                               return Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 15, left: 20),
+                                padding: const EdgeInsets.only(
+                                  top: 15,
+                                  left: 20,
+                                ),
                                 child: Text(
                                   "10AM",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
+                                  style: Theme.of(context).textTheme.bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -113,9 +113,7 @@ class HistoryChartWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Text(
                                   "11AM",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
+                                  style: Theme.of(context).textTheme.bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -124,9 +122,7 @@ class HistoryChartWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Text(
                                   "12PM",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
+                                  style: Theme.of(context).textTheme.bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -135,9 +131,7 @@ class HistoryChartWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Text(
                                   "01PM",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
+                                  style: Theme.of(context).textTheme.bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -146,9 +140,7 @@ class HistoryChartWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Text(
                                   "02PM",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
+                                  style: Theme.of(context).textTheme.bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -157,21 +149,19 @@ class HistoryChartWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Text(
                                   "03PM",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
+                                  style: Theme.of(context).textTheme.bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
                             case 12:
                               return Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 15, right: 20),
+                                padding: const EdgeInsets.only(
+                                  top: 15,
+                                  right: 20,
+                                ),
                                 child: Text(
                                   "04PM",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
+                                  style: Theme.of(context).textTheme.bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -228,16 +218,18 @@ class HistoryChartWidget extends StatelessWidget {
                         return touchedSpots.map((touchedSpot) {
                           return LineTooltipItem(
                             "\$${touchedSpot.y.toInt()}",
-                            Theme.of(context)
-                                .textTheme
-                                .titleSmall!
-                                .copyWith(color: AppColors.white),
+                            Theme.of(context).textTheme.titleSmall!.copyWith(
+                              color: AppColors.white,
+                            ),
                           );
                         }).toList();
                       },
                     ),
-                    touchCallback: (FlTouchEvent event,
-                        LineTouchResponse? touchResponse) {},
+                    touchCallback:
+                        (
+                          FlTouchEvent event,
+                          LineTouchResponse? touchResponse,
+                        ) {},
                     handleBuiltInTouches: true,
                   ),
                 ),

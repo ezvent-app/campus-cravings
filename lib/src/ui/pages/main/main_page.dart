@@ -15,7 +15,7 @@ class _MainPageState extends ConsumerState<MainPage> {
       routes: const [
         HomeTabRoute(),
         OrdersTabRoute(),
-        ProfileTabRoute(),
+        OrdersTabRoute(),
         RidersTabRoute(),
         ProfileTabRoute(),
       ],
@@ -26,12 +26,10 @@ class _MainPageState extends ConsumerState<MainPage> {
               Expanded(child: child),
               Container(
                 decoration: const BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 60)
-                    ],
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(12))),
+                  color: Colors.white,
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 60)],
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                ),
                 height: 64,
                 width: double.infinity,
                 child: TabBar(
@@ -39,39 +37,50 @@ class _MainPageState extends ConsumerState<MainPage> {
                   controller: tabController,
                   tabs: [
                     Tab(
-                        icon: SvgAssets(
-                      Images.home,
-                      color: tabController.index == 0
-                          ? AppColors.black
-                          : AppColors.unselectedTabIconColor,
-                    )),
-                    Tab(
-                        icon: SvgAssets(
-                      Images.docs,
-                      color: tabController.index == 1
-                          ? AppColors.black
-                          : AppColors.unselectedTabIconColor,
-                    )),
-                    Tab(
-                        icon: CartCounterWidget(
-                            count: 2,
-                            color: tabController.index == 2
+                      icon: SvgAssets(
+                        Images.home,
+                        color:
+                            tabController.index == 0
                                 ? AppColors.black
-                                : AppColors.unselectedTabIconColor)),
+                                : AppColors.unselectedTabIconColor,
+                      ),
+                    ),
                     Tab(
-                        icon: SvgAssets(
-                      Images.delivery,
-                      color: tabController.index == 3
-                          ? AppColors.black
-                          : AppColors.unselectedTabIconColor,
-                    )),
+                      icon: SvgAssets(
+                        Images.docs,
+                        color:
+                            tabController.index == 1
+                                ? AppColors.black
+                                : AppColors.unselectedTabIconColor,
+                      ),
+                    ),
                     Tab(
-                        icon: SvgAssets(
-                      Images.profile,
-                      color: tabController.index == 4
-                          ? AppColors.black
-                          : AppColors.unselectedTabIconColor,
-                    )),
+                      icon: CartCounterWidget(
+                        count: 2,
+                        color:
+                            tabController.index == 2
+                                ? AppColors.black
+                                : AppColors.unselectedTabIconColor,
+                      ),
+                    ),
+                    Tab(
+                      icon: SvgAssets(
+                        Images.delivery,
+                        color:
+                            tabController.index == 3
+                                ? AppColors.black
+                                : AppColors.unselectedTabIconColor,
+                      ),
+                    ),
+                    Tab(
+                      icon: SvgAssets(
+                        Images.profile,
+                        color:
+                            tabController.index == 4
+                                ? AppColors.black
+                                : AppColors.unselectedTabIconColor,
+                      ),
+                    ),
                   ],
                 ),
               ),
