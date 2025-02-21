@@ -1,21 +1,16 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class MainPage extends ConsumerStatefulWidget {
+class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
   @override
-  ConsumerState createState() => _MainPageState();
-}
-
-class _MainPageState extends ConsumerState<MainPage> {
-  @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
-      routes: const [
+      routes: [
         HomeTabRoute(),
         OrdersTabRoute(),
-        OrdersTabRoute(),
+        CheckOutTabRoute(isFromNavBar: true),
         RidersTabRoute(),
         ProfileTabRoute(),
       ],
@@ -36,50 +31,35 @@ class _MainPageState extends ConsumerState<MainPage> {
                   indicatorColor: Colors.transparent,
                   controller: tabController,
                   tabs: [
-                    Tab(
-                      icon: SvgAssets(
-                        Images.home,
-                        color:
-                            tabController.index == 0
-                                ? AppColors.black
-                                : AppColors.unselectedTabIconColor,
-                      ),
+                    _buildTab(
+                      tabController,
+                      0,
+                      Images.home,
+                      tabController.index == 0,
                     ),
-                    Tab(
-                      icon: SvgAssets(
-                        Images.docs,
-                        color:
-                            tabController.index == 1
-                                ? AppColors.black
-                                : AppColors.unselectedTabIconColor,
-                      ),
+                    _buildTab(
+                      tabController,
+                      1,
+                      Images.docs,
+                      tabController.index == 1,
                     ),
-                    Tab(
-                      icon: CartCounterWidget(
-                        count: 2,
-                        color:
-                            tabController.index == 2
-                                ? AppColors.black
-                                : AppColors.unselectedTabIconColor,
-                      ),
+                    _buildTab(
+                      tabController,
+                      2,
+                      Images.cart,
+                      tabController.index == 2,
                     ),
-                    Tab(
-                      icon: SvgAssets(
-                        Images.delivery,
-                        color:
-                            tabController.index == 3
-                                ? AppColors.black
-                                : AppColors.unselectedTabIconColor,
-                      ),
+                    _buildTab(
+                      tabController,
+                      3,
+                      Images.delivery,
+                      tabController.index == 3,
                     ),
-                    Tab(
-                      icon: SvgAssets(
-                        Images.profile,
-                        color:
-                            tabController.index == 4
-                                ? AppColors.black
-                                : AppColors.unselectedTabIconColor,
-                      ),
+                    _buildTab(
+                      tabController,
+                      4,
+                      Images.profile,
+                      tabController.index == 4,
                     ),
                   ],
                 ),
@@ -88,6 +68,25 @@ class _MainPageState extends ConsumerState<MainPage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTab(
+    TabController tabController,
+    int index,
+    String image,
+    bool isSelected,
+  ) {
+    return Tab(
+      icon: AnimatedScale(
+        duration: const Duration(milliseconds: 200),
+        scale: isSelected ? 1.2 : 1.0,
+        child: SvgAssets(
+          image,
+          color:
+              isSelected ? AppColors.black : AppColors.unselectedTabIconColor,
+        ),
+      ),
     );
   }
 }

@@ -33,8 +33,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     children: [
                       // Image Carousel
                       ClipRRect(
-                        borderRadius:
-                            BorderRadius.vertical(bottom: Radius.circular(12)),
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(12),
+                        ),
                         child: SizedBox(
                           width: double.infinity,
                           height: 350,
@@ -48,8 +49,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             },
                             itemBuilder: (context, index) {
                               return PngAsset(
-                                productImages[
-                                    index], // Replace with actual asset reference
+                                productImages[index], // Replace with actual asset reference
                                 fit: BoxFit.fitWidth,
                               );
                             },
@@ -81,7 +81,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   color: AppColors.dividerColor,
                                 ),
                                 onPressed: () {
-                                  context.pushRoute(const CheckoutRoute());
+                                  context.pushRoute(CheckOutTabRoute());
                                 },
                               ),
                             ],
@@ -96,8 +96,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                         right: 0,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:
-                              List.generate(productImages.length, (index) {
+                          children: List.generate(productImages.length, (
+                            index,
+                          ) {
                             bool isSelected = _selectedIndex == index;
                             return AnimatedContainer(
                               duration: Duration(milliseconds: 300),
@@ -107,9 +108,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.white),
-                                color: isSelected
-                                    ? Colors.white
-                                    : Colors.transparent,
+                                color:
+                                    isSelected
+                                        ? Colors.white
+                                        : Colors.transparent,
                               ),
                             );
                           }),
@@ -120,8 +122,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                   Column(
                     children: [
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 20,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -141,9 +145,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                     Text(
                                       'Double Hamburger',
                                       style: TextStyle(
-                                          color: Color(0xff27261E),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
+                                        color: Color(0xff27261E),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -176,13 +181,16 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                             ),
                                             Padding(
                                               padding: EdgeInsets.only(
-                                                  top: 5, left: 5),
+                                                top: 5,
+                                                left: 5,
+                                              ),
                                               child: Text(
                                                 '150 ${locale.kCal}',
                                                 style: TextStyle(
-                                                    color: Color(0xff27261E),
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16),
+                                                  color: Color(0xff27261E),
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -211,13 +219,16 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                             ),
                                             Padding(
                                               padding: EdgeInsets.only(
-                                                  top: 5, left: 5),
+                                                top: 5,
+                                                left: 5,
+                                              ),
                                               child: Text(
                                                 '15${locale.m}',
                                                 style: TextStyle(
-                                                    color: Color(0xff27261E),
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16),
+                                                  color: Color(0xff27261E),
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -234,8 +245,11 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       ),
                       SizeSelectorWidget(),
                       Padding(
-                        padding:
-                            EdgeInsets.only(left: 25, right: 25, bottom: 25),
+                        padding: EdgeInsets.only(
+                          left: 25,
+                          right: 25,
+                          bottom: 25,
+                        ),
                         child: CustomTextField(
                           maxLines: 3,
                           hintText: locale.noteToRestaurant,
@@ -251,8 +265,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
             decoration: const BoxDecoration(
-                color: Colors.white,
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20)]),
+              color: Colors.white,
+              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20)],
+            ),
             child: Row(
               children: [
                 Column(
@@ -260,15 +275,18 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                   children: [
                     Text(
                       '2 ${locale.items}',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
                     ),
                     Text(
                       '\$ 12.99',
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                          color: AppColors.black),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        color: AppColors.black,
+                      ),
                     ),
                   ],
                 ),
@@ -277,17 +295,14 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                   height: 49,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      context.pushRoute(CheckoutRoute());
+                      context.pushRoute(CheckOutTabRoute());
                     },
                     label: Text(locale.addToCart),
-                    icon: SvgAssets(
-                      "shopping-cart",
-                      width: 16,
-                      height: 16,
-                    ),
+                    icon: SvgAssets("shopping-cart", width: 16, height: 16),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.background, // Splash color
                     ),
@@ -295,7 +310,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,13 +1,13 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class PaymentMethodsPage extends StatelessWidget {
+class PaymentMethodsPage extends ConsumerWidget {
   final bool fromCheckout;
   PaymentMethodsPage({super.key, required this.fromCheckout});
 
-  final paymentMethods = ['wallet', 'pp', 'apple', 'venmo', 'venmo'];
+  final paymentMethods = ['wallet', 'pp', 'apple', 'venmo'];
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
@@ -44,6 +44,7 @@ class PaymentMethodsPage extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 30, bottom: 26),
                     child: ListView.separated(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
+                      physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: paymentMethods.length,
                       separatorBuilder:
@@ -53,27 +54,46 @@ class PaymentMethodsPage extends StatelessWidget {
                         final category = paymentMethods[index];
                         return Column(
                           children: [
-                            Container(
-                              width: 80,
-                              height: 65,
-                              padding: const EdgeInsets.all(
-                                Dimensions.paddingSizeDefault,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  Dimensions.radiusDefault,
-                                ),
-                                border: Border.all(
-                                  color:
-                                      index == 0
-                                          ? Colors.black
-                                          : AppColors.textFieldBorder,
-                                ),
-                              ),
-                              child:
-                                  index > 2
-                                      ? PngAsset(category)
-                                      : SvgAssets(category),
+                            Consumer(
+                              builder: (context, ref, child) {
+                                final selectedIndex = ref.watch(
+                                  paymentMethodProvider,
+                                );
+                                return InkWell(
+                                  borderRadius: BorderRadius.circular(
+                                    Dimensions.radiusDefault,
+                                  ),
+                                  onTap:
+                                      () =>
+                                          ref
+                                              .read(
+                                                paymentMethodProvider.notifier,
+                                              )
+                                              .state = index,
+                                  child: Container(
+                                    width: 80,
+                                    height: 65,
+                                    padding: const EdgeInsets.all(
+                                      Dimensions.paddingSizeDefault,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault,
+                                      ),
+                                      border: Border.all(
+                                        color:
+                                            index == selectedIndex
+                                                ? Colors.black
+                                                : AppColors.textFieldBorder,
+                                      ),
+                                    ),
+                                    child:
+                                        index > 2
+                                            ? PngAsset(category)
+                                            : SvgAssets(category),
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         );
@@ -172,3 +192,5 @@ class PaymentMethodsPage extends StatelessWidget {
     );
   }
 }
+
+final paymentMethodProvider = StateProvider<int>((ref) => 0);

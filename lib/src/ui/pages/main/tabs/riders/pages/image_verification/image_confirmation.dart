@@ -85,7 +85,7 @@ class ImageConfirmationPage extends StatelessWidget {
                     ), // Text color
                   ),
                 ),
-                width(20),
+                width(10),
                 OutlinedButton(
                   onPressed: () {
                     Navigator.pop(context);

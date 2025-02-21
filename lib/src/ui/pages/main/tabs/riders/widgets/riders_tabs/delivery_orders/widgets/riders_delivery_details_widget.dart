@@ -131,24 +131,31 @@ class _RidersDeliveryDetailsWidgetState
                               color: AppColors.black,
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
-                                child: PngAsset("call", width: 30, height: 30),
+                                child: SvgAssets("Call", width: 30, height: 30),
                               ),
                             ),
                           ),
                           width(10),
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Card(
-                              shape: StadiumBorder(
-                                side: BorderSide(color: AppColors.black),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: PngAsset(
-                                  "message",
-                                  width: 30,
-                                  height: 30,
+                          InkWell(
+                            borderRadius: BorderRadius.circular(100),
+                            onTap:
+                                () => context.pushRoute(
+                                  const CheckOutChatRoute(),
+                                ),
+                            child: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Card(
+                                shape: StadiumBorder(
+                                  side: BorderSide(color: AppColors.black),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: SvgAssets(
+                                    "Chat",
+                                    width: 30,
+                                    height: 30,
+                                  ),
                                 ),
                               ),
                             ),

@@ -101,6 +101,7 @@ class HistoryChartWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(
                                   top: 15,
                                   left: 20,
+                                  right: 10,
                                 ),
                                 child: Text(
                                   "10AM",
@@ -128,7 +129,10 @@ class HistoryChartWidget extends StatelessWidget {
                               );
                             case 6:
                               return Padding(
-                                padding: const EdgeInsets.only(top: 15),
+                                padding: const EdgeInsets.only(
+                                  top: 15,
+                                  right: 10,
+                                ),
                                 child: Text(
                                   "01PM",
                                   style: Theme.of(context).textTheme.bodySmall!
@@ -137,7 +141,10 @@ class HistoryChartWidget extends StatelessWidget {
                               );
                             case 8:
                               return Padding(
-                                padding: const EdgeInsets.only(top: 15),
+                                padding: const EdgeInsets.only(
+                                  top: 15,
+                                  right: 10,
+                                ),
                                 child: Text(
                                   "02PM",
                                   style: Theme.of(context).textTheme.bodySmall!
@@ -146,7 +153,10 @@ class HistoryChartWidget extends StatelessWidget {
                               );
                             case 10:
                               return Padding(
-                                padding: const EdgeInsets.only(top: 15),
+                                padding: const EdgeInsets.only(
+                                  top: 15,
+                                  right: 10,
+                                ),
                                 child: Text(
                                   "03PM",
                                   style: Theme.of(context).textTheme.bodySmall!
@@ -158,6 +168,7 @@ class HistoryChartWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(
                                   top: 15,
                                   right: 20,
+                                  left: 10,
                                 ),
                                 child: Text(
                                   "04PM",

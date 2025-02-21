@@ -1,9 +1,9 @@
 import 'package:campus_cravings/src/src.dart';
 
 @RoutePage()
-class RidersTabPage extends StatelessWidget {
-  const RidersTabPage({super.key});
-
+class CheckOutTabPage extends StatelessWidget {
+  const CheckOutTabPage({super.key, this.isFromNavBar = false});
+  final bool isFromNavBar;
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
@@ -11,9 +11,9 @@ class RidersTabPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: isFromNavBar ? false : true,
           title: Text(
-            locale.campusDelivery,
+            locale.checkoutOrders,
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
@@ -21,7 +21,7 @@ class RidersTabPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 18),
+              margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 border: Border.all(color: const Color(0xffE2E2E2)),
@@ -32,16 +32,6 @@ class RidersTabPage extends StatelessWidget {
                 indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: AppColors.primary,
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(2, 2),
-                      blurRadius: 5,
-                      color: Colors.black.withValues(alpha: .3),
-                    ),
-                  ],
-                ),
-                labelPadding: EdgeInsets.symmetric(
-                  horizontal: Dimensions.paddingSizeSmall,
                 ),
                 unselectedLabelColor: Colors.black,
                 indicatorSize: TabBarIndicatorSize.label,
@@ -57,14 +47,14 @@ class RidersTabPage extends StatelessWidget {
                     child: Container(
                       height: 44,
                       alignment: Alignment.center,
-                      child: Text(locale.deliveryOrders),
+                      child: Text(locale.delivery),
                     ),
                   ),
                   Tab(
                     child: Container(
                       height: 44,
                       alignment: Alignment.center,
-                      child: Text(locale.history),
+                      child: Text(locale.pickup),
                     ),
                   ),
                 ],
@@ -72,7 +62,7 @@ class RidersTabPage extends StatelessWidget {
             ),
             Expanded(
               child: TabBarView(
-                children: [DeliveryOrdersTabWidget(), RidersHistoryTabWidget()],
+                children: [DeliveryTabWidget(), PickUpTabWidget()],
               ),
             ),
           ],

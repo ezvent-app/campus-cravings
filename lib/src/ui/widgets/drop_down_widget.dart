@@ -19,21 +19,21 @@ class DropDownWidget extends StatelessWidget {
         return DropdownButtonFormField(
           style: Theme.of(context).textTheme.bodyMedium,
           icon: Icon(Icons.keyboard_arrow_down),
-          decoration: InputDecoration(
-            hintText: hintText,
-          ),
-          items: universitiesList
-              .map((i) => DropdownMenuItem(
-                    value: i,
-                    child: Text(
-                      i,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(color: AppColors.black),
+          decoration: InputDecoration(hintText: hintText),
+          items:
+              universitiesList
+                  .map(
+                    (i) => DropdownMenuItem(
+                      value: i,
+                      child: Text(
+                        i,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: AppColors.black,
+                        ),
+                      ),
                     ),
-                  ))
-              .toList(),
+                  )
+                  .toList(),
           onChanged: onChange,
         );
       },

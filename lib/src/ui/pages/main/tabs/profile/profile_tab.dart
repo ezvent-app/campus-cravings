@@ -151,7 +151,7 @@ class ProfileTabPage extends StatelessWidget {
                   ProfileOption(
                     icon: 'logout',
                     label: locale.logOut,
-                    onPressed: () {},
+                    onPressed: () => context.pushRoute(LoginRoute()),
                   ),
                 ],
               ),

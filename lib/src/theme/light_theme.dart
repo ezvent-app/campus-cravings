@@ -8,26 +8,26 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       color: AppColors.lightText,
     ),
     contentPadding: const EdgeInsets.all(15),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-    ),
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide:
-          const BorderSide(color: AppColors.textFieldBorder, width: 1.5),
+      borderSide: const BorderSide(
+        color: AppColors.textFieldBorder,
+        width: 1.5,
+      ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide:
-          const BorderSide(color: AppColors.textFieldBorder, width: 1.5),
+      borderSide: const BorderSide(
+        color: AppColors.textFieldBorder,
+        width: 1.5,
+      ),
     ),
-    prefixIconConstraints: const BoxConstraints(
-      maxWidth: 50,
-      maxHeight: 50,
-    ),
+    prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 50),
   ),
-  colorScheme: const ColorScheme.light(primary: AppColors.primary)
-      .copyWith(surface: AppColors.background),
+  colorScheme: const ColorScheme.light(
+    primary: AppColors.primary,
+  ).copyWith(surface: AppColors.background),
   appBarTheme: const AppBarTheme(
     titleTextStyle: TextStyle(
       color: Colors.black,
@@ -43,16 +43,14 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   ),
   textButtonTheme: const TextButtonThemeData(
     style: ButtonStyle(
-      textStyle: WidgetStatePropertyAll(
-        TextStyle(fontWeight: FontWeight.bold),
-      ),
+      textStyle: WidgetStatePropertyAll(TextStyle(fontWeight: FontWeight.bold)),
     ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       backgroundColor: AppColors.primary,
-      foregroundColor: AppColors.background,
+      foregroundColor: AppColors.white,
     ),
   ),
   popupMenuTheme: PopupMenuThemeData(
@@ -79,48 +77,47 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   datePickerTheme: DatePickerThemeData(
     backgroundColor: Colors.white,
     rangeSelectionBackgroundColor: Colors.purple,
-    todayForegroundColor: WidgetStateProperty.resolveWith<Color?>(
-      (states) {
-        if (states.contains(WidgetState.selected)) {
-          return Colors.white;
-        }
-        return Colors.deepOrange;
-      },
-    ),
-    dayForegroundColor: WidgetStateProperty.resolveWith<Color?>(
-      (states) {
-        if (states.contains(WidgetState.selected)) {
-          return Colors.white;
-        }
-        return Colors.black;
-      },
-    ),
+    todayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+      if (states.contains(WidgetState.selected)) {
+        return Colors.white;
+      }
+      return Colors.deepOrange;
+    }),
+    dayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+      if (states.contains(WidgetState.selected)) {
+        return Colors.white;
+      }
+      return Colors.black;
+    }),
   ),
   dropdownMenuTheme: DropdownMenuThemeData(
-      inputDecorationTheme: InputDecorationTheme(
-    hintStyle: TextStyle(
-      fontSize: Dimensions.fontSizeDefault,
-      fontWeight: FontWeight.w500,
-      color: AppColors.black,
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: TextStyle(
+        fontSize: Dimensions.fontSizeDefault,
+        fontWeight: FontWeight.w500,
+        color: AppColors.black,
+      ),
+      contentPadding: const EdgeInsets.all(15),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(
+          color: AppColors.textFieldBorder,
+          width: 1.5,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(
+          color: AppColors.textFieldBorder,
+          width: 1.5,
+        ),
+      ),
+      prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 50),
     ),
-    contentPadding: const EdgeInsets.all(15),
-    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-    enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide:
-            const BorderSide(color: AppColors.textFieldBorder, width: 1.5)),
-    focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide:
-            const BorderSide(color: AppColors.textFieldBorder, width: 1.5)),
-    prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 50),
-  )),
-  drawerTheme: const DrawerThemeData(
-    backgroundColor: Colors.white,
   ),
-  textSelectionTheme: const TextSelectionThemeData(
-    cursorColor: Colors.black,
-  ),
+  drawerTheme: const DrawerThemeData(backgroundColor: Colors.white),
+  textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.black),
   scaffoldBackgroundColor: Colors.white,
   progressIndicatorTheme: ProgressIndicatorThemeData(
     linearTrackColor: Colors.grey.shade200,
@@ -134,17 +131,25 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   ),
   textTheme: const TextTheme(
     titleLarge: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: Dimensions.fontSizeMoreOverLarge),
+      color: Colors.black,
+      fontWeight: FontWeight.w700,
+      fontSize: Dimensions.fontSizeMoreOverLarge,
+    ),
     titleMedium: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.w700,
-        fontSize: Dimensions.fontSizeExtraLarge),
+      color: Colors.black,
+      fontWeight: FontWeight.w700,
+      fontSize: Dimensions.fontSizeExtraLarge,
+    ),
     titleSmall: TextStyle(
-        color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700),
+      color: Colors.black,
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+    ),
     bodyLarge: TextStyle(
-        color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500),
+      color: Colors.grey,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    ),
     bodyMedium: TextStyle(
       fontSize: Dimensions.fontSizeDefault,
       fontWeight: FontWeight.w400,
@@ -155,7 +160,5 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       fontWeight: FontWeight.w500,
       color: AppColors.lightText,
     ),
-  ).apply(
-    fontFamily: 'SofiaPro',
-  ),
+  ).apply(fontFamily: 'SofiaPro'),
 );

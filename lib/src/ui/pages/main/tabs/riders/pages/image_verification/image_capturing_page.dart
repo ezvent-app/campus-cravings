@@ -17,23 +17,26 @@ class _ImageCaptureScreenState extends State<ImageCaptureScreen> {
   void initState() {
     super.initState();
     controller = CameraController(cameras[0], ResolutionPreset.max);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            // Handle access errors here.
-            break;
-          default:
-            // Handle other errors here.
-            break;
-        }
-      }
-    });
+    controller
+        .initialize()
+        .then((_) {
+          if (!mounted) {
+            return;
+          }
+          setState(() {});
+        })
+        .catchError((Object e) {
+          if (e is CameraException) {
+            switch (e.code) {
+              case 'CameraAccessDenied':
+                // Handle access errors here.
+                break;
+              default:
+                // Handle other errors here.
+                break;
+            }
+          }
+        });
   }
 
   @override
@@ -72,10 +75,9 @@ class _ImageCaptureScreenState extends State<ImageCaptureScreen> {
       appBar: AppBar(
         title: Text(
           locale.imageVerification,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(color: AppColors.white),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium!.copyWith(color: AppColors.white),
         ),
         backgroundColor: AppColors.black,
         foregroundColor: AppColors.white,
@@ -92,19 +94,12 @@ class _ImageCaptureScreenState extends State<ImageCaptureScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
+                    borderRadius: BorderRadius.circular(100),
                     onTap: _captureImage,
-                    child: PngAsset(
-                      "Shutter",
-                      width: 72,
-                      height: 72,
-                    ),
+                    child: SvgAssets("Shutter", width: 72, height: 72),
                   ),
                   width(100),
-                  PngAsset(
-                    "Flash",
-                    width: 48,
-                    height: 48,
-                  ),
+                  SvgAssets("Flash", width: 48, height: 48),
                   width(20),
                 ],
               ),

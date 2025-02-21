@@ -12,8 +12,6 @@ class DeliveryOrdersTabWidget extends ConsumerStatefulWidget {
 
 class _ConsumerDeliveryOrdersTabWidgetState
     extends ConsumerState<DeliveryOrdersTabWidget> {
-  bool isAccept = false;
-  int countdown = 10;
   late Timer timer;
   @override
   initState() {
@@ -26,10 +24,12 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
   void startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      final countdown = ref.read(riderProvider)['countdown'];
       if (countdown > 0) {
-        setState(() {
-          countdown--;
-        });
+        ref.read(riderProvider.notifier).state = {
+          ...ref.read(riderProvider),
+          'countdown': countdown - 1,
+        };
       } else {
         timer.cancel();
       }
@@ -48,52 +48,69 @@ class _ConsumerDeliveryOrdersTabWidgetState
     final wdth = size.width;
     final height = size.height;
 
-    double topPosition = height * 0.52;
+    double topPosition = height * 0.44;
     double leftPosition = wdth * 0.85;
     double buttonWidth = wdth * 0.8;
-    return Stack(
-      children: [
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            margin: EdgeInsets.only(bottom: isAccept ? 100 : 250),
-            child: const PngAsset('map_image', fit: BoxFit.fitWidth),
-          ),
-        ),
-        isAccept
-            ? Positioned(
-              top: topPosition,
-              left: leftPosition - buttonWidth / 2,
-              child: Card(
-                color: AppColors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                margin: EdgeInsets.all(10),
-                child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      SvgAssets("live_location", width: 28, height: 28),
-                      width(10),
-                      Text(
-                        "Navigation",
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ],
+    return Builder(
+      builder: (context) {
+        return Consumer(
+          builder: (context, ref, child) {
+            final isAccept = ref.watch(riderProvider);
+            return Stack(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  height: height * 0.9,
+                  child: Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(
+                      bottom: isAccept["isAccept"] ? 100 : 250,
+                    ),
+                    child: const PngAsset('map_image', fit: BoxFit.fitWidth),
                   ),
                 ),
-              ),
-            )
-            : SizedBox(),
-        isAccept ? AnimatedRidersDeliveryDetailsWrapper() : SizedBox(),
-      ],
+
+                isAccept["isAccept"]
+                    ? Positioned(
+                      top: topPosition,
+                      left: leftPosition - buttonWidth / 2,
+                      child: Card(
+                        color: AppColors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        margin: EdgeInsets.all(10),
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            children: [
+                              SvgAssets("rider_dir", width: 28, height: 28),
+                              width(10),
+                              Text(
+                                "Navigation",
+                                style: Theme.of(context).textTheme.titleSmall!
+                                    .copyWith(color: AppColors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                    : SizedBox(),
+                isAccept["isAccept"]
+                    ? AnimatedRidersDeliveryDetailsWrapper()
+                    : SizedBox(),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
   confirmDeliveryBottomSheet() {
+    final size = MediaQuery.of(context).size;
+
     showModalBottomSheet(
       context: context,
       isDismissible: false,
@@ -123,25 +140,33 @@ class _ConsumerDeliveryOrdersTabWidgetState
                         ),
                       ],
                     ),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: CircularProgressIndicator(
-                            value: countdown / 10,
-                            strokeWidth: 4,
-                            backgroundColor: Colors.grey.shade300,
-                            color: AppColors.black,
-                          ),
-                        ),
-                        Text(
-                          '$countdown sec',
-                          style: Theme.of(context).textTheme.bodyMedium!
-                              .copyWith(color: AppColors.black),
-                        ),
-                      ],
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final countdown = ref.watch(riderProvider)['countdown'];
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              width: 50,
+                              child: CircularProgressIndicator(
+                                value: countdown / 10,
+                                strokeWidth: 5,
+                                backgroundColor: Colors.grey.shade300,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Text(
+                                '$countdown sec',
+                                style: Theme.of(context).textTheme.bodyMedium!
+                                    .copyWith(color: AppColors.black),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -212,34 +237,49 @@ class _ConsumerDeliveryOrdersTabWidgetState
                   ],
                 ),
                 Divider(color: AppColors.dividerColor),
+                height(10),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: RoundedButtonWidget(
-                        btnTitle: "Accept",
-                        onTap: () {
-                          setState(() {
-                            isAccept = true;
-                          });
-                          Navigator.pop(context);
+                    SizedBox(
+                      width: size.width * .4,
+                      child: Consumer(
+                        builder: (context, ref, child) {
+                          return RoundedButtonWidget(
+                            btnTitle: "Accept",
+                            onTap: () {
+                              final isAccept = ref.read(riderProvider);
+                              ref.read(riderProvider.notifier).state = {
+                                ...isAccept,
+                                'isAccept': true,
+                              };
+                              Navigator.pop(context);
+                            },
+                          );
                         },
                       ),
                     ),
                     width(10),
-                    Expanded(
+                    SizedBox(
+                      width: size.width * .4,
                       child: OutlinedButton(
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           side: BorderSide(color: Colors.black),
-                          padding: EdgeInsets.symmetric(vertical: 15),
+                          padding: EdgeInsets.symmetric(vertical: 11),
                         ),
                         child: Text(
                           'Decline',
-                          style: TextStyle(fontSize: 18, color: Colors.black),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium!.copyWith(
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
@@ -270,4 +310,6 @@ class _ConsumerDeliveryOrdersTabWidgetState
   }
 }
 
-final riderProvider = StateProvider<bool>((ref) => false);
+final riderProvider = StateProvider<Map<String, dynamic>>(
+  (ref) => {'isAccept': false, 'countdown': 10},
+);
