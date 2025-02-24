@@ -7,6 +7,7 @@ class NewCardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final isIOS = Platform.isIOS;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -22,7 +23,12 @@ class NewCardPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: IconButton(
                             onPressed: () => context.maybePop(),
-                            icon: const Icon(Icons.arrow_back, size: 28),
+                            icon: Icon(
+                              isIOS
+                                  ? Icons.arrow_back_ios_new
+                                  : Icons.arrow_back,
+                              size: 28,
+                            ),
                           ),
                         ),
                         Padding(

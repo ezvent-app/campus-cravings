@@ -19,12 +19,13 @@ class _DeliveryManProfilePageState extends State<DeliveryManProfilePage> {
     "Sports Club",
     "Arts",
     "Sports",
-    "Football"
+    "Football",
   ];
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -33,7 +34,12 @@ class _DeliveryManProfilePageState extends State<DeliveryManProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ProfileAndAchievmentsWidget(size: size),
-            ProfileDetailsWidget(stars: stars, majors: majors, minors: minors, sports: sports),
+            ProfileDetailsWidget(
+              stars: stars,
+              majors: majors,
+              minors: minors,
+              sports: sports,
+            ),
           ],
         ),
       ),

@@ -1,5 +1,3 @@
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:campus_cravings/src/src.dart';
 
 late List<CameraDescription> cameras;
@@ -25,14 +23,6 @@ class App extends StatelessWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         theme: lightTheme,
         routerConfig: _appRouter.config(),
-        builder: (context, child) {
-          return DevicePreview(
-            enabled: !kReleaseMode,
-            builder: (context) {
-              return child!;
-            },
-          );
-        },
       ),
     );
   }

@@ -10,6 +10,12 @@ class PaymentMethodsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          locale.paymentMethods,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -17,27 +23,6 @@ class PaymentMethodsPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 15),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: IconButton(
-                            onPressed: () => context.maybePop(),
-                            icon: const Icon(Icons.arrow_back, size: 28),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 4),
-                          child: Text(
-                            locale.paymentMethods,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   Container(
                     height: 123,
                     width: double.infinity,

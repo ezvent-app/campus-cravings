@@ -18,6 +18,7 @@ class NewPasswordPage extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           PasswordWidget(
+            textInputAction: TextInputAction.next,
             onChanged: (value) {
               final currentState = ref.read(newPasswordProvider);
               ref.read(newPasswordProvider.notifier).state = {

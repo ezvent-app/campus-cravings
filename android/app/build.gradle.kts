@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.campus_cravings.campus_cravings"
+    namespace = "com.revolutionize.campus_cravings"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -19,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.campus_cravings.campus_cravings"
+        applicationId = "com.revolutionize.campus_cravings"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

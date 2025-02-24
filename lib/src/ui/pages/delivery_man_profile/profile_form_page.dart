@@ -22,6 +22,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final isIOS = Platform.isIOS;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -41,7 +42,10 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                       ),
                       child: IconButton(
                         onPressed: () => context.maybePop(),
-                        icon: const Icon(Icons.arrow_back, size: 28),
+                        icon: Icon(
+                          isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
+                          size: 28,
+                        ),
                       ),
                     )
                   else

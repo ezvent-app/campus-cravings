@@ -439,6 +439,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
 
   Future<dynamic> deliveryNoteSheetMethod(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final isIOS = Platform.isIOS;
     return showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -457,7 +458,9 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                   children: [
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.arrow_back),
+                      icon: Icon(
+                        isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
+                      ),
                     ),
                     width(10),
                     Text(
