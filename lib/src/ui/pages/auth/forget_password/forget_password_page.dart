@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class ForgetPasswordPage extends ConsumerWidget {
@@ -17,23 +17,26 @@ class ForgetPasswordPage extends ConsumerWidget {
           CustomTextField(
             controller: emailController,
             label: locale.enterYourEmail,
-            onChanged: (value) =>
-                ref.read(forgetPasswordProvider.notifier).state = value,
+            onChanged:
+                (value) =>
+                    ref.read(forgetPasswordProvider.notifier).state = value,
           ),
           height(20),
           Consumer(
             builder: (context, ref, child) {
               var passwordProvider = ref.watch(forgetPasswordProvider);
               return RoundedButtonWidget(
-                  btnTitle: locale.next,
-                  onTap: passwordProvider.isNotEmpty
-                      ? () {
+                btnTitle: locale.next,
+                onTap:
+                    passwordProvider.isNotEmpty
+                        ? () {
                           context.pushRoute(ForgetPasswordOTPRoute());
                           ref.read(forgetPasswordProvider.notifier).state = '';
                         }
-                      : null);
+                        : null,
+              );
             },
-          )
+          ),
         ],
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class ForgetPasswordOTPPage extends ConsumerWidget {
@@ -13,14 +13,18 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(locale.sendVerificationCode,
-              style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            locale.sendVerificationCode,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
           height(5),
-          Text('sample@email.com',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall!
-                  .copyWith(fontSize: 13, color: AppColors.black)),
+          Text(
+            'sample@email.com',
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+              fontSize: 13,
+              color: AppColors.black,
+            ),
+          ),
           height(30),
           OtpPinField(
             maxLength: 6,
@@ -31,17 +35,18 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
               fieldBorderRadius: 8,
               fieldBorderWidth: 1,
               textStyle: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: Dimensions.fontSizeExtraLarge),
+                fontWeight: FontWeight.w600,
+                fontSize: Dimensions.fontSizeExtraLarge,
+              ),
             ),
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             fieldWidth: 40,
             fieldHeight: 40,
             otpPinFieldDecoration: OtpPinFieldDecoration.custom,
-            onSubmit: (text) =>
-                ref.read(forgetOTPProvider.notifier).state = text,
-            onChange: (text) =>
-                ref.read(forgetOTPProvider.notifier).state = text,
+            onSubmit:
+                (text) => ref.read(forgetOTPProvider.notifier).state = text,
+            onChange:
+                (text) => ref.read(forgetOTPProvider.notifier).state = text,
           ),
           height(40),
           Consumer(
@@ -49,12 +54,13 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
               var otp = ref.watch(forgetOTPProvider);
               return RoundedButtonWidget(
                 btnTitle: locale.continueNext,
-                onTap: otp.length != 6
-                    ? null
-                    : () {
-                        context.pushRoute(NewPasswordRoute());
-                        ref.read(forgetOTPProvider.notifier).state = '';
-                      },
+                onTap:
+                    otp.length != 6
+                        ? null
+                        : () {
+                          context.pushRoute(NewPasswordRoute());
+                          ref.read(forgetOTPProvider.notifier).state = '';
+                        },
               );
             },
           ),
@@ -66,9 +72,10 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
                 Text(
                   "${locale.getCodeIn} 04:30   ",
                   style: TextStyle(
-                      fontSize: Dimensions.fontSizeSmall,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.lightText),
+                    fontSize: Dimensions.fontSizeSmall,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.lightText,
+                  ),
                 ),
                 InkWell(
                   onTap: () {},
@@ -83,7 +90,7 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

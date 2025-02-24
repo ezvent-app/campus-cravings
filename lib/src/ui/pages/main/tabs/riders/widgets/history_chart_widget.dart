@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class HistoryChartWidget extends StatelessWidget {

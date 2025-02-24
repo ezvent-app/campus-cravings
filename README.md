@@ -1,4 +1,4 @@
-# campus_cravings
+# campuscravings
 
 A new Flutter project.
 

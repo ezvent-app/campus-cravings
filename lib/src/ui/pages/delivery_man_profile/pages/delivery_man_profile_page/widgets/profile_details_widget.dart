@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class ProfileDetailsWidget extends StatelessWidget {
   const ProfileDetailsWidget({
@@ -29,52 +29,44 @@ class ProfileDetailsWidget extends StatelessWidget {
           height(10),
           Row(
             children: List.generate(
-                stars.length,
-                (i) => Padding(
-                    padding: const EdgeInsets.only(right: 7),
-                    child: SvgAssets(
-                      'star',
-                      width: 35,
-                      height: 35,
-                      color: i == 4 ? AppColors.dividerColor : AppColors.yellow,
-                    ))),
+              stars.length,
+              (i) => Padding(
+                padding: const EdgeInsets.only(right: 7),
+                child: SvgAssets(
+                  'star',
+                  width: 35,
+                  height: 35,
+                  color: i == 4 ? AppColors.dividerColor : AppColors.yellow,
+                ),
+              ),
+            ),
           ),
-          ServiceRowWidget(
-            image: 'user',
-            title: locale.about,
-          ),
+          ServiceRowWidget(image: 'user', title: locale.about),
           Text(
             "Hi! I’m passionate about coding and love participating in hackathons. When I’m not coding, you’ll find me playing chess or exploring new coffee spots!",
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: AppColors.black, fontWeight: FontWeight.w500),
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              color: AppColors.black,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           height(10),
-          Divider(
-            color: AppColors.dividerColor,
-          ),
-          ServiceRowWidget(
-            image: 'books',
-            title: locale.educationDiscipline,
-          ),
-          Text(
-            locale.yourMajors,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+          Divider(color: AppColors.dividerColor),
+          ServiceRowWidget(image: 'books', title: locale.educationDiscipline),
+          Text(locale.yourMajors, style: Theme.of(context).textTheme.bodySmall),
           Wrap(
             spacing: 8,
-            children: majors
-                .map((i) => Chip(
-                      label: Text(
-                        i,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: AppColors.black),
+            children:
+                majors
+                    .map(
+                      (i) => Chip(
+                        label: Text(
+                          i,
+                          style: Theme.of(context).textTheme.bodySmall!
+                              .copyWith(color: AppColors.black),
+                        ),
                       ),
-                    ))
-                .toList(),
+                    )
+                    .toList(),
           ),
           height(10),
           Text(
@@ -83,35 +75,34 @@ class ProfileDetailsWidget extends StatelessWidget {
           ),
           Wrap(
             spacing: 8,
-            children: minors
-                .map((i) => Chip(
-                      label: Text(
-                        i,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: AppColors.black),
+            children:
+                minors
+                    .map(
+                      (i) => Chip(
+                        label: Text(
+                          i,
+                          style: Theme.of(context).textTheme.bodySmall!
+                              .copyWith(color: AppColors.black),
+                        ),
                       ),
-                    ))
-                .toList(),
+                    )
+                    .toList(),
           ),
-          ServiceRowWidget(
-            image: 'Target',
-            title: locale.clubOrganizations,
-          ),
+          ServiceRowWidget(image: 'Target', title: locale.clubOrganizations),
           Wrap(
             spacing: 8,
-            children: sports
-                .map((i) => Chip(
-                      label: Text(
-                        i,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: AppColors.black),
+            children:
+                sports
+                    .map(
+                      (i) => Chip(
+                        label: Text(
+                          i,
+                          style: Theme.of(context).textTheme.bodySmall!
+                              .copyWith(color: AppColors.black),
+                        ),
                       ),
-                    ))
-                .toList(),
+                    )
+                    .toList(),
           ),
         ],
       ),

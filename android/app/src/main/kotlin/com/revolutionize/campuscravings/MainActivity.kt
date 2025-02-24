@@ -1,4 +1,4 @@
-package com.revolutionize.campus_cravings
+package com.revolutionize.campuscravings
 
 import io.flutter.embedding.android.FlutterActivity
 

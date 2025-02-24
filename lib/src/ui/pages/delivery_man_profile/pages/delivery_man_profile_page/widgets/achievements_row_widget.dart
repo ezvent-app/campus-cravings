@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class AchievmentsRowWidget extends StatelessWidget {
   const AchievmentsRowWidget({
@@ -19,17 +19,16 @@ class AchievmentsRowWidget extends StatelessWidget {
           children: [
             Text(
               value,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleSmall!
-                  .copyWith(fontWeight: FontWeight.w500, fontSize: 16),
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
             ),
             Text(
               title,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(color: AppColors.lightText),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium!.copyWith(color: AppColors.lightText),
             ),
           ],
         ),

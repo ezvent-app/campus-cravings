@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class DeliverySetupPage extends ConsumerWidget {
@@ -14,25 +14,30 @@ class DeliverySetupPage extends ConsumerWidget {
         children: [
           CustomTextField(
             label: locale.socialSecurityNumber,
-            onChanged: (value) => ref
-                .read(deliveryProfileProvider.notifier)
-                .updateSocialSecurityNumber(value),
+            onChanged:
+                (value) => ref
+                    .read(deliveryProfileProvider.notifier)
+                    .updateSocialSecurityNumber(value),
           ),
           height(16),
           Padding(
             padding: EdgeInsets.only(bottom: 3),
-            child: Text(locale.nationalID,
-                style: Theme.of(context).textTheme.bodySmall),
+            child: Text(
+              locale.nationalID,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           ),
           OutlinedButton(
-            onPressed: () => ref
-                .read(deliveryProfileProvider.notifier)
-                .updateNICImage('updated'),
+            onPressed:
+                () => ref
+                    .read(deliveryProfileProvider.notifier)
+                    .updateNICImage('updated'),
             style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                foregroundColor: const Color(0xff525252)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              foregroundColor: const Color(0xff525252),
+            ),
             child: Text(locale.uploadCaptureImage),
           ),
           Row(
@@ -44,9 +49,10 @@ class DeliverySetupPage extends ConsumerWidget {
                     scale: 1.3,
                     child: Checkbox(
                       value: deliveryProvider.isAgree,
-                      onChanged: (value) => ref
-                          .read(deliveryProfileProvider.notifier)
-                          .updateTermsAndConditions(value!),
+                      onChanged:
+                          (value) => ref
+                              .read(deliveryProfileProvider.notifier)
+                              .updateTermsAndConditions(value!),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
@@ -64,11 +70,13 @@ class DeliverySetupPage extends ConsumerWidget {
               ),
               InkWell(
                 onTap: () {},
-                child: Text(locale.termsConditions,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: AppColors.black,
-                          decoration: TextDecoration.underline,
-                        )),
+                child: Text(
+                  locale.termsConditions,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: AppColors.black,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
               ),
             ],
           ),
@@ -77,23 +85,27 @@ class DeliverySetupPage extends ConsumerWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                    text: locale.disclaimer,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: AppColors.black,
-                        )),
+                  text: locale.disclaimer,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall!.copyWith(color: AppColors.black),
+                ),
                 TextSpan(
-                    text: locale.socialSecurityInfo,
-                    style: Theme.of(context).textTheme.bodySmall),
+                  text: locale.socialSecurityInfo,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
                 TextSpan(
                   text: locale.privacyPolicy,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: AppColors.black,
-                        decoration: TextDecoration.underline,
-                      ),
+                    color: AppColors.black,
+                    decoration: TextDecoration.underline,
+                  ),
                   recognizer: TapGestureRecognizer()..onTap = () {},
                 ),
                 TextSpan(
-                    text: '.', style: Theme.of(context).textTheme.bodySmall)
+                  text: '.',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ],
             ),
           ),
@@ -103,14 +115,15 @@ class DeliverySetupPage extends ConsumerWidget {
               final deliveryProvider = ref.watch(deliveryProfileProvider);
               return RoundedButtonWidget(
                 btnTitle: locale.next,
-                onTap: deliveryProvider.isAgree &&
-                        deliveryProvider.nICImage.isNotEmpty &&
-                        deliveryProvider.socialSecurityNumber.isNotEmpty
-                    ? () => context.pushRoute(const AddPayoutRoute())
-                    : null,
+                onTap:
+                    deliveryProvider.isAgree &&
+                            deliveryProvider.nICImage.isNotEmpty &&
+                            deliveryProvider.socialSecurityNumber.isNotEmpty
+                        ? () => context.pushRoute(const AddPayoutRoute())
+                        : null,
               );
             },
-          )
+          ),
         ],
       ),
     );

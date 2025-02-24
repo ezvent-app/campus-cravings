@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class CategoryTabs extends ConsumerStatefulWidget {
   final List<Product> products;
@@ -42,143 +42,155 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
             child: Align(
               alignment: Alignment.centerLeft,
               child: TabBar(
-                indicatorSize: _expandedTabBar
-                    ? TabBarIndicatorSize.label
-                    : TabBarIndicatorSize.tab,
+                indicatorSize:
+                    _expandedTabBar
+                        ? TabBarIndicatorSize.label
+                        : TabBarIndicatorSize.tab,
                 tabAlignment:
                     _expandedTabBar ? TabAlignment.start : TabAlignment.fill,
                 isScrollable: _expandedTabBar,
                 indicator: const UnderlineTabIndicator(
-                  borderSide: BorderSide(
-                    width: 4,
-                    color: Colors.black,
-                  ),
+                  borderSide: BorderSide(width: 4, color: Colors.black),
                 ),
                 dividerColor: const Color(0xFFF6F6F6),
                 dividerHeight: 4,
                 controller: _tabController,
                 labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-                tabs: _categories.map((e) {
-                  return Tab(
-                    child: Text(
-                      e == 'recommended' ? locale.pickedForYou : e,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  );
-                }).toList(),
+                tabs:
+                    _categories.map((e) {
+                      return Tab(
+                        child: Text(
+                          e == 'recommended' ? locale.pickedForYou : e,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      );
+                    }).toList(),
               ),
             ),
           ),
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: _categories.map(
-                (e) {
-                  final categorizedProducts = widget.products.where((product) {
-                    return product.categories!.contains(e);
-                  }).toList();
-                  return ListView(
-                    padding: const EdgeInsets.only(top: 24),
-                    physics: BouncingScrollPhysics(),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Text(
-                          e == 'recommended' ? locale.pickedForYou : e,
-                          style: TextStyle(
+              children:
+                  _categories.map((e) {
+                    final categorizedProducts =
+                        widget.products.where((product) {
+                          return product.categories!.contains(e);
+                        }).toList();
+                    return ListView(
+                      padding: const EdgeInsets.only(top: 24),
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(
+                            e == 'recommended' ? locale.pickedForYou : e,
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
-                              color: AppColors.black),
+                              color: AppColors.black,
+                            ),
+                          ),
                         ),
-                      ),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: categorizedProducts.length,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 20),
-                        itemBuilder: (context, index) {
-                          return Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: categorizedProducts.length,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 20,
+                          ),
+                          itemBuilder: (context, index) {
+                            return Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: const [
                                   BoxShadow(
-                                      color: Colors.black12, blurRadius: 20)
+                                    color: Colors.black12,
+                                    blurRadius: 20,
+                                  ),
                                 ],
-                                borderRadius: BorderRadius.circular(28)),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
                                 borderRadius: BorderRadius.circular(28),
-                                onTap: () {
-                                  context.pushRoute(ProductDetailsRoute(
-                                      product: categorizedProducts[index]));
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Row(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(24),
-                                        child: const PngAsset(
-                                          'mock_product_1',
-                                          fit: BoxFit.cover,
-                                          height: 100,
-                                          width: 100,
-                                        ),
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(28),
+                                  onTap: () {
+                                    context.pushRoute(
+                                      ProductDetailsRoute(
+                                        product: categorizedProducts[index],
                                       ),
-                                      const SizedBox(width: 16),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              categorizedProducts[index].name,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            height(7),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    '\$${categorizedProducts[index].price.toStringAsFixed(2)}',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleSmall,
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            24,
+                                          ),
+                                          child: const PngAsset(
+                                            'mock_product_1',
+                                            fit: BoxFit.cover,
+                                            height: 100,
+                                            width: 100,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                categorizedProducts[index].name,
+                                                style:
+                                                    Theme.of(
+                                                      context,
+                                                    ).textTheme.titleSmall,
+                                              ),
+                                              height(7),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      '\$${categorizedProducts[index].price.toStringAsFixed(2)}',
+                                                      style:
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .titleSmall,
+                                                    ),
                                                   ),
-                                                ),
-                                                const SvgAssets(
-                                                  'PlusButton',
-                                                  width: 20,
-                                                  height: 20,
-                                                )
-                                              ],
-                                            ),
-                                          ],
+                                                  const SvgAssets(
+                                                    'PlusButton',
+                                                    width: 20,
+                                                    height: 20,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(height: 20);
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ).toList(),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const SizedBox(height: 20);
+                          },
+                        ),
+                      ],
+                    );
+                  }).toList(),
             ),
           ),
         ],

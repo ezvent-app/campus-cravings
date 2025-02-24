@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class SizeSelectorWidget extends ConsumerStatefulWidget {
   const SizeSelectorWidget({super.key});
@@ -26,10 +26,9 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
               padding: EdgeInsets.only(left: 25, right: 15),
               child: Text(
                 locale.size,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: AppColors.black),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
               ),
             ),
             Expanded(
@@ -54,8 +53,10 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                 });
               },
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 25),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 25,
+                ),
                 child: Row(
                   children: [
                     Container(
@@ -63,13 +64,15 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                       height: 20,
                       margin: const EdgeInsets.only(right: 12),
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: _selectedSize == index
-                                ? AppColors.accent
-                                : AppColors.dividerColor,
-                            width: _selectedSize == index ? 6 : 1,
-                          )),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color:
+                              _selectedSize == index
+                                  ? AppColors.accent
+                                  : AppColors.dividerColor,
+                          width: _selectedSize == index ? 6 : 1,
+                        ),
+                      ),
                     ),
                     Text(
                       size.label,
@@ -103,8 +106,5 @@ class ProductSize {
   final String label;
   final double value;
 
-  const ProductSize({
-    required this.label,
-    required this.value,
-  });
+  const ProductSize({required this.label, required this.value});
 }

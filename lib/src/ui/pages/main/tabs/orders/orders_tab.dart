@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class OrdersTabPage extends StatelessWidget {
@@ -39,27 +39,22 @@ class OrdersTabPage extends StatelessWidget {
                 dividerColor: Colors.transparent,
                 unselectedLabelStyle: TextStyle(color: AppColors.black),
                 labelColor: AppColors.white,
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: AppColors.white),
+                labelStyle: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(color: AppColors.white),
                 tabs: [
                   Tab(
                     child: Container(
                       height: 44,
                       alignment: Alignment.center,
-                      child: Text(
-                        locale.current,
-                      ),
+                      child: Text(locale.current),
                     ),
                   ),
                   Tab(
                     child: Container(
                       height: 44,
                       alignment: Alignment.center,
-                      child: Text(
-                        locale.history,
-                      ),
+                      child: Text(locale.history),
                     ),
                   ),
                 ],
@@ -67,10 +62,7 @@ class OrdersTabPage extends StatelessWidget {
             ),
             Expanded(
               child: TabBarView(
-                children: [
-                  CurrentOrdersTabWidget(),
-                  HistoryTabWidget(),
-                ],
+                children: [CurrentOrdersTabWidget(), HistoryTabWidget()],
               ),
             ),
           ],

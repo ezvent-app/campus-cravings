@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class PromoCodePage extends ConsumerWidget {
@@ -19,10 +19,11 @@ class PromoCodePage extends ConsumerWidget {
           ),
           height(24),
           RoundedButtonWidget(
-              btnTitle: locale.apply,
-              onTap: () {
-                context.maybePop();
-              })
+            btnTitle: locale.apply,
+            onTap: () {
+              context.maybePop();
+            },
+          ),
         ],
       ),
     );

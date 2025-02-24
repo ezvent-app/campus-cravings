@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class QuantitySelectorWidget extends ConsumerStatefulWidget {
   const QuantitySelectorWidget({super.key});
@@ -32,13 +32,14 @@ class _QuantitySelectorWidgetState
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: value <= 1
-                    ? null
-                    : () {
-                        setState(() {
-                          value--;
-                        });
-                      },
+                onTap:
+                    value <= 1
+                        ? null
+                        : () {
+                          setState(() {
+                            value--;
+                          });
+                        },
                 borderRadius: BorderRadius.circular(12),
                 child: Icon(
                   Icons.remove,
@@ -65,13 +66,14 @@ class _QuantitySelectorWidgetState
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: value >= max
-                    ? null
-                    : () {
-                        setState(() {
-                          value++;
-                        });
-                      },
+                onTap:
+                    value >= max
+                        ? null
+                        : () {
+                          setState(() {
+                            value++;
+                          });
+                        },
                 borderRadius: BorderRadius.circular(12),
                 child: Icon(
                   Icons.add,

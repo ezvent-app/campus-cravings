@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class ProductDescriptionWidget extends ConsumerStatefulWidget {
   const ProductDescriptionWidget({super.key});
@@ -23,11 +23,12 @@ class _ProductDescriptionWidgetState
         text: TextSpan(
           children: [
             TextSpan(
-              text: description.length > 14
-                  ? !_expanded
-                      ? '${description.substring(0, 151)}...'
-                      : description
-                  : description,
+              text:
+                  description.length > 14
+                      ? !_expanded
+                          ? '${description.substring(0, 151)}...'
+                          : description
+                      : description,
               style: const TextStyle(
                 fontFamily: 'SofiaPro',
                 fontSize: 12,
@@ -45,12 +46,13 @@ class _ProductDescriptionWidgetState
                   fontWeight: FontWeight.w600,
                   color: AppColors.accent,
                 ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    setState(() {
-                      _expanded = !_expanded;
-                    });
-                  },
+                recognizer:
+                    TapGestureRecognizer()
+                      ..onTap = () {
+                        setState(() {
+                          _expanded = !_expanded;
+                        });
+                      },
               ),
           ],
         ),

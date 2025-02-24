@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class SvgAssets extends StatelessWidget {
   const SvgAssets(this.name, {super.key, this.height, this.width, this.color});

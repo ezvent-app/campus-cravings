@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class HelpPage extends StatelessWidget {
@@ -22,26 +22,11 @@ class HelpPage extends StatelessWidget {
                   context.pushRoute(const HelpOrderRoute());
                 },
               ),
-              HelpOption(
-                label: locale.delivery,
-                onPressed: () {},
-              ),
-              HelpOption(
-                label: locale.payment,
-                onPressed: () {},
-              ),
-              HelpOption(
-                label: locale.promotion,
-                onPressed: () {},
-              ),
-              HelpOption(
-                label: locale.account,
-                onPressed: () {},
-              ),
-              HelpOption(
-                label: locale.refund,
-                onPressed: () {},
-              ),
+              HelpOption(label: locale.delivery, onPressed: () {}),
+              HelpOption(label: locale.payment, onPressed: () {}),
+              HelpOption(label: locale.promotion, onPressed: () {}),
+              HelpOption(label: locale.account, onPressed: () {}),
+              HelpOption(label: locale.refund, onPressed: () {}),
               HelpOption(
                 label: locale.contactSupport,
                 onPressed: () {

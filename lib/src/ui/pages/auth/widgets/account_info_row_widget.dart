@@ -1,11 +1,12 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class AccountInfoRowWidget extends StatelessWidget {
-  const AccountInfoRowWidget(
-      {super.key,
-      required this.title,
-      required this.btnTitle,
-      required this.onTap});
+  const AccountInfoRowWidget({
+    super.key,
+    required this.title,
+    required this.btnTitle,
+    required this.onTap,
+  });
   final String title, btnTitle;
   final VoidCallback onTap;
   @override
@@ -17,20 +18,22 @@ class AccountInfoRowWidget extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: AppColors.lightText),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: AppColors.lightText,
+            ),
           ),
           TextButton(
             onPressed: onTap,
             child: Text(
               btnTitle,
               style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.accent),
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.accent,
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

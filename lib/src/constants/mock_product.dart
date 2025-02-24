@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/models/product/product.dart';
+import 'package:campuscravings/src/models/product/product.dart';
 
 const Product kMockFeatured = Product(
   id: "0",

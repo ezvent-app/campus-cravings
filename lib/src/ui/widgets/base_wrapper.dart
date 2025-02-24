@@ -1,6 +1,4 @@
-
-
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class BaseWrapper extends ConsumerWidget {
   final String label;
@@ -23,11 +21,11 @@ class BaseWrapper extends ConsumerWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: hasHorizontalPadding ? 25 : 0,
+                  horizontal: hasHorizontalPadding ? 25 : 0,
                 ),
                 child: child,
               ),
-            )
+            ),
           ],
         ),
       ),

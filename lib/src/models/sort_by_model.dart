@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/constants/config.dart';
+import 'package:campuscravings/src/constants/config.dart';
 import 'package:flutter/material.dart';
 
 class SortByModel {
@@ -58,18 +58,19 @@ void showSortBottomSheet(BuildContext context) {
                             color: isSelected ? Colors.black : Colors.white,
                             shape: BoxShape.circle,
                           ),
-                          child: isSelected
-                              ? Center(
-                                  child: Container(
-                                    width: 5,
-                                    height: 5,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
+                          child:
+                              isSelected
+                                  ? Center(
+                                    child: Container(
+                                      width: 5,
+                                      height: 5,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : const SizedBox(),
+                                  )
+                                  : const SizedBox(),
                         ),
                         onTap: () {
                           setState(() {

@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class AnimatedRidersDeliveryDetailsWrapper extends ConsumerStatefulWidget {
   const AnimatedRidersDeliveryDetailsWrapper({super.key});

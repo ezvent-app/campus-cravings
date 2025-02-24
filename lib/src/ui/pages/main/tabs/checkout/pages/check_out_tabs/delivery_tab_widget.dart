@@ -1,9 +1,7 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class DeliveryTabWidget extends ConsumerWidget {
-  const DeliveryTabWidget({
-    super.key,
-  });
+  const DeliveryTabWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,14 +14,15 @@ class DeliveryTabWidget extends ConsumerWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: .08),
-                    blurRadius: 15,
-                  )
-                ]),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: .08),
+                  blurRadius: 15,
+                ),
+              ],
+            ),
             padding: const EdgeInsets.only(top: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,9 +50,7 @@ class DeliveryTabWidget extends ConsumerWidget {
           ),
           Container(
             padding: const EdgeInsets.all(20),
-            margin: const EdgeInsets.symmetric(
-              vertical: 16,
-            ),
+            margin: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
               color: Colors.white,
@@ -72,67 +69,71 @@ class DeliveryTabWidget extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Column(
-                  children: List.generate(
-                    4,
-                    (index) {
-                      return Column(
-                        children: [
-                          const Divider(
-                              color: AppColors.dividerColor, height: 40),
-                          SizedBox(
-                            height: 100,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                PngAsset('mock_product_1',
-                                    height: 80,
-                                    width: 80,
-                                    fit: BoxFit.cover,
-                                    borderRadius: BorderRadius.circular(16)),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 15, top: 4),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Mixed Vegetable Salad',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium!
-                                                .copyWith(
-                                                    fontWeight: FontWeight.w700,
-                                                    color: AppColors.black)),
-                                        Spacer(),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              '\$12.00',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            QuantitySelectorWidget()
-                                          ],
+                  children: List.generate(4, (index) {
+                    return Column(
+                      children: [
+                        const Divider(
+                          color: AppColors.dividerColor,
+                          height: 40,
+                        ),
+                        SizedBox(
+                          height: 100,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              PngAsset(
+                                'mock_product_1',
+                                height: 80,
+                                width: 80,
+                                fit: BoxFit.cover,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 15, top: 4),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Mixed Vegetable Salad',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium!.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.black,
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      Spacer(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '\$12.00',
+                                            overflow: TextOverflow.ellipsis,
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.titleSmall,
+                                          ),
+                                          QuantitySelectorWidget(),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      );
-                    },
-                  ),
+                        ),
+                      ],
+                    );
+                  }),
                 ),
               ],
             ),
@@ -144,7 +145,9 @@ class DeliveryTabWidget extends ConsumerWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withValues(alpha: .08), blurRadius: 15)
+                  color: Colors.black.withValues(alpha: .08),
+                  blurRadius: 15,
+                ),
               ],
             ),
             child: Material(
@@ -158,11 +161,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                   padding: EdgeInsets.all(24),
                   child: Row(
                     children: [
-                      SvgAssets(
-                        'redWallet',
-                        height: 24,
-                        width: 24,
-                      ),
+                      SvgAssets('redWallet', height: 24, width: 24),
                       Expanded(
                         flex: 2,
                         child: Padding(
@@ -183,16 +182,18 @@ class DeliveryTabWidget extends ConsumerWidget {
                         flex: 2,
                         child: Padding(
                           padding: EdgeInsets.only(right: 12),
-                          child: Text('Villanova Vallet',
-                              textAlign: TextAlign.end,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600)),
+                          child: Text(
+                            'Villanova Vallet',
+                            textAlign: TextAlign.end,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium!.copyWith(
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                       Icon(
@@ -213,7 +214,9 @@ class DeliveryTabWidget extends ConsumerWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withValues(alpha: .08), blurRadius: 15)
+                  color: Colors.black.withValues(alpha: .08),
+                  blurRadius: 15,
+                ),
               ],
             ),
             child: Column(
@@ -284,10 +287,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                     ),
                   ),
                 ),
-                Divider(
-                  height: 40,
-                  color: AppColors.dividerColor,
-                ),
+                Divider(height: 40, color: AppColors.dividerColor),
                 Row(
                   children: [
                     Text(
@@ -317,10 +317,7 @@ class DeliveryTabWidget extends ConsumerWidget {
               ],
             ),
           ),
-          const Divider(
-            height: 48,
-            color: AppColors.dividerColor,
-          ),
+          const Divider(height: 48, color: AppColors.dividerColor),
           Container(
             width: double.infinity,
             height: 48,
@@ -331,18 +328,17 @@ class DeliveryTabWidget extends ConsumerWidget {
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.background,
               ),
               child: Text(
                 '${locale.placeOrder} - \$26.00',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: TextStyle(fontWeight: FontWeight.w500),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -352,97 +348,104 @@ class DeliveryTabWidget extends ConsumerWidget {
     List tipsList = [1, 5, 10, 15];
     final locale = AppLocalizations.of(context)!;
     return showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        builder: (context) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * .5,
-            child: Card(
-              margin: EdgeInsets.all(10),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          locale.addTip,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        width(50),
-                        IconButton(
-                            onPressed: () => Navigator.pop(context),
-                            icon: Icon(
-                              Icons.clear,
-                              color: AppColors.email,
-                            ))
-                      ],
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * .5,
+          child: Card(
+            margin: EdgeInsets.all(10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        locale.addTip,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      width(50),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(Icons.clear, color: AppColors.email),
+                      ),
+                    ],
+                  ),
+                  height(20),
+                  Text(
+                    "${locale.wantToLeaveTipFor} Robert",
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: AppColors.lightText,
+                      fontWeight: FontWeight.w600,
                     ),
-                    height(20),
-                    Text(
-                      "${locale.wantToLeaveTipFor} Robert",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: AppColors.lightText,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Consumer(builder: (context, ref, _) {
+                  ),
+                  Consumer(
+                    builder: (context, ref, _) {
                       var selectedIndex = ref.watch(tipsProvider);
                       return Wrap(
                         children: List.generate(
-                            tipsList.length,
-                            (i) => InkWell(
-                                borderRadius: BorderRadius.circular(15),
-                                onTap: () =>
-                                    ref.read(tipsProvider.notifier).state = i,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Container(
-                                    width: 140,
-                                    height: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: selectedIndex == i
-                                              ? AppColors.black
-                                              : Colors.grey),
-                                    ),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(5),
-                                        child: Text(
-                                          "\$${tipsList[i]}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
-                                                color: selectedIndex == i
-                                                    ? AppColors.black
-                                                    : Colors.grey,
-                                              ),
-                                        ),
+                          tipsList.length,
+                          (i) => InkWell(
+                            borderRadius: BorderRadius.circular(15),
+                            onTap:
+                                () => ref.read(tipsProvider.notifier).state = i,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Container(
+                                width: 140,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color:
+                                        selectedIndex == i
+                                            ? AppColors.black
+                                            : Colors.grey,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Text(
+                                      "\$${tipsList[i]}",
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyLarge!.copyWith(
+                                        color:
+                                            selectedIndex == i
+                                                ? AppColors.black
+                                                : Colors.grey,
                                       ),
                                     ),
                                   ),
-                                ))),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       );
-                    }),
-                    height(30),
-                    RoundedButtonWidget(
-                      btnTitle: locale.confirm,
-                      onTap: () => Navigator.pop(context),
-                    )
-                  ],
-                ),
+                    },
+                  ),
+                  height(30),
+                  RoundedButtonWidget(
+                    btnTitle: locale.confirm,
+                    onTap: () => Navigator.pop(context),
+                  ),
+                ],
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 

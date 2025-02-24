@@ -10,82 +10,81 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i40;
-import 'package:campus_cravings/src/src.dart' as _i41;
-import 'package:campus_cravings/src/ui/pages/address_form/address_form_page.dart'
+import 'package:campuscravings/src/src.dart' as _i41;
+import 'package:campuscravings/src/ui/pages/address_form/address_form_page.dart'
     as _i2;
-import 'package:campus_cravings/src/ui/pages/auth/forget_password/forget_password_otp_page.dart'
+import 'package:campuscravings/src/ui/pages/auth/forget_password/forget_password_otp_page.dart'
     as _i15;
-import 'package:campus_cravings/src/ui/pages/auth/forget_password/forget_password_page.dart'
+import 'package:campuscravings/src/ui/pages/auth/forget_password/forget_password_page.dart'
     as _i16;
-import 'package:campus_cravings/src/ui/pages/auth/forget_password/new_password_page.dart'
+import 'package:campuscravings/src/ui/pages/auth/forget_password/new_password_page.dart'
     as _i23;
-import 'package:campus_cravings/src/ui/pages/auth/login/login_page.dart'
-    as _i20;
-import 'package:campus_cravings/src/ui/pages/auth/otp/otp_page.dart' as _i28;
-import 'package:campus_cravings/src/ui/pages/auth/sign_up/sign_up_page.dart'
+import 'package:campuscravings/src/ui/pages/auth/login/login_page.dart' as _i20;
+import 'package:campuscravings/src/ui/pages/auth/otp/otp_page.dart' as _i28;
+import 'package:campuscravings/src/ui/pages/auth/sign_up/sign_up_page.dart'
     as _i38;
-import 'package:campus_cravings/src/ui/pages/delivery_man_profile/pages/add_payout_page.dart'
+import 'package:campuscravings/src/ui/pages/delivery_man_profile/pages/add_payout_page.dart'
     as _i1;
-import 'package:campus_cravings/src/ui/pages/delivery_man_profile/pages/delivery_man_profile_page/delivery_man_profile_page.dart'
+import 'package:campuscravings/src/ui/pages/delivery_man_profile/pages/delivery_man_profile_page/delivery_man_profile_page.dart'
     as _i13;
-import 'package:campus_cravings/src/ui/pages/delivery_man_profile/pages/delivery_profile_page.dart'
+import 'package:campuscravings/src/ui/pages/delivery_man_profile/pages/delivery_profile_page.dart'
     as _i14;
-import 'package:campus_cravings/src/ui/pages/delivery_man_profile/profile_form_page.dart'
+import 'package:campuscravings/src/ui/pages/delivery_man_profile/profile_form_page.dart'
     as _i32;
-import 'package:campus_cravings/src/ui/pages/main/main_page.dart' as _i21;
-import 'package:campus_cravings/src/ui/pages/main/pages/placing_order/placing_order_page.dart'
+import 'package:campuscravings/src/ui/pages/main/main_page.dart' as _i21;
+import 'package:campuscravings/src/ui/pages/main/pages/placing_order/placing_order_page.dart'
     as _i30;
-import 'package:campus_cravings/src/ui/pages/main/pages/product_details/product_details_page.dart'
+import 'package:campuscravings/src/ui/pages/main/pages/product_details/product_details_page.dart'
     as _i31;
-import 'package:campus_cravings/src/ui/pages/main/pages/restaurant/restaurant_page.dart'
+import 'package:campuscravings/src/ui/pages/main/pages/restaurant/restaurant_page.dart'
     as _i35;
-import 'package:campus_cravings/src/ui/pages/main/tabs/checkout/checkout_tab.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/checkout/checkout_tab.dart'
     as _i8;
-import 'package:campus_cravings/src/ui/pages/main/tabs/checkout/pages/add_new_address_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/checkout/pages/add_new_address_page.dart'
     as _i5;
-import 'package:campus_cravings/src/ui/pages/main/tabs/checkout/pages/chat_page/chat_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/checkout/pages/chat_page/chat_page.dart'
     as _i6;
-import 'package:campus_cravings/src/ui/pages/main/tabs/checkout/pages/check_out_address_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/checkout/pages/check_out_address_page.dart'
     as _i9;
-import 'package:campus_cravings/src/ui/pages/main/tabs/checkout/pages/deliver_to/deliver_to_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/checkout/pages/deliver_to/deliver_to_page.dart'
     as _i11;
-import 'package:campus_cravings/src/ui/pages/main/tabs/checkout/pages/delivering/delivering_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/checkout/pages/delivering/delivering_page.dart'
     as _i12;
-import 'package:campus_cravings/src/ui/pages/main/tabs/checkout/pages/map_order_tracking_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/checkout/pages/map_order_tracking_page.dart'
     as _i7;
-import 'package:campus_cravings/src/ui/pages/main/tabs/home/home_tab.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/home/home_tab.dart'
     as _i19;
-import 'package:campus_cravings/src/ui/pages/main/tabs/orders/orders_tab.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/orders/orders_tab.dart'
     as _i27;
-import 'package:campus_cravings/src/ui/pages/main/tabs/orders/pages/orders_details_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/orders/pages/orders_details_page.dart'
     as _i26;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/change_language/change_language_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/change_language/change_language_page.dart'
     as _i3;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/change_password/change_password_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/change_password/change_password_page.dart'
     as _i4;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/help/help_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/help_page.dart'
     as _i18;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/help/pages/contact_support_page/contact_support_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/contact_support_page/contact_support_page.dart'
     as _i10;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/help/pages/help_order_page/help_order_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/help_order_page/help_order_page.dart'
     as _i17;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/notifications/notifications_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/notifications/notifications_page.dart'
     as _i24;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/payment_methods/payment_methods_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/payment_methods/payment_methods_page.dart'
     as _i29;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/promo_code/promo_code_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/promo_code/promo_code_page.dart'
     as _i34;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/saved_addresses/saved_addresses_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/saved_addresses/saved_addresses_page.dart'
     as _i37;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/profile_tab.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/profile_tab.dart'
     as _i33;
-import 'package:campus_cravings/src/ui/pages/main/tabs/riders/riders_tab.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/riders/riders_tab.dart'
     as _i36;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/payment_methods/new_card/new_card_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/payment_methods/new_card/new_card_page.dart'
     as _i22;
-import 'package:campus_cravings/src/ui/pages/onboarding/onboarding_page.dart'
+import 'package:campuscravings/src/ui/pages/onboarding/onboarding_page.dart'
     as _i25;
-import 'package:campus_cravings/src/ui/pages/main/tabs/profile/pages/profile_form/student_profile_details_page.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/profile_form/student_profile_details_page.dart'
     as _i39;
 
 /// generated route for

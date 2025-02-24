@@ -1,16 +1,24 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 final deliveryProfileProvider =
     StateNotifierProvider<DeliveryProfileProvider, DeliveryProfileModel>(
-        (ref) => DeliveryProfileProvider());
+      (ref) => DeliveryProfileProvider(),
+    );
 
 class DeliveryProfileProvider extends StateNotifier<DeliveryProfileModel> {
   DeliveryProfileProvider()
-      : super(DeliveryProfileModel(
-            socialSecurityNumber: '', isAgree: false, nICImage: ''));
+    : super(
+        DeliveryProfileModel(
+          socialSecurityNumber: '',
+          isAgree: false,
+          nICImage: '',
+        ),
+      );
 
-  void updateSocialSecurityNumber(String value) => state =
-      state.copyWith(socialSecurityNumber: state.socialSecurityNumber = value);
+  void updateSocialSecurityNumber(String value) =>
+      state = state.copyWith(
+        socialSecurityNumber: state.socialSecurityNumber = value,
+      );
 
   void updateNICImage(String value) =>
       state = state.copyWith(nICImage: state.nICImage = value);

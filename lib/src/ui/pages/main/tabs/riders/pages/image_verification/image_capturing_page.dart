@@ -1,5 +1,5 @@
-import 'package:campus_cravings/main.dart';
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/main.dart';
+import 'package:campuscravings/src/src.dart';
 
 class ImageCaptureScreen extends StatefulWidget {
   /// Default Constructor

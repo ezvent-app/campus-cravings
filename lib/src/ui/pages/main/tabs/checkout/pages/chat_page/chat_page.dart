@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class CheckOutChatPage extends StatelessWidget {
@@ -28,51 +28,58 @@ class CheckOutChatPage extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
-                      crossAxisAlignment: chat.isRead
-                          ? CrossAxisAlignment.end
-                          : CrossAxisAlignment.start,
+                      crossAxisAlignment:
+                          chat.isRead
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              color: chat.isRead
-                                  ? AppColors.black
-                                  : AppColors.halfWhite,
-                              borderRadius: chat.isRead
-                                  ? BorderRadius.only(
+                            color:
+                                chat.isRead
+                                    ? AppColors.black
+                                    : AppColors.halfWhite,
+                            borderRadius:
+                                chat.isRead
+                                    ? BorderRadius.only(
                                       topLeft: Radius.circular(16),
                                       topRight: Radius.circular(16),
                                       bottomLeft: Radius.circular(16),
-                                      bottomRight: Radius.circular(2))
-                                  : BorderRadius.only(
+                                      bottomRight: Radius.circular(2),
+                                    )
+                                    : BorderRadius.only(
                                       topLeft: Radius.circular(2),
                                       topRight: Radius.circular(16),
                                       bottomLeft: Radius.circular(16),
-                                      bottomRight: Radius.circular(16))),
+                                      bottomRight: Radius.circular(16),
+                                    ),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.all(20),
                             child: Text(
                               chat.message,
                               style: TextStyle(
-                                  color: chat.isRead
-                                      ? AppColors.white
-                                      : AppColors.black),
+                                color:
+                                    chat.isRead
+                                        ? AppColors.white
+                                        : AppColors.black,
+                              ),
                             ),
                           ),
                         ),
                         chat.isRead
                             ? Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    chat.timestamp,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                  width(5),
-                                  Icon(Icons.done_all)
-                                ],
-                              )
-                            : Text(chat.timestamp)
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  chat.timestamp,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                width(5),
+                                Icon(Icons.done_all),
+                              ],
+                            )
+                            : Text(chat.timestamp),
                       ],
                     ),
                   );
@@ -85,8 +92,9 @@ class CheckOutChatPage extends StatelessWidget {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: AppColors.halfWhite),
+                      borderRadius: BorderRadius.circular(16),
+                      color: AppColors.halfWhite,
+                    ),
                     child: TextField(
                       onChanged: (value) {},
                       decoration: InputDecoration(
@@ -98,13 +106,10 @@ class CheckOutChatPage extends StatelessWidget {
                   ),
                 ),
                 width(12),
-                IconButton(
-                  icon: SvgAssets("Navigation"),
-                  onPressed: () {},
-                )
+                IconButton(icon: SvgAssets("Navigation"), onPressed: () {}),
               ],
             ),
-            height(20)
+            height(20),
           ],
         ),
       ),

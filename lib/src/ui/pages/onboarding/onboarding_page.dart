@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class OnboardingPage extends ConsumerStatefulWidget {
@@ -77,39 +77,41 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 AnimatedOpacity(
                   opacity: _opacity,
                   duration: const Duration(
-                      milliseconds: 0), // Duration of fade transition
+                    milliseconds: 0,
+                  ), // Duration of fade transition
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: Dimensions.paddingSizeLarge,
-                        vertical: Dimensions.paddingSizeSmall),
+                      horizontal: Dimensions.paddingSizeLarge,
+                      vertical: Dimensions.paddingSizeSmall,
+                    ),
                     child: Column(
                       children: [
                         Text(
                           _currentPage == 0
                               ? locale.onboardingTitle1
                               : _currentPage == 1
-                                  ? locale.onboardingTitle2
-                                  : locale.onboardingTitle3,
+                              ? locale.onboardingTitle2
+                              : locale.onboardingTitle3,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(
-                                  fontSize: Dimensions.fontSizeOnboarding,
-                                  fontWeight: FontWeight.w500),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleLarge!.copyWith(
+                            fontSize: Dimensions.fontSizeOnboarding,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         height(15),
                         Text(
-                            _currentPage == 0
-                                ? locale.onboardingDesc1
-                                : _currentPage == 1
-                                    ? locale.onboardingDesc2
-                                    : locale.onboardingDesc3,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(fontSize: 15)),
+                          _currentPage == 0
+                              ? locale.onboardingDesc1
+                              : _currentPage == 1
+                              ? locale.onboardingDesc2
+                              : locale.onboardingDesc3,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                        ),
                       ],
                     ),
                   ),
@@ -121,16 +123,23 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   child: Padding(
                     padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
                     child: IconButton(
-                        onPressed: () => _currentPage == 0 || _currentPage == 1
-                            ? _pageController.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn)
-                            : context.replaceRoute(LoginRoute()),
-                        icon: Icon(Icons.arrow_forward,
-                            color: Colors.white, size: 30)),
+                      onPressed:
+                          () =>
+                              _currentPage == 0 || _currentPage == 1
+                                  ? _pageController.nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeIn,
+                                  )
+                                  : context.replaceRoute(LoginRoute()),
+                      icon: Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
                   ),
                 ),
-                height(40)
+                height(40),
               ],
             ),
           ),

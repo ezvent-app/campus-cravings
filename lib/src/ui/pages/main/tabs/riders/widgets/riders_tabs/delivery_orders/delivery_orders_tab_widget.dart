@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class DeliveryOrdersTabWidget extends ConsumerStatefulWidget {
   const DeliveryOrdersTabWidget({super.key});
