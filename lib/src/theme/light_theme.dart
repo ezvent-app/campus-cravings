@@ -25,9 +25,14 @@ ThemeData lightTheme = ThemeData.light().copyWith(
     ),
     prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 50),
   ),
+
   colorScheme: const ColorScheme.light(
     primary: AppColors.primary,
   ).copyWith(surface: AppColors.background),
+  switchTheme: SwitchThemeData(
+    thumbColor: WidgetStateProperty.all(Colors.white),
+    trackColor: WidgetStateProperty.all(Colors.black),
+  ),
   appBarTheme: const AppBarTheme(
     titleTextStyle: TextStyle(
       color: Colors.black,

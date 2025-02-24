@@ -19,7 +19,27 @@ class DropDownWidget extends StatelessWidget {
         return DropdownButtonFormField(
           style: Theme.of(context).textTheme.bodyMedium,
           icon: Icon(Icons.keyboard_arrow_down),
-          decoration: InputDecoration(hintText: hintText),
+          borderRadius: BorderRadius.circular(10),
+          decoration: InputDecoration(
+            hintText: hintText,
+            contentPadding: const EdgeInsets.all(15),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                color: AppColors.textFieldBorder,
+                width: 1.5,
+              ),
+            ),
+
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(
+                color: AppColors.textFieldBorder,
+                width: 1.5,
+              ),
+            ),
+          ),
           items:
               universitiesList
                   .map(

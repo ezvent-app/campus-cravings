@@ -1,5 +1,5 @@
 export './change_password/change_password_page.dart';
-export './notifications/notifications_page.dart';
+export './notifications/widgets/widgets.dart';
 export './promo_code/promo_code_page.dart';
 export './saved_addresses/saved_addresses_page.dart';
 export './help/help_paths.dart';

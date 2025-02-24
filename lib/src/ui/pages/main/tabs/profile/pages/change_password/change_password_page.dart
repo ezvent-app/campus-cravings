@@ -15,6 +15,7 @@ class ChangePasswordPage extends ConsumerWidget {
         children: [
           CustomTextField(
             label: locale.enterOldPassword,
+            textInputAction: TextInputAction.next,
             obscureText: true,
             onChanged: (value) {
               final currentState = ref.read(changePasswordProvider);
@@ -27,6 +28,7 @@ class ChangePasswordPage extends ConsumerWidget {
           CustomTextField(
             label: locale.enterNewPassword,
             obscureText: true,
+            textInputAction: TextInputAction.next,
             onChanged: (value) {
               final currentState = ref.read(changePasswordProvider);
               ref.read(changePasswordProvider.notifier).state = {

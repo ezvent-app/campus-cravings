@@ -12,113 +12,68 @@ class NotificationsPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF5F5F5),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        locale.pushNotifications,
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xff2E3138)),
-                      ),
-                      height(12),
-                      Text(
-                        locale.enableNotifications,
-                        style:
-                            TextStyle(fontSize: 14, color: Color(0xff878E9B)),
-                      ),
-                    ],
-                  ),
-                ),
-                width(15),
-                Switch(
-                  value: true,
-                  onChanged: (value) {},
-                ),
-              ],
-            ),
+          Consumer(
+            builder: (context, ref, child) {
+              var push = ref.watch(notificationProvider)['push'];
+              return NotificationWidget(
+                title: locale.pushNotifications,
+                desc: locale.enableNotifications,
+                isEnable: push!,
+                onChange: (value) {
+                  final pushProvider = ref.read(notificationProvider);
+                  ref.read(notificationProvider.notifier).state = {
+                    ...pushProvider,
+                    'push': value,
+                  };
+                },
+              );
+            },
           ),
           height(24),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF5F5F5),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        locale.smsNotifications,
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xff2E3138)),
-                      ),
-                      height(12),
-                      Text(
-                        locale.enableSMSNotifications,
-                        style:
-                            TextStyle(fontSize: 14, color: Color(0xff878E9B)),
-                      ),
-                    ],
-                  ),
-                ),
-                width(15),
-                Switch(
-                  value: true,
-                  onChanged: (value) {},
-                ),
-              ],
-            ),
+
+          Consumer(
+            builder: (context, ref, child) {
+              var sms = ref.watch(notificationProvider)['sms'];
+              return NotificationWidget(
+                title: locale.smsNotifications,
+                desc: locale.enableSMSNotifications,
+                isEnable: sms!,
+                onChange: (value) {
+                  final smsProvider = ref.read(notificationProvider);
+                  ref.read(notificationProvider.notifier).state = {
+                    ...smsProvider,
+                    'sms': value,
+                  };
+                },
+              );
+            },
           ),
           height(24),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF5F5F5),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        locale.emailNotifications,
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xff2E3138)),
-                      ),
-                      SizedBox(height: 12),
-                      Text(
-                        locale.dontMissEmailNotifications,
-                        style:
-                            TextStyle(fontSize: 14, color: Color(0xff878E9B)),
-                      ),
-                    ],
-                  ),
-                ),
-                width(15),
-                Switch(
-                  value: true,
-                  onChanged: (value) {},
-                ),
-              ],
-            ),
+          Consumer(
+            builder: (context, ref, child) {
+              var email = ref.watch(notificationProvider)['email'];
+              return NotificationWidget(
+                title: locale.emailNotifications,
+                desc: locale.dontMissEmailNotifications,
+                isEnable: email!,
+                onChange: (value) {
+                  final emailProvider = ref.read(notificationProvider);
+                  ref.read(notificationProvider.notifier).state = {
+                    ...emailProvider,
+                    'email': value,
+                  };
+                },
+              );
+            },
           ),
+
           height(24),
         ],
       ),
     );
   }
 }
+
+final notificationProvider = StateProvider<Map<String, bool>>(
+  (ref) => {'push': true, 'sms': true, 'email': true},
+);

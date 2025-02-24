@@ -27,6 +27,7 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
         statusBarIconBrightness: Brightness.light,
       ),
     );
+    final isIOS = Platform.isIOS;
     return Scaffold(
       body: Stack(
         children: [
@@ -39,7 +40,7 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
               color: AppColors.white,
               child: IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back),
               ),
             ),
           ),
@@ -108,7 +109,11 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
                     height(10),
                     Row(
                       children: [
-                        Switch.adaptive(value: true, onChanged: (value) {}),
+                        Switch(
+                          value: true,
+                          onChanged: (value) {},
+                          trackColor: WidgetStateProperty.all(Colors.black),
+                        ),
                         width(10),
                         Text(
                           locale.setDefault,
