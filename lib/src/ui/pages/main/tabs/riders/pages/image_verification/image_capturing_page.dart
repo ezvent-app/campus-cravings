@@ -17,26 +17,23 @@ class _ImageCaptureScreenState extends State<ImageCaptureScreen> {
   void initState() {
     super.initState();
     controller = CameraController(cameras[0], ResolutionPreset.max);
-    controller
-        .initialize()
-        .then((_) {
-          if (!mounted) {
-            return;
-          }
-          setState(() {});
-        })
-        .catchError((Object e) {
-          if (e is CameraException) {
-            switch (e.code) {
-              case 'CameraAccessDenied':
-                // Handle access errors here.
-                break;
-              default:
-                // Handle other errors here.
-                break;
-            }
-          }
-        });
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    }).catchError((Object e) {
+      if (e is CameraException) {
+        switch (e.code) {
+          case 'CameraAccessDenied':
+            // Handle access errors here.
+            break;
+          default:
+            // Handle other errors here.
+            break;
+        }
+      }
+    });
   }
 
   @override
@@ -93,7 +90,7 @@ class _ImageCaptureScreenState extends State<ImageCaptureScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  InkWell(
+                  InkWellButtonWidget(
                     borderRadius: BorderRadius.circular(100),
                     onTap: _captureImage,
                     child: SvgAssets("Shutter", width: 72, height: 72),

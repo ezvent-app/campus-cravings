@@ -43,7 +43,7 @@ class ProfileTabPage extends StatelessWidget {
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                             height(5),
-                            InkWell(
+                            InkWellButtonWidget(
                               onTap: () {
                                 context.pushRoute(
                                   ProfileFormRoute(newUser: false),
@@ -72,7 +72,7 @@ class ProfileTabPage extends StatelessWidget {
                     ),
                     child: Material(
                       color: Colors.transparent,
-                      child: InkWell(
+                      child: InkWellButtonWidget(
                         borderRadius: BorderRadius.circular(8),
                         onTap: () {},
                         child: const Center(

@@ -32,9 +32,8 @@ class PaymentMethodsPage extends ConsumerWidget {
                       physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: paymentMethods.length,
-                      separatorBuilder:
-                          (BuildContext context, int index) =>
-                              const SizedBox(width: 13),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(width: 13),
                       itemBuilder: (BuildContext context, int index) {
                         final category = paymentMethods[index];
                         return Column(
@@ -44,17 +43,12 @@ class PaymentMethodsPage extends ConsumerWidget {
                                 final selectedIndex = ref.watch(
                                   paymentMethodProvider,
                                 );
-                                return InkWell(
-                                  borderRadius: BorderRadius.circular(
-                                    Dimensions.radiusDefault,
-                                  ),
-                                  onTap:
-                                      () =>
-                                          ref
-                                              .read(
-                                                paymentMethodProvider.notifier,
-                                              )
-                                              .state = index,
+                                return InkWellButtonWidget(
+                                  onTap: () => ref
+                                      .read(
+                                        paymentMethodProvider.notifier,
+                                      )
+                                      .state = index,
                                   child: Container(
                                     width: 80,
                                     height: 65,
@@ -66,16 +60,14 @@ class PaymentMethodsPage extends ConsumerWidget {
                                         Dimensions.radiusDefault,
                                       ),
                                       border: Border.all(
-                                        color:
-                                            index == selectedIndex
-                                                ? Colors.black
-                                                : AppColors.textFieldBorder,
+                                        color: index == selectedIndex
+                                            ? Colors.black
+                                            : AppColors.textFieldBorder,
                                       ),
                                     ),
-                                    child:
-                                        index > 2
-                                            ? PngAsset(category)
-                                            : SvgAssets(category),
+                                    child: index > 2
+                                        ? PngAsset(category)
+                                        : SvgAssets(category),
                                   ),
                                 );
                               },
@@ -133,7 +125,7 @@ class PaymentMethodsPage extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        InkWell(
+                        InkWellButtonWidget(
                           onTap: () {
                             context.pushRoute(const NewCardRoute());
                           },

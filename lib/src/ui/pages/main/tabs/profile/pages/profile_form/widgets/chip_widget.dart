@@ -14,29 +14,29 @@ class ChipWrapWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 8,
-      children:
-          items
-              .map(
-                (i) => InkWell(
-                  onTap: () => onRemove(i),
-                  child: Chip(
-                    labelPadding: EdgeInsets.zero,
-                    label: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          i,
-                          style: Theme.of(context).textTheme.bodySmall!
-                              .copyWith(color: AppColors.black),
-                        ),
-
-                        Icon(Icons.clear, size: 16),
-                      ],
+      children: items
+          .map(
+            (i) => InkWellButtonWidget(
+              onTap: () => onRemove(i),
+              child: Chip(
+                labelPadding: EdgeInsets.zero,
+                label: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      i,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: AppColors.black),
                     ),
-                  ),
+                    Icon(Icons.clear, size: 16),
+                  ],
                 ),
-              )
-              .toList(),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 }

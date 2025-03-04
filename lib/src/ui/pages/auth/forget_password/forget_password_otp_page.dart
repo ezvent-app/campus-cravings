@@ -21,9 +21,9 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
           Text(
             'sample@email.com',
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
-              fontSize: 13,
-              color: AppColors.black,
-            ),
+                  fontSize: 13,
+                  color: AppColors.black,
+                ),
           ),
           height(30),
           OtpPinField(
@@ -43,10 +43,10 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
             fieldWidth: 40,
             fieldHeight: 40,
             otpPinFieldDecoration: OtpPinFieldDecoration.custom,
-            onSubmit:
-                (text) => ref.read(forgetOTPProvider.notifier).state = text,
-            onChange:
-                (text) => ref.read(forgetOTPProvider.notifier).state = text,
+            onSubmit: (text) =>
+                ref.read(forgetOTPProvider.notifier).state = text,
+            onChange: (text) =>
+                ref.read(forgetOTPProvider.notifier).state = text,
           ),
           height(40),
           Consumer(
@@ -54,13 +54,12 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
               var otp = ref.watch(forgetOTPProvider);
               return RoundedButtonWidget(
                 btnTitle: locale.continueNext,
-                onTap:
-                    otp.length != 6
-                        ? null
-                        : () {
-                          context.pushRoute(NewPasswordRoute());
-                          ref.read(forgetOTPProvider.notifier).state = '';
-                        },
+                onTap: otp.length != 6
+                    ? null
+                    : () {
+                        context.pushRoute(NewPasswordRoute());
+                        ref.read(forgetOTPProvider.notifier).state = '';
+                      },
               );
             },
           ),
@@ -77,7 +76,7 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
                     color: AppColors.lightText,
                   ),
                 ),
-                InkWell(
+                InkWellButtonWidget(
                   onTap: () {},
                   child: Text(
                     locale.resend,

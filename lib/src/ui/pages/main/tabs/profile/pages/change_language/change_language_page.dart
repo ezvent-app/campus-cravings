@@ -35,7 +35,7 @@ class ChangeLanguagePage extends ConsumerWidget {
                         language.title,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      leading: SvgAssets(language.flag, width: 23, height: 16),
+                      // leading: SvgAssets(language.flag, width: 23, height: 16),
                       trailing: Container(
                         width: 20,
                         height: 20,
@@ -44,24 +44,22 @@ class ChangeLanguagePage extends ConsumerWidget {
                           color: isSelected ? Colors.black : Colors.white,
                           shape: BoxShape.circle,
                         ),
-                        child:
-                            isSelected
-                                ? Center(
-                                  child: Container(
-                                    width: 5,
-                                    height: 5,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                    ),
+                        child: isSelected
+                            ? Center(
+                                child: Container(
+                                  width: 5,
+                                  height: 5,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
                                   ),
-                                )
-                                : const SizedBox(),
+                                ),
+                              )
+                            : const SizedBox(),
                       ),
-                      onTap:
-                          () =>
-                              ref.read(changeLanguageProvider.notifier).state =
-                                  index,
+                      onTap: () => ref
+                          .read(changeLanguageProvider.notifier)
+                          .state = index,
                     );
                   },
                 );
@@ -74,13 +72,12 @@ class ChangeLanguagePage extends ConsumerWidget {
               var language = ref.watch(changeLanguageProvider);
               return RoundedButtonWidget(
                 btnTitle: locale.save,
-                onTap:
-                    language == 1
-                        ? null
-                        : () {
-                          context.maybePop();
-                          ref.read(changeLanguageProvider.notifier).state = 1;
-                        },
+                onTap: language == 1
+                    ? null
+                    : () {
+                        context.maybePop();
+                        ref.read(changeLanguageProvider.notifier).state = 1;
+                      },
               );
             },
           ),

@@ -43,7 +43,20 @@ class NotificationWidget extends StatelessWidget {
           Switch(
             value: isEnable,
             onChanged: onChange,
-            trackColor: WidgetStateProperty.all(Colors.black),
+            trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return Colors.black;
+              } else {
+                return AppColors.unselectedTabIconColor;
+              }
+            }),
+            trackColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return Colors.black;
+              } else {
+                return AppColors.unselectedTabIconColor;
+              }
+            }),
           ),
         ],
       ),

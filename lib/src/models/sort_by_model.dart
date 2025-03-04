@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/constants/config.dart';
+import 'package:campuscravings/src/src.dart';
 import 'package:flutter/material.dart';
 
 class SortByModel {
@@ -44,23 +45,27 @@ void showSortBottomSheet(BuildContext context) {
                     itemBuilder: (context, index) {
                       final sort = sortByList[index];
                       bool isSelected = selectedIndex == sort.index;
-
                       return ListTile(
                         title: Text(
                           sort.title,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        trailing: Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            color: isSelected ? Colors.black : Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child:
-                              isSelected
-                                  ? Center(
+                        trailing: InkWellButtonWidget(
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = sort.index;
+                            });
+                          },
+                          child: Container(
+                            width: 20,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              color: isSelected ? Colors.black : Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: isSelected
+                                ? Center(
                                     child: Container(
                                       width: 5,
                                       height: 5,
@@ -70,13 +75,9 @@ void showSortBottomSheet(BuildContext context) {
                                       ),
                                     ),
                                   )
-                                  : const SizedBox(),
+                                : const SizedBox(),
+                          ),
                         ),
-                        onTap: () {
-                          setState(() {
-                            selectedIndex = sort.index;
-                          });
-                        },
                       );
                     },
                   ),

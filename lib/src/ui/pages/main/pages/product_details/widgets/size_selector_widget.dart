@@ -46,7 +46,7 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
           padding: const EdgeInsets.only(top: 10),
           itemBuilder: (context, index) {
             final size = sizes[index];
-            return InkWell(
+            return InkWellButtonWidget(
               onTap: () {
                 setState(() {
                   _selectedSize = index;
@@ -66,10 +66,9 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color:
-                              _selectedSize == index
-                                  ? AppColors.accent
-                                  : AppColors.dividerColor,
+                          color: _selectedSize == index
+                              ? AppColors.accent
+                              : AppColors.dividerColor,
                           width: _selectedSize == index ? 6 : 1,
                         ),
                       ),

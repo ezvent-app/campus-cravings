@@ -60,9 +60,9 @@ class _RidersDeliveryDetailsWidgetState
               Text(
                 locale.deliveryDetails,
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                  fontSize: 21,
-                  fontWeight: FontWeight.w800,
-                ),
+                      fontSize: 21,
+                      fontWeight: FontWeight.w800,
+                    ),
               ),
               height(20),
               OrdersInfoWidget(
@@ -77,9 +77,9 @@ class _RidersDeliveryDetailsWidgetState
                   Text(
                     locale.orderSummary,
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      fontSize: 21,
-                      fontWeight: FontWeight.w800,
-                    ),
+                          fontSize: 21,
+                          fontWeight: FontWeight.w800,
+                        ),
                   ),
                 ],
               ),
@@ -113,8 +113,8 @@ class _RidersDeliveryDetailsWidgetState
                       title: Text(
                         "Ryder",
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                       subtitle: Text(
                         "Customer",
@@ -136,12 +136,11 @@ class _RidersDeliveryDetailsWidgetState
                             ),
                           ),
                           width(10),
-                          InkWell(
+                          InkWellButtonWidget(
                             borderRadius: BorderRadius.circular(100),
-                            onTap:
-                                () => context.pushRoute(
-                                  const CheckOutChatRoute(),
-                                ),
+                            onTap: () => context.pushRoute(
+                              const CheckOutChatRoute(),
+                            ),
                             child: SizedBox(
                               width: 50,
                               height: 50,

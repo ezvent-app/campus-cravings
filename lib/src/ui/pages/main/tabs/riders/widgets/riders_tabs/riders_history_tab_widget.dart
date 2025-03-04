@@ -22,8 +22,13 @@ class RidersHistoryTabWidget extends StatelessWidget {
                   return Column(
                     children: [
                       const Divider(color: AppColors.dividerColor, height: 40),
-                      InkWell(
-                        onTap: () {},
+                      InkWellButtonWidget(
+                        onTap: () => context.pushRoute(ProductDetailsRoute(
+                            product: Product(
+                                id: "sdjksad",
+                                name: "Pizza",
+                                imageUrl: "mock_product_1",
+                                price: 23.8))),
                         child: SizedBox(
                           height: 95,
                           child: Row(
@@ -57,10 +62,9 @@ class RidersHistoryTabWidget extends StatelessWidget {
                                             'Pizza Hut',
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.titleSmall,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleSmall,
                                           ),
                                           Text(
                                             '#162432',
@@ -68,9 +72,9 @@ class RidersHistoryTabWidget extends StatelessWidget {
                                             style: Theme.of(
                                               context,
                                             ).textTheme.bodyMedium!.copyWith(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                            ),
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
                                           ),
                                         ],
                                       ),
@@ -82,10 +86,9 @@ class RidersHistoryTabWidget extends StatelessWidget {
                                           Text(
                                             '\$12.00',
                                             overflow: TextOverflow.ellipsis,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.titleSmall,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleSmall,
                                           ),
                                           Container(
                                             height: 50,
@@ -95,10 +98,9 @@ class RidersHistoryTabWidget extends StatelessWidget {
                                           Text(
                                             '3 ${locale.items}',
                                             overflow: TextOverflow.ellipsis,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.bodyMedium,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodyMedium,
                                           ),
                                           Card(
                                             color: AppColors.black,
@@ -118,8 +120,8 @@ class RidersHistoryTabWidget extends StatelessWidget {
                                                 style: Theme.of(
                                                   context,
                                                 ).textTheme.bodySmall!.copyWith(
-                                                  color: AppColors.white,
-                                                ),
+                                                      color: AppColors.white,
+                                                    ),
                                               ),
                                             ),
                                           ),

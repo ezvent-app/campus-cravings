@@ -16,14 +16,13 @@ class CurrentOrdersTabWidget extends StatelessWidget {
               const Divider(color: AppColors.dividerColor, height: 40),
               SizedBox(
                 height: 95,
-                child: InkWell(
-                  onTap:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OrdersDetailsPage(),
-                        ),
-                      ),
+                child: InkWellButtonWidget(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrdersDetailsPage(),
+                    ),
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -61,8 +60,8 @@ class CurrentOrdersTabWidget extends StatelessWidget {
                                     style: Theme.of(
                                       context,
                                     ).textTheme.bodyMedium!.copyWith(
-                                      decoration: TextDecoration.underline,
-                                    ),
+                                          decoration: TextDecoration.underline,
+                                        ),
                                   ),
                                 ],
                               ),

@@ -104,9 +104,9 @@ class DeliveryTabWidget extends ConsumerWidget {
                                         style: Theme.of(
                                           context,
                                         ).textTheme.bodyMedium!.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.black,
-                                        ),
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.black,
+                                            ),
                                       ),
                                       Spacer(),
                                       Row(
@@ -116,10 +116,9 @@ class DeliveryTabWidget extends ConsumerWidget {
                                           Text(
                                             '\$12.00',
                                             overflow: TextOverflow.ellipsis,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.titleSmall,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleSmall,
                                           ),
                                           QuantitySelectorWidget(),
                                         ],
@@ -152,7 +151,7 @@ class DeliveryTabWidget extends ConsumerWidget {
             ),
             child: Material(
               color: Colors.transparent,
-              child: InkWell(
+              child: InkWellButtonWidget(
                 onTap: () {
                   context.pushRoute(PaymentMethodsRoute(fromCheckout: true));
                 },
@@ -190,9 +189,9 @@ class DeliveryTabWidget extends ConsumerWidget {
                             style: Theme.of(
                               context,
                             ).textTheme.bodyMedium!.copyWith(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                         ),
                       ),
@@ -347,100 +346,102 @@ class DeliveryTabWidget extends ConsumerWidget {
   Future<dynamic> orderTipSheetMethod(BuildContext context) {
     List tipsList = [1, 5, 10, 15];
     final locale = AppLocalizations.of(context)!;
+
     return showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       backgroundColor: Colors.transparent,
-      isScrollControlled: true,
       builder: (context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * .5,
-          child: Card(
-            margin: EdgeInsets.all(10),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        locale.addTip,
-                        style: Theme.of(context).textTheme.titleSmall,
+        return Card(
+          margin: EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          locale.addTip,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
                       ),
-                      width(50),
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: Icon(Icons.clear, color: AppColors.email),
-                      ),
-                    ],
-                  ),
-                  height(20),
-                  Text(
-                    "${locale.wantToLeaveTipFor} Robert",
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: AppColors.lightText,
-                      fontWeight: FontWeight.w600,
                     ),
-                  ),
-                  Consumer(
-                    builder: (context, ref, _) {
-                      var selectedIndex = ref.watch(tipsProvider);
-                      return Wrap(
-                        children: List.generate(
-                          tipsList.length,
-                          (i) => InkWell(
-                            borderRadius: BorderRadius.circular(15),
-                            onTap:
-                                () => ref.read(tipsProvider.notifier).state = i,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Container(
-                                width: 140,
-                                height: 70,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color:
-                                        selectedIndex == i
-                                            ? AppColors.black
-                                            : Colors.grey,
-                                  ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.clear, color: AppColors.email),
+                    ),
+                  ],
+                ),
+                height(20),
+                Text(
+                  "${locale.wantToLeaveTipFor} Robert",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: AppColors.lightText,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                Consumer(
+                  builder: (context, ref, _) {
+                    var selectedIndex = ref.watch(tipsProvider);
+                    return Wrap(
+                      children: List.generate(
+                        tipsList.length,
+                        (i) => InkWellButtonWidget(
+                          borderRadius: BorderRadius.circular(15),
+                          onTap: () =>
+                              ref.read(tipsProvider.notifier).state = i,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Container(
+                              width: 140,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: selectedIndex == i
+                                      ? AppColors.black
+                                      : Colors.grey,
                                 ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      "\$${tipsList[i]}",
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodyLarge!.copyWith(
-                                        color:
-                                            selectedIndex == i
-                                                ? AppColors.black
-                                                : Colors.grey,
-                                      ),
-                                    ),
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: Text(
+                                    "\$${tipsList[i]}",
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyLarge!.copyWith(
+                                          color: selectedIndex == i
+                                              ? AppColors.black
+                                              : Colors.grey,
+                                        ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                  height(30),
-                  RoundedButtonWidget(
-                    btnTitle: locale.confirm,
-                    onTap: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
+                      ),
+                    );
+                  },
+                ),
+                height(20),
+                CustomTextField(
+                  label: 'Enter tip',
+                  hintText: '\$2',
+                ),
+                height(30),
+                RoundedButtonWidget(
+                  btnTitle: locale.confirm,
+                  onTap: () => Navigator.pop(context),
+                ),
+              ],
             ),
           ),
         );

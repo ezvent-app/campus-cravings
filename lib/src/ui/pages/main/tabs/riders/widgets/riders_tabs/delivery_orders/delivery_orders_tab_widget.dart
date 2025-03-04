@@ -64,38 +64,42 @@ class _ConsumerDeliveryOrdersTabWidgetState
                   child: Container(
                     width: double.infinity,
                     margin: EdgeInsets.only(
-                      bottom: isAccept["isAccept"] ? 100 : 250,
+                      bottom: isAccept["isAccept"] ? 100 : 0,
                     ),
-                    child: const PngAsset('map_image', fit: BoxFit.fitWidth),
+                    child: const PngAsset(
+                      'map_image',
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                 ),
-
                 isAccept["isAccept"]
                     ? Positioned(
-                      top: topPosition,
-                      left: leftPosition - buttonWidth / 2,
-                      child: Card(
-                        color: AppColors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        margin: EdgeInsets.all(10),
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Row(
-                            children: [
-                              SvgAssets("rider_dir", width: 28, height: 28),
-                              width(10),
-                              Text(
-                                "Navigation",
-                                style: Theme.of(context).textTheme.titleSmall!
-                                    .copyWith(color: AppColors.white),
-                              ),
-                            ],
+                        top: topPosition,
+                        left: leftPosition - buttonWidth / 2,
+                        child: Card(
+                          color: AppColors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          margin: EdgeInsets.all(10),
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Row(
+                              children: [
+                                SvgAssets("rider_dir", width: 28, height: 28),
+                                width(10),
+                                Text(
+                                  "Navigation",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .copyWith(color: AppColors.white),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    )
+                      )
                     : SizedBox(),
                 isAccept["isAccept"]
                     ? AnimatedRidersDeliveryDetailsWrapper()
@@ -135,7 +139,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
                         width(10),
                         Text(
                           'Guaranteed',
-                          style: Theme.of(context).textTheme.bodyMedium!
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
                               .copyWith(color: AppColors.black),
                         ),
                       ],
@@ -151,17 +157,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
                               width: 50,
                               child: CircularProgressIndicator(
                                 value: countdown / 10,
-                                strokeWidth: 5,
+                                strokeWidth: 10,
                                 backgroundColor: Colors.grey.shade300,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Text(
-                                '$countdown sec',
-                                style: Theme.of(context).textTheme.bodyMedium!
-                                    .copyWith(color: AppColors.black),
+                                color: AppColors.accent,
                               ),
                             ),
                           ],
@@ -216,7 +214,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
                             children: [
                               Text(
                                 'Pickup',
-                                style: Theme.of(context).textTheme.bodyMedium!
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
                                     .copyWith(color: AppColors.black),
                               ),
                               Text(
@@ -226,7 +226,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
                               height(48),
                               Text(
                                 'Customer Dropoff',
-                                style: Theme.of(context).textTheme.bodyMedium!
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
                                     .copyWith(color: AppColors.black),
                               ),
                             ],
@@ -263,7 +265,14 @@ class _ConsumerDeliveryOrdersTabWidgetState
                     SizedBox(
                       width: size.width * .4,
                       child: OutlinedButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          final isAccept = ref.read(riderProvider);
+                          ref.read(riderProvider.notifier).state = {
+                            ...isAccept,
+                            'isAccept': false,
+                          };
+                          Navigator.pop(context);
+                        },
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -276,10 +285,10 @@ class _ConsumerDeliveryOrdersTabWidgetState
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium!.copyWith(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
                       ),
                     ),

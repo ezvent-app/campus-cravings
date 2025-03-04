@@ -120,7 +120,7 @@ class _AnimatedRidersDeliveryDetailsWrapperState
                         if (_height != _maxHeight)
                           const SizedBox(width: 40)
                         else
-                          InkWell(
+                          InkWellButtonWidget(
                             borderRadius: BorderRadius.circular(100),
                             onTap: () {
                               setState(() {

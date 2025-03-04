@@ -47,7 +47,12 @@ class SignUpPage extends ConsumerWidget {
                     height(3),
                     DropDownWidget(
                       hintText: locale.selectUniversity,
-                      universitiesList: ["Villanova University"],
+                      universitiesList: [
+                        "Villanova University",
+                        "Stanford University",
+                        "Harvard University",
+                        "Yale University"
+                      ],
                       onChange: (value) {
                         final university = ref.read(registerProvider);
                         ref.read(registerProvider.notifier).state = {
@@ -100,23 +105,20 @@ class SignUpPage extends ConsumerWidget {
                         var register = ref.watch(registerProvider);
                         return RoundedButtonWidget(
                           btnTitle: locale.register,
-                          onTap:
-                              register['university']!.isNotEmpty &&
-                                      register['email']!.isNotEmpty &&
-                                      register['password']!.isNotEmpty &&
-                                      register['confirmPassword']!.isNotEmpty
-                                  ? () {
-                                    context.pushRoute(const OtpRoute());
-                                    ref
-                                        .read(registerProvider.notifier)
-                                        .state = {
-                                      'university': '',
-                                      'email': '',
-                                      'password': '',
-                                      'confirmPassword': '',
-                                    };
-                                  }
-                                  : null,
+                          onTap: register['university']!.isNotEmpty &&
+                                  register['email']!.isNotEmpty &&
+                                  register['password']!.isNotEmpty &&
+                                  register['confirmPassword']!.isNotEmpty
+                              ? () {
+                                  context.pushRoute(const OtpRoute());
+                                  ref.read(registerProvider.notifier).state = {
+                                    'university': '',
+                                    'email': '',
+                                    'password': '',
+                                    'confirmPassword': '',
+                                  };
+                                }
+                              : null,
                         );
                       },
                     ),

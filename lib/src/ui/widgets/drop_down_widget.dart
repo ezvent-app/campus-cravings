@@ -14,49 +14,46 @@ class DropDownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        return DropdownButtonFormField(
+    return DropdownButtonHideUnderline(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColors.textFieldBorder, width: 1.5),
+          color: AppColors.white,
+        ),
+        child: DropdownButtonFormField(
           style: Theme.of(context).textTheme.bodyMedium,
           icon: Icon(Icons.keyboard_arrow_down),
           borderRadius: BorderRadius.circular(10),
+          dropdownColor: AppColors.background,
+          elevation: 0,
+          alignment: AlignmentDirectional.centerStart,
           decoration: InputDecoration(
             hintText: hintText,
-            contentPadding: const EdgeInsets.all(15),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: AppColors.textFieldBorder,
-                width: 1.5,
-              ),
-            ),
-
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: AppColors.textFieldBorder,
-                width: 1.5,
-              ),
-            ),
+            contentPadding: EdgeInsets.zero,
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
           ),
-          items:
-              universitiesList
-                  .map(
-                    (i) => DropdownMenuItem(
-                      value: i,
-                      child: Text(
-                        i,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          items: universitiesList
+              .map(
+                (i) => DropdownMenuItem(
+                  value: i,
+                  child: Text(
+                    i,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: AppColors.black,
                         ),
-                      ),
-                    ),
-                  )
-                  .toList(),
+                  ),
+                ),
+              )
+              .toList(),
           onChanged: onChange,
-        );
-      },
+        ),
+      ),
     );
   }
 }

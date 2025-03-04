@@ -14,10 +14,9 @@ class DeliverySetupPage extends ConsumerWidget {
         children: [
           CustomTextField(
             label: locale.socialSecurityNumber,
-            onChanged:
-                (value) => ref
-                    .read(deliveryProfileProvider.notifier)
-                    .updateSocialSecurityNumber(value),
+            onChanged: (value) => ref
+                .read(deliveryProfileProvider.notifier)
+                .updateSocialSecurityNumber(value),
           ),
           height(16),
           Padding(
@@ -28,10 +27,9 @@ class DeliverySetupPage extends ConsumerWidget {
             ),
           ),
           OutlinedButton(
-            onPressed:
-                () => ref
-                    .read(deliveryProfileProvider.notifier)
-                    .updateNICImage('updated'),
+            onPressed: () => ref
+                .read(deliveryProfileProvider.notifier)
+                .updateNICImage('updated'),
             style: OutlinedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -49,10 +47,9 @@ class DeliverySetupPage extends ConsumerWidget {
                     scale: 1.3,
                     child: Checkbox(
                       value: deliveryProvider.isAgree,
-                      onChanged:
-                          (value) => ref
-                              .read(deliveryProfileProvider.notifier)
-                              .updateTermsAndConditions(value!),
+                      onChanged: (value) => ref
+                          .read(deliveryProfileProvider.notifier)
+                          .updateTermsAndConditions(value!),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
@@ -68,14 +65,14 @@ class DeliverySetupPage extends ConsumerWidget {
                 locale.iAgreeWith,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              InkWell(
+              InkWellButtonWidget(
                 onTap: () {},
                 child: Text(
                   locale.termsConditions,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: AppColors.black,
-                    decoration: TextDecoration.underline,
-                  ),
+                        color: AppColors.black,
+                        decoration: TextDecoration.underline,
+                      ),
                 ),
               ),
             ],
@@ -97,9 +94,9 @@ class DeliverySetupPage extends ConsumerWidget {
                 TextSpan(
                   text: locale.privacyPolicy,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: AppColors.black,
-                    decoration: TextDecoration.underline,
-                  ),
+                        color: AppColors.black,
+                        decoration: TextDecoration.underline,
+                      ),
                   recognizer: TapGestureRecognizer()..onTap = () {},
                 ),
                 TextSpan(
@@ -115,12 +112,11 @@ class DeliverySetupPage extends ConsumerWidget {
               final deliveryProvider = ref.watch(deliveryProfileProvider);
               return RoundedButtonWidget(
                 btnTitle: locale.next,
-                onTap:
-                    deliveryProvider.isAgree &&
-                            deliveryProvider.nICImage.isNotEmpty &&
-                            deliveryProvider.socialSecurityNumber.isNotEmpty
-                        ? () => context.pushRoute(const AddPayoutRoute())
-                        : null,
+                onTap: deliveryProvider.isAgree &&
+                        deliveryProvider.nICImage.isNotEmpty &&
+                        deliveryProvider.socialSecurityNumber.isNotEmpty
+                    ? () => context.pushRoute(const AddPayoutRoute())
+                    : null,
               );
             },
           ),

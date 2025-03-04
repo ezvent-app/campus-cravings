@@ -8,9 +8,10 @@ class HomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    return Scaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             height(20),
@@ -28,7 +29,7 @@ class HomeTabPage extends StatelessWidget {
               ),
               margin: EdgeInsets.symmetric(horizontal: 25),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => context.pushRoute(RidersTabRoute()),
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -101,7 +102,7 @@ class HomeTabPage extends StatelessWidget {
                     ),
                     child: Material(
                       color: Colors.transparent,
-                      child: InkWell(
+                      child: InkWellButtonWidget(
                         borderRadius: BorderRadius.circular(8),
                         onTap: () => showSortBottomSheet(context),
                         child: const Center(
@@ -116,7 +117,8 @@ class HomeTabPage extends StatelessWidget {
             Expanded(
               child: ListView(
                 physics: BouncingScrollPhysics(),
-                children: const [
+                padding: EdgeInsets.zero,
+                children: [
                   CategoriesHorizontalWidget(),
                   PopularHorizontalWidget(),
                   NearbyRestaurantsWidget(),

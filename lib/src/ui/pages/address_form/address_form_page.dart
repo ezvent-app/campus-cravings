@@ -59,7 +59,7 @@ class _AddressFormPageState extends ConsumerState<AddressFormPage> {
                             ),
                             child: Material(
                               color: Colors.transparent,
-                              child: InkWell(
+                              child: InkWellButtonWidget(
                                 onTap: () {},
                                 borderRadius: BorderRadius.circular(8),
                                 child: const Padding(

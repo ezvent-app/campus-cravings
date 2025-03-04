@@ -12,12 +12,17 @@ class PromoCodePage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            "Please enter the promo code you received via email, SMS, or other official communications to redeem your discount.",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          height(50),
           CustomTextField(
             label: locale.enterPromoCode,
             hintText: locale.size20Per,
             hintStyle: TextStyle(color: Color(0xffA6A6A6)),
           ),
-          height(24),
+          height(30),
           RoundedButtonWidget(
             btnTitle: locale.apply,
             onTap: () {

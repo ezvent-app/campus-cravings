@@ -19,15 +19,14 @@ class _NearbyRestaurantsWidgetState
           child: Text(
             'Restaurants Nearby',
             style: Theme.of(context).textTheme.titleSmall!.copyWith(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
           ),
         ),
-        const SizedBox(height: 2),
         Column(
           children: List.generate(10, (index) {
-            return InkWell(
+            return InkWellButtonWidget(
               onTap: () {
                 context.pushRoute(const RestaurantRoute());
               },

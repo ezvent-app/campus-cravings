@@ -31,7 +31,7 @@ class RestaurantPage extends ConsumerWidget {
                     onPressed: () => Navigator.pop(context),
                     icon: Icon(Icons.arrow_back, color: AppColors.dividerColor),
                   ),
-                  InkWell(
+                  InkWellButtonWidget(
                     onTap: () => context.pushRoute(CheckOutTabRoute()),
                     child: CartCounterWidget(
                       count: 2,
@@ -66,7 +66,9 @@ class RestaurantPage extends ConsumerWidget {
                         if (kMockFeatured.distance != null)
                           Text(
                             '${kMockFeatured.distance!.floor()} ${kMockFeatured.distance == 1 ? locale.mile : locale.miles} ${locale.away}',
-                            style: Theme.of(context).textTheme.titleMedium!
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
                                 .copyWith(fontWeight: FontWeight.w500),
                           ),
                         height(3),

@@ -39,8 +39,8 @@ class OrdersDetailsPage extends StatelessWidget {
                   Text(
                     locale.orderSummary,
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                   const SizedBox(height: 2),
                   const Text(
@@ -57,9 +57,9 @@ class OrdersDetailsPage extends StatelessWidget {
                   Text(
                     locale.imageSubmission,
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                   height(20),
                   Container(
@@ -76,7 +76,7 @@ class OrdersDetailsPage extends StatelessWidget {
                     ),
                   ),
                   height(30),
-                  InkWell(
+                  InkWellButtonWidget(
                     onTap: () => context.pushRoute(ContactSupportRoute()),
                     child: Container(
                       width: size.width,
@@ -88,7 +88,9 @@ class OrdersDetailsPage extends StatelessWidget {
                       child: Center(
                         child: Text(
                           locale.reportAnIssue,
-                          style: Theme.of(context).textTheme.titleSmall!
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
                               .copyWith(fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -117,9 +119,9 @@ class OrdersInfoWidget extends StatelessWidget {
         Text(
           desc,
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-          ),
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+              ),
         ),
         Divider(color: AppColors.dividerColor),
       ],

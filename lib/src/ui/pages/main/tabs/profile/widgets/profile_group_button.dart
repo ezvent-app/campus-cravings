@@ -22,49 +22,48 @@ class ProfileGroupButton extends ConsumerWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:
-            options.map((option) {
-              return Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    option.onPressed();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 15,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        isHelp
-                            ? SizedBox()
-                            : SvgAssets(option.icon, height: 30, width: 30),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5, left: 10),
-                          child: Text(
-                            option.label,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff443A39),
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        const Icon(
-                          Icons.keyboard_arrow_right,
-                          size: 30,
+        children: options.map((option) {
+          return Material(
+            color: Colors.transparent,
+            child: InkWellButtonWidget(
+              borderRadius: BorderRadius.circular(10),
+              onTap: () {
+                option.onPressed();
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 15,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    isHelp
+                        ? SizedBox()
+                        : SvgAssets(option.icon, height: 30, width: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5, left: 10),
+                      child: Text(
+                        option.label,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                           color: Color(0xff443A39),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    const Spacer(),
+                    const Icon(
+                      Icons.keyboard_arrow_right,
+                      size: 30,
+                      color: Color(0xff443A39),
+                    ),
+                  ],
                 ),
-              );
-            }).toList(),
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

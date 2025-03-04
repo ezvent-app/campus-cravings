@@ -12,9 +12,10 @@ class HomeLocationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+
     return Material(
       color: Colors.transparent,
-      child: InkWell(
+      child: InkWellButtonWidget(
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
         onTap: () {},
         child: Padding(
@@ -47,7 +48,9 @@ class HomeLocationWidget extends StatelessWidget {
                           ),
                           child: Text(
                             locale.defaultValue,
-                            style: Theme.of(context).textTheme.bodySmall!
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
                                 .copyWith(fontSize: 10, color: AppColors.black),
                           ),
                         ),
@@ -61,7 +64,37 @@ class HomeLocationWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(icon, color: AppColors.accent, size: 25),
+              Consumer(
+                builder: (context, ref, child) {
+                  final isSelected = ref.watch(checkOutProvider);
+                  return InkWellButtonWidget(
+                    onTap: () =>
+                        ref.read(checkOutProvider.notifier).state = !isSelected,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color:
+                            isSelected ? AppColors.accent : Colors.transparent,
+                        border: Border.all(
+                          color: AppColors.accent,
+                          width: 1,
+                        ),
+                      ),
+                      child: isSelected
+                          ? Center(
+                              child: Icon(
+                              Icons.done,
+                              color: AppColors.white,
+                              size: 15,
+                            ))
+                          : SizedBox(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -69,3 +102,5 @@ class HomeLocationWidget extends StatelessWidget {
     );
   }
 }
+
+final checkOutProvider = StateProvider((ref) => false);

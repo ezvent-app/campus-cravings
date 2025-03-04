@@ -1,19 +1,29 @@
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class HelpOrderPage extends ConsumerWidget {
-  const HelpOrderPage({super.key});
+class HelpFAQPage extends ConsumerWidget {
+  final FAQS type;
+  final String title;
+  final List faqs;
+
+  const HelpFAQPage({
+    super.key,
+    required this.faqs,
+    required this.type,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locale = AppLocalizations.of(context)!;
+    final expansionState = ref.watch(expansionProvider(faqs.length));
+
     return BaseWrapper(
-      label: locale.order,
+      label: title,
       child: ListView.builder(
-        itemCount: helpOrderModelList.length,
+        itemCount: faqs.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          final order = helpOrderModelList[index];
+          final order = faqs[index];
 
           return Container(
             width: double.infinity,
@@ -26,38 +36,28 @@ class HelpOrderPage extends ConsumerWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Theme(
-              data: Theme.of(
-                context,
-              ).copyWith(dividerColor: Colors.transparent),
-              child: Consumer(
-                builder: (context, ref, child) {
-                  final isExpanded = ref.watch(
-                    expansionProvider.select((state) => state[index]),
-                  );
-
-                  return ExpansionTile(
-                    initiallyExpanded: isExpanded,
-                    title: Text(order.name),
-                    tilePadding: EdgeInsets.zero,
-                    onExpansionChanged: (value) {
-                      ref.read(expansionProvider.notifier).state = [
-                        ...ref.read(expansionProvider).sublist(0, index),
-                        value,
-                        ...ref.read(expansionProvider).sublist(index + 1),
-                      ];
-                    },
-                    trailing: SvgAssets(
-                      isExpanded ? "arrowUp" : "arrow_down",
-                      width: 24,
-                      height: 24,
-                    ),
-                    children: [
-                      Divider(color: Color(0xffE1E1E1)),
-                      Text(order.description),
-                      height(10),
-                    ],
-                  );
+              data: Theme.of(context).copyWith(
+                dividerColor: Colors.transparent,
+              ),
+              child: ExpansionTile(
+                initiallyExpanded: expansionState[index],
+                title: Text(order.name),
+                tilePadding: EdgeInsets.zero,
+                onExpansionChanged: (value) {
+                  ref
+                      .read(expansionProvider(faqs.length).notifier)
+                      .toggle(index);
                 },
+                trailing: SvgAssets(
+                  expansionState[index] ? "arrowUp" : "arrow_down",
+                  width: 24,
+                  height: 24,
+                ),
+                children: [
+                  Divider(color: Color(0xffE1E1E1)),
+                  Text(order.description),
+                  height(10),
+                ],
               ),
             ),
           );
@@ -67,6 +67,20 @@ class HelpOrderPage extends ConsumerWidget {
   }
 }
 
-final expansionProvider = StateProvider<List<bool>>(
-  (ref) => List.filled(helpOrderModelList.length, false),
+// Expansion State Notifier
+class ExpansionNotifier extends StateNotifier<List<bool>> {
+  ExpansionNotifier(int itemCount) : super(List.filled(itemCount, false));
+
+  // Toggle a specific FAQ item
+  void toggle(int index) {
+    state = [
+      for (int i = 0; i < state.length; i++) i == index ? !state[i] : state[i]
+    ];
+  }
+}
+
+// **Correct use of family provider**
+final expansionProvider =
+    StateNotifierProvider.family<ExpansionNotifier, List<bool>, int>(
+  (ref, itemCount) => ExpansionNotifier(itemCount),
 );

@@ -1,13 +1,13 @@
 import 'package:campuscravings/src/src.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class HistoryChartWidget extends StatelessWidget {
+class HistoryChartWidget extends ConsumerWidget {
   const HistoryChartWidget({super.key, required this.size});
 
   final Size size;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 7),
       decoration: BoxDecoration(
@@ -43,35 +43,23 @@ class HistoryChartWidget extends StatelessWidget {
                     Text(
                       "\$20",
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                      ),
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  width: size.width * .29,
-                  height: size.height * .06,
-                  child: DropdownButtonFormField<String>(
-                    padding: EdgeInsets.zero,
-                    icon: Icon(Icons.keyboard_arrow_down, size: 20),
-                    value: 'Daily',
-                    style: Theme.of(context).textTheme.bodyMedium!,
-                    items:
-                        ['Daily', 'Weekly', 'Monthly']
-                            .map(
-                              (String value) => DropdownMenuItem(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ),
-                            )
-                            .toList(),
-                    onChanged: (value) {},
-                  ),
-                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final value = ref.watch(dropDownProvider);
+                    return CustomDropdownButton(
+                      value: value,
+                      items: ['Daily', 'Weekly', 'Monthly'],
+                      onChanged: (value) =>
+                          ref.read(dropDownProvider.notifier).state = value,
+                    );
+                  },
+                )
               ],
             ),
             height(16),
@@ -105,7 +93,9 @@ class HistoryChartWidget extends StatelessWidget {
                                 ),
                                 child: Text(
                                   "10AM",
-                                  style: Theme.of(context).textTheme.bodySmall!
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -114,7 +104,9 @@ class HistoryChartWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Text(
                                   "11AM",
-                                  style: Theme.of(context).textTheme.bodySmall!
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -123,7 +115,9 @@ class HistoryChartWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Text(
                                   "12PM",
-                                  style: Theme.of(context).textTheme.bodySmall!
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -135,7 +129,9 @@ class HistoryChartWidget extends StatelessWidget {
                                 ),
                                 child: Text(
                                   "01PM",
-                                  style: Theme.of(context).textTheme.bodySmall!
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -147,7 +143,9 @@ class HistoryChartWidget extends StatelessWidget {
                                 ),
                                 child: Text(
                                   "02PM",
-                                  style: Theme.of(context).textTheme.bodySmall!
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -159,7 +157,9 @@ class HistoryChartWidget extends StatelessWidget {
                                 ),
                                 child: Text(
                                   "03PM",
-                                  style: Theme.of(context).textTheme.bodySmall!
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -172,7 +172,9 @@ class HistoryChartWidget extends StatelessWidget {
                                 ),
                                 child: Text(
                                   "04PM",
-                                  style: Theme.of(context).textTheme.bodySmall!
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
                                       .copyWith(color: AppColors.email),
                                 ),
                               );
@@ -230,17 +232,16 @@ class HistoryChartWidget extends StatelessWidget {
                           return LineTooltipItem(
                             "\$${touchedSpot.y.toInt()}",
                             Theme.of(context).textTheme.titleSmall!.copyWith(
-                              color: AppColors.white,
-                            ),
+                                  color: AppColors.white,
+                                ),
                           );
                         }).toList();
                       },
                     ),
-                    touchCallback:
-                        (
-                          FlTouchEvent event,
-                          LineTouchResponse? touchResponse,
-                        ) {},
+                    touchCallback: (
+                      FlTouchEvent event,
+                      LineTouchResponse? touchResponse,
+                    ) {},
                     handleBuiltInTouches: true,
                   ),
                 ),
@@ -252,3 +253,5 @@ class HistoryChartWidget extends StatelessWidget {
     );
   }
 }
+
+final dropDownProvider = StateProvider<String>((ref) => 'Daily');

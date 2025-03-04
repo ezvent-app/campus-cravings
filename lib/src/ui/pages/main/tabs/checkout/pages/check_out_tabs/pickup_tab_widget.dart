@@ -68,9 +68,9 @@ class PickUpTabWidget extends StatelessWidget {
                                         style: Theme.of(
                                           context,
                                         ).textTheme.bodyMedium!.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.black,
-                                        ),
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.black,
+                                            ),
                                       ),
                                       Spacer(),
                                       Row(
@@ -80,10 +80,9 @@ class PickUpTabWidget extends StatelessWidget {
                                           Text(
                                             '\$12.00',
                                             overflow: TextOverflow.ellipsis,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.titleSmall,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleSmall,
                                           ),
                                           QuantitySelectorWidget(),
                                         ],
@@ -116,7 +115,7 @@ class PickUpTabWidget extends StatelessWidget {
             ),
             child: Material(
               color: Colors.transparent,
-              child: InkWell(
+              child: InkWellButtonWidget(
                 onTap: () {
                   context.pushRoute(PaymentMethodsRoute(fromCheckout: true));
                 },
@@ -154,9 +153,9 @@ class PickUpTabWidget extends StatelessWidget {
                             style: Theme.of(
                               context,
                             ).textTheme.bodyMedium!.copyWith(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                         ),
                       ),

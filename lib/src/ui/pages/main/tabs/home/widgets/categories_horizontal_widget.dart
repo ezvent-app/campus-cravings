@@ -23,8 +23,8 @@ class _CategoriesHorizontalWidgetState
             scrollDirection: Axis.horizontal,
             physics: BouncingScrollPhysics(),
             itemCount: categories.length,
-            separatorBuilder:
-                (BuildContext context, int index) => const SizedBox(width: 8),
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(width: 8),
             itemBuilder: (BuildContext context, int index) {
               final category = categories[index];
               return Column(

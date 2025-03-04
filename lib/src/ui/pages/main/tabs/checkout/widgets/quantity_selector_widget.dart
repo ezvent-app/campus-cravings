@@ -31,15 +31,14 @@ class _QuantitySelectorWidgetState
             ),
             child: Material(
               color: Colors.transparent,
-              child: InkWell(
-                onTap:
-                    value <= 1
-                        ? null
-                        : () {
-                          setState(() {
-                            value--;
-                          });
-                        },
+              child: InkWellButtonWidget(
+                onTap: value <= 1
+                    ? null
+                    : () {
+                        setState(() {
+                          value--;
+                        });
+                      },
                 borderRadius: BorderRadius.circular(12),
                 child: Icon(
                   Icons.remove,
@@ -65,15 +64,14 @@ class _QuantitySelectorWidgetState
             ),
             child: Material(
               color: Colors.transparent,
-              child: InkWell(
-                onTap:
-                    value >= max
-                        ? null
-                        : () {
-                          setState(() {
-                            value++;
-                          });
-                        },
+              child: InkWellButtonWidget(
+                onTap: value >= max
+                    ? null
+                    : () {
+                        setState(() {
+                          value++;
+                        });
+                      },
                 borderRadius: BorderRadius.circular(12),
                 child: Icon(
                   Icons.add,

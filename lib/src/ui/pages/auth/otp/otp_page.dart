@@ -21,9 +21,9 @@ class OtpPage extends ConsumerWidget {
           Text(
             'sample@email.com',
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
-              fontSize: 13,
-              color: AppColors.black,
-            ),
+                  fontSize: 13,
+                  color: AppColors.black,
+                ),
           ),
           height(30),
           OtpPinField(
@@ -52,11 +52,9 @@ class OtpPage extends ConsumerWidget {
               final otp = ref.watch(otpProvider);
               return RoundedButtonWidget(
                 btnTitle: locale.continueNext,
-                onTap:
-                    otp.length != 6
-                        ? null
-                        : () =>
-                            context.pushRoute(ProfileFormRoute(newUser: true)),
+                onTap: otp.length != 6
+                    ? null
+                    : () => context.pushRoute(ProfileFormRoute(newUser: true)),
               );
             },
           ),
@@ -73,7 +71,7 @@ class OtpPage extends ConsumerWidget {
                     color: AppColors.lightText,
                   ),
                 ),
-                InkWell(
+                InkWellButtonWidget(
                   onTap: () {},
                   child: Text(
                     locale.resend,

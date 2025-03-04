@@ -25,7 +25,7 @@ class MainPage extends StatelessWidget {
                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 60)],
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 ),
-                height: 64,
+                height: 78,
                 width: double.infinity,
                 child: TabBar(
                   indicatorColor: Colors.transparent,

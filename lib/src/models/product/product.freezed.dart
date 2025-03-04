@@ -12,8 +12,7 @@ part of 'product.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Product _$ProductFromJson(Map<String, dynamic> json) {
   return _Product.fromJson(json);
@@ -42,14 +41,13 @@ abstract class $ProductCopyWith<$Res> {
   factory $ProductCopyWith(Product value, $Res Function(Product) then) =
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String imageUrl,
-    List<String>? categories,
-    double price,
-    double? distance,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String imageUrl,
+      List<String>? categories,
+      double price,
+      double? distance});
 }
 
 /// @nodoc
@@ -74,60 +72,49 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? price = null,
     Object? distance = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id:
-                null == id
-                    ? _value.id
-                    : id // ignore: cast_nullable_to_non_nullable
-                        as String,
-            name:
-                null == name
-                    ? _value.name
-                    : name // ignore: cast_nullable_to_non_nullable
-                        as String,
-            imageUrl:
-                null == imageUrl
-                    ? _value.imageUrl
-                    : imageUrl // ignore: cast_nullable_to_non_nullable
-                        as String,
-            categories:
-                freezed == categories
-                    ? _value.categories
-                    : categories // ignore: cast_nullable_to_non_nullable
-                        as List<String>?,
-            price:
-                null == price
-                    ? _value.price
-                    : price // ignore: cast_nullable_to_non_nullable
-                        as double,
-            distance:
-                freezed == distance
-                    ? _value.distance
-                    : distance // ignore: cast_nullable_to_non_nullable
-                        as double?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      categories: freezed == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as double,
+      distance: freezed == distance
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
   factory _$$ProductImplCopyWith(
-    _$ProductImpl value,
-    $Res Function(_$ProductImpl) then,
-  ) = __$$ProductImplCopyWithImpl<$Res>;
+          _$ProductImpl value, $Res Function(_$ProductImpl) then) =
+      __$$ProductImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String name,
-    String imageUrl,
-    List<String>? categories,
-    double price,
-    double? distance,
-  });
+  $Res call(
+      {String id,
+      String name,
+      String imageUrl,
+      List<String>? categories,
+      double price,
+      double? distance});
 }
 
 /// @nodoc
@@ -135,9 +122,8 @@ class __$$ProductImplCopyWithImpl<$Res>
     extends _$ProductCopyWithImpl<$Res, _$ProductImpl>
     implements _$$ProductImplCopyWith<$Res> {
   __$$ProductImplCopyWithImpl(
-    _$ProductImpl _value,
-    $Res Function(_$ProductImpl) _then,
-  ) : super(_value, _then);
+      _$ProductImpl _value, $Res Function(_$ProductImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of Product
   /// with the given fields replaced by the non-null parameter values.
@@ -151,54 +137,46 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? price = null,
     Object? distance = freezed,
   }) {
-    return _then(
-      _$ProductImpl(
-        id:
-            null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                    as String,
-        name:
-            null == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                    as String,
-        imageUrl:
-            null == imageUrl
-                ? _value.imageUrl
-                : imageUrl // ignore: cast_nullable_to_non_nullable
-                    as String,
-        categories:
-            freezed == categories
-                ? _value._categories
-                : categories // ignore: cast_nullable_to_non_nullable
-                    as List<String>?,
-        price:
-            null == price
-                ? _value.price
-                : price // ignore: cast_nullable_to_non_nullable
-                    as double,
-        distance:
-            freezed == distance
-                ? _value.distance
-                : distance // ignore: cast_nullable_to_non_nullable
-                    as double?,
-      ),
-    );
+    return _then(_$ProductImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      categories: freezed == categories
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as double,
+      distance: freezed == distance
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
-  const _$ProductImpl({
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    final List<String>? categories,
-    required this.price,
-    this.distance,
-  }) : _categories = categories;
+  const _$ProductImpl(
+      {required this.id,
+      required this.name,
+      required this.imageUrl,
+      final List<String>? categories,
+      required this.price,
+      this.distance})
+      : _categories = categories;
 
   factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProductImplFromJson(json);
@@ -251,10 +229,8 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
-            const DeepCollectionEquality().equals(
-              other._categories,
-              _categories,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.distance, distance) ||
                 other.distance == distance));
@@ -262,15 +238,8 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    name,
-    imageUrl,
-    const DeepCollectionEquality().hash(_categories),
-    price,
-    distance,
-  );
+  int get hashCode => Object.hash(runtimeType, id, name, imageUrl,
+      const DeepCollectionEquality().hash(_categories), price, distance);
 
   /// Create a copy of Product
   /// with the given fields replaced by the non-null parameter values.
@@ -282,19 +251,20 @@ class _$ProductImpl with DiagnosticableTreeMixin implements _Product {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ProductImplToJson(this);
+    return _$$ProductImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Product implements Product {
-  const factory _Product({
-    required final String id,
-    required final String name,
-    required final String imageUrl,
-    final List<String>? categories,
-    required final double price,
-    final double? distance,
-  }) = _$ProductImpl;
+  const factory _Product(
+      {required final String id,
+      required final String name,
+      required final String imageUrl,
+      final List<String>? categories,
+      required final double price,
+      final double? distance}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
