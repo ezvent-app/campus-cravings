@@ -58,8 +58,6 @@ class PickUpTabWidget extends StatelessWidget {
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         'Mixed Vegetable Salad',
@@ -72,7 +70,7 @@ class PickUpTabWidget extends StatelessWidget {
                                               color: AppColors.black,
                                             ),
                                       ),
-                                      Spacer(),
+                                      height(10),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -84,6 +82,7 @@ class PickUpTabWidget extends StatelessWidget {
                                               context,
                                             ).textTheme.titleSmall,
                                           ),
+                                          width(10),
                                           QuantitySelectorWidget(),
                                         ],
                                       ),

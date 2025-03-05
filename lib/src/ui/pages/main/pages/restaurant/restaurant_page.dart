@@ -7,6 +7,7 @@ class RestaurantPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
+    final isIOS = Platform.isIOS;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,10 +30,11 @@ class RestaurantPage extends ConsumerWidget {
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back, color: AppColors.dividerColor),
+                    icon: Icon(isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+                        color: AppColors.dividerColor),
                   ),
                   InkWellButtonWidget(
-                    onTap: () => context.pushRoute(CheckOutTabRoute()),
+                    onTap: () => context.pushRoute(CartTabRoute()),
                     child: CartCounterWidget(
                       count: 2,
                       color: AppColors.dividerColor,

@@ -22,6 +22,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final isIOS = Platform.isIOS;
     return Scaffold(
       body: Column(
         children: [
@@ -49,7 +50,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             },
                             itemBuilder: (context, index) {
                               return PngAsset(
-                                productImages[index], // Replace with actual asset reference
+                                productImages[
+                                    index], // Replace with actual asset reference
                                 fit: BoxFit.fitWidth,
                               );
                             },
@@ -65,8 +67,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               IconButton(
-                                icon: const Icon(
-                                  Icons.arrow_back,
+                                icon: Icon(
+                                  isIOS
+                                      ? Icons.arrow_back_ios
+                                      : Icons.arrow_back,
                                   color: Colors.white,
                                   size: 30,
                                 ),
@@ -81,7 +85,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   color: AppColors.dividerColor,
                                 ),
                                 onPressed: () {
-                                  context.pushRoute(CheckOutTabRoute());
+                                  context.pushRoute(CartTabRoute());
                                 },
                               ),
                             ],
@@ -108,10 +112,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.white),
-                                color:
-                                    isSelected
-                                        ? Colors.white
-                                        : Colors.transparent,
+                                color: isSelected
+                                    ? Colors.white
+                                    : Colors.transparent,
                               ),
                             );
                           }),
@@ -294,9 +297,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 SizedBox(
                   height: 49,
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      context.pushRoute(CheckOutTabRoute());
-                    },
+                    onPressed: () {},
                     label: Text(locale.addToCart),
                     icon: SvgAssets("shopping-cart", width: 16, height: 16),
                     style: ElevatedButton.styleFrom(

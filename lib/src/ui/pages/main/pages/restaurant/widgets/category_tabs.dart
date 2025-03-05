@@ -45,6 +45,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                 indicatorSize: _expandedTabBar
                     ? TabBarIndicatorSize.label
                     : TabBarIndicatorSize.tab,
+                overlayColor: WidgetStatePropertyAll(Colors.transparent),
                 tabAlignment:
                     _expandedTabBar ? TabAlignment.start : TabAlignment.fill,
                 isScrollable: _expandedTabBar,

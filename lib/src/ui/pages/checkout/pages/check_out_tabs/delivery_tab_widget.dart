@@ -94,8 +94,6 @@ class DeliveryTabWidget extends ConsumerWidget {
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         'Mixed Vegetable Salad',
@@ -108,7 +106,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                                               color: AppColors.black,
                                             ),
                                       ),
-                                      Spacer(),
+                                      height(10),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -120,6 +118,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                                               context,
                                             ).textTheme.titleSmall,
                                           ),
+                                          width(10),
                                           QuantitySelectorWidget(),
                                         ],
                                       ),

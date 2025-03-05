@@ -1,7 +1,7 @@
 export 'delivery_man_profile/pages/add_payout_page.dart';
 export 'address_form/address_form_page.dart';
-export 'main/tabs/checkout/check_out.dart';
-export 'main/tabs/checkout/pages/delivering/widgets/widgets.dart';
+export 'checkout/check_out.dart';
+export 'checkout/pages/delivering/widgets/widgets.dart';
 export 'main/tabs/profile/pages/payment_methods/new_card/new_card_page.dart';
 export 'onboarding/onboarding_page.dart';
 export 'main/tabs/profile/pages/payment_methods/payment_methods_page.dart';

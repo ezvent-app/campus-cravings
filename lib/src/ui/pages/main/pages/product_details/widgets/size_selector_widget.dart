@@ -79,7 +79,7 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                     ),
                     const Spacer(),
                     Text(
-                      '+${size.value.toStringAsFixed(2)}\$',
+                      '\$+${size.value.toStringAsFixed(2)}',
                       style: const TextStyle(color: Color(0xff2E3138)),
                     ),
                   ],

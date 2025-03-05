@@ -27,7 +27,7 @@ class AppRouter extends RootStackRouter {
           children: [
             AutoRoute(page: HomeTabRoute.page, path: ''),
             AutoRoute(page: OrdersTabRoute.page, path: 'orders'),
-            AutoRoute(page: CheckOutTabRoute.page, path: 'checkout_tab'),
+            AutoRoute(page: CartTabRoute.page, path: 'cart_tab'),
             AutoRoute(page: RidersTabRoute.page, path: 'riders'),
             AutoRoute(page: ProfileTabRoute.page, path: 'profile'),
           ],
@@ -63,5 +63,6 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: ChangePasswordRoute.page, path: '/change-password'),
         AutoRoute(page: PlacingOrderRoute.page, path: '/placing-order'),
         AutoRoute(page: DeliveringRoute.page, path: '/delivering'),
+        AutoRoute(page: CheckOutTabRoute.page, path: '/check_out'),
       ];
 }

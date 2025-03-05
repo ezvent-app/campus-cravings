@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:file_picker/file_picker.dart';
 
 @RoutePage()
 class ProfileFormPage extends ConsumerStatefulWidget {
@@ -13,6 +14,8 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
   final List<String> _roles = ['Student', 'Faculty'];
   late String _selectedRole;
 
+  File? image;
+
   @override
   void initState() {
     _selectedRole = _roles.first;
@@ -24,7 +27,6 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
     final locale = AppLocalizations.of(context)!;
     final isIOS = Platform.isIOS;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -69,47 +71,59 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                 children: [
                   height(50),
                   Center(
-                    child: SizedBox(
-                      width: 64,
-                      height: 64,
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 64,
-                            height: 64,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  'https://s3-alpha-sig.figma.com/img/8929/f506/d6ef157302e2cf4908e7351bb791ad41?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=CgxDjzczmegHECkhrgpRhuDU6Q1S8Ui-vSEBs78Bf4HlXNx39j7O8FugXR6rXXgSZW5rkjbg9WnfQClJloja1HJTCur3iYLbu4633Yde8nLWzqwEVu-Dn0tal6mobvdA2kT5bb~JmAYGqn-1T51rN8C0xMz-tkeEa9ipNVTgIkue39KckAjN6I8FZikXupnS4CdlPV6C8h89J3e6NOceFDSGkeRb5sClBsUKu9iiXonWlFoH1MgVnbPKS0~TmOQuCZO-RWx0nLLTAKZedXe2405fOpkhdz0xDQ8P61WgHk-qCSZEHqP4stcFrtYXWr~ADGnALV8g-D1MUwOIOYM0dQ__',
+                    child: InkWellButtonWidget(
+                      onTap: () async {
+                        final FilePickerResult? result = await FilePicker
+                            .platform
+                            .pickFiles(type: FileType.image);
+                        if (result != null) {
+                          File file = File(result.files.single.path!);
+                          setState(() {
+                            image = file;
+                          });
+                        } else {}
+                      },
+                      child: SizedBox(
+                        width: 64,
+                        height: 64,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 64,
+                              height: 64,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: image != null
+                                      ? FileImage(image!)
+                                      : NetworkImage(
+                                          'https://images.app.goo.gl/him1uAKDAzpZeGW29',
+                                        ),
                                 ),
+                                color: Colors.grey,
+                                shape: BoxShape.circle,
                               ),
-                              color: Colors.grey,
-                              shape: BoxShape.circle,
                             ),
-                          ),
-                          Positioned(
-                            right: 0,
-                            bottom: 0,
-                            child: SvgAssets('edit', width: 20, height: 20),
-                          ),
-                        ],
+                            Positioned(
+                              right: 0,
+                              bottom: 0,
+                              child: SvgAssets('edit', width: 20, height: 20),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   height(50),
                   CustomTextField(
                     textInputAction: TextInputAction.next,
-
-                    label:
-                        widget.newUser
-                            ? locale.enterFirstName
-                            : locale.firstName,
+                    label: widget.newUser
+                        ? locale.enterFirstName
+                        : locale.firstName,
                   ),
                   height(16),
                   CustomTextField(
                     textInputAction: TextInputAction.next,
-
                     label:
                         widget.newUser ? locale.enterLastName : locale.lastName,
                   ),
@@ -117,10 +131,9 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   CustomTextField(
                     textInputAction: TextInputAction.next,
                     textInputType: TextInputType.number,
-                    label:
-                        widget.newUser
-                            ? locale.enterPhoneNumber
-                            : locale.phoneNumber,
+                    label: widget.newUser
+                        ? locale.enterPhoneNumber
+                        : locale.phoneNumber,
                   ),
                   height(16),
                   Padding(
@@ -149,11 +162,9 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                             scale: 1.3,
                             child: Checkbox(
                               value: isActive,
-                              onChanged:
-                                  (value) =>
-                                      ref
-                                          .read(editProfileProvider.notifier)
-                                          .state = value!,
+                              onChanged: (value) => ref
+                                  .read(editProfileProvider.notifier)
+                                  .state = value!,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
@@ -186,14 +197,13 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                       final isActive = ref.watch(editProfileProvider);
                       return RoundedButtonWidget(
                         btnTitle: widget.newUser ? locale.next : locale.save,
-                        onTap:
-                            widget.newUser
-                                ? isActive
-                                    ? () => context.pushRoute(
+                        onTap: widget.newUser
+                            ? isActive
+                                ? () => context.pushRoute(
                                       StudentProfileDetailsRoute(),
                                     )
-                                    : () => context.pushRoute(const MainRoute())
-                                : isActive
+                                : () => context.pushRoute(const MainRoute())
+                            : isActive
                                 ? () => context.maybePop()
                                 : null,
                       );

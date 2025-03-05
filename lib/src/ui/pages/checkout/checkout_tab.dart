@@ -2,8 +2,9 @@ import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class CheckOutTabPage extends StatelessWidget {
-  const CheckOutTabPage({super.key, this.isFromNavBar = false});
-  final bool isFromNavBar;
+  const CheckOutTabPage({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
@@ -11,7 +12,6 @@ class CheckOutTabPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: isFromNavBar ? false : true,
           title: Text(
             locale.checkoutOrders,
             style: Theme.of(context).textTheme.titleMedium,

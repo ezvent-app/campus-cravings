@@ -1,6 +1,4 @@
-import 'package:campuscravings/src/constants/config.dart';
 import 'package:campuscravings/src/src.dart';
-import 'package:flutter/material.dart';
 
 class SortByModel {
   final String title;
@@ -45,18 +43,21 @@ void showSortBottomSheet(BuildContext context) {
                     itemBuilder: (context, index) {
                       final sort = sortByList[index];
                       bool isSelected = selectedIndex == sort.index;
-                      return ListTile(
-                        title: Text(
-                          sort.title,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        trailing: InkWellButtonWidget(
-                          onTap: () {
-                            setState(() {
-                              selectedIndex = sort.index;
-                            });
-                          },
-                          child: Container(
+                      return InkWellButtonWidget(
+                        onTap: () {
+                          setState(() {
+                            selectedIndex = sort.index;
+                          });
+                        },
+                        child: ListTile(
+                          splashColor: Colors.transparent,
+                          selectedColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          title: Text(
+                            sort.title,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          trailing: Container(
                             width: 20,
                             height: 20,
                             decoration: BoxDecoration(

@@ -15,3 +15,4 @@ export './tabs/orders/orders_tab.dart';
 export './tabs/profile/widgets/widgets.dart';
 export './tabs/riders/riders_path.dart';
 export './tabs/profile/profile_paths.dart';
+export './tabs/cart/cart.dart';

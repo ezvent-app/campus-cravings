@@ -10,7 +10,7 @@ class MainPage extends StatelessWidget {
       routes: [
         HomeTabRoute(),
         OrdersTabRoute(),
-        CheckOutTabRoute(isFromNavBar: true),
+        CartTabRoute(isFromNavBar: true),
         RidersTabRoute(),
         ProfileTabRoute(),
       ],
@@ -30,6 +30,7 @@ class MainPage extends StatelessWidget {
                 child: TabBar(
                   indicatorColor: Colors.transparent,
                   controller: tabController,
+                  dividerColor: Colors.transparent,
                   tabs: [
                     _buildTab(
                       tabController,
