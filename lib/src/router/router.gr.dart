@@ -676,18 +676,39 @@ class OrdersTabRoute extends _i40.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i28.OtpPage]
-class OtpRoute extends _i40.PageRouteInfo<void> {
-  const OtpRoute({List<_i40.PageRouteInfo>? children})
-    : super(OtpRoute.name, initialChildren: children);
+class OtpRoute extends _i40.PageRouteInfo<OtpRouteArgs> {
+  OtpRoute({
+    _i41.Key? key,
+    required bool isRyder,
+    List<_i40.PageRouteInfo>? children,
+  }) : super(
+         OtpRoute.name,
+         args: OtpRouteArgs(key: key, isRyder: isRyder),
+         initialChildren: children,
+       );
 
   static const String name = 'OtpRoute';
 
   static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      return const _i28.OtpPage();
+      final args = data.argsAs<OtpRouteArgs>();
+      return _i28.OtpPage(key: args.key, isRyder: args.isRyder);
     },
   );
+}
+
+class OtpRouteArgs {
+  const OtpRouteArgs({this.key, required this.isRyder});
+
+  final _i41.Key? key;
+
+  final bool isRyder;
+
+  @override
+  String toString() {
+    return 'OtpRouteArgs{key: $key, isRyder: $isRyder}';
+  }
 }
 
 /// generated route for

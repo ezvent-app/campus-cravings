@@ -51,7 +51,7 @@ class SignUpPage extends ConsumerWidget {
                         "Villanova University",
                         "Stanford University",
                         "Harvard University",
-                        "Yale University"
+                        "Yale University",
                       ],
                       onChange: (value) {
                         final university = ref.read(registerProvider);
@@ -105,20 +105,25 @@ class SignUpPage extends ConsumerWidget {
                         var register = ref.watch(registerProvider);
                         return RoundedButtonWidget(
                           btnTitle: locale.register,
-                          onTap: register['university']!.isNotEmpty &&
-                                  register['email']!.isNotEmpty &&
-                                  register['password']!.isNotEmpty &&
-                                  register['confirmPassword']!.isNotEmpty
-                              ? () {
-                                  context.pushRoute(const OtpRoute());
-                                  ref.read(registerProvider.notifier).state = {
-                                    'university': '',
-                                    'email': '',
-                                    'password': '',
-                                    'confirmPassword': '',
-                                  };
-                                }
-                              : null,
+                          onTap:
+                              register['university']!.isNotEmpty &&
+                                      register['email']!.isNotEmpty &&
+                                      register['password']!.isNotEmpty &&
+                                      register['confirmPassword']!.isNotEmpty
+                                  ? () {
+                                    context.pushRoute(
+                                      ProfileFormRoute(newUser: true),
+                                    );
+                                    ref
+                                        .read(registerProvider.notifier)
+                                        .state = {
+                                      'university': '',
+                                      'email': '',
+                                      'password': '',
+                                      'confirmPassword': '',
+                                    };
+                                  }
+                                  : null,
                         );
                       },
                     ),

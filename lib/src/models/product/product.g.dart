@@ -11,9 +11,10 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       name: json['name'] as String,
       imageUrl: json['imageUrl'] as String,
-      categories: (json['categories'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      categories:
+          (json['categories'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
       price: (json['price'] as num).toDouble(),
       distance: (json['distance'] as num?)?.toDouble(),
     );
