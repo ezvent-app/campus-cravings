@@ -7,7 +7,7 @@ class DeliveryTabWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,9 +102,9 @@ class DeliveryTabWidget extends ConsumerWidget {
                                         style: Theme.of(
                                           context,
                                         ).textTheme.bodyMedium!.copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.black,
-                                            ),
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.black,
+                                        ),
                                       ),
                                       height(10),
                                       Row(
@@ -114,9 +114,10 @@ class DeliveryTabWidget extends ConsumerWidget {
                                           Text(
                                             '\$12.00',
                                             overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(
-                                              context,
-                                            ).textTheme.titleSmall,
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.titleSmall,
                                           ),
                                           width(10),
                                           QuantitySelectorWidget(),
@@ -188,9 +189,9 @@ class DeliveryTabWidget extends ConsumerWidget {
                             style: Theme.of(
                               context,
                             ).textTheme.bodyMedium!.copyWith(
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
@@ -381,9 +382,9 @@ class DeliveryTabWidget extends ConsumerWidget {
                 Text(
                   "${locale.wantToLeaveTipFor} Robert",
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: AppColors.lightText,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: AppColors.lightText,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 Consumer(
                   builder: (context, ref, _) {
@@ -393,8 +394,8 @@ class DeliveryTabWidget extends ConsumerWidget {
                         tipsList.length,
                         (i) => InkWellButtonWidget(
                           borderRadius: BorderRadius.circular(15),
-                          onTap: () =>
-                              ref.read(tipsProvider.notifier).state = i,
+                          onTap:
+                              () => ref.read(tipsProvider.notifier).state = i,
                           child: Padding(
                             padding: const EdgeInsets.all(5),
                             child: Container(
@@ -403,9 +404,10 @@ class DeliveryTabWidget extends ConsumerWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                  color: selectedIndex == i
-                                      ? AppColors.black
-                                      : Colors.grey,
+                                  color:
+                                      selectedIndex == i
+                                          ? AppColors.black
+                                          : Colors.grey,
                                 ),
                               ),
                               child: Center(
@@ -416,10 +418,11 @@ class DeliveryTabWidget extends ConsumerWidget {
                                     style: Theme.of(
                                       context,
                                     ).textTheme.bodyLarge!.copyWith(
-                                          color: selectedIndex == i
+                                      color:
+                                          selectedIndex == i
                                               ? AppColors.black
                                               : Colors.grey,
-                                        ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -431,10 +434,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                   },
                 ),
                 height(20),
-                CustomTextField(
-                  label: 'Enter tip',
-                  hintText: '\$2',
-                ),
+                CustomTextField(label: 'Enter tip', hintText: '\$2'),
                 height(30),
                 RoundedButtonWidget(
                   btnTitle: locale.confirm,

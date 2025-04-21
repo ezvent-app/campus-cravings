@@ -11,71 +11,60 @@ class CartTabPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: isFromNavBar ? false : true,
-        title: Text(
-          "Cart",
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium,
-        ),
+        title: Text("Cart", style: Theme.of(context).textTheme.titleMedium),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         physics: BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
               children: List.generate(6, (index) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: SizedBox(
-                    height: size.height * .17,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        PngAsset(
-                          'mock_product_1',
-                          height: size.height * .15,
-                          width: size.width * .38,
-                          fit: BoxFit.cover,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 20, top: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Mixed Vegetable Salad',
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium!.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.black,
-                                    ),
+                return SizedBox(
+                  height: size.height * .17,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PngAsset(
+                        'mock_product_1',
+                        height: size.height * .13,
+                        width: size.width * .3,
+                        fit: BoxFit.cover,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10, top: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Mixed Vegetable Salad',
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.black,
                               ),
-                              height(10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '\$12.00',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleSmall,
-                                  ),
-                                  width(10),
-                                  QuantitySelectorWidget(),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                            height(10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '\$12.00',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                ),
+                                width(10),
+                                QuantitySelectorWidget(),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               }),

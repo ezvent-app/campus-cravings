@@ -1,7 +1,6 @@
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-// ignore: must_be_immutable
 class LoginPage extends ConsumerWidget {
   LoginPage({super.key});
 

@@ -7,7 +7,7 @@ class PickUpTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,9 +66,9 @@ class PickUpTabWidget extends StatelessWidget {
                                         style: Theme.of(
                                           context,
                                         ).textTheme.bodyMedium!.copyWith(
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.black,
-                                            ),
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.black,
+                                        ),
                                       ),
                                       height(10),
                                       Row(
@@ -78,9 +78,10 @@ class PickUpTabWidget extends StatelessWidget {
                                           Text(
                                             '\$12.00',
                                             overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(
-                                              context,
-                                            ).textTheme.titleSmall,
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.titleSmall,
                                           ),
                                           width(10),
                                           QuantitySelectorWidget(),
@@ -152,9 +153,9 @@ class PickUpTabWidget extends StatelessWidget {
                             style: Theme.of(
                               context,
                             ).textTheme.bodyMedium!.copyWith(
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),

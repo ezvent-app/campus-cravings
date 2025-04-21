@@ -18,8 +18,9 @@ class HomeLocationWidget extends StatelessWidget {
       child: Column(
         children: [
           InkWellButtonWidget(
-            borderRadius:
-                const BorderRadius.vertical(bottom: Radius.circular(24)),
+            borderRadius: const BorderRadius.vertical(
+              bottom: Radius.circular(24),
+            ),
             onTap: () {},
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -44,19 +45,22 @@ class HomeLocationWidget extends StatelessWidget {
                                 horizontal: 10,
                                 vertical: 6,
                               ),
-                              margin:
-                                  const EdgeInsets.only(left: 30, bottom: 2),
+                              margin: const EdgeInsets.only(
+                                left: 30,
+                                bottom: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: const Color(0xFFEBEBEB),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
                                 locale.defaultValue,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(
-                                        fontSize: 10, color: AppColors.black),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodySmall!.copyWith(
+                                  fontSize: 10,
+                                  color: AppColors.black,
+                                ),
                               ),
                             ),
                           ],
@@ -73,30 +77,35 @@ class HomeLocationWidget extends StatelessWidget {
                     builder: (context, ref, child) {
                       final isSelected = ref.watch(checkOutProvider);
                       return InkWellButtonWidget(
-                        onTap: () => ref.read(checkOutProvider.notifier).state =
-                            !isSelected,
+                        onTap:
+                            () =>
+                                ref.read(checkOutProvider.notifier).state =
+                                    !isSelected,
                         child: Container(
                           width: 20,
                           height: 20,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: isSelected
-                                ? AppColors.accent
-                                : Colors.transparent,
+                            color:
+                                isSelected
+                                    ? AppColors.accent
+                                    : Colors.transparent,
                             border: Border.all(
                               color: AppColors.accent,
                               width: 1,
                             ),
                           ),
-                          child: isSelected
-                              ? Center(
-                                  child: Icon(
-                                  Icons.done,
-                                  color: AppColors.white,
-                                  size: 15,
-                                ))
-                              : SizedBox(),
+                          child:
+                              isSelected
+                                  ? Center(
+                                    child: Icon(
+                                      Icons.done,
+                                      color: AppColors.white,
+                                      size: 15,
+                                    ),
+                                  )
+                                  : SizedBox(),
                         ),
                       );
                     },
@@ -105,17 +114,11 @@ class HomeLocationWidget extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
-            color: AppColors.dividerColor,
-          ),
+          Divider(color: AppColors.dividerColor),
           Container(
             width: double.infinity,
             height: 48,
-            margin: const EdgeInsets.only(
-              left: 25,
-              right: 25,
-              top: 24,
-            ),
+            margin: const EdgeInsets.only(left: 25, right: 25, top: 24),
             child: ElevatedButton(
               onPressed: () => context.pushRoute(SavedAddressesRoute()),
               style: ElevatedButton.styleFrom(
@@ -131,7 +134,7 @@ class HomeLocationWidget extends StatelessWidget {
               ),
             ),
           ),
-          height(30)
+          height(30),
         ],
       ),
     );

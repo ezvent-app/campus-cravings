@@ -5,3 +5,4 @@ export 'images.dart';
 export 'app_strings.dart';
 export 'dimensions.dart';
 export 'enums.dart';
+export 'share_preferences.dart';
