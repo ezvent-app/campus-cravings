@@ -1,11 +1,15 @@
-
-
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class ProfileGroupButton extends ConsumerWidget {
-  final List<ProfileOption> options;
+  final List<dynamic> options;
   final double topMargin;
-  const ProfileGroupButton({super.key, required this.options, this.topMargin = 30});
+  final bool isHelp;
+  const ProfileGroupButton({
+    super.key,
+    required this.options,
+    this.topMargin = 30,
+    this.isHelp = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -14,24 +18,29 @@ class ProfileGroupButton extends ConsumerWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: const Color(0xFFF5F5F5),
-        borderRadius: BorderRadius.circular(10)
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: options.map((option) {
           return Material(
             color: Colors.transparent,
-            child: InkWell(
+            child: InkWellButtonWidget(
               borderRadius: BorderRadius.circular(10),
               onTap: () {
                 option.onPressed();
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 15,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    PngAsset(option.icon, height: 30, width: 30,),
+                    isHelp
+                        ? SizedBox()
+                        : SvgAssets(option.icon, height: 30, width: 30),
                     Padding(
                       padding: const EdgeInsets.only(top: 5, left: 10),
                       child: Text(
@@ -39,7 +48,7 @@ class ProfileGroupButton extends ConsumerWidget {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff443A39)
+                          color: Color(0xff443A39),
                         ),
                       ),
                     ),
@@ -48,19 +57,19 @@ class ProfileGroupButton extends ConsumerWidget {
                       Icons.keyboard_arrow_right,
                       size: 30,
                       color: Color(0xff443A39),
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
           );
-        },).toList(),
+        }).toList(),
       ),
     );
   }
 }
 
-class ProfileOption{
+class ProfileOption {
   final String label;
   final String icon;
   final Function onPressed;
@@ -71,5 +80,17 @@ class ProfileOption{
     required this.icon,
     required this.onPressed,
     this.hasTrailingIcon = true,
-});
+  });
+}
+
+class HelpOption {
+  final String label;
+  final Function onPressed;
+  final bool hasTrailingIcon;
+
+  const HelpOption({
+    required this.label,
+    required this.onPressed,
+    this.hasTrailingIcon = true,
+  });
 }

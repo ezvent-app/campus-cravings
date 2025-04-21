@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class ProductDescriptionWidget extends ConsumerStatefulWidget {
   const ProductDescriptionWidget({super.key});
@@ -16,17 +16,19 @@ class _ProductDescriptionWidgetState
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: RichText(
         text: TextSpan(
           children: [
             TextSpan(
-              text: description.length > 14
-                  ? !_expanded
-                      ? '${description.substring(0, 151)}...'
-                      : description
-                  : description,
+              text:
+                  description.length > 14
+                      ? !_expanded
+                          ? '${description.substring(0, 151)}...'
+                          : description
+                      : description,
               style: const TextStyle(
                 fontFamily: 'SofiaPro',
                 fontSize: 12,
@@ -36,19 +38,21 @@ class _ProductDescriptionWidgetState
             ),
             if (description.length > 40)
               TextSpan(
-                text: ' Read ${_expanded ? 'Less' : 'More'}',
+                text:
+                    ' ${locale.read} ${_expanded ? locale.less : locale.more}',
                 style: const TextStyle(
                   fontFamily: 'SofiaPro',
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: AppColors.accent,
                 ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    setState(() {
-                      _expanded = !_expanded;
-                    });
-                  },
+                recognizer:
+                    TapGestureRecognizer()
+                      ..onTap = () {
+                        setState(() {
+                          _expanded = !_expanded;
+                        });
+                      },
               ),
           ],
         ),

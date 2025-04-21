@@ -1,71 +1,112 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
+import 'package:flutter/cupertino.dart';
 
 @RoutePage()
-class HomeTab extends ConsumerStatefulWidget {
-  const HomeTab({super.key});
+class HomeTabPage extends StatelessWidget {
+  const HomeTabPage({super.key});
 
-  @override
-  ConsumerState createState() => _HomeTabState();
-}
-
-class _HomeTabState extends ConsumerState<HomeTab> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    final locale = AppLocalizations.of(context)!;
+    return Scaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
+            height(20),
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(2, 3),
+                    blurRadius: 5,
+                    color: Colors.grey.withValues(alpha: .5),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(12),
+                color: AppColors.white,
+              ),
+              margin: EdgeInsets.symmetric(horizontal: 25),
+              child: TextButton(
+                onPressed: () => context.pushRoute(RidersTabRoute()),
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            locale.deliverwithUs,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          Icon(Icons.arrow_forward),
+                        ],
+                      ),
+                      Text(
+                        "6 orders are ready for you to pick up! Start earning with Campus Cravings today.",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
               padding: EdgeInsets.all(25),
               child: Text(
-                'Discover',
-                style: TextStyle(
-                  color: Color(0xff443A39),
-                  fontSize: 36,
-                  fontWeight: FontWeight.w500,
-                ),
+                locale.discover,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w500),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: CustomTextField(
                       style: TextStyle(fontSize: 17),
-                      hintText: 'Search',
-                      hintStyle:
-                          TextStyle(color: Color(0xFFB4B0B0), fontSize: 17),
+                      hintText: locale.search,
+                      hintStyle: TextStyle(
+                        color: Color(0xFFB4B0B0),
+                        fontSize: 17,
+                      ),
                       prefixIcon: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: ImageIcon(
-                            AssetImage('assets/images/png/search_icon.png'),
-                            color: Color(0xFFB4B0B0),
-                            size: 30),
+                        child: Icon(
+                          CupertinoIcons.search,
+                          color: AppColors.email,
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  width(16),
                   Container(
-                    width: 57,
-                    height: 57,
+                    width: 50,
+                    height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                       border: Border.all(
-                          color: AppColors.textFieldBorder, width: 2),
+                        color: AppColors.textFieldBorder,
+                        width: 2,
+                      ),
                     ),
                     child: Material(
                       color: Colors.transparent,
-                      child: InkWell(
+                      child: InkWellButtonWidget(
                         borderRadius: BorderRadius.circular(8),
-                        onTap: () {},
+                        onTap: () => showSortBottomSheet(context),
                         child: const Center(
-                          child: ImageIcon(
-                              AssetImage('assets/images/png/filter_icon.png'),
-                              color: Color(0xff443A39),
-                              size: 30),
+                          child: SvgAssets("filter", width: 24, height: 24),
                         ),
                       ),
                     ),
@@ -75,7 +116,9 @@ class _HomeTabState extends ConsumerState<HomeTab> {
             ),
             Expanded(
               child: ListView(
-                children: const [
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.zero,
+                children: [
                   CategoriesHorizontalWidget(),
                   PopularHorizontalWidget(),
                   NearbyRestaurantsWidget(),

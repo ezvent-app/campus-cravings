@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class PopularHorizontalWidget extends ConsumerStatefulWidget {
   const PopularHorizontalWidget({super.key});
@@ -13,18 +13,18 @@ class _PopularHorizontalWidgetState
     'Cheese Pizza',
     'Cheese Pizza',
     'Cheese Pizza',
-    'Cheese Pizza'
+    'Cheese Pizza',
   ];
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(left: 25),
           child: Text(
             'Popular Items',
-            style: TextStyle(
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
@@ -34,48 +34,51 @@ class _PopularHorizontalWidgetState
           height: 227,
           width: double.infinity,
           child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             scrollDirection: Axis.horizontal,
+            physics: BouncingScrollPhysics(),
             itemCount: products.length,
-            separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(width: 12),
+            separatorBuilder: (BuildContext context, int index) => width(12),
             itemBuilder: (BuildContext context, int index) {
               final category = products[index];
               return Column(
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
+                      horizontal: 20,
+                      vertical: 15,
+                    ),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(.08),
-                              blurRadius: 15)
-                        ]),
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: .08),
+                          blurRadius: 15,
+                        ),
+                      ],
+                    ),
                     child: Column(
                       children: [
-                        const PngAsset(
-                          'mock_product_2',
-                          width: 90,
-                          height: 90,
-                        ),
-                        const SizedBox(height: 16),
+                        const PngAsset('mock_product_2', width: 90, height: 90),
+                        height(14),
                         Text(
                           category,
                           style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600),
+                            color: AppColors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const PngAsset(
-                              'time_icon',
+                            const SvgAssets(
+                              'linear_clock',
                               width: 10,
                               height: 10,
                             ),
-                            const SizedBox(width: 3),
+                            width(3),
                             const Text(
                               '25min',
                               style: TextStyle(
@@ -92,12 +95,12 @@ class _PopularHorizontalWidgetState
                                 color: Color(0xFFD9D9D9),
                               ),
                             ),
-                            const PngAsset(
-                              'rating_icon',
+                            const SvgAssets(
+                              'linear_star',
                               width: 10,
                               height: 10,
                             ),
-                            const SizedBox(width: 3),
+                            width(3),
                             const Text(
                               '4.7',
                               style: TextStyle(
@@ -107,11 +110,10 @@ class _PopularHorizontalWidgetState
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
-                        const Text(
+                        height(2),
+                        Text(
                           '\$6.90',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600),
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ],
                     ),

@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 
-class AppColors{
+class AppColors {
   static const primary = Colors.black;
   static const background = Color(0xFFFFFFFF);
+  static const white = Color(0xFFFFFFFF);
   static const accent = Color(0xFFFB3333);
   static const accentLight = Color(0xFFFDADAD);
   static const darkText = Color(0xFF1A1C1E);
@@ -13,6 +13,9 @@ class AppColors{
   static const otpPinBorderColor = Color(0xFFC9C9C7);
   static const unselectedTabIconColor = Color(0xFF9E9E9E);
   static const dividerColor = Color(0xFFEEEEEE);
+  static const yellow = Color(0xffFFD029);
+  static const halfWhite = Color(0xffF5F5F5);
+  static const hintColor = Color(0xFFBEBEBE);
 
   static const shade = Color(0xFF272B30);
   static const textField2 = Color(0xFF282829);

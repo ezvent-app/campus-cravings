@@ -1,6 +1,4 @@
-
-
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class ProductDetailsPage extends ConsumerStatefulWidget {
@@ -11,9 +9,20 @@ class ProductDetailsPage extends ConsumerStatefulWidget {
   ConsumerState createState() => _ProductDetailsPageState();
 }
 
+PageController _pageController = PageController();
+int _selectedIndex = 0;
+
+final List<String> productImages = [
+  'mock_product_1',
+  'mock_product_2',
+  'mock_product_1',
+];
+
 class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
+    final isIOS = Platform.isIOS;
     return Scaffold(
       body: Column(
         children: [
@@ -23,42 +32,103 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 children: [
                   Stack(
                     children: [
-                      const ClipRRect(
-                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+                      // Image Carousel
+                      ClipRRect(
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(12),
+                        ),
                         child: SizedBox(
                           width: double.infinity,
                           height: 350,
-                          child: PngAsset('mock_product_1', fit: BoxFit.fitWidth),
+                          child: PageView.builder(
+                            controller: _pageController,
+                            itemCount: productImages.length,
+                            onPageChanged: (index) {
+                              setState(() {
+                                _selectedIndex = index;
+                              });
+                            },
+                            itemBuilder: (context, index) {
+                              return PngAsset(
+                                productImages[
+                                    index], // Replace with actual asset reference
+                                fit: BoxFit.fitWidth,
+                              );
+                            },
+                          ),
                         ),
                       ),
+
+                      // Safe Area for Navigation & Cart
                       SafeArea(
                         child: Padding(
                           padding: const EdgeInsets.all(14),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               IconButton(
-                                icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30,),
+                                icon: Icon(
+                                  isIOS
+                                      ? Icons.arrow_back_ios
+                                      : Icons.arrow_back,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
                                 onPressed: () {
                                   context.maybePop();
                                 },
                               ),
                               const Spacer(),
                               IconButton(
-                                icon: const ImageIcon(AssetImage('assets/images/png/shopping_bag_icon.png'), color: Colors.white, size: 28,),
+                                icon: CartCounterWidget(
+                                  count: 2,
+                                  color: AppColors.dividerColor,
+                                ),
                                 onPressed: () {
-                                  context.pushRoute(const CheckoutRoute());
+                                  context.pushRoute(CartTabRoute());
                                 },
                               ),
                             ],
                           ),
                         ),
                       ),
+
+                      // Swipe Indicator Dots
+                      Positioned(
+                        bottom: 20,
+                        left: 0,
+                        right: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(productImages.length, (
+                            index,
+                          ) {
+                            bool isSelected = _selectedIndex == index;
+                            return AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              margin: EdgeInsets.symmetric(horizontal: 4),
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white),
+                                color: isSelected
+                                    ? Colors.white
+                                    : Colors.transparent,
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
                     ],
                   ),
-                  const Column(
+                  Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 20,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -80,7 +150,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                       style: TextStyle(
                                         color: Color(0xff27261E),
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 18
+                                        fontSize: 18,
                                       ),
                                     ),
                                   ],
@@ -95,10 +165,11 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Calories',
+                                          locale.calories,
                                           style: TextStyle(
                                             color: Color(0xff27261E),
                                             fontWeight: FontWeight.w500,
@@ -106,15 +177,22 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                         ),
                                         Row(
                                           children: [
-                                            PngAsset('calorie_icon', height: 16, width: 16,),
+                                            SvgAssets(
+                                              'calories',
+                                              height: 16,
+                                              width: 16,
+                                            ),
                                             Padding(
-                                              padding: EdgeInsets.only(top: 5, left: 5),
+                                              padding: EdgeInsets.only(
+                                                top: 5,
+                                                left: 5,
+                                              ),
                                               child: Text(
-                                                '150 Kcal',
+                                                '150 ${locale.kCal}',
                                                 style: TextStyle(
-                                                    color: Color(0xff27261E),
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16
+                                                  color: Color(0xff27261E),
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
                                                 ),
                                               ),
                                             ),
@@ -125,10 +203,11 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   ),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Time',
+                                          locale.time,
                                           style: TextStyle(
                                             color: Color(0xff27261E),
                                             fontWeight: FontWeight.w500,
@@ -136,15 +215,22 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                         ),
                                         Row(
                                           children: [
-                                            PngAsset('time2_icon', height: 16, width: 16,),
+                                            SvgAssets(
+                                              'clock',
+                                              height: 16,
+                                              width: 16,
+                                            ),
                                             Padding(
-                                              padding: EdgeInsets.only(top: 5, left: 5),
+                                              padding: EdgeInsets.only(
+                                                top: 5,
+                                                left: 5,
+                                              ),
                                               child: Text(
-                                                '15m',
+                                                '15${locale.m}',
                                                 style: TextStyle(
-                                                    color: Color(0xff27261E),
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16
+                                                  color: Color(0xff27261E),
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
                                                 ),
                                               ),
                                             ),
@@ -162,10 +248,14 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       ),
                       SizeSelectorWidget(),
                       Padding(
-                        padding: EdgeInsets.only(left: 25, right: 25, bottom: 25),
+                        padding: EdgeInsets.only(
+                          left: 25,
+                          right: 25,
+                          bottom: 25,
+                        ),
                         child: CustomTextField(
                           maxLines: 3,
-                          hintText: 'Note to Restaurant (optional)',
+                          hintText: locale.noteToRestaurant,
                           hintStyle: TextStyle(color: Color(0xff9E9E9E)),
                         ),
                       ),
@@ -178,28 +268,27 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
             decoration: const BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(color: Colors.black12, blurRadius: 20)
-                ]
+              color: Colors.white,
+              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20)],
             ),
             child: Row(
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '2 Items',
+                      '2 ${locale.items}',
                       style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
                       ),
                     ),
                     Text(
                       '\$ 12.99',
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        color: AppColors.black,
                       ),
                     ),
                   ],
@@ -208,21 +297,21 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 SizedBox(
                   height: 49,
                   child: ElevatedButton.icon(
-                    onPressed: (){},
-                    label: const Text('Add to Cart'),
-                    icon: const ImageIcon(AssetImage('assets/images/png/shopping_cart_icon.png'), size: 15),
+                    onPressed: () {},
+                    label: Text(locale.addToCart),
+                    icon: SvgAssets("shopping-cart", width: 16, height: 16),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.background,// Splash color
+                      foregroundColor: AppColors.background, // Splash color
                     ),
                   ),
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

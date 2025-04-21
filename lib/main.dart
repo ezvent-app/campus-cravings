@@ -1,6 +1,11 @@
-import 'src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
-void main() {
+late List<CameraDescription> cameras;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  cameras = await availableCameras();
   runApp(App());
 }
 
@@ -14,12 +19,9 @@ class App extends StatelessWidget {
       child: MaterialApp.router(
         title: "Campus Cravings",
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          fontFamily: 'SofiaPro',
-          colorScheme: const ColorScheme.light(primary: AppColors.primary)
-              .copyWith(surface: AppColors.background),
-        ),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: lightTheme,
         routerConfig: _appRouter.config(),
       ),
     );

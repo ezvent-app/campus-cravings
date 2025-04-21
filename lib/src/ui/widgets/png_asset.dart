@@ -8,7 +8,9 @@ class PngAsset extends StatelessWidget {
   final Color? color;
   final AlignmentGeometry alignment;
   final BorderRadius borderRadius;
-  const PngAsset(this.name, {super.key,
+  const PngAsset(
+    this.name, {
+    super.key,
     this.fit,
     this.height,
     this.width,
@@ -19,15 +21,17 @@ class PngAsset extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: borderRadius,
-      child: Image.asset('assets/images/png/$name.png',
-        fit: fit,
-        height: height,
-        width: width,
-        color: color,
-        alignment: alignment,
-      ),
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+          color: color,
+          borderRadius: borderRadius,
+          image: DecorationImage(
+            image: AssetImage('assets/images/png/$name.png'),
+            fit: fit,
+            alignment: alignment,
+          )),
     );
   }
 }

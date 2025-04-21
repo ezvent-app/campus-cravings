@@ -1,18 +1,12 @@
-
-
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class ProfileTab extends ConsumerStatefulWidget {
-  const ProfileTab({super.key});
+class ProfileTabPage extends StatelessWidget {
+  const ProfileTabPage({super.key});
 
-  @override
-  ConsumerState createState() => _ProfileTabState();
-}
-
-class _ProfileTabState extends ConsumerState<ProfileTab> {
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFFFBFBFA),
       body: SafeArea(
@@ -30,77 +24,91 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
                           height: 60,
                           decoration: BoxDecoration(
                             color: Colors.grey,
-                            borderRadius: BorderRadius.circular(20)
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: const Center(
-                            child: Icon(Icons.person, size: 35,),
+                            child: Icon(
+                              Icons.person,
+                              size: 35,
+                              color: AppColors.white,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 20),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Andrew Ainsley",
-                              style: TextStyle(fontSize: 21),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            const SizedBox(height: 5),
-                            GestureDetector(
-                              onTap: (){
-                                context.pushRoute(ProfileFormRoute(newUser: false));
+                            height(5),
+                            InkWellButtonWidget(
+                              onTap: () {
+                                context.pushRoute(
+                                  ProfileFormRoute(newUser: false),
+                                );
                               },
-                              child: const Text(
-                                "Edit Profile",
-                                style: TextStyle(
-                                  color: AppColors.lightText
-                                ),
+                              child: Text(
+                                locale.editProfile,
+                                style: TextStyle(color: AppColors.lightText),
                               ),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
                   Container(
-                    width: 40, height: 40,
+                    width: 40,
+                    height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
-                      border: Border.all(color: const Color(0xFFF4F4F4), width: 2),
+                      border: Border.all(
+                        color: const Color(0xFFF4F4F4),
+                        width: 2,
+                      ),
                     ),
                     child: Material(
                       color: Colors.transparent,
-                      child: InkWell(
+                      child: InkWellButtonWidget(
                         borderRadius: BorderRadius.circular(8),
-                        onTap: (){},
+                        onTap: () {},
                         child: const Center(
-                          child: Icon(Icons.keyboard_arrow_down,size: 30, color: Color(0xff443A39),),
+                          child: Icon(
+                            Icons.keyboard_arrow_right,
+                            size: 30,
+                            color: Color(0xff443A39),
+                          ),
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
               ProfileGroupButton(
                 options: [
                   ProfileOption(
-                    icon: 'payment_method_icon',
-                    label: 'Payment Methods',
-                    onPressed: (){
-                      context.pushRoute(PaymentMethodsRoute(fromCheckout: false));
+                    icon: 'paymentMethod',
+                    label: locale.paymentMethods,
+                    onPressed: () {
+                      context.pushRoute(
+                        PaymentMethodsRoute(fromCheckout: false),
+                      );
                     },
                   ),
                   ProfileOption(
-                    icon: 'saved_addresses_icon',
-                    label: 'Saved Addresses',
-                    onPressed: (){
+                    icon: 'address',
+                    label: locale.savedAddresses,
+                    onPressed: () {
                       context.pushRoute(const SavedAddressesRoute());
                     },
                   ),
                   ProfileOption(
-                    icon: 'promo_offers_icon',
-                    label: 'Promo Offers',
-                    onPressed: (){
+                    icon: 'promo',
+                    label: locale.promoCode,
+                    onPressed: () {
                       context.pushRoute(const PromoCodeRoute());
                     },
                   ),
@@ -109,30 +117,41 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
               ProfileGroupButton(
                 options: [
                   ProfileOption(
-                    icon: 'settings_icon',
-                    label: 'Settings',
-                    onPressed: (){
-                      context.pushRoute(const SettingsRoute());
+                    icon: 'notification',
+                    label: locale.notifications,
+                    onPressed: () {
+                      context.pushRoute(const NotificationsRoute());
                     },
                   ),
                   ProfileOption(
-                    icon: 'refer_friend_icon',
-                    label: 'Refer a Friend/s',
-                    onPressed: (){},
+                    icon: 'lock',
+                    label: locale.changePassword,
+                    onPressed: () {
+                      context.pushRoute(const ChangePasswordRoute());
+                    },
                   ),
                   ProfileOption(
-                    icon: 'help_icon',
-                    label: 'Help',
-                    onPressed: (){},
+                    icon: 'locale',
+                    label: locale.changeLanguage,
+                    onPressed: () {
+                      context.pushRoute(const ChangeLanguageRoute());
+                    },
+                  ),
+                  ProfileOption(
+                    icon: 'help',
+                    label: locale.help,
+                    onPressed: () {
+                      context.pushRoute(const HelpRoute());
+                    },
                   ),
                 ],
               ),
               ProfileGroupButton(
                 options: [
                   ProfileOption(
-                    icon: 'logout_icon',
-                    label: 'Log Out',
-                    onPressed: (){},
+                    icon: 'logout',
+                    label: locale.logOut,
+                    onPressed: () => context.pushRoute(LoginRoute()),
                   ),
                 ],
               ),

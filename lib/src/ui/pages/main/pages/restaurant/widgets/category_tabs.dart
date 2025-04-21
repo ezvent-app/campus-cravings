@@ -1,6 +1,4 @@
-
-
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class CategoryTabs extends ConsumerStatefulWidget {
   final List<Product> products;
@@ -10,7 +8,8 @@ class CategoryTabs extends ConsumerStatefulWidget {
   ConsumerState createState() => _CategoryTabsState();
 }
 
-class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProviderStateMixin {
+class _CategoryTabsState extends ConsumerState<CategoryTabs>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   late List<String> _categories;
   late bool _expandedTabBar;
@@ -23,7 +22,6 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
     }
     _expandedTabBar = _categories.length > 3;
     _tabController = TabController(length: _categories.length, vsync: this);
-    // TODO: implement initState
     super.initState();
   }
 
@@ -35,6 +33,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
     return Expanded(
       child: Column(
         children: [
@@ -43,25 +42,26 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
             child: Align(
               alignment: Alignment.centerLeft,
               child: TabBar(
-                indicatorSize: _expandedTabBar ? TabBarIndicatorSize.label : TabBarIndicatorSize.tab,
-                tabAlignment: _expandedTabBar ? TabAlignment.start : TabAlignment.fill,
+                indicatorSize: _expandedTabBar
+                    ? TabBarIndicatorSize.label
+                    : TabBarIndicatorSize.tab,
+                overlayColor: WidgetStatePropertyAll(Colors.transparent),
+                tabAlignment:
+                    _expandedTabBar ? TabAlignment.start : TabAlignment.fill,
                 isScrollable: _expandedTabBar,
                 indicator: const UnderlineTabIndicator(
-                  borderSide: BorderSide(
-                    width: 4,
-                    color: Colors.black,
-                  ),
+                  borderSide: BorderSide(width: 4, color: Colors.black),
                 ),
                 dividerColor: const Color(0xFFF6F6F6),
                 dividerHeight: 4,
                 controller: _tabController,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 5),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 10),
                 tabs: _categories.map((e) {
                   return Tab(
                     child: Text(
-                      e == 'recommended' ? 'Picked For You' : e,
+                      e == 'recommended' ? locale.pickedForYou : e,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -79,14 +79,16 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
                 }).toList();
                 return ListView(
                   padding: const EdgeInsets.only(top: 24),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Text(
-                        e == 'recommended' ? 'Picked For You' : e,
-                        style: const TextStyle(
+                        e == 'recommended' ? locale.pickedForYou : e,
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
+                          color: AppColors.black,
                         ),
                       ),
                     ),
@@ -94,30 +96,42 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: categorizedProducts.length,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 20,
+                      ),
                       itemBuilder: (context, index) {
                         return Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             boxShadow: const [
-                              BoxShadow(color: Colors.black12, blurRadius: 20)
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 20,
+                              ),
                             ],
-                            borderRadius: BorderRadius.circular(28)
+                            borderRadius: BorderRadius.circular(28),
                           ),
                           child: Material(
                             color: Colors.transparent,
-                            child: InkWell(
+                            child: InkWellButtonWidget(
                               borderRadius: BorderRadius.circular(28),
-                              onTap: (){
-                                context.pushRoute(ProductDetailsRoute(product: categorizedProducts[index]));
+                              onTap: () {
+                                context.pushRoute(
+                                  ProductDetailsRoute(
+                                    product: categorizedProducts[index],
+                                  ),
+                                );
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(12),
                                 child: Row(
                                   children: [
                                     ClipRRect(
-                                      borderRadius: BorderRadius.circular(24),
+                                      borderRadius: BorderRadius.circular(
+                                        24,
+                                      ),
                                       child: const PngAsset(
                                         'mock_product_1',
                                         fit: BoxFit.cover,
@@ -128,46 +142,45 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs> with TickerProvider
                                     const SizedBox(width: 16),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             categorizedProducts[index].name,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 16,
-                                            ),
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleSmall,
                                           ),
-                                          const SizedBox(height: 3),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  '\$${categorizedProducts[index].price.toStringAsFixed(2)}',
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ),
-                                              const PngAsset('add_icon', width: 20, height: 20,)
-                                            ],
+                                          height(7),
+                                          Text(
+                                            '\$${categorizedProducts[index].price.toStringAsFixed(2)}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall,
                                           ),
                                         ],
                                       ),
                                     ),
+                                    const SvgAssets(
+                                      'PlusButton',
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                    width(10)
                                   ],
                                 ),
                               ),
                             ),
                           ),
                         );
-                      }, separatorBuilder: (BuildContext context, int index) {
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
                         return const SizedBox(height: 20);
                       },
                     ),
                   ],
                 );
-              },).toList(),
+              }).toList(),
             ),
           ),
         ],

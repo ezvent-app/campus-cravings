@@ -1,4 +1,4 @@
-import 'package:campus_cravings/src/src.dart';
+import 'package:campuscravings/src/src.dart';
 
 class CustomTextField extends ConsumerWidget {
   final String? label;
@@ -10,10 +10,20 @@ class CustomTextField extends ConsumerWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final int maxLines;
+  final TextEditingController? controller;
   final EdgeInsets? contentPadding;
+  final TextInputType? textInputType;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onChanged;
+  final Function(dynamic)? onSubmitted;
   const CustomTextField({
     super.key,
+    this.textInputType,
+    this.textInputAction,
     this.label,
+    this.controller,
+    this.onSubmitted,
+    this.onChanged,
     this.dismissOnTapOutside = true,
     this.obscureText = false,
     this.hintText,
@@ -33,40 +43,56 @@ class CustomTextField extends ConsumerWidget {
         if (label != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 3),
-            child: Text(
-              label!,
-              style: const TextStyle(
-                fontSize: 12,
-                color: AppColors.lightText,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            child: Text(label!, style: Theme.of(context).textTheme.bodySmall),
           ),
         TextFormField(
+          onChanged: onChanged,
+          onFieldSubmitted: onSubmitted,
           obscureText: obscureText,
+          keyboardType: textInputType,
+          textInputAction: textInputAction,
           onTapOutside: (event) {
             if (dismissOnTapOutside) {
               FocusScope.of(context).unfocus();
             }
           },
-          style: style,
+          style:
+              style ??
+              Theme.of(
+                context,
+              ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
           maxLines: maxLines,
+          obscuringCharacter: "*",
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: hintStyle,
+            hintStyle:
+                hintStyle ??
+                Theme.of(
+                  context,
+                ).textTheme.bodySmall!.copyWith(color: AppColors.hintColor),
             suffixIcon: suffixIcon,
-            contentPadding: const EdgeInsets.all(15),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+            contentPadding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+            ),
             enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                    color: AppColors.textFieldBorder, width: 1.5)),
+              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+              borderSide: const BorderSide(
+                color: AppColors.textFieldBorder,
+                width: 1.5,
+              ),
+            ),
             focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                    color: AppColors.textFieldBorder, width: 1.5)),
-            prefixIconConstraints:
-                const BoxConstraints(maxWidth: 50, maxHeight: 50),
+              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+              borderSide: const BorderSide(
+                color: AppColors.textFieldBorder,
+                width: 1.5,
+              ),
+            ),
+            prefixIconConstraints: const BoxConstraints(
+              maxWidth: 50,
+              maxHeight: 50,
+            ),
             prefixIcon: prefixIcon,
           ),
         ),
