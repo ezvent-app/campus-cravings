@@ -7,7 +7,7 @@ class HttpService {
   static final HttpService _instance = HttpService._internal();
   factory HttpService() => _instance;
 
-  final String _baseUrl = "https://zsc-wwtowzbt.b4a.run/api/zsc/";
+  final String _baseUrl = "http://192.168.18.53:5000/api";
   HttpService._internal();
 
   final Map<String, String> _headers = {"Content-Type": "application/json"};

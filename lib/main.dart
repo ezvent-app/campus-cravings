@@ -4,7 +4,7 @@ late List<CameraDescription> cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await SharePreferences.initPreferences();
   cameras = await availableCameras();
   runApp(App());
 }

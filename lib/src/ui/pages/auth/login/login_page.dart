@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/utils/utils.dart';
 
 @RoutePage()
 class LoginPage extends ConsumerWidget {
@@ -11,6 +12,7 @@ class LoginPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     final locale = AppLocalizations.of(context)!;
+    HttpApiServices services = HttpApiServices();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -80,22 +82,71 @@ class LoginPage extends ConsumerWidget {
                     Consumer(
                       builder: (context, ref, child) {
                         var loginNotifier = ref.watch(loginProvider);
+
                         return RoundedButtonWidget(
                           btnTitle: locale.logIn,
                           onTap:
                               loginNotifier['email']!.isNotEmpty &&
                                       loginNotifier['password']!.isNotEmpty
-                                  ? () {
-                                    context.pushRoute(const MainRoute());
-                                    ref.read(loginProvider.notifier).state = {
-                                      'email': '',
-                                      'password': '',
-                                    };
+                                  ? () async {
+                                    try {
+                                      final response = await services.postAPI(
+                                        url: '/auth/login',
+                                        map: {
+                                          "username": loginNotifier['email'],
+                                          "authMethod": "email",
+                                          "verificationType": "password",
+                                          "deviceType": "android",
+                                          "deviceId":
+                                              "dACC68I_SsOeP95zx5KyRc:APA91bGSili2JR9h6TnbhNUPoKeN1QsxDqpjOwNfJy_sCMgjhC-whoow8sOmXb-KlYbYZ_Qp8gl7c-EWTf1zK87rG8aWPHFmI7WuQ78qppVc_J9HJ7kagsnvDQg-5bFCtO0UJs2JZHHq",
+                                          "password": loginNotifier['password'],
+                                        },
+                                      );
+
+                                      final data = jsonDecode(response.body);
+                                      if (response.statusCode == 201) {
+                                        print("Navigating");
+                                        if (context.mounted) {
+                                          context.pushRoute(MainRoute());
+                                        }
+                                        final token =
+                                            data['data']['accessToken'];
+                                        final prefs =
+                                            await SharedPreferences.getInstance();
+                                        await prefs.setString(
+                                          'accessToken',
+                                          token,
+                                        );
+
+                                        ref.read(loginProvider.notifier).state =
+                                            {'email': '', 'password': ''};
+                                      } else {
+                                        if (context.mounted) {
+                                          if (data['message']
+                                              .toString()
+                                              .toLowerCase()
+                                              .contains('not exist')) {
+                                            ToastUtils.showToast(
+                                              "User does not exist",
+                                            );
+                                          } else {
+                                            ToastUtils.showToast(
+                                              "Invalid credentials",
+                                            );
+                                          }
+                                        }
+                                      }
+                                    } catch (e) {
+                                      ToastUtils.showToast(
+                                        "Login failed. Please try again.",
+                                      );
+                                    }
                                   }
                                   : null,
                         );
                       },
                     ),
+
                     height(size.height * .12),
                     AccountInfoRowWidget(
                       title: locale.dontHaveAccount,
