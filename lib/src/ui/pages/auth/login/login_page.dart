@@ -5,6 +5,8 @@ class LoginPage extends ConsumerWidget {
   LoginPage({super.key});
 
   ValueNotifier<bool> password = ValueNotifier<bool>(false);
+  HttpApiServices services = HttpApiServices();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;

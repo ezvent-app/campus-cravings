@@ -94,11 +94,12 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: image != null
-                                      ? FileImage(image!)
-                                      : NetworkImage(
-                                          'https://images.app.goo.gl/him1uAKDAzpZeGW29',
-                                        ),
+                                  image:
+                                      image != null
+                                          ? FileImage(image!)
+                                          : NetworkImage(
+                                            'https://images.app.goo.gl/him1uAKDAzpZeGW29',
+                                          ),
                                 ),
                                 color: Colors.grey,
                                 shape: BoxShape.circle,
@@ -117,9 +118,10 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   height(50),
                   CustomTextField(
                     textInputAction: TextInputAction.next,
-                    label: widget.newUser
-                        ? locale.enterFirstName
-                        : locale.firstName,
+                    label:
+                        widget.newUser
+                            ? locale.enterFirstName
+                            : locale.firstName,
                   ),
                   height(16),
                   CustomTextField(
@@ -131,9 +133,10 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   CustomTextField(
                     textInputAction: TextInputAction.next,
                     textInputType: TextInputType.number,
-                    label: widget.newUser
-                        ? locale.enterPhoneNumber
-                        : locale.phoneNumber,
+                    label:
+                        widget.newUser
+                            ? locale.enterPhoneNumber
+                            : locale.phoneNumber,
                   ),
                   height(16),
                   Padding(
@@ -157,14 +160,21 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                     children: [
                       Consumer(
                         builder: (context, ref, child) {
-                          final isActive = ref.watch(editProfileProvider);
+                          final isActive = ref.watch(
+                            registerForDeliveryProvider,
+                          );
                           return Transform.scale(
                             scale: 1.3,
                             child: Checkbox(
                               value: isActive,
-                              onChanged: (value) => ref
-                                  .read(editProfileProvider.notifier)
-                                  .state = value!,
+                              onChanged:
+                                  (value) =>
+                                      ref
+                                          .read(
+                                            registerForDeliveryProvider
+                                                .notifier,
+                                          )
+                                          .state = value!,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
@@ -194,16 +204,15 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   height(18),
                   Consumer(
                     builder: (context, ref, child) {
-                      final isActive = ref.watch(editProfileProvider);
+                      final isActive = ref.watch(registerForDeliveryProvider);
                       return RoundedButtonWidget(
                         btnTitle: widget.newUser ? locale.next : locale.save,
-                        onTap: widget.newUser
-                            ? isActive
+                        onTap:
+                            widget.newUser
                                 ? () => context.pushRoute(
-                                      StudentProfileDetailsRoute(),
-                                    )
-                                : () => context.pushRoute(const MainRoute())
-                            : isActive
+                                  OtpRoute(isRyder: isActive),
+                                )
+                                : isActive
                                 ? () => context.maybePop()
                                 : null,
                       );
@@ -219,4 +228,4 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
   }
 }
 
-final editProfileProvider = StateProvider<bool>((ref) => false);
+final registerForDeliveryProvider = StateProvider<bool>((ref) => false);
