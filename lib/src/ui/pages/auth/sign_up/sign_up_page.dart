@@ -107,6 +107,9 @@ class SignUpPage extends ConsumerWidget {
                         return RoundedButtonWidget(
                           btnTitle: locale.next,
                           onTap: () {
+                            final passwordRegex = RegExp(
+                              r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$',
+                            );
                             final password = register['password']!;
                             final confirmPassword =
                                 register['confirmPassword']!;
@@ -125,6 +128,14 @@ class SignUpPage extends ConsumerWidget {
                               showToast(
                                 context: context,
                                 "Password must be at least 6 characters",
+                              );
+                              return;
+                            }
+
+                            if (!passwordRegex.hasMatch(password)) {
+                              showToast(
+                                context: context,
+                                "Password must contain at least one letter, one number, and one special character",
                               );
                               return;
                             }
