@@ -43,7 +43,7 @@ class OtpNotifier extends StateNotifier<OtpState> {
     : super(
         OtpState(
           otp: '',
-          remainingSeconds: 10, // 4 minutes 30 seconds
+          remainingSeconds: 180, // 4 minutes 30 seconds
           canResend: false,
         ),
       ) {
@@ -63,7 +63,7 @@ class OtpNotifier extends StateNotifier<OtpState> {
   // Start or restart the countdown timer
   void _startTimer() {
     _timer?.cancel(); // Cancel any existing timer
-    state = state.copyWith(remainingSeconds: 10, canResend: false);
+    state = state.copyWith(remainingSeconds: 180, canResend: false);
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (state.remainingSeconds > 0) {
@@ -100,7 +100,7 @@ class OtpNotifier extends StateNotifier<OtpState> {
     _timer?.cancel();
     state = OtpState(
       otp: '',
-      remainingSeconds: 10,
+      remainingSeconds: 180,
       canResend: false,
       isLoading: false,
     );
