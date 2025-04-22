@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../constants/storageHelper.dart';
 
@@ -87,15 +88,43 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                     Center(
                       child: InkWellButtonWidget(
                         onTap: () async {
-                          final FilePickerResult? result = await FilePicker
-                              .platform
+                          FilePickerResult? result = await FilePicker.platform
                               .pickFiles(type: FileType.image);
+
                           if (result != null) {
-                            File file = File(result.files.single.path!);
-                            setState(() {
-                              image = file;
-                            });
-                          } else {}
+                            Uint8List? fileBytes = result.files.single.bytes;
+                            String? path = result.files.single.path;
+
+                            if (kIsWeb) {
+                              if (fileBytes != null) {
+                                setState(() {
+                                  image = null;
+                                });
+
+                                String base64Image = base64Encode(fileBytes);
+                                ref.read(signUpProvider.notifier).state = {
+                                  ...ref.read(signUpProvider),
+                                  'imgBase64': base64Image,
+                                };
+                              }
+                            } else {
+                              if (path != null) {
+                                File file = File(path);
+                                setState(() {
+                                  image = file;
+                                });
+
+                                final bytes = await file.readAsBytes();
+                                String base64Image = base64Encode(bytes);
+                                ref.read(signUpProvider.notifier).state = {
+                                  ...ref.read(signUpProvider),
+                                  'imgBase64': base64Image,
+                                };
+                              }
+                            }
+                          } else {
+                            showToast(context: context, "Image not selected");
+                          }
                         },
                         child: SizedBox(
                           width: 64,
@@ -111,9 +140,10 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                     image:
                                         image != null
                                             ? FileImage(image!)
-                                            : NetworkImage(
-                                              'https://images.app.goo.gl/him1uAKDAzpZeGW29',
-                                            ),
+                                            : const NetworkImage(
+                                                  'https://images.app.goo.gl/him1uAKDAzpZeGW29',
+                                                )
+                                                as ImageProvider,
                                   ),
                                   color: Colors.grey,
                                   shape: BoxShape.circle,
@@ -255,7 +285,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                       final email = widget.email;
                                       final university = widget.uniName;
                                       print(
-                                        'phoneNumber: ${signUpNotifer['phoneNumber']}',
+                                        'image: ${signUpNotifer['imgBase64']}',
                                       );
                                       if (signUpNotifer['firstName']!.isEmpty) {
                                         showToast(
@@ -292,8 +322,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                           "isCustomer": true,
                                           "isDelivery": isActive,
                                           "email": email,
-                                          "imgUrl":
-                                              "https://lh3.sgoogleusercontent.com/a/ACg8ocJi6AUbX1_p4X0uHMarmnjAhdMxzg7TmNL0U4IYr46sCjc",
+                                          "imgUrl": signUpNotifer['imgBase64'],
                                           "status": "active",
                                           "password": confirmPassword,
                                           "authMethod": "email",
@@ -351,5 +380,10 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
 
 final registerForDeliveryProvider = StateProvider<bool>((ref) => false);
 final signUpProvider = StateProvider<Map<String, String>>(
-  (ref) => {'firstName': '', 'lastName': '', 'phoneNumber': ''},
+  (ref) => {
+    'firstName': '',
+    'lastName': '',
+    'phoneNumber': '',
+    'imgBase64': '',
+  },
 );
