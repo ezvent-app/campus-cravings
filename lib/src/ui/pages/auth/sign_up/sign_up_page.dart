@@ -47,12 +47,7 @@ class SignUpPage extends ConsumerWidget {
                     height(3),
                     DropDownWidget(
                       hintText: locale.selectUniversity,
-                      universitiesList: [
-                        "Villanova University",
-                        "Stanford University",
-                        "Harvard University",
-                        "Yale University",
-                      ],
+                      universitiesList: ["Villanova University"],
                       onChange: (value) {
                         final university = ref.read(registerProvider);
                         ref.read(registerProvider.notifier).state = {

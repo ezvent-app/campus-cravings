@@ -215,6 +215,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                                     "dACC68I_SsOeP95zx5KyRc:APA91bGSili2JR9h6TnbhNUPoKeN1QsxDqpjOwNfJy_sCMgjhC-whoow8sOmXb-KlYbYZ_Qp8gl7c-EWTf1zK87rG8aWPHFmI7WuQ78qppVc_J9HJ7kagsnvDQg-5bFCtO0UJs2JZHHq",
                               },
                             );
+                            final data = jsonDecode(response.body);
                             if (response.statusCode == 200) {
                               if (context.mounted) {
                                 context.pushRoute(MainRoute());
@@ -225,6 +226,8 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                                 "Verification failed. Please try again.",
                                 context: context,
                               );
+                              final token = data['user']['accessToken'];
+                              StorageHelper().saveAccessToken(token);
                             }
                           } catch (e) {
                             showToast(
