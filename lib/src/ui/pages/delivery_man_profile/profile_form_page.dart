@@ -242,9 +242,14 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                       return RoundedButtonWidget(
                         btnTitle:
                             widget.newUser ? locale.register : locale.save,
+                        isLoading: signUpNotifer['isLoading'] ?? false,
                         onTap:
                             widget.newUser
                                 ? () async {
+                                  ref.read(signUpProvider.notifier).state = {
+                                    ...signUpNotifer,
+                                    'isLoading': true,
+                                  };
                                   try {
                                     final confirmPassword = widget.password;
                                     final email = widget.email;
@@ -273,7 +278,6 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                       );
                                       return;
                                     }
-
                                     final response = await services.postAPI(
                                       url: '/auth/register/email',
                                       map: {
@@ -323,6 +327,11 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                       "Something went wrong. Try again.",
                                       context: context,
                                     );
+                                  } finally {
+                                    ref.read(signUpProvider.notifier).state = {
+                                      ...signUpNotifer,
+                                      'isLoading': false,
+                                    };
                                   }
                                 }
                                 : isActive
@@ -342,6 +351,11 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
 }
 
 final registerForDeliveryProvider = StateProvider<bool>((ref) => false);
-final signUpProvider = StateProvider<Map<String, String>>(
-  (ref) => {'firstName': '', 'lastName': '', 'phoneNumber': ''},
+final signUpProvider = StateProvider<Map<String, dynamic>>(
+  (ref) => {
+    'firstName': '',
+    'lastName': '',
+    'phoneNumber': '',
+    'isLoading': false,
+  },
 );

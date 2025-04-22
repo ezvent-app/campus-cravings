@@ -46,9 +46,9 @@ class LoginPage extends ConsumerWidget {
                       textInputType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       onChanged: (value) {
-                        final email = ref.read(loginProvider);
+                        final loginState = ref.read(loginProvider);
                         ref.read(loginProvider.notifier).state = {
-                          ...email,
+                          ...loginState,
                           'email': value,
                         };
                       },
@@ -85,6 +85,7 @@ class LoginPage extends ConsumerWidget {
 
                         return RoundedButtonWidget(
                           btnTitle: locale.logIn,
+                          isLoading: loginNotifier['isLoading'] ?? false,
                           onTap:
                               loginNotifier['email']!.isNotEmpty &&
                                       loginNotifier['password']!.isNotEmpty
@@ -98,6 +99,10 @@ class LoginPage extends ConsumerWidget {
                                       );
                                       return;
                                     }
+                                    ref.read(loginProvider.notifier).state = {
+                                      ...loginNotifier,
+                                      'isLoading': true,
+                                    };
                                     try {
                                       final response = await services.postAPI(
                                         url: '/auth/login',
@@ -153,6 +158,11 @@ class LoginPage extends ConsumerWidget {
                                       showToast(
                                         "Login failed. Please try again.",
                                       );
+                                    } finally {
+                                      ref.read(loginProvider.notifier).state = {
+                                        ...loginNotifier,
+                                        'isLoading': false,
+                                      };
                                     }
                                   }
                                   : null,
@@ -177,6 +187,6 @@ class LoginPage extends ConsumerWidget {
   }
 }
 
-final loginProvider = StateProvider<Map<String, String>>(
-  (ref) => {'email': '', 'password': ''},
+final loginProvider = StateProvider<Map<String, dynamic>>(
+  (ref) => {'email': '', 'password': '', 'loading': false},
 );
