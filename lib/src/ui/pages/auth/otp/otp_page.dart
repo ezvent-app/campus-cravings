@@ -9,7 +9,7 @@ class OtpPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
-
+    HttpApiServices services = HttpApiServices();
     return BaseWrapper(
       label: locale.verification,
       child: Column(
@@ -55,11 +55,33 @@ class OtpPage extends ConsumerWidget {
               return RoundedButtonWidget(
                 btnTitle: locale.continueNext,
                 onTap:
-                    otp.length != 6
+                    otp.length != 4
                         ? null
                         : isRyder
                         ? () => context.pushRoute(StudentProfileDetailsRoute())
-                        : () => context.pushRoute(MainRoute()),
+                        : () async {
+                          try {
+                            print('otp: $otp');
+                            final response = await services.postAPI(
+                              url: '/auth/verifyOTP',
+                              map: {
+                                "userId": '6806fa02b28a0fb3f0719725',
+                                "activationCode": otp,
+                                "deviceType":
+                                    Platform.isAndroid ? "android" : "ios",
+                                "deviceId":
+                                    "dACC68I_SsOeP95zx5KyRc:APA91bGSili2JR9h6TnbhNUPoKeN1QsxDqpjOwNfJy_sCMgjhC-whoow8sOmXb-KlYbYZ_Qp8gl7c-EWTf1zK87rG8aWPHFmI7WuQ78qppVc_J9HJ7kagsnvDQg-5bFCtO0UJs2JZHHq",
+                              },
+                            );
+                            if (response.statusCode == 200) {
+                              if (context.mounted) {
+                                context.pushRoute(MainRoute());
+                              }
+                            }
+                          } catch (e) {
+                            showToast("Please try again later!");
+                          }
+                        },
               );
             },
           ),

@@ -95,7 +95,10 @@ class LoginPage extends ConsumerWidget {
                                           "username": loginNotifier['email'],
                                           "authMethod": "email",
                                           "verificationType": "password",
-                                          "deviceType": "android",
+                                          "deviceType":
+                                              Platform.isAndroid
+                                                  ? "android"
+                                                  : "ios",
                                           "deviceId":
                                               "dACC68I_SsOeP95zx5KyRc:APA91bGSili2JR9h6TnbhNUPoKeN1QsxDqpjOwNfJy_sCMgjhC-whoow8sOmXb-KlYbYZ_Qp8gl7c-EWTf1zK87rG8aWPHFmI7WuQ78qppVc_J9HJ7kagsnvDQg-5bFCtO0UJs2JZHHq",
                                           "password": loginNotifier['password'],
