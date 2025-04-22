@@ -1,6 +1,8 @@
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
 
+import '../../../constants/storageHelper.dart';
+
 @RoutePage()
 class ProfileFormPage extends ConsumerStatefulWidget {
   final bool newUser;
@@ -247,6 +249,9 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                     final confirmPassword = widget.password;
                                     final email = widget.email;
                                     final university = widget.uniName;
+                                    print(
+                                      'phoneNumber: ${signUpNotifer['phoneNumber']}',
+                                    );
                                     if (signUpNotifer['firstName']!.isEmpty) {
                                       showToast(
                                         context: context,
@@ -277,8 +282,8 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                         "lastName": signUpNotifer['lastName'],
                                         // "phoneNumber":
                                         //     signUpNotifer['phoneNumber'],
-                                        // "isCustomer": true,
-                                        //"isDelivery": isActive,
+                                        "isCustomer": true,
+                                        "isDelivery": isActive,
                                         "email": email,
                                         "imgUrl":
                                             "https://lh3.sgoogleusercontent.com/a/ACg8ocJi6AUbX1_p4X0uHMarmnjAhdMxzg7TmNL0U4IYr46sCjc",
@@ -304,6 +309,8 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                           ),
                                         );
                                       }
+                                      final userId = data['user']['_id'];
+                                      StorageHelper().saveUserId(userId);
                                     } else {
                                       showToast(
                                         data['message'] ??

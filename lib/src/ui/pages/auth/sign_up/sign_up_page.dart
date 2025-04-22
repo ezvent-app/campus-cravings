@@ -116,10 +116,22 @@ class SignUpPage extends ConsumerWidget {
                             final email = register['email']!;
                             final university = register['university']!;
 
+                            if (email.isEmpty) {
+                              showToast(context: context, "Email is required");
+                              return;
+                            }
+
                             if (!email.contains('@')) {
                               showToast(
                                 context: context,
                                 "Email must include '@'",
+                              );
+                              return;
+                            }
+                            if (password.isEmpty) {
+                              showToast(
+                                context: context,
+                                "Please enter a password",
                               );
                               return;
                             }
@@ -157,12 +169,12 @@ class SignUpPage extends ConsumerWidget {
                               ),
                             );
 
-                            ref.read(registerProvider.notifier).state = {
-                              'university': '',
-                              'email': '',
-                              'password': '',
-                              'confirmPassword': '',
-                            };
+                            // ref.read(registerProvider.notifier).state = {
+                            //   'university': '',
+                            //   'email': '',
+                            //   'password': '',
+                            //   'confirmPassword': '',
+                            // };
                           },
                         );
                       },

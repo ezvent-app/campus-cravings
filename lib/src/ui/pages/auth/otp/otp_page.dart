@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
@@ -29,7 +30,7 @@ class OtpPage extends ConsumerWidget {
           ),
           height(30),
           OtpPinField(
-            maxLength: 6,
+            maxLength: 4,
             otpPinFieldStyle: const OtpPinFieldStyle(
               filledFieldBorderColor: AppColors.otpPinColor,
               defaultFieldBorderColor: AppColors.otpPinBorderColor,
@@ -65,7 +66,7 @@ class OtpPage extends ConsumerWidget {
                             final response = await services.postAPI(
                               url: '/auth/verifyOTP',
                               map: {
-                                "userId": '6806fa02b28a0fb3f0719725',
+                                "userId": StorageHelper().getUserId(),
                                 "activationCode": otp,
                                 "deviceType":
                                     Platform.isAndroid ? "android" : "ios",

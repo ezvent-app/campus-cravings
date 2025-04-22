@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
@@ -120,13 +121,15 @@ class LoginPage extends ConsumerWidget {
                                           context.pushRoute(MainRoute());
                                         }
                                         final token =
-                                            data['data']['accessToken'];
-                                        final prefs =
-                                            await SharedPreferences.getInstance();
-                                        await prefs.setString(
-                                          'accessToken',
-                                          token,
-                                        );
+                                            data['user']['accessToken'];
+                                        StorageHelper().saveAccessToken(token);
+
+                                        final token1 =
+                                            StorageHelper().getAccessToken();
+
+                                        print('Storge Token: $token1');
+
+                                        print('tokeen: $token');
 
                                         ref.read(loginProvider.notifier).state =
                                             {'email': '', 'password': ''};
