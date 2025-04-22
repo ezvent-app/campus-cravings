@@ -88,6 +88,15 @@ class LoginPage extends ConsumerWidget {
                               loginNotifier['email']!.isNotEmpty &&
                                       loginNotifier['password']!.isNotEmpty
                                   ? () async {
+                                    if (!loginNotifier['email']!.contains(
+                                      '@',
+                                    )) {
+                                      showToast(
+                                        context: context,
+                                        "Please enter a valid email",
+                                      );
+                                      return;
+                                    }
                                     try {
                                       final response = await services.postAPI(
                                         url: '/auth/login',
@@ -107,7 +116,6 @@ class LoginPage extends ConsumerWidget {
 
                                       final data = jsonDecode(response.body);
                                       if (response.statusCode == 201) {
-                                        print("Navigating");
                                         if (context.mounted) {
                                           context.pushRoute(MainRoute());
                                         }
@@ -122,17 +130,21 @@ class LoginPage extends ConsumerWidget {
 
                                         ref.read(loginProvider.notifier).state =
                                             {'email': '', 'password': ''};
+                                      } else if (response.statusCode == 400) {
+                                        showToast(
+                                          context: context,
+                                          "Invalid email or password",
+                                        );
+                                      } else if (response.statusCode == 500) {
+                                        showToast(
+                                          context: context,
+                                          "Invalid email or password", //basically its an Server error. noted even if password is wrong and charchter are greater then 7 then it retrun server error which not should be so for time being hardcoded it to invalid email or password
+                                        );
                                       } else {
-                                        if (context.mounted) {
-                                          if (data['message']
-                                              .toString()
-                                              .toLowerCase()
-                                              .contains('not exist')) {
-                                            showToast("User does not exist");
-                                          } else {
-                                            showToast("Invalid credentials");
-                                          }
-                                        }
+                                        showToast(
+                                          context: context,
+                                          "An unknown error occurred.",
+                                        );
                                       }
                                     } catch (e) {
                                       showToast(
