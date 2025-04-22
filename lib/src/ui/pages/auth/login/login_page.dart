@@ -1,5 +1,4 @@
 import 'package:campuscravings/src/src.dart';
-import 'package:campuscravings/src/utils/utils.dart';
 
 @RoutePage()
 class LoginPage extends ConsumerWidget {
@@ -126,18 +125,14 @@ class LoginPage extends ConsumerWidget {
                                               .toString()
                                               .toLowerCase()
                                               .contains('not exist')) {
-                                            ToastUtils.showToast(
-                                              "User does not exist",
-                                            );
+                                            showToast("User does not exist");
                                           } else {
-                                            ToastUtils.showToast(
-                                              "Invalid credentials",
-                                            );
+                                            showToast("Invalid credentials");
                                           }
                                         }
                                       }
                                     } catch (e) {
-                                      ToastUtils.showToast(
+                                      showToast(
                                         "Login failed. Please try again.",
                                       );
                                     }

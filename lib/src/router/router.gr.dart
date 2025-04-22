@@ -826,12 +826,21 @@ class ProductDetailsRouteArgs {
 /// [_i32.ProfileFormPage]
 class ProfileFormRoute extends _i40.PageRouteInfo<ProfileFormRouteArgs> {
   ProfileFormRoute({
+    String? password,
+    String? email,
+    String? uniName,
     _i41.Key? key,
     required bool newUser,
     List<_i40.PageRouteInfo>? children,
   }) : super(
          ProfileFormRoute.name,
-         args: ProfileFormRouteArgs(key: key, newUser: newUser),
+         args: ProfileFormRouteArgs(
+           password: password,
+           email: email,
+           uniName: uniName,
+           key: key,
+           newUser: newUser,
+         ),
          initialChildren: children,
        );
 
@@ -841,13 +850,31 @@ class ProfileFormRoute extends _i40.PageRouteInfo<ProfileFormRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<ProfileFormRouteArgs>();
-      return _i32.ProfileFormPage(key: args.key, newUser: args.newUser);
+      return _i32.ProfileFormPage(
+        password: args.password,
+        email: args.email,
+        uniName: args.uniName,
+        key: args.key,
+        newUser: args.newUser,
+      );
     },
   );
 }
 
 class ProfileFormRouteArgs {
-  const ProfileFormRouteArgs({this.key, required this.newUser});
+  const ProfileFormRouteArgs({
+    this.password,
+    this.email,
+    this.uniName,
+    this.key,
+    required this.newUser,
+  });
+
+  final String? password;
+
+  final String? email;
+
+  final String? uniName;
 
   final _i41.Key? key;
 
@@ -855,7 +882,7 @@ class ProfileFormRouteArgs {
 
   @override
   String toString() {
-    return 'ProfileFormRouteArgs{key: $key, newUser: $newUser}';
+    return 'ProfileFormRouteArgs{password: $password, email: $email, uniName: $uniName, key: $key, newUser: $newUser}';
   }
 }
 

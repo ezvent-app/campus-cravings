@@ -97,6 +97,7 @@ class SignUpPage extends ConsumerWidget {
                           ...confirmPassword,
                           'confirmPassword': value,
                         };
+                        print('fsdfdf: $confirmPassword');
                       },
                     ),
                     height(30),
@@ -104,26 +105,54 @@ class SignUpPage extends ConsumerWidget {
                       builder: (context, ref, child) {
                         var register = ref.watch(registerProvider);
                         return RoundedButtonWidget(
-                          btnTitle: locale.register,
-                          onTap:
-                              register['university']!.isNotEmpty &&
-                                      register['email']!.isNotEmpty &&
-                                      register['password']!.isNotEmpty &&
-                                      register['confirmPassword']!.isNotEmpty
-                                  ? () {
-                                    context.pushRoute(
-                                      ProfileFormRoute(newUser: true),
-                                    );
-                                    ref
-                                        .read(registerProvider.notifier)
-                                        .state = {
-                                      'university': '',
-                                      'email': '',
-                                      'password': '',
-                                      'confirmPassword': '',
-                                    };
-                                  }
-                                  : null,
+                          btnTitle: locale.next,
+                          onTap: () {
+                            final password = register['password']!;
+                            final confirmPassword =
+                                register['confirmPassword']!;
+                            final email = register['email']!;
+                            final university = register['university']!;
+
+                            if (!email.contains('@')) {
+                              showToast(
+                                context: context,
+                                "Email must include '@'",
+                              );
+                              return;
+                            }
+
+                            if (password.length < 6) {
+                              showToast(
+                                context: context,
+                                "Password must be at least 6 characters",
+                              );
+                              return;
+                            }
+
+                            if (password != confirmPassword) {
+                              showToast(
+                                context: context,
+                                "Passwords do not match",
+                              );
+                              return;
+                            }
+
+                            context.pushRoute(
+                              ProfileFormRoute(
+                                newUser: true,
+                                uniName: university,
+                                email: email,
+                                password: confirmPassword,
+                              ),
+                            );
+
+                            ref.read(registerProvider.notifier).state = {
+                              'university': '',
+                              'email': '',
+                              'password': '',
+                              'confirmPassword': '',
+                            };
+                          },
                         );
                       },
                     ),

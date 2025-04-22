@@ -4,7 +4,16 @@ import 'package:file_picker/file_picker.dart';
 @RoutePage()
 class ProfileFormPage extends ConsumerStatefulWidget {
   final bool newUser;
-  const ProfileFormPage({super.key, required this.newUser});
+  final String? password;
+  final String? email;
+  final String? uniName;
+  const ProfileFormPage({
+    this.password,
+    this.email,
+    this.uniName,
+    super.key,
+    required this.newUser,
+  });
 
   @override
   ConsumerState createState() => _ProfileFormPageState();
@@ -13,7 +22,7 @@ class ProfileFormPage extends ConsumerStatefulWidget {
 class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
   final List<String> _roles = ['Student', 'Faculty'];
   late String _selectedRole;
-
+  HttpApiServices services = HttpApiServices();
   File? image;
 
   @override
@@ -122,12 +131,26 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                         widget.newUser
                             ? locale.enterFirstName
                             : locale.firstName,
+                    onChanged: (value) {
+                      final firstName = ref.read(signUpProvider);
+                      ref.read(signUpProvider.notifier).state = {
+                        ...firstName,
+                        'firstName': value,
+                      };
+                    },
                   ),
                   height(16),
                   CustomTextField(
                     textInputAction: TextInputAction.next,
                     label:
                         widget.newUser ? locale.enterLastName : locale.lastName,
+                    onChanged: (value) {
+                      final lastName = ref.read(signUpProvider);
+                      ref.read(signUpProvider.notifier).state = {
+                        ...lastName,
+                        'lastName': value,
+                      };
+                    },
                   ),
                   height(16),
                   CustomTextField(
@@ -137,6 +160,13 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                         widget.newUser
                             ? locale.enterPhoneNumber
                             : locale.phoneNumber,
+                    onChanged: (value) {
+                      final phoneNumber = ref.read(signUpProvider);
+                      ref.read(signUpProvider.notifier).state = {
+                        ...phoneNumber,
+                        'phoneNumber': value,
+                      };
+                    },
                   ),
                   height(16),
                   Padding(
@@ -205,13 +235,86 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                   Consumer(
                     builder: (context, ref, child) {
                       final isActive = ref.watch(registerForDeliveryProvider);
+                      final registerData = ref.watch(registerProvider);
+                      var signUpNotifer = ref.watch(signUpProvider);
                       return RoundedButtonWidget(
-                        btnTitle: widget.newUser ? locale.next : locale.save,
+                        btnTitle:
+                            widget.newUser ? locale.register : locale.save,
                         onTap:
                             widget.newUser
-                                ? () => context.pushRoute(
-                                  OtpRoute(isRyder: isActive),
-                                )
+                                ? () async {
+                                  try {
+                                    final confirmPassword = widget.password;
+                                    final email = widget.email;
+                                    final university = widget.uniName;
+                                    if (signUpNotifer['firstName']!.isEmpty) {
+                                      showToast(
+                                        context: context,
+                                        "First name is required",
+                                      );
+                                      return;
+                                    }
+                                    if (signUpNotifer['lastName']!.isEmpty) {
+                                      showToast(
+                                        context: context,
+                                        "Last name is required",
+                                      );
+                                      return;
+                                    }
+                                    if (signUpNotifer['phoneNumber']!.isEmpty) {
+                                      showToast(
+                                        context: context,
+                                        "Phone number is required",
+                                      );
+                                      return;
+                                    }
+
+                                    final response = await services.postAPI(
+                                      url: '/auth/register/email',
+                                      map: {
+                                        "firstName": signUpNotifer['firstName'],
+                                        // 'universityName': university,
+                                        "lastName": signUpNotifer['lastName'],
+                                        // "phoneNumber":
+                                        //     signUpNotifer['phoneNumber'],
+                                        // "isCustomer": true,
+                                        //"isDelivery": isActive,
+                                        "email": email,
+                                        "imgUrl":
+                                            "https://lh3.sgoogleusercontent.com/a/ACg8ocJi6AUbX1_p4X0uHMarmnjAhdMxzg7TmNL0U4IYr46sCjc",
+                                        "status": "active",
+                                        "password": confirmPassword,
+                                        "authMethod": "email",
+                                        "deviceType":
+                                            Platform.isAndroid
+                                                ? "android"
+                                                : "ios",
+                                        "deviceId":
+                                            "dACC68I_SsOeP95zx5KyRc:APA91bGSili2JR9h6TnbhNUPoKeN1QsxDqpjOwNfJy_sCMgjhC-whoow8sOmXb-KlYbYZ_Qp8gl7c-EWTf1zK87rG8aWPHFmI7WuQ78qppVc_J9HJ7kagsnvDQg-5bFCtO0UJs2JZHHq",
+                                      },
+                                    );
+
+                                    final data = jsonDecode(response.body);
+                                    if (response.statusCode == 201) {
+                                      if (context.mounted) {
+                                        context.pushRoute(
+                                          OtpRoute(isRyder: isActive),
+                                        );
+                                      }
+                                    } else {
+                                      showToast(
+                                        data['message'] ??
+                                            'Registration failed.',
+                                        context: context,
+                                      );
+                                    }
+                                  } catch (e) {
+                                    showToast(
+                                      "Something went wrong. Try again.",
+                                      context: context,
+                                    );
+                                  }
+                                }
                                 : isActive
                                 ? () => context.maybePop()
                                 : null,
@@ -229,3 +332,6 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
 }
 
 final registerForDeliveryProvider = StateProvider<bool>((ref) => false);
+final signUpProvider = StateProvider<Map<String, String>>(
+  (ref) => {'firstName': '', 'lastName': '', 'phoneNumber': ''},
+);
