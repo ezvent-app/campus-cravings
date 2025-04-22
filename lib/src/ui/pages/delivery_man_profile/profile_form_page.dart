@@ -393,12 +393,9 @@ final registerForDeliveryProvider = StateProvider<bool>((ref) => false);
 final signUpProvider = StateProvider<Map<String, dynamic>>(
   (ref) => {
     'firstName': '',
-
     'lastName': '',
-
     'phoneNumber': '',
     'isLoading': false,
-
     'imgBase64': '',
   },
 );
