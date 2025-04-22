@@ -220,14 +220,14 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                               if (context.mounted) {
                                 context.pushRoute(MainRoute());
                               }
+                              final token = data['user']['accessToken'];
+                              StorageHelper().saveAccessToken(token);
                             } else {
                               // Handle non-200 response
                               showToast(
                                 "Verification failed. Please try again.",
                                 context: context,
                               );
-                              final token = data['user']['accessToken'];
-                              StorageHelper().saveAccessToken(token);
                             }
                           } catch (e) {
                             showToast(
