@@ -678,12 +678,13 @@ class OrdersTabRoute extends _i40.PageRouteInfo<void> {
 /// [_i28.OtpPage]
 class OtpRoute extends _i40.PageRouteInfo<OtpRouteArgs> {
   OtpRoute({
+    String? email,
     _i41.Key? key,
     required bool isRyder,
     List<_i40.PageRouteInfo>? children,
   }) : super(
          OtpRoute.name,
-         args: OtpRouteArgs(key: key, isRyder: isRyder),
+         args: OtpRouteArgs(email: email, key: key, isRyder: isRyder),
          initialChildren: children,
        );
 
@@ -693,13 +694,19 @@ class OtpRoute extends _i40.PageRouteInfo<OtpRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<OtpRouteArgs>();
-      return _i28.OtpPage(key: args.key, isRyder: args.isRyder);
+      return _i28.OtpPage(
+        email: args.email,
+        key: args.key,
+        isRyder: args.isRyder,
+      );
     },
   );
 }
 
 class OtpRouteArgs {
-  const OtpRouteArgs({this.key, required this.isRyder});
+  const OtpRouteArgs({this.email, this.key, required this.isRyder});
+
+  final String? email;
 
   final _i41.Key? key;
 
@@ -707,7 +714,7 @@ class OtpRouteArgs {
 
   @override
   String toString() {
-    return 'OtpRouteArgs{key: $key, isRyder: $isRyder}';
+    return 'OtpRouteArgs{email: $email, key: $key, isRyder: $isRyder}';
   }
 }
 

@@ -298,7 +298,10 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                     if (response.statusCode == 201) {
                                       if (context.mounted) {
                                         context.pushRoute(
-                                          OtpRoute(isRyder: isActive),
+                                          OtpRoute(
+                                            email: email,
+                                            isRyder: isActive,
+                                          ),
                                         );
                                       }
                                     } else {

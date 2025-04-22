@@ -3,7 +3,8 @@ import 'package:campuscravings/src/src.dart';
 @RoutePage()
 class OtpPage extends ConsumerWidget {
   final bool isRyder;
-  const OtpPage({super.key, required this.isRyder});
+  final String? email;
+  const OtpPage({this.email, super.key, required this.isRyder});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +21,7 @@ class OtpPage extends ConsumerWidget {
           ),
           height(5),
           Text(
-            'sample@email.com',
+            email ?? "testingdev131@gmail.com",
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
               fontSize: 13,
               color: AppColors.black,
