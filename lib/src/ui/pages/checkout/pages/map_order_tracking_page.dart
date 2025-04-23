@@ -21,6 +21,8 @@ class CheckOutMapOrderTrackingPage extends StatelessWidget {
     double adjustedLeftPosition = leftPosition - buttonWidth / 5;
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
+      appBar: AppBar(toolbarHeight: 10),
+
       body: Stack(
         children: [
           PngAsset("map_image"),

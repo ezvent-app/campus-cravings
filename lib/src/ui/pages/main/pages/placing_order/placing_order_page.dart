@@ -1,13 +1,77 @@
+import 'dart:async';
+
 import 'package:campuscravings/src/src.dart';
+import 'package:geolocator/geolocator.dart';
 
 @RoutePage()
-class PlacingOrderPage extends ConsumerWidget {
-  PlacingOrderPage({super.key});
+class PlacingOrderPage extends ConsumerStatefulWidget {
+  const PlacingOrderPage({super.key});
+
+  @override
+  ConsumerState<PlacingOrderPage> createState() => _PlacingOrderPageState();
+}
+
+class _PlacingOrderPageState extends ConsumerState<PlacingOrderPage> {
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  LatLng? _currentPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled
+      return Future.error('Location services are disabled.');
+    }
+
+    // Check permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever
+      return Future.error('Location permissions are permanently denied.');
+    }
+
+    // When permissions are granted
+    Position position = await Geolocator.getCurrentPosition();
+    setState(() {
+      _currentPosition = LatLng(position.latitude, position.longitude);
+    });
+
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: _currentPosition!, zoom: 16),
+      ),
+    );
+  }
+
+  LatLng? currentPosition;
 
   final GlobalKey<SlideActionState> _key = GlobalKey();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
 
     Future.delayed(Duration(seconds: 3), () {
@@ -49,10 +113,19 @@ class PlacingOrderPage extends ConsumerWidget {
           Expanded(
             child: Stack(
               children: [
-                const Positioned.fill(
+                Positioned.fill(
                   child: Padding(
                     padding: EdgeInsets.only(top: 1),
-                    child: PngAsset('map_image', fit: BoxFit.fitWidth),
+                    child: GoogleMap(
+                      mapType: MapType.satellite,
+                      myLocationEnabled: true,
+                      zoomControlsEnabled: false,
+
+                      initialCameraPosition: _kGooglePlex,
+                      onMapCreated: (GoogleMapController googleMapController) {
+                        _controller.complete(googleMapController);
+                      },
+                    ),
                   ),
                 ),
                 Container(
