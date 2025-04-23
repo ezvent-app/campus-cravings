@@ -21,7 +21,7 @@ class HttpApiServices extends BaseApiServices {
   @override
   Future<http.Response> getAPI(String url) async {
     try {
-      await service.loadToken();
+      //await service.loadToken();
       final response = await service.getRequest(url);
       return response;
     } catch (e) {

@@ -7,13 +7,13 @@ class HttpService {
   static final HttpService _instance = HttpService._internal();
   factory HttpService() => _instance;
 
-  final String _baseUrl = "https://zsc-wwtowzbt.b4a.run/api/zsc/";
+  final String _baseUrl = "http://localhost:5000/api/";//"https://zsc-wwtowzbt.b4a.run/api/zsc/";
   HttpService._internal();
 
   final Map<String, String> _headers = {"Content-Type": "application/json"};
 
   void setToken(String token) {
-    _headers["Authorization"] = "Bearer $token";
+    _headers["x-access-token"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uIjoiNjgwOGU0MDM3YTBmNGRiNjlhZWMxMmFlIiwidXNlciI6IjY4MDY0YmJhZGIxMTJkMmYyZmYyYjI1MCIsImlhdCI6MTc0NTQxMzEyMywiZXhwIjoxNzYzNDEzMTIzfQ.6SU3dwv-KyCm3-Ur9eFA4pVl7mrg6Dgng7uDO2nkdpQ";
   }
 
   Future<void> loadToken() async {
