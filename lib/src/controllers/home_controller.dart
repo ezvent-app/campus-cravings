@@ -9,6 +9,7 @@ class HomeController extends GetxController{
   HomeController(this._locationHandlerService,this._httpApiServices);
 
   Future getPopularItems() async{
+
     try{
       final response = await _httpApiServices.getAPI('restaurants/getNearbyPopularFood?latitude=24.5113&longitude=67.6221');
 
