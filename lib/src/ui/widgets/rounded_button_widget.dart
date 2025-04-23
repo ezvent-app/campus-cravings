@@ -6,9 +6,11 @@ class RoundedButtonWidget extends StatelessWidget {
     super.key,
     required this.btnTitle,
     required this.onTap,
+    this.isLoading = false,
   });
   final String btnTitle;
   final Function()? onTap;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +44,22 @@ class RoundedButtonWidget extends StatelessWidget {
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.white,
                 ),
-                child: Text(
-                  btnTitle,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: AppColors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                child:
+                    isLoading
+                        ? const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        )
+                        : Text(
+                          btnTitle,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium!.copyWith(
+                            color: AppColors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
               ),
     );
   }
