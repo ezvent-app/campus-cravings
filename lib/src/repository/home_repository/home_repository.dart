@@ -13,8 +13,9 @@ class HomeRepository{
   final _logger = LoggerService();
   Future<List<PopularItem>?> getPopularItems({required double lat,required double lng}) async{
     try{
-      final response = await _httpApiServices.getAPI('/restaurants/getNearbyPopularFood?latitude=$lat&longitude=$lng');
+      final response = await _httpApiServices.getAPI('/restaurants/getNearbyPopularFood?latitude=24.5113&longitude=67.6221');
       Logger().i('${response.statusCode} - ${response.body}');
+
        if(response.statusCode != 200) return null;
       return (jsonDecode(response.body)['items'] as List)
           .map((e) => PopularItem.fromJson(e))
