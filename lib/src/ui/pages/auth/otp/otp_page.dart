@@ -224,8 +224,6 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                                       : MainRoute(),
                                 ]);
                               }
-                              final token = data['data']['accessToken'];
-                              StorageHelper().saveAccessToken(token);
                             } else {
                               showToast(
                                 "Verification failed. Please try again.",
