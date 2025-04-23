@@ -2,15 +2,19 @@ import 'dart:developer';
 
 import 'package:campuscravings/src/src.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class HttpService {
   static final HttpService _instance = HttpService._internal();
   factory HttpService() => _instance;
 
-  final String _baseUrl = "http://192.168.18.200/api/";//"https://zsc-wwtowzbt.b4a.run/api/zsc/";
+  final String _baseUrl = "http://192.168.18.200:5000/api";//"https://zsc-wwtowzbt.b4a.run/api/zsc/";
   HttpService._internal();
 
-  final Map<String, String> _headers = {"Content-Type": "application/json"};
+  final Map<String, String> _headers = {
+    "Content-Type": "application/json",
+    "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uIjoiNjgwOGU0MDM3YTBmNGRiNjlhZWMxMmFlIiwidXNlciI6IjY4MDY0YmJhZGIxMTJkMmYyZmYyYjI1MCIsImlhdCI6MTc0NTQxMzEyMywiZXhwIjoxNzYzNDEzMTIzfQ.6SU3dwv-KyCm3-Ur9eFA4pVl7mrg6Dgng7uDO2nkdpQ"
+  };
 
   void setToken(String token) {
     _headers["x-access-token"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uIjoiNjgwOGU0MDM3YTBmNGRiNjlhZWMxMmFlIiwidXNlciI6IjY4MDY0YmJhZGIxMTJkMmYyZmYyYjI1MCIsImlhdCI6MTc0NTQxMzEyMywiZXhwIjoxNzYzNDEzMTIzfQ.6SU3dwv-KyCm3-Ur9eFA4pVl7mrg6Dgng7uDO2nkdpQ";

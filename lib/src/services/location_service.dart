@@ -1,4 +1,5 @@
 import 'package:location/location.dart';
+import 'package:logger/logger.dart';
 
 class LocationService{
   final _location = Location();
@@ -14,11 +15,13 @@ class LocationService{
     return true;
   }
   Future<bool> checkIfPermissionGranted() async {
-    if(await _checkIfServiceEnabled() == false) return false;
-
+    if (await _checkIfServiceEnabled() == false) return false;
     final permissionStatus = await _location.hasPermission();
     if (permissionStatus == PermissionStatus.granted) {
       return true;
+    } else if (permissionStatus == PermissionStatus.denied) {
+      final permissionStatus = await _location.requestPermission();
+      if (permissionStatus == PermissionStatus.granted) return true;
     }
     return false;
   }

@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 class DependencyInjection {
 
   static void initialize(){
+    Get.lazyPut<LocationService>(() => LocationService());
     Get.lazyPut<HttpApiServices>(() => HttpApiServices());
     Get.lazyPut<HomeRepository>(() => HomeRepository(Get.find<HttpApiServices>()));
-    Get.lazyPut<LocationService>(() => LocationService());
     Get.lazyPut<HomeController>(() => HomeController(Get.find<LocationService>(),Get.find<HomeRepository>()),fenix: true);
   }
   // static final DependencyInjection _instance = DependencyInjection._internal();

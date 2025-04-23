@@ -6,13 +6,18 @@ import 'package:logger/logger.dart';
 
 class HomeController extends GetxController{
 
-  final LocationService _locationHandlerService;
+  final LocationService _locationService;
   final HomeRepository _homeRepository;
-  HomeController(this._locationHandlerService,this._homeRepository);
+  HomeController(this._locationService,this._homeRepository);
 
   Future getPopularItems() async{
     try{
-      final data = await _homeRepository.getPopularItems();
+      final location = await _locationService.getCurrentLocation();
+      if(location == null) return;
+      Logger().i(location.latitude);
+      final data = await _homeRepository.getPopularItems(lat: location.latitude!, lng: location.longitude!);
+      Logger().i(data);
+      // Logger().i(data!.length);
     }catch(e){
       Logger().i(e);
       return null;
