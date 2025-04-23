@@ -363,18 +363,74 @@ class DeliveryManProfileRoute extends _i41.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i14.DeliverySetupPage]
-class DeliverySetupRoute extends _i41.PageRouteInfo<void> {
-  const DeliverySetupRoute({List<_i41.PageRouteInfo>? children})
-    : super(DeliverySetupRoute.name, initialChildren: children);
+class DeliverySetupRoute extends _i41.PageRouteInfo<DeliverySetupRouteArgs> {
+  DeliverySetupRoute({
+    _i42.Key? key,
+    String? aboutYou,
+    String? batchYear,
+    List<String>? majors,
+    List<String>? minors,
+    List<String>? clubs,
+    List<_i41.PageRouteInfo>? children,
+  }) : super(
+         DeliverySetupRoute.name,
+         args: DeliverySetupRouteArgs(
+           key: key,
+           aboutYou: aboutYou,
+           batchYear: batchYear,
+           majors: majors,
+           minors: minors,
+           clubs: clubs,
+         ),
+         initialChildren: children,
+       );
 
   static const String name = 'DeliverySetupRoute';
 
   static _i41.PageInfo page = _i41.PageInfo(
     name,
     builder: (data) {
-      return const _i14.DeliverySetupPage();
+      final args = data.argsAs<DeliverySetupRouteArgs>(
+        orElse: () => const DeliverySetupRouteArgs(),
+      );
+      return _i14.DeliverySetupPage(
+        key: args.key,
+        aboutYou: args.aboutYou,
+        batchYear: args.batchYear,
+        majors: args.majors,
+        minors: args.minors,
+        clubs: args.clubs,
+      );
     },
   );
+}
+
+class DeliverySetupRouteArgs {
+  const DeliverySetupRouteArgs({
+    this.key,
+    this.aboutYou,
+    this.batchYear,
+    this.majors,
+    this.minors,
+    this.clubs,
+  });
+
+  final _i42.Key? key;
+
+  final String? aboutYou;
+
+  final String? batchYear;
+
+  final List<String>? majors;
+
+  final List<String>? minors;
+
+  final List<String>? clubs;
+
+  @override
+  String toString() {
+    return 'DeliverySetupRouteArgs{key: $key, aboutYou: $aboutYou, batchYear: $batchYear, majors: $majors, minors: $minors, clubs: $clubs}';
+  }
 }
 
 /// generated route for

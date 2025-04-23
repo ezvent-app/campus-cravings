@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,17 +8,18 @@ class HttpService {
   static final HttpService _instance = HttpService._internal();
   factory HttpService() => _instance;
 
-  final String _baseUrl = "http://192.168.18.53:5000/api";
+  final String _baseUrl = "http://192.168.18.25:5000/api";
   HttpService._internal();
 
   final Map<String, String> _headers = {"Content-Type": "application/json"};
 
   void setToken(String token) {
+    _headers["x-access-token"] = "$token";
     _headers["Authorization"] = "Bearer $token";
   }
 
   Future<void> loadToken() async {
-    final token = await SharePreferences.getString("token");
+    final token = StorageHelper().getAccessToken();
     if (token != null) {
       setToken(token);
     } else {

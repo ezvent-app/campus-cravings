@@ -1,11 +1,27 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 
 @RoutePage()
 class DeliverySetupPage extends ConsumerWidget {
-  const DeliverySetupPage({super.key});
+  final String? aboutYou;
+  final String? batchYear;
+  final List<String>? majors;
+  final List<String>? minors;
+  final List<String>? clubs;
+  const DeliverySetupPage({
+    super.key,
+    this.aboutYou,
+    this.batchYear,
+    this.majors,
+    this.minors,
+    this.clubs,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    HttpApiServices services = HttpApiServices();
+    print("args: ${aboutYou}");
     final locale = AppLocalizations.of(context)!;
     return BaseWrapper(
       label: locale.deliveryProfile,
@@ -14,9 +30,12 @@ class DeliverySetupPage extends ConsumerWidget {
         children: [
           CustomTextField(
             label: locale.socialSecurityNumber,
-            onChanged: (value) => ref
-                .read(deliveryProfileProvider.notifier)
-                .updateSocialSecurityNumber(value),
+            onChanged:
+                (value) =>
+                    ref.read(deliverySetupProvider.notifier).state = {
+                      ...ref.read(deliverySetupProvider),
+                      'securityNumber': value,
+                    },
           ),
           height(16),
           Padding(
@@ -27,9 +46,39 @@ class DeliverySetupPage extends ConsumerWidget {
             ),
           ),
           OutlinedButton(
-            onPressed: () => ref
-                .read(deliveryProfileProvider.notifier)
-                .updateNICImage('updated'),
+            onPressed: () async {
+              FilePickerResult? result = await FilePicker.platform.pickFiles(
+                type: FileType.image,
+              );
+
+              if (result != null) {
+                Uint8List? fileBytes = result.files.single.bytes;
+                String? path = result.files.single.path;
+
+                if (kIsWeb) {
+                  if (fileBytes != null) {
+                    String base64Image = base64Encode(fileBytes);
+                    ref.read(deliverySetupProvider.notifier).state = {
+                      ...ref.read(deliverySetupProvider),
+                      'imgBase64': base64Image,
+                    };
+                  }
+                } else {
+                  if (path != null) {
+                    File file = File(path);
+
+                    final bytes = await file.readAsBytes();
+                    String base64Image = base64Encode(bytes);
+                    ref.read(deliverySetupProvider.notifier).state = {
+                      ...ref.read(deliverySetupProvider),
+                      'imgBase64': base64Image,
+                    };
+                  }
+                }
+              } else {
+                showToast(context: context, "Image not selected");
+              }
+            },
             style: OutlinedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -47,9 +96,10 @@ class DeliverySetupPage extends ConsumerWidget {
                     scale: 1.3,
                     child: Checkbox(
                       value: deliveryProvider.isAgree,
-                      onChanged: (value) => ref
-                          .read(deliveryProfileProvider.notifier)
-                          .updateTermsAndConditions(value!),
+                      onChanged:
+                          (value) => ref
+                              .read(deliveryProfileProvider.notifier)
+                              .updateTermsAndConditions(value!),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
@@ -70,9 +120,9 @@ class DeliverySetupPage extends ConsumerWidget {
                 child: Text(
                   locale.termsConditions,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: AppColors.black,
-                        decoration: TextDecoration.underline,
-                      ),
+                    color: AppColors.black,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ],
@@ -94,9 +144,9 @@ class DeliverySetupPage extends ConsumerWidget {
                 TextSpan(
                   text: locale.privacyPolicy,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: AppColors.black,
-                        decoration: TextDecoration.underline,
-                      ),
+                    color: AppColors.black,
+                    decoration: TextDecoration.underline,
+                  ),
                   recognizer: TapGestureRecognizer()..onTap = () {},
                 ),
                 TextSpan(
@@ -112,11 +162,46 @@ class DeliverySetupPage extends ConsumerWidget {
               final deliveryProvider = ref.watch(deliveryProfileProvider);
               return RoundedButtonWidget(
                 btnTitle: locale.next,
-                onTap: deliveryProvider.isAgree &&
-                        deliveryProvider.nICImage.isNotEmpty &&
-                        deliveryProvider.socialSecurityNumber.isNotEmpty
-                    ? () => context.pushRoute(const AddPayoutRoute())
-                    : null,
+                onTap:
+                    deliveryProvider.isAgree
+                        ? () async {
+                          final securityNumber =
+                              ref.read(deliverySetupProvider)["securityNumber"];
+                          final imgBase64 =
+                              ref.read(deliverySetupProvider)["imgBase64"];
+
+                          if (securityNumber.isEmpty || imgBase64.isEmpty) {
+                            showToast(
+                              context: context,
+                              "Please fill all the fields",
+                            );
+                          } else {
+                            final response = await services.postAPI(
+                              url: '/rider/riderRegistration',
+                              map: {
+                                "SSN": securityNumber,
+                                "national_id_image_url": imgBase64,
+                                "bio": aboutYou,
+                                "batch_year": batchYear,
+                                "majors": majors,
+                                "monirs": minors,
+                                "club_organizations": clubs,
+                                "location": {"lat": 37.7749, "lng": -122.4194},
+                              },
+                            );
+                            if (response.statusCode == 201) {
+                              context.router.replaceAll([
+                                const AddPayoutRoute(),
+                              ]);
+                            } else {
+                              showToast(
+                                context: context,
+                                "Something went wrong",
+                              );
+                            }
+                          }
+                        }
+                        : null,
               );
             },
           ),
@@ -126,4 +211,6 @@ class DeliverySetupPage extends ConsumerWidget {
   }
 }
 
-final deliverySetupProvider = StateProvider<String>((ref) => '');
+final deliverySetupProvider = StateProvider<Map<String, dynamic>>(
+  (ref) => {"securityNumber": '', "imgBase64": ''},
+);

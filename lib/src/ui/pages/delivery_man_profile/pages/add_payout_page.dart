@@ -50,8 +50,8 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: paymentMethods.length,
-                    separatorBuilder: (BuildContext context, int index) =>
-                        width(13),
+                    separatorBuilder:
+                        (BuildContext context, int index) => width(13),
                     itemBuilder: (BuildContext context, int index) {
                       final category = paymentMethods[index];
                       return InkWellButtonWidget(
@@ -77,9 +77,10 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
                               Dimensions.radiusDefault,
                             ),
                             border: Border.all(
-                              color: index == selectedIndex["selectedIndex"]
-                                  ? Colors.black
-                                  : AppColors.textFieldBorder,
+                              color:
+                                  index == selectedIndex["selectedIndex"]
+                                      ? Colors.black
+                                      : AppColors.textFieldBorder,
                             ),
                           ),
                           child: SvgAssets(category),
@@ -139,20 +140,21 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
                 final payout = ref.watch(paymentSetupProvider);
                 return RoundedButtonWidget(
                   btnTitle: locale.save,
-                  onTap: payout['paymentMethod']!.isNotEmpty &&
-                          payout['bank']!.isNotEmpty &&
-                          payout['name']!.isNotEmpty &&
-                          payout['number']!.isNotEmpty
-                      ? () {
-                          context.pushRoute(const MainRoute());
-                          ref.read(paymentSetupProvider.notifier).state = {
-                            'paymentMethod': '',
-                            'bank': '',
-                            'name': '',
-                            'number': '',
-                          };
-                        }
-                      : null,
+                  onTap:
+                      payout['paymentMethod']!.isNotEmpty &&
+                              payout['bank']!.isNotEmpty &&
+                              payout['name']!.isNotEmpty &&
+                              payout['number']!.isNotEmpty
+                          ? () {
+                            context.router.replaceAll([const MainRoute()]);
+                            ref.read(paymentSetupProvider.notifier).state = {
+                              'paymentMethod': '',
+                              'bank': '',
+                              'name': '',
+                              'number': '',
+                            };
+                          }
+                          : null,
                 );
               },
             ),
