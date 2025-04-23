@@ -1,0 +1,3 @@
+class PlaceOrderRepository {
+  placeOrderMethod() async {}
+}

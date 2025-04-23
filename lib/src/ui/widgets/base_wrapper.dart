@@ -14,20 +14,20 @@ class BaseWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            CustomAppBar(label: label),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: hasHorizontalPadding ? 25 : 0,
-                ),
-                child: child,
+      appBar: AppBar(toolbarHeight: 10),
+
+      body: Column(
+        children: [
+          CustomAppBar(label: label),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: hasHorizontalPadding ? 25 : 0,
               ),
+              child: child,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

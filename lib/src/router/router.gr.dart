@@ -753,36 +753,18 @@ class PaymentMethodsRouteArgs {
 
 /// generated route for
 /// [_i30.PlacingOrderPage]
-class PlacingOrderRoute extends _i40.PageRouteInfo<PlacingOrderRouteArgs> {
-  PlacingOrderRoute({_i41.Key? key, List<_i40.PageRouteInfo>? children})
-    : super(
-        PlacingOrderRoute.name,
-        args: PlacingOrderRouteArgs(key: key),
-        initialChildren: children,
-      );
+class PlacingOrderRoute extends _i40.PageRouteInfo<void> {
+  const PlacingOrderRoute({List<_i40.PageRouteInfo>? children})
+    : super(PlacingOrderRoute.name, initialChildren: children);
 
   static const String name = 'PlacingOrderRoute';
 
   static _i40.PageInfo page = _i40.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<PlacingOrderRouteArgs>(
-        orElse: () => const PlacingOrderRouteArgs(),
-      );
-      return _i30.PlacingOrderPage(key: args.key);
+      return const _i30.PlacingOrderPage();
     },
   );
-}
-
-class PlacingOrderRouteArgs {
-  const PlacingOrderRouteArgs({this.key});
-
-  final _i41.Key? key;
-
-  @override
-  String toString() {
-    return 'PlacingOrderRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for

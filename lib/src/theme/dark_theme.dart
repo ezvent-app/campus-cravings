@@ -10,8 +10,9 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
     backgroundColor: Colors.black,
     foregroundColor: Colors.white,
     systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
       statusBarBrightness: Brightness.dark,
-      statusBarColor: Colors.black,
     ),
   ),
   snackBarTheme: SnackBarThemeData(

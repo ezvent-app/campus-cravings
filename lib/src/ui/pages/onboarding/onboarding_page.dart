@@ -45,10 +45,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final locale = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(toolbarHeight: 10),
       body: Column(
         children: [
           Expanded(
-            flex: 5,
+            flex: 4,
             child: PageView(
               physics: BouncingScrollPhysics(),
               controller: _pageController,
@@ -91,23 +92,23 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                           _currentPage == 0
                               ? locale.onboardingTitle1
                               : _currentPage == 1
-                                  ? locale.onboardingTitle2
-                                  : locale.onboardingTitle3,
+                              ? locale.onboardingTitle2
+                              : locale.onboardingTitle3,
                           textAlign: TextAlign.center,
                           style: Theme.of(
                             context,
                           ).textTheme.titleLarge!.copyWith(
-                                fontSize: Dimensions.fontSizeOnboarding,
-                                fontWeight: FontWeight.w500,
-                              ),
+                            fontSize: Dimensions.fontSizeOnboarding,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         height(15),
                         Text(
                           _currentPage == 0
                               ? locale.onboardingDesc1
                               : _currentPage == 1
-                                  ? locale.onboardingDesc2
-                                  : locale.onboardingDesc3,
+                              ? locale.onboardingDesc2
+                              : locale.onboardingDesc3,
                           textAlign: TextAlign.center,
                           style: Theme.of(
                             context,
@@ -124,12 +125,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   child: Padding(
                     padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
                     child: IconButton(
-                      onPressed: () => _currentPage == 0 || _currentPage == 1
-                          ? _pageController.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeIn,
-                            )
-                          : context.replaceRoute(LoginRoute()),
+                      onPressed:
+                          () =>
+                              _currentPage == 0 || _currentPage == 1
+                                  ? _pageController.nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeIn,
+                                  )
+                                  : context.replaceRoute(LoginRoute()),
                       icon: Icon(
                         Icons.arrow_forward,
                         color: Colors.white,

@@ -28,7 +28,7 @@ class OtpPage extends ConsumerWidget {
           ),
           height(30),
           OtpPinField(
-            maxLength: 6,
+            maxLength: 4,
             otpPinFieldStyle: const OtpPinFieldStyle(
               filledFieldBorderColor: AppColors.otpPinColor,
               defaultFieldBorderColor: AppColors.otpPinBorderColor,
