@@ -1,11 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:auto_route/auto_route.dart';
 
 // Define OtpState class
 class OtpState {
@@ -142,7 +138,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    HttpApiServices services = HttpApiServices();
+    HttpAPIServices services = HttpAPIServices();
     final otpState = ref.watch(otpNotifierProvider);
 
     return BaseWrapper(

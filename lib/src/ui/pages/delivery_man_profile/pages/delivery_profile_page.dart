@@ -20,8 +20,8 @@ class DeliverySetupPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    HttpApiServices services = HttpApiServices();
-    print("args: ${aboutYou}");
+    HttpAPIServices services = HttpAPIServices();
+    print("args: $aboutYou");
     final locale = AppLocalizations.of(context)!;
     return BaseWrapper(
       label: locale.deliveryProfile,

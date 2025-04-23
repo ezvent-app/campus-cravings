@@ -1,11 +1,14 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/pages/main/tabs/cart/cart_tab.dart';
 
-class PickUpTabWidget extends StatelessWidget {
+class PickUpTabWidget extends ConsumerWidget {
   const PickUpTabWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
+    final cartItems = ref.watch(cartProvider);
+    final cartNotifier = ref.read(cartProvider.notifier);
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: BouncingScrollPhysics(),
@@ -33,7 +36,8 @@ class PickUpTabWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Column(
-                  children: List.generate(4, (index) {
+                  children: List.generate(cartItems.length, (index) {
+                    final item = cartItems[index];
                     return Column(
                       children: [
                         const Divider(
@@ -46,7 +50,7 @@ class PickUpTabWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               PngAsset(
-                                'mock_product_1',
+                                item.image,
                                 height: 80,
                                 width: 80,
                                 fit: BoxFit.cover,
@@ -60,7 +64,7 @@ class PickUpTabWidget extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Mixed Vegetable Salad',
+                                        item.title,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(
@@ -71,21 +75,11 @@ class PickUpTabWidget extends StatelessWidget {
                                         ),
                                       ),
                                       height(10),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '\$12.00',
-                                            overflow: TextOverflow.ellipsis,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.titleSmall,
-                                          ),
-                                          width(10),
-                                          QuantitySelectorWidget(),
-                                        ],
+                                      QuantitySelectorWidget(
+                                        price: 2,
+                                        quantity: 1,
+                                        onQuantityDecrementChanged: () {},
+                                        onQuantityIncrementChanged: () {},
                                       ),
                                     ],
                                   ),
