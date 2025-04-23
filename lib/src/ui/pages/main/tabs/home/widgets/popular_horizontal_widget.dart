@@ -1,4 +1,6 @@
+import 'package:campuscravings/src/controllers/home_controller.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:get/get.dart';
 
 class PopularHorizontalWidget extends ConsumerStatefulWidget {
   const PopularHorizontalWidget({super.key});
@@ -30,98 +32,105 @@ class _PopularHorizontalWidgetState
             ),
           ),
         ),
-        SizedBox(
-          height: 227,
-          width: double.infinity,
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-            scrollDirection: Axis.horizontal,
-            physics: BouncingScrollPhysics(),
-            itemCount: products.length,
-            separatorBuilder: (BuildContext context, int index) => width(12),
-            itemBuilder: (BuildContext context, int index) {
-              final category = products[index];
-              return Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: .08),
-                          blurRadius: 15,
-                        ),
-                      ],
-                    ),
-                    child: Column(
+        GetBuilder<HomeController>(
+            initState: (state){
+            },
+            builder: (controller){
+              controller.getPopularItems();
+              return SizedBox(
+                height: 227,
+                width: double.infinity,
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  itemCount: products.length,
+                  separatorBuilder: (BuildContext context, int index) => width(12),
+                  itemBuilder: (BuildContext context, int index) {
+                    final category = products[index];
+                    return Column(
                       children: [
-                        const PngAsset('mock_product_2', width: 90, height: 90),
-                        height(14),
-                        Text(
-                          category,
-                          style: const TextStyle(
-                            color: AppColors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 15,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: .08),
+                                blurRadius: 15,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              const PngAsset('mock_product_2', width: 90, height: 90),
+                              height(14),
+                              Text(
+                                category,
+                                style: const TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const SvgAssets(
+                                    'linear_clock',
+                                    width: 10,
+                                    height: 10,
+                                  ),
+                                  width(3),
+                                  const Text(
+                                    '25min',
+                                    style: TextStyle(
+                                      color: AppColors.lightText,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 4,
+                                    height: 4,
+                                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFFD9D9D9),
+                                    ),
+                                  ),
+                                  const SvgAssets(
+                                    'linear_star',
+                                    width: 10,
+                                    height: 10,
+                                  ),
+                                  width(3),
+                                  const Text(
+                                    '4.7',
+                                    style: TextStyle(
+                                      color: AppColors.lightText,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              height(2),
+                              Text(
+                                '\$6.90',
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                            ],
                           ),
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SvgAssets(
-                              'linear_clock',
-                              width: 10,
-                              height: 10,
-                            ),
-                            width(3),
-                            const Text(
-                              '25min',
-                              style: TextStyle(
-                                color: AppColors.lightText,
-                                fontSize: 10,
-                              ),
-                            ),
-                            Container(
-                              width: 4,
-                              height: 4,
-                              margin: const EdgeInsets.symmetric(horizontal: 5),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xFFD9D9D9),
-                              ),
-                            ),
-                            const SvgAssets(
-                              'linear_star',
-                              width: 10,
-                              height: 10,
-                            ),
-                            width(3),
-                            const Text(
-                              '4.7',
-                              style: TextStyle(
-                                color: AppColors.lightText,
-                                fontSize: 10,
-                              ),
-                            ),
-                          ],
-                        ),
-                        height(2),
-                        Text(
-                          '\$6.90',
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
                       ],
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                ),
               );
-            },
-          ),
+            }
         ),
       ],
     );
