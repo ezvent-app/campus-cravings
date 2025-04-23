@@ -197,8 +197,6 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                 onTap:
                     otpState.otp.length != 4
                         ? null
-                        : widget.isRyder
-                        ? () => context.pushRoute(StudentProfileDetailsRoute())
                         : () async {
                           ref
                               .read(otpNotifierProvider.notifier)
@@ -217,8 +215,14 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                             );
                             final data = jsonDecode(response.body);
                             if (response.statusCode == 200) {
+                              final token = data['data']['accessToken'];
+                              StorageHelper().saveAccessToken(token);
                               if (context.mounted) {
-                                context.pushRoute(MainRoute());
+                                context.router.replaceAll([
+                                  widget.isRyder
+                                      ? StudentProfileDetailsRoute()
+                                      : MainRoute(),
+                                ]);
                               }
                               final token = data['data']['accessToken'];
                               StorageHelper().saveAccessToken(token);
