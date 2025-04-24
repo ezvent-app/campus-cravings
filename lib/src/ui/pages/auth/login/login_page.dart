@@ -131,6 +131,10 @@ class LoginPage extends ConsumerWidget {
 
                                         final token1 =
                                             StorageHelper().getAccessToken();
+                                        final isRider =
+                                            data['user']['isDelivery'];
+                                        StorageHelper()
+                                            .saveRiderProfileComplete(isRider);
 
                                         print('Storge Token: $token1');
 

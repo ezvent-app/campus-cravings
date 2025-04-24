@@ -6,11 +6,8 @@ final historyRepoProvider = Provider<HistoryRepository>((ref) {
   return HistoryRepository();
 });
 
-// Fetch orders for a specific user
-final riderHistoryProvider = FutureProvider.family<RiderHistory, String>((
-  ref,
-  userId,
-) async {
+// Fetch orders (no userId needed)
+final riderHistoryProvider = FutureProvider<RiderHistory>((ref) async {
   final repo = ref.watch(historyRepoProvider);
-  return repo.fetchUserHistory(userId);
+  return repo.fetchUserHistory();
 });

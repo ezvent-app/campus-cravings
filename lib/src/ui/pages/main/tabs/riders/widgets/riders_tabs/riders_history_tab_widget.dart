@@ -9,10 +9,7 @@ class RidersHistoryTabWidget extends ConsumerWidget {
     final locale = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
 
-    // Hardcoded for now, you can pass it as a param or get from auth provider
-    const userId = '68091246f1860de92649f3e9';
-
-    final historyAsync = ref.watch(riderHistoryProvider(userId));
+    final historyAsync = ref.watch(riderHistoryProvider);
 
     return historyAsync.when(
       loading:
@@ -37,6 +34,7 @@ class RidersHistoryTabWidget extends ConsumerWidget {
               Column(
                 children: List.generate(orders!.length, (index) {
                   final order = orders[index];
+
                   return Column(
                     children: [
                       const Divider(color: AppColors.dividerColor, height: 40),
@@ -47,8 +45,8 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                             MaterialPageRoute(
                               builder:
                                   (context) => OrdersDetailsPage(
-                                    storeName: order.restaurant.storeName,
-                                    deliveryAddress: order.addresses.address,
+                                    storeName: order.restaurant.name,
+                                    deliveryAddress: 'aslasas',
                                     orderNumber: order.id.substring(0, 6),
                                   ),
                             ),
@@ -85,7 +83,7 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                                         children: [
                                           Text(
                                             order.items.isNotEmpty
-                                                ? order.items.first.itemId.name
+                                                ? order.restaurant.name
                                                 : 'No item',
                                             style:
                                                 Theme.of(
@@ -111,7 +109,7 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            '\$${order.items[0].itemId.price.toStringAsFixed(2)}',
+                                            '\$${order.totalPrice.toStringAsFixed(2)}',
                                             style:
                                                 Theme.of(
                                                   context,
@@ -123,7 +121,7 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                                             color: AppColors.dividerColor,
                                           ),
                                           Text(
-                                            '${order.items[0].quantity} ${locale.items}',
+                                            '${order.items.length} ${locale.items}',
                                             style:
                                                 Theme.of(
                                                   context,
