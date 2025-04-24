@@ -17,12 +17,13 @@ class CurrentOrdersTabWidget extends StatelessWidget {
               SizedBox(
                 height: 95,
                 child: InkWellButtonWidget(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OrdersDetailsPage(),
-                    ),
-                  ),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrdersDetailsPage(),
+                        ),
+                      ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -60,8 +61,8 @@ class CurrentOrdersTabWidget extends StatelessWidget {
                                     style: Theme.of(
                                       context,
                                     ).textTheme.bodyMedium!.copyWith(
-                                          decoration: TextDecoration.underline,
-                                        ),
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 ],
                               ),

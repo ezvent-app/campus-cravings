@@ -702,18 +702,62 @@ class OnboardingRoute extends _i41.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i26.OrdersDetailsPage]
-class OrdersDetailsRoute extends _i41.PageRouteInfo<void> {
-  const OrdersDetailsRoute({List<_i41.PageRouteInfo>? children})
-    : super(OrdersDetailsRoute.name, initialChildren: children);
+class OrdersDetailsRoute extends _i41.PageRouteInfo<OrdersDetailsRouteArgs> {
+  OrdersDetailsRoute({
+    _i42.Key? key,
+    String? storeName,
+    String? deliveryAddress,
+    String? orderNumber,
+    List<_i41.PageRouteInfo>? children,
+  }) : super(
+         OrdersDetailsRoute.name,
+         args: OrdersDetailsRouteArgs(
+           key: key,
+           storeName: storeName,
+           deliveryAddress: deliveryAddress,
+           orderNumber: orderNumber,
+         ),
+         initialChildren: children,
+       );
 
   static const String name = 'OrdersDetailsRoute';
 
   static _i41.PageInfo page = _i41.PageInfo(
     name,
     builder: (data) {
-      return const _i26.OrdersDetailsPage();
+      final args = data.argsAs<OrdersDetailsRouteArgs>(
+        orElse: () => const OrdersDetailsRouteArgs(),
+      );
+      return _i26.OrdersDetailsPage(
+        key: args.key,
+        storeName: args.storeName,
+        deliveryAddress: args.deliveryAddress,
+        orderNumber: args.orderNumber,
+      );
     },
   );
+}
+
+class OrdersDetailsRouteArgs {
+  const OrdersDetailsRouteArgs({
+    this.key,
+    this.storeName,
+    this.deliveryAddress,
+    this.orderNumber,
+  });
+
+  final _i42.Key? key;
+
+  final String? storeName;
+
+  final String? deliveryAddress;
+
+  final String? orderNumber;
+
+  @override
+  String toString() {
+    return 'OrdersDetailsRouteArgs{key: $key, storeName: $storeName, deliveryAddress: $deliveryAddress, orderNumber: $orderNumber}';
+  }
 }
 
 /// generated route for

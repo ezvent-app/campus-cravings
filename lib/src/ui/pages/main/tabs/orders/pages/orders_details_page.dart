@@ -2,7 +2,16 @@ import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class OrdersDetailsPage extends StatelessWidget {
-  const OrdersDetailsPage({super.key});
+  final String? storeName;
+  final String? deliveryAddress;
+  final String? orderNumber;
+
+  const OrdersDetailsPage({
+    super.key,
+    this.storeName,
+    this.deliveryAddress,
+    this.orderNumber,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,22 +38,25 @@ class OrdersDetailsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   height(24),
-                  OrdersInfoWidget(title: locale.restaurant, desc: "Pizz Hut"),
+                  OrdersInfoWidget(title: locale.restaurant, desc: storeName!),
                   OrdersInfoWidget(
                     title: locale.deliveryAddress,
-                    desc: 'Flat / Suite / Floor: 174',
+                    desc: deliveryAddress!,
                   ),
-                  OrdersInfoWidget(title: locale.orderNumber, desc: '#162432'),
+                  OrdersInfoWidget(
+                    title: locale.orderNumber,
+                    desc: '#${orderNumber!}',
+                  ),
                   height(30),
                   Text(
                     locale.orderSummary,
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   const SizedBox(height: 2),
-                  const Text(
-                    'Pizz Hut',
+                  Text(
+                    storeName!,
                     style: TextStyle(
                       color: Color(0xff656266),
                       fontSize: 15,
@@ -57,9 +69,9 @@ class OrdersDetailsPage extends StatelessWidget {
                   Text(
                     locale.imageSubmission,
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   height(20),
                   Container(
@@ -70,7 +82,7 @@ class OrdersDetailsPage extends StatelessWidget {
                       image: DecorationImage(
                         fit: BoxFit.fitWidth,
                         image: NetworkImage(
-                          "https://s3-alpha-sig.figma.com/img/4f41/2318/07c864fa1ad0906cecdac853a6d4d38f?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=gbKWIlt239MAe2JvBH5lU31hP94h8Yk9EGf~u3oYUxIS5xAO0h7irSRwtfbneeBzZRjUJ8h9lRLJ8o9kQ0eJY7IRkNlTnjLP361dRw6Gxe8n5CpxfXHAfwDpHpUF2dUAR19j927ZPOpMzCsrWRTxkFCBLozGEOGe0L6084D6wznpQ4RPRZBf2p83L2FFHWB1JuI-ZF4X~C5CW7APtbaSihPpbN9sD-Q3Jt7eex99oul~SN0JKp~RpX7-mL6mwijT1afUyw~3AnHMNJHnxOhFFv9AXpv5UqebhhrnwAnnQDiAVJ9q1bKkykz3aJdC5hPGgdcuIGAva5j6qADz7NxUNQ__",
+                          "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1000w,f_auto,q_auto:best/rockcms/2024-02/burger-king-free-whoppers-2x1-zz-240229-461734.jpg",
                         ),
                       ),
                     ),
@@ -88,9 +100,7 @@ class OrdersDetailsPage extends StatelessWidget {
                       child: Center(
                         child: Text(
                           locale.reportAnIssue,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall!
+                          style: Theme.of(context).textTheme.titleSmall!
                               .copyWith(fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -119,9 +129,9 @@ class OrdersInfoWidget extends StatelessWidget {
         Text(
           desc,
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
         ),
         Divider(color: AppColors.dividerColor),
       ],

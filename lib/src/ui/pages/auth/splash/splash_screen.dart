@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/router/router.gr.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 @RoutePage()
 class SplashScreen extends StatefulWidget {
@@ -35,13 +36,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Text(
-          'Campus Cravings',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
+        child: SvgPicture.asset(
+          'assets/images/svg/cclogo.svg',
+          width: 100,
+          height: 100,
         ),
       ),
     );
