@@ -23,6 +23,17 @@ class RidersHistoryTabWidget extends ConsumerWidget {
       error: (err, stack) => Center(child: Text('Error: $err')),
       data: (history) {
         final orders = history.orders;
+        if (orders == null || orders.isEmpty) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Text(
+                'No Orders found yet!',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+          );
+        }
 
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -34,7 +45,9 @@ class RidersHistoryTabWidget extends ConsumerWidget {
               Column(
                 children: List.generate(orders!.length, (index) {
                   final order = orders[index];
-
+                  final allItemNames = order.items.map((e) => e.name).toList();
+                  final allSizeNames =
+                      order.items.map((e) => e.size?.name).toList();
                   return Column(
                     children: [
                       const Divider(color: AppColors.dividerColor, height: 40),
@@ -46,8 +59,15 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                               builder:
                                   (context) => OrdersDetailsPage(
                                     storeName: order.restaurant.name,
-                                    deliveryAddress: 'aslasas',
+                                    deliveryAddress: order.address.address,
                                     orderNumber: order.id.substring(0, 6),
+                                    customizationList:
+                                        order.items[0].customizationList,
+                                    name: allItemNames,
+                                    quantity: order.items[0].quantity,
+                                    totalPrice: order.totalPrice
+                                        .toStringAsFixed(2),
+                                    sizeNames: allSizeNames,
                                   ),
                             ),
                           );

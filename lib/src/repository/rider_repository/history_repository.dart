@@ -12,6 +12,10 @@ class HistoryRepository {
       print('Response: ${response.body}');
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        final riderHistory = RiderHistory.fromJson(data);
+        // ✅ Print parsed model details
+        print('\nParsed RiderHistory Model:');
+        print('Message: ${riderHistory.message}');
         return RiderHistory.fromJson(data);
       } else {
         return Future.error(
