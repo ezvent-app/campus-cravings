@@ -1,18 +1,18 @@
-class PopularItem {
+class ProductItem {
   final String id;
   final int totalOrdered;
   final String itemId;
   final ItemDetails itemDetails;
 
-  PopularItem({
+  ProductItem({
     required this.id,
     required this.totalOrdered,
     required this.itemId,
     required this.itemDetails,
   });
 
-  factory PopularItem.fromJson(Map<String, dynamic> json) {
-    return PopularItem(
+  factory ProductItem.fromJson(Map<String, dynamic> json) {
+    return ProductItem(
       id: json["_id"],
       totalOrdered: json["totalOrdered"],
       itemId: json["item_id"],

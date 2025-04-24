@@ -1,4 +1,8 @@
+import 'package:campuscravings/src/constants/get_builder_id_constants.dart';
+import 'package:campuscravings/src/controllers/resturant_controller.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class NearbyRestaurantsWidget extends ConsumerStatefulWidget {
   const NearbyRestaurantsWidget({super.key});
@@ -11,6 +15,7 @@ class _NearbyRestaurantsWidgetState
     extends ConsumerState<NearbyRestaurantsWidget> {
   @override
   Widget build(BuildContext context) {
+    Get.find<RestaurantController>().getNearByRestaurants();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,63 +29,140 @@ class _NearbyRestaurantsWidgetState
                 ),
           ),
         ),
-        Column(
-          children: List.generate(10, (index) {
-            return InkWellButtonWidget(
-              onTap: () {
-                context.pushRoute(const RestaurantRoute());
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 25,
-                ),
-                child: Row(
-                  children: [
-                    PngAsset(
-                      'mock_product_1',
-                      borderRadius: BorderRadius.circular(200),
-                      fit: BoxFit.cover,
-                      width: 110,
-                      height: 110,
+        GetBuilder<RestaurantController>(
+            id: nearByRestaurantBuilderId,
+            builder: (controller) {
+              if(controller.isLoading) {
+                return _buildRestaurantShimmer();
+              } else if(controller.isLoading == false && controller.listOfNearByRestaurants.isEmpty) {
+                return const Center(
+                  child: Text('No nearby restaurants found'),
+                );
+              }
+              return Column(
+                children: List.generate(controller.listOfNearByRestaurants.length, (index) {
+                  final restaurant = controller.listOfNearByRestaurants[index];
+                  return InkWellButtonWidget(
+                    onTap: () {
+                      context.pushRoute(const RestaurantRoute());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 15,
+                        horizontal: 25,
+                      ),
+                      child: Row(
+                        children: [
+                          PngAsset(
+                            'mock_product_1',
+                            borderRadius: BorderRadius.circular(200),
+                            fit: BoxFit.cover,
+                            width: 110,
+                            height: 110,
+                          ),
+                          const SizedBox(width: 25),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${restaurant.brandName}',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Color(0xff443A39),
+                                ),
+                              ),
+                              SizedBox(height: 3),
+                              Text(
+                                '${restaurant.cuisine}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xffB4B0B0),
+                                ),
+                              ),
+                              SizedBox(height: 7),
+                              Text(
+                                '8am - 9pm | ${controller.getDistanceInMiles(lat: restaurant.address.coordinates.coordinates[1], lng: restaurant.address.coordinates.coordinates[0]).toStringAsFixed(2)} mil away',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff443A39),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(width: 25),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Bamonte\'s',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xff443A39),
-                          ),
-                        ),
-                        SizedBox(height: 3),
-                        Text(
-                          'Italian Restaurant',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xffB4B0B0),
-                          ),
-                        ),
-                        SizedBox(height: 7),
-                        Text(
-                          '8am - 9pm     1 mile away',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff443A39),
-                          ),
-                        ),
-                      ],
+                  );
+                }),
+              );
+            }
+        )
+      ],
+    );
+  }
+
+  Widget _buildRestaurantShimmer() {
+    return Column(
+      children: List.generate(10, (index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+          child: Row(
+            children: [
+              Shimmer.fromColors(
+                baseColor: const Color(0xffE0E0E0),
+                highlightColor: const Color(0xffF5F5F5),
+                child: Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(200),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 25),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Shimmer.fromColors(
+                      baseColor: const Color(0xffE0E0E0),
+                      highlightColor: const Color(0xffF5F5F5),
+                      child: Container(
+                        width: 150,
+                        height: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 7),
+                    Shimmer.fromColors(
+                      baseColor: const Color(0xffE0E0E0),
+                      highlightColor: const Color(0xffF5F5F5),
+                      child: Container(
+                        width: 100,
+                        height: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 7),
+                    Shimmer.fromColors(
+                      baseColor: const Color(0xffE0E0E0),
+                      highlightColor: const Color(0xffF5F5F5),
+                      child: Container(
+                        width: 120,
+                        height: 12,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
               ),
-            );
-          }),
-        ),
-      ],
+            ],
+          ),
+        );
+      }),
     );
   }
+
 }
