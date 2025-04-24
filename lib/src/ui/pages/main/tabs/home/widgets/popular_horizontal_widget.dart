@@ -1,6 +1,9 @@
 import 'package:campuscravings/src/controllers/home_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../../../../../constants/get_builder_id_constants.dart';
 
 class PopularHorizontalWidget extends ConsumerStatefulWidget {
   const PopularHorizontalWidget({super.key});
@@ -19,6 +22,7 @@ class _PopularHorizontalWidgetState
   ];
   @override
   Widget build(BuildContext context) {
+    Get.find<HomeController>().getPopularItems();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -35,8 +39,15 @@ class _PopularHorizontalWidgetState
         GetBuilder<HomeController>(
             initState: (state){
             },
+            id: popularItemBuilderId,
             builder: (controller){
-              controller.getPopularItems();
+              if(controller.isLoading) {
+                return productListShimmer();
+              } else if(controller.isLoading == false && controller.listOfPopularItems.isEmpty) {
+                return const Center(
+                  child: Text('No popular items found'),
+                );
+              }
               return SizedBox(
                 height: 227,
                 width: double.infinity,
@@ -44,10 +55,10 @@ class _PopularHorizontalWidgetState
                   padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                   scrollDirection: Axis.horizontal,
                   physics: BouncingScrollPhysics(),
-                  itemCount: products.length,
+                  itemCount: controller.listOfPopularItems.length,
                   separatorBuilder: (BuildContext context, int index) => width(12),
                   itemBuilder: (BuildContext context, int index) {
-                    final category = products[index];
+                    final item = controller.listOfPopularItems[index];
                     return Column(
                       children: [
                         Container(
@@ -67,10 +78,16 @@ class _PopularHorizontalWidgetState
                           ),
                           child: Column(
                             children: [
-                              const PngAsset('mock_product_2', width: 90, height: 90),
+                              Image.network(
+                                item.itemDetails.image[0],
+                                width: 90,
+                                height: 90,
+                                fit: BoxFit.cover,
+                              ),
+                              //const PngAsset('mock_product_2', width: 90, height: 90),
                               height(14),
                               Text(
-                                category,
+                                item.itemDetails.name,
                                 style: const TextStyle(
                                   color: AppColors.black,
                                   fontSize: 15,
@@ -86,8 +103,8 @@ class _PopularHorizontalWidgetState
                                     height: 10,
                                   ),
                                   width(3),
-                                  const Text(
-                                    '25min',
+                                  Text(
+                                    '${item.itemDetails.estimatedPreparationTime}min',
                                     style: TextStyle(
                                       color: AppColors.lightText,
                                       fontSize: 10,
@@ -135,4 +152,81 @@ class _PopularHorizontalWidgetState
       ],
     );
   }
+
+  Widget productListShimmer() {
+    return SizedBox(
+      height: 227,
+      width: double.infinity,
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemCount: 5, // number of shimmer cards
+        separatorBuilder: (BuildContext context, int index) => width(12),
+        itemBuilder: (BuildContext context, int index) {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      height(14),
+                      Container(
+                        width: 70,
+                        height: 12,
+                        color: Colors.white,
+                      ),
+                      height(8),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(width: 10, height: 10, color: Colors.white),
+                          width(5),
+                          Container(width: 30, height: 8, color: Colors.white),
+                          width(5),
+                          Container(
+                            width: 4,
+                            height: 4,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                          ),
+                          width(5),
+                          Container(width: 10, height: 10, color: Colors.white),
+                          width(5),
+                          Container(width: 20, height: 8, color: Colors.white),
+                        ],
+                      ),
+                      height(10),
+                      Container(
+                        width: 50,
+                        height: 12,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+}
 }
