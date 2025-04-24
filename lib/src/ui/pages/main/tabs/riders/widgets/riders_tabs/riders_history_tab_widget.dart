@@ -163,7 +163,10 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                                                     vertical: 5,
                                                   ),
                                               child: Text(
-                                                order.status,
+                                                order.status ==
+                                                        'order_dispatched'
+                                                    ? 'Dispatched'
+                                                    : order.status,
                                                 style: Theme.of(
                                                   context,
                                                 ).textTheme.bodySmall!.copyWith(
