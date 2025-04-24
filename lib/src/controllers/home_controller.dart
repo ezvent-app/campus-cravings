@@ -10,6 +10,7 @@ class HomeController extends GetxController{
   final HomeRepository _homeRepository;
 
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
   List<PopularItem> _listOfPopularItems = [];
   List<PopularItem> get listOfPopularItems => _listOfPopularItems;
