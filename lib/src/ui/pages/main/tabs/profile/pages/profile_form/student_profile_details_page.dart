@@ -29,6 +29,12 @@ class StudentProfileDetailsPage extends ConsumerWidget {
               textInputAction: TextInputAction.next,
               textInputType: TextInputType.number,
               label: locale.batchYear,
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  ref.read(studentProfileProvider.notifier).state["batchYear"] =
+                      value;
+                }
+              },
             ),
             height(16),
             CustomTextField(
@@ -109,11 +115,50 @@ class StudentProfileDetailsPage extends ConsumerWidget {
               hintText: locale.whatDoYouWantKnowAboutYou,
               label: locale.aboutYou,
               maxLines: 2,
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  ref.read(studentProfileProvider.notifier).state["aboutYou"] =
+                      value;
+                }
+              },
             ),
             height(18),
-            RoundedButtonWidget(
-              btnTitle: locale.next,
-              onTap: () => context.pushRoute(const DeliverySetupRoute()),
+            Consumer(
+              builder: (context, ref, child) {
+                return RoundedButtonWidget(
+                  btnTitle: locale.next,
+                  onTap: () {
+                    final aboutYou =
+                        ref.read(studentProfileProvider)["aboutYou"];
+                    final batchYear =
+                        ref.read(studentProfileProvider)["batchYear"];
+                    final majors = ref.read(majorsProvider);
+                    final minors = ref.read(minorsProvider);
+                    final clubs = ref.read(clubsProvider);
+
+                    if (aboutYou.isEmpty ||
+                        batchYear.isEmpty ||
+                        majors.isEmpty ||
+                        minors.isEmpty ||
+                        clubs.isEmpty) {
+                      showToast(
+                        "Please Enter Proper Information",
+                        context: context,
+                      );
+                      return;
+                    }
+                    context.pushRoute(
+                      DeliverySetupRoute(
+                        aboutYou: aboutYou,
+                        batchYear: batchYear,
+                        majors: majors,
+                        minors: minors,
+                        clubs: clubs,
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -121,6 +166,10 @@ class StudentProfileDetailsPage extends ConsumerWidget {
     );
   }
 }
+
+final studentProfileProvider = StateProvider<Map<String, dynamic>>(
+  (ref) => {"batchYear": "", "aboutYou": ""},
+);
 
 final majorsProvider = StateProvider<List<String>>((ref) => []);
 final minorsProvider = StateProvider<List<String>>((ref) => []);

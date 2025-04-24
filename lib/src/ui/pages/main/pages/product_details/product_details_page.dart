@@ -50,8 +50,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             },
                             itemBuilder: (context, index) {
                               return PngAsset(
-                                productImages[
-                                    index], // Replace with actual asset reference
+                                productImages[index], // Replace with actual asset reference
                                 fit: BoxFit.fitWidth,
                               );
                             },
@@ -112,9 +111,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.white),
-                                color: isSelected
-                                    ? Colors.white
-                                    : Colors.transparent,
+                                color:
+                                    isSelected
+                                        ? Colors.white
+                                        : Colors.transparent,
                               ),
                             );
                           }),
@@ -156,7 +156,12 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   ],
                                 ),
                                 Spacer(),
-                                QuantitySelectorWidget(),
+                                QuantitySelectorWidget(
+                                  quantity: 1,
+                                  price: 20.00,
+                                  onQuantityDecrementChanged: () {},
+                                  onQuantityIncrementChanged: () {},
+                                ),
                               ],
                             ),
                             Padding(

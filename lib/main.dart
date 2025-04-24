@@ -1,11 +1,14 @@
 import 'package:campuscravings/src/di/dependency_injection.dart';
 import 'package:campuscravings/src/src.dart';
 
+import 'src/constants/storageHelper.dart';
+
 late List<CameraDescription> cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await StorageHelper.init();
+  await SharePreferences.initPreferences();
   cameras = await availableCameras();
   DependencyInjection.initialize();
   runApp(App());

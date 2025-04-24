@@ -10,3 +10,4 @@ export 'auth/auth.dart';
 export 'main/tabs/orders/orders_path.dart';
 export 'main/tabs/profile/pages/profile_form/profile_form_paths.dart';
 export './delivery_man_profile/delivery_man_profile_path.dart';
+export 'auth/splash/splash_screen.dart';
