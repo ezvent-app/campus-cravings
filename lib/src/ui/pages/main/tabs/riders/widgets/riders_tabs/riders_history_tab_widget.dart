@@ -28,7 +28,9 @@ class RidersHistoryTabWidget extends StatelessWidget {
                                 id: "sdjksad",
                                 name: "Pizza",
                                 imageUrl: "mock_product_1",
-                                price: 23.8))),
+                                price: 23.8)
+                        )
+                        ),
                         child: SizedBox(
                           height: 95,
                           child: Row(

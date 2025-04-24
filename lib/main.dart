@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/di/dependency_injection.dart';
 import 'package:campuscravings/src/src.dart';
 
 import 'src/constants/storageHelper.dart';
@@ -9,6 +10,7 @@ Future<void> main() async {
   await StorageHelper.init();
   await SharePreferences.initPreferences();
   cameras = await availableCameras();
+  DependencyInjection.initialize();
   runApp(App());
 }
 

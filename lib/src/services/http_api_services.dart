@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:campuscravings/src/src.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class HttpAPIServices extends BaseApiServices {
   final HttpService service = HttpService();
