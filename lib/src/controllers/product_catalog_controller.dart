@@ -20,6 +20,7 @@ class ProductCatalogController extends GetxController{
 
   Future<void> getPopularItems() async{
     try{
+      if(_listOfPopularItems.isNotEmpty) return;
       _isLoading = true;
       update([popularItemBuilderId]);
       if(Get.find<LocationController>().isOperationInProgress){

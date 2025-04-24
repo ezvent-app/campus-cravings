@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/controllers/location_controller.dart';
-import 'package:campuscravings/src/models/restaurant_model.dart';
+import 'package:campuscravings/src/models/near_by_restaurant_model.dart';
+import 'package:campuscravings/src/models/restaurant_details_model.dart';
 import 'package:campuscravings/src/repository/home_repository/restaurant_repository.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -16,8 +17,8 @@ class RestaurantController extends GetxController{
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   LocationData? _locationData;
-  List<RestaurantModel> _listOfNearByRestaurants = [];
-  List<RestaurantModel> get listOfNearByRestaurants => _listOfNearByRestaurants;
+  List<NearByRestaurantModel> _listOfNearByRestaurants = [];
+  List<NearByRestaurantModel> get listOfNearByRestaurants => _listOfNearByRestaurants;
 
   Future<void> getNearByRestaurants() async{
     try{
@@ -50,4 +51,5 @@ class RestaurantController extends GetxController{
     if(_locationData == null) return 0.0;
     return (Geolocator.distanceBetween(24.5113,67.6221, lat, lng)) / 1609.344;
   }
+
 }

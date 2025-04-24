@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/controllers/location_controller.dart';
 import 'package:campuscravings/src/controllers/product_catalog_controller.dart';
+import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
 import 'package:campuscravings/src/controllers/resturant_controller.dart';
 import 'package:campuscravings/src/repository/home_repository/product_catalog_repository.dart';
 import 'package:campuscravings/src/repository/home_repository/restaurant_repository.dart';
@@ -18,6 +19,7 @@ class DependencyInjection {
     Get.put(LocationController(Get.find<LocationService>()),permanent: true);
     Get.put(ProductCatalogController(Get.find<ProductRepository>()),permanent: true);
     Get.put(RestaurantController(Get.find<RestaurantRepository>()),permanent: true);
+    Get.lazyPut<RestaurantDetailsController>(() => RestaurantDetailsController(Get.find<RestaurantRepository>()), fenix: true);
   }
   // static final DependencyInjection _instance = DependencyInjection._internal();
   //
