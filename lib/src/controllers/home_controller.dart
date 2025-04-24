@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 class HomeController extends GetxController{
   final LocationService _locationService;
   final HomeRepository _homeRepository;
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   List<PopularItem> _listOfPopularItems = [];
