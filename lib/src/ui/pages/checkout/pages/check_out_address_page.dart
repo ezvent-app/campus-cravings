@@ -71,8 +71,6 @@ class CheckoutAddressPage extends ConsumerWidget {
                         _controller.complete(controller);
                       },
                     ),
-                    if (locationAsync.isLoading)
-                      const Center(child: CircularProgressIndicator()),
                   ],
                 ),
               ),

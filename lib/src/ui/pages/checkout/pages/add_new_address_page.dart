@@ -46,6 +46,7 @@ class CheckOutAddNewAddressPage extends ConsumerWidget {
     final isIOS = Platform.isIOS;
 
     final loc = ref.watch(locationProvider);
+    final locationMethod = ref.read(locationProvider.notifier);
 
     loc.whenData((locationModel) {
       animateToUserLocation(locationModel.latLng);
@@ -61,19 +62,12 @@ class CheckOutAddNewAddressPage extends ConsumerWidget {
               indoorViewEnabled: true,
               trafficEnabled: true,
               myLocationButtonEnabled: false,
-
-              // onCameraMove: (position) {
-              //   ref
-              //       .read(locationProvider.notifier)
-              //       .updateLocation(position.target);
-              // },
               initialCameraPosition: _kGooglePlex,
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
               },
             ),
           ),
-          if (loc.isLoading) const Center(child: CircularProgressIndicator()),
           Positioned(
             top: 50,
             left: 10,
@@ -134,59 +128,76 @@ class CheckOutAddNewAddressPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     loc.when(
-                      data:
-                          (loc) => Column(
-                            children: [
-                              CustomTextField(label: locale.location),
-                              Text(
-                                "LatLng: ${loc.latLng.latitude}, ${loc.latLng.longitude}",
-                              ),
-                              Text("Address: ${loc.address ?? 'Not found'}"),
-                            ],
-                          ),
-                      loading: () => const CircularProgressIndicator(),
+                      data: (loc) {
+                        return Column(
+                          children: [
+                            CustomTextField(
+                              label: locale.location,
+                              controller: loc.locationController,
+                            ),
+                            height(20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: CustomTextField(
+                                    textInputType: TextInputType.number,
+                                    label: locale.enterFloor,
+                                    controller: loc.floorController,
+                                  ),
+                                ),
+                                width(20),
+                                Expanded(
+                                  child: CustomTextField(
+                                    textInputType: TextInputType.number,
+                                    label: locale.enterRoomNumber,
+                                    controller: loc.roomNoController,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            height(20),
+                            CustomTextField(
+                              label: locale.saveAs,
+                              hintText: locale.home,
+                              controller: loc.saveAsController,
+                            ),
+                            height(10),
+                            Row(
+                              children: [
+                                Switch(
+                                  value: loc.isDefault,
+                                  onChanged:
+                                      (value) => locationMethod
+                                          .defaultAddressMethod(value),
+                                  activeColor: Colors.white,
+                                  inactiveThumbColor: Colors.grey,
+                                  inactiveTrackColor: Colors.grey.shade400,
+                                ),
+
+                                width(10),
+                                Text(
+                                  locale.setDefault,
+                                  style: Theme.of(context).textTheme.bodyMedium!
+                                      .copyWith(color: AppColors.black),
+                                ),
+                              ],
+                            ),
+                            height(40),
+                            RoundedButtonWidget(
+                              btnTitle: locale.save,
+                              onTap:
+                                  () async => await ref
+                                      .read(locationProvider.notifier)
+                                      .saveAddress(context),
+                            ),
+                            height(20),
+                          ],
+                        );
+                      },
+                      loading: () => SizedBox(),
                       error: (e, _) => Text("Error: $e"),
                     ),
-                    height(20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: CustomTextField(label: locale.enterFloor),
-                        ),
-                        width(20),
-                        Expanded(
-                          child: CustomTextField(label: locale.enterRoomNumber),
-                        ),
-                      ],
-                    ),
-                    height(20),
-                    CustomTextField(
-                      label: locale.saveAs,
-                      hintText: locale.home,
-                    ),
-                    height(10),
-                    Row(
-                      children: [
-                        Switch(
-                          value: true,
-                          onChanged: (value) {},
-                          trackColor: WidgetStateProperty.all(Colors.black),
-                        ),
-                        width(10),
-                        Text(
-                          locale.setDefault,
-                          style: Theme.of(context).textTheme.bodyMedium!
-                              .copyWith(color: AppColors.black),
-                        ),
-                      ],
-                    ),
-                    height(40),
-                    RoundedButtonWidget(
-                      btnTitle: locale.save,
-                      onTap: () => Navigator.pop(context),
-                    ),
-                    height(20),
                   ],
                 ),
               ),
