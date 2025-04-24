@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class CheckOutAddNewAddressPage extends StatelessWidget {
+class CheckOutAddNewAddressPage extends ConsumerWidget {
   CheckOutAddNewAddressPage({super.key});
 
   // Text field controllers
@@ -9,8 +11,22 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
   TextEditingController floorController = TextEditingController();
   TextEditingController roomController = TextEditingController();
 
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14,
+  );
+
+  Future<void> animateToUserLocation(LatLng latLng) async {
+    final controller = await _controller.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(CameraPosition(target: latLng, zoom: 16)),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     final wdth = size.width;
@@ -28,10 +44,36 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
       ),
     );
     final isIOS = Platform.isIOS;
+
+    final loc = ref.watch(locationProvider);
+
+    loc.whenData((locationModel) {
+      animateToUserLocation(locationModel.latLng);
+    });
+
     return Scaffold(
       body: Stack(
         children: [
-          PngAsset("map_image", height: size.height, fit: BoxFit.cover),
+          Positioned.fill(
+            child: GoogleMap(
+              mapType: MapType.satellite,
+              myLocationEnabled: true,
+              indoorViewEnabled: true,
+              trafficEnabled: true,
+              myLocationButtonEnabled: false,
+
+              // onCameraMove: (position) {
+              //   ref
+              //       .read(locationProvider.notifier)
+              //       .updateLocation(position.target);
+              // },
+              initialCameraPosition: _kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+            ),
+          ),
+          if (loc.isLoading) const Center(child: CircularProgressIndicator()),
           Positioned(
             top: 50,
             left: 10,
@@ -63,7 +105,11 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed:
+                      () async =>
+                          await ref
+                              .read(locationProvider.notifier)
+                              .refreshLocation(),
                   icon: SvgAssets("location_search"),
                 ),
               ),
@@ -87,7 +133,20 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextField(label: locale.location),
+                    loc.when(
+                      data:
+                          (loc) => Column(
+                            children: [
+                              CustomTextField(label: locale.location),
+                              Text(
+                                "LatLng: ${loc.latLng.latitude}, ${loc.latLng.longitude}",
+                              ),
+                              Text("Address: ${loc.address ?? 'Not found'}"),
+                            ],
+                          ),
+                      loading: () => const CircularProgressIndicator(),
+                      error: (e, _) => Text("Error: $e"),
+                    ),
                     height(20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

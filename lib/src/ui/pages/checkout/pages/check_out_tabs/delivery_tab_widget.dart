@@ -332,36 +332,37 @@ class DeliveryTabWidget extends ConsumerWidget {
             margin: const EdgeInsets.only(bottom: 36),
             child: ElevatedButton(
               onPressed: () {
-                final json = {
-                  "payment_method": "cash",
-                  "tip": 3,
-                  "delivery_fee": 2,
-                  "addresses": {
-                    "address": "123 Main St",
-                    "coordinates": {
-                      "type": "Point",
-                      "coordinates": [73.1234, 33.5678],
-                    },
-                  },
-                  "items": [
-                    {
-                      "item_id": "68062020b63dae4410847f75",
-                      "quantity": 2,
-                      "customizations": [
-                        "68062020b63dae4410847f76",
-                        "68062020b63dae4410847f77",
-                      ],
-                    },
-                    {
-                      "item_id": "68062026b63dae4410847f82",
-                      "quantity": 5,
-                      "customizations": [
-                        "68062026b63dae4410847f85", // Customization Id
-                      ],
-                    },
-                  ],
-                };
-                _repository.placeOrderMethod(json, context);
+                // final json = {
+                //   "payment_method": "cash",
+                //   "tip": 3,
+                //   "delivery_fee": 2,
+                //   "addresses": {
+                //     "address": "123 Main St",
+                //     "coordinates": {
+                //       "type": "Point",
+                //       "coordinates": [73.1234, 33.5678],
+                //     },
+                //   },
+                //   "items": [
+                //     {
+                //       "item_id": "68062020b63dae4410847f75",
+                //       "quantity": 2,
+                //       "customizations": [
+                //         "68062020b63dae4410847f76",
+                //         "68062020b63dae4410847f77",
+                //       ],
+                //     },
+                //     {
+                //       "item_id": "68062026b63dae4410847f82",
+                //       "quantity": 5,
+                //       "customizations": [
+                //         "68062026b63dae4410847f85", // Customization Id
+                //       ],
+                //     },
+                //   ],
+                // };
+                // _repository.placeOrderMethod(json, context);
+                context.pushRoute(const CheckoutAddressRoute());
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
