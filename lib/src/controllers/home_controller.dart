@@ -1,7 +1,6 @@
 import 'package:campuscravings/src/constants/get_builder_id_constants.dart';
 import 'package:campuscravings/src/models/popular_item_model.dart';
 import 'package:campuscravings/src/repository/home_repository/home_repository.dart';
-import 'package:campuscravings/src/services/http_api_services.dart';
 import 'package:campuscravings/src/services/location_service.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
