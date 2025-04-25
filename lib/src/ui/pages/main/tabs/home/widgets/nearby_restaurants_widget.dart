@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/constants/get_builder_id_constants.dart';
+import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
 import 'package:campuscravings/src/controllers/resturant_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:get/get.dart';
@@ -15,7 +16,6 @@ class _NearbyRestaurantsWidgetState
     extends ConsumerState<NearbyRestaurantsWidget> {
   @override
   Widget build(BuildContext context) {
-    Get.find<RestaurantController>().getNearByRestaurants();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,6 +31,9 @@ class _NearbyRestaurantsWidgetState
         ),
         GetBuilder<RestaurantController>(
             id: nearByRestaurantBuilderId,
+            initState: (state){
+              Get.find<RestaurantController>().getNearByRestaurants();
+            },
             builder: (controller) {
               if(controller.isLoading) {
                 return _buildRestaurantShimmer();
@@ -44,6 +47,7 @@ class _NearbyRestaurantsWidgetState
                   final restaurant = controller.listOfNearByRestaurants[index];
                   return InkWellButtonWidget(
                     onTap: () {
+                      Get.find<RestaurantDetailsController>().setRestaurantId(restaurant.id);
                       context.pushRoute(const RestaurantRoute());
                     },
                     child: Padding(

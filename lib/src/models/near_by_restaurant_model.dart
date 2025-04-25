@@ -1,4 +1,4 @@
-class RestaurantModel {
+class NearByRestaurantModel {
   final String id;
   final String storeName;
   final String brandName;
@@ -14,7 +14,7 @@ class RestaurantModel {
   final Address address;
   final Ratings ratings;
 
-  RestaurantModel({
+  NearByRestaurantModel({
     required this.id,
     required this.storeName,
     required this.brandName,
@@ -31,8 +31,8 @@ class RestaurantModel {
     required this.ratings,
   });
 
-  factory RestaurantModel.fromJson(Map<String, dynamic> json) {
-    return RestaurantModel(
+  factory NearByRestaurantModel.fromJson(Map<String, dynamic> json) {
+    return NearByRestaurantModel(
       id: json['_id'] ?? '',
       storeName: json['storeName'] ?? '',
       brandName: json['brandName'] ?? '',

@@ -14,16 +14,15 @@ class ProductCatalogController extends GetxController{
   bool get isLoading => _isLoading;
   List<ProductItem> _listOfPopularItems = [];
   List<ProductItem> get listOfPopularItems => _listOfPopularItems;
-  late ProductItem _selectedProductItem;
-  ProductItem get selectedProductItem => _selectedProductItem;
   ProductCatalogController(this._homeRepository);
 
   Future<void> getPopularItems() async{
     try{
+      if(_listOfPopularItems.isNotEmpty) return;
       _isLoading = true;
       update([popularItemBuilderId]);
-      if(Get.find<LocationController>().isOperationInProgress){
-        await Future.delayed(Duration(seconds: 4));
+      while(Get.find<LocationController>().isOperationInProgress){
+        await Future.delayed(Duration(milliseconds: 500));
       }
       final location = await Get.find<LocationController>().getCurrentLocation();
       if(location == null){
@@ -40,11 +39,7 @@ class ProductCatalogController extends GetxController{
       Logger().i(e);
       _isLoading = false;
       update([popularItemBuilderId]);
-      return null;
     }
-  }
-
-  void mapSelectedProductItem(ProductItem productItem){
-    _selectedProductItem = productItem;
+    return;
   }
 }
