@@ -1,12 +1,34 @@
+import 'dart:async';
+
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class ForgetPasswordOTPPage extends ConsumerWidget {
-  const ForgetPasswordOTPPage({super.key});
+class ForgetPasswordOTPPage extends ConsumerStatefulWidget {
+  final String email;
+  const ForgetPasswordOTPPage({super.key, required this.email});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ForgetPasswordOTPPage> createState() =>
+      _ForgetPasswordOTPPageState();
+}
+
+class _ForgetPasswordOTPPageState extends ConsumerState<ForgetPasswordOTPPage> {
+  late HttpAPIServices services;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(otpNotifierProvider.notifier).resetState();
+    });
+    services = HttpAPIServices();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final otpState = ref.watch(otpNotifierProvider);
 
     return BaseWrapper(
       label: locale.verification,
@@ -19,15 +41,15 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
           ),
           height(5),
           Text(
-            'sample@email.com',
+            widget.email,
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  fontSize: 13,
-                  color: AppColors.black,
-                ),
+              fontSize: 13,
+              color: AppColors.black,
+            ),
           ),
           height(30),
           OtpPinField(
-            maxLength: 6,
+            maxLength: 4,
             otpPinFieldStyle: const OtpPinFieldStyle(
               filledFieldBorderColor: AppColors.otpPinColor,
               defaultFieldBorderColor: AppColors.otpPinBorderColor,
@@ -43,23 +65,67 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
             fieldWidth: 40,
             fieldHeight: 40,
             otpPinFieldDecoration: OtpPinFieldDecoration.custom,
-            onSubmit: (text) =>
-                ref.read(forgetOTPProvider.notifier).state = text,
-            onChange: (text) =>
-                ref.read(forgetOTPProvider.notifier).state = text,
+            onSubmit:
+                (text) =>
+                    ref.read(otpNotifierProvider.notifier).updateOtp(text),
+            onChange:
+                (text) =>
+                    ref.read(otpNotifierProvider.notifier).updateOtp(text),
           ),
           height(40),
           Consumer(
             builder: (context, ref, child) {
-              var otp = ref.watch(forgetOTPProvider);
+              final otpState = ref.watch(otpNotifierProvider);
               return RoundedButtonWidget(
+                isLoading: otpState.isLoading,
                 btnTitle: locale.continueNext,
-                onTap: otp.length != 6
-                    ? null
-                    : () {
-                        context.pushRoute(NewPasswordRoute());
-                        ref.read(forgetOTPProvider.notifier).state = '';
-                      },
+                onTap:
+                    otpState.otp.length != 4
+                        ? null
+                        : () async {
+                          ref
+                              .read(otpNotifierProvider.notifier)
+                              .setLoading(true);
+                          try {
+                            final response = await services.postAPI(
+                              url: '/auth/verifyOTP',
+                              map: {
+                                "userId": StorageHelper().getUserId(),
+                                "activationCode": otpState.otp,
+                                "deviceType":
+                                    Platform.isAndroid ? "android" : "ios",
+                                "deviceId":
+                                    "dACC68I_SsOeP95zx5KyRc:APA91bGSili2JR9h6TnbhNUPoKeN1QsxDqpjOwNfJy_sCMgjhC-whoow8sOmXb-KlYbYZ_Qp8gl7c-EWTf1zK87rG8aWPHFmI7WuQ78qppVc_J9HJ7kagsnvDQg-5bFCtO0UJs2JZHHq",
+                              },
+                            );
+                            final data = jsonDecode(response.body);
+                            if (response.statusCode == 200) {
+                              final token = data['data']['accessToken'];
+                              StorageHelper().saveAccessToken(token);
+                              if (context.mounted) {
+                                context.pushRoute(NewPasswordRoute());
+                                showToast(
+                                  "Verification successful!",
+                                  context: context,
+                                );
+                              }
+                            } else {
+                              showToast(
+                                "Verification failed. Please try again.",
+                                context: context,
+                              );
+                            }
+                          } catch (e) {
+                            showToast(
+                              "Please try again later!",
+                              context: context,
+                            );
+                          } finally {
+                            ref
+                                .read(otpNotifierProvider.notifier)
+                                .setLoading(false);
+                          }
+                        },
               );
             },
           ),
@@ -69,7 +135,7 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "${locale.getCodeIn} 04:30   ",
+                  "${locale.getCodeIn} ${ref.read(otpNotifierProvider.notifier).getFormattedTime()}   ",
                   style: TextStyle(
                     fontSize: Dimensions.fontSizeSmall,
                     fontWeight: FontWeight.w500,
@@ -77,13 +143,20 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
                   ),
                 ),
                 InkWellButtonWidget(
-                  onTap: () {},
+                  onTap:
+                      otpState.canResend
+                          ? () =>
+                              ref.read(otpNotifierProvider.notifier).resendOtp()
+                          : null,
                   child: Text(
                     locale.resend,
                     style: TextStyle(
                       fontSize: Dimensions.fontSizeSmall,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.black,
+                      color:
+                          otpState.canResend
+                              ? AppColors.black
+                              : AppColors.lightText,
                     ),
                   ),
                 ),
@@ -96,4 +169,113 @@ class ForgetPasswordOTPPage extends ConsumerWidget {
   }
 }
 
-final forgetOTPProvider = StateProvider<String>((ref) => '');
+final otpNotifierProvider = StateNotifierProvider<OtpNotifier, OtpState>(
+  (ref) => OtpNotifier(),
+);
+
+// Define OtpState class
+class OtpState {
+  final String otp;
+  final int remainingSeconds;
+  final bool canResend;
+  final bool isLoading;
+
+  OtpState({
+    required this.otp,
+    required this.remainingSeconds,
+    required this.canResend,
+    this.isLoading = false,
+  });
+
+  OtpState copyWith({
+    String? otp,
+    int? remainingSeconds,
+    bool? canResend,
+    bool? isLoading,
+  }) {
+    return OtpState(
+      otp: otp ?? this.otp,
+      remainingSeconds: remainingSeconds ?? this.remainingSeconds,
+      canResend: canResend ?? this.canResend,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
+}
+
+class OtpNotifier extends StateNotifier<OtpState> {
+  Timer? _timer;
+
+  OtpNotifier()
+    : super(
+        OtpState(
+          otp: '',
+          remainingSeconds: 180, // 4 minutes 30 seconds
+          canResend: false,
+        ),
+      ) {
+    _startTimer();
+  }
+
+  // Update OTP input
+  void setLoading(bool loading) {
+    state = state.copyWith(isLoading: loading);
+  }
+
+  // Update OTP input
+  void updateOtp(String newOtp) {
+    state = state.copyWith(otp: newOtp);
+  }
+
+  // Start or restart the countdown timer
+  void _startTimer() {
+    _timer?.cancel(); // Cancel any existing timer
+    state = state.copyWith(remainingSeconds: 180, canResend: false);
+
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (state.remainingSeconds > 0) {
+        state = state.copyWith(remainingSeconds: state.remainingSeconds - 1);
+      } else {
+        state = state.copyWith(canResend: true);
+        timer.cancel();
+      }
+    });
+  }
+
+  // Format remaining time as mm:ss
+  String getFormattedTime() {
+    int minutes = state.remainingSeconds ~/ 60;
+    int seconds = state.remainingSeconds % 60;
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  // Handle resend action
+  Future<void> resendOtp() async {
+    if (state.canResend) {
+      _startTimer(); // Restart timer
+      try {
+        // Add logic to resend OTP (API call would go here)
+        // For example:
+        // await HttpApiServices().resendOTP(StorageHelper().getUserId());
+      } catch (e) {
+        // Handle resend error
+      }
+    }
+  }
+
+  void resetState() {
+    _timer?.cancel();
+    state = OtpState(
+      otp: '',
+      remainingSeconds: 180,
+      canResend: false,
+      isLoading: false,
+    );
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Clean up timer
+    super.dispose();
+  }
+}
