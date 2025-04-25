@@ -6,7 +6,7 @@ class PlaceOrderRepository {
   final HttpAPIServices _services = HttpAPIServices();
 
   final String secretKey =
-      "";
+      "sk_test_51MdYYoEO9c8tps038uOQo5cH2XwrYyJlSytOugOe8KJOTeXRZisfC4ahZOsZsGD4PcLWvoiEhjEqZNg5QNhxfgSI00nuydjjV2";
 
   Map<String, dynamic>? paymentIntent;
 
