@@ -145,8 +145,9 @@ class _ForgetPasswordOTPPageState extends ConsumerState<ForgetPasswordOTPPage> {
                 InkWellButtonWidget(
                   onTap:
                       otpState.canResend
-                          ? () =>
-                              ref.read(otpNotifierProvider.notifier).resendOtp()
+                          ? () => ref
+                              .read(otpNotifierProvider.notifier)
+                              .resendOtp(context)
                           : null,
                   child: Text(
                     locale.resend,
@@ -249,15 +250,29 @@ class OtpNotifier extends StateNotifier<OtpState> {
   }
 
   // Handle resend action
-  Future<void> resendOtp() async {
+  Future<void> resendOtp(BuildContext context) async {
+    HttpAPIServices services = HttpAPIServices();
     if (state.canResend) {
       _startTimer(); // Restart timer
       try {
-        // Add logic to resend OTP (API call would go here)
-        // For example:
-        // await HttpApiServices().resendOTP(StorageHelper().getUserId());
+        final response = await services.postAPI(
+          url: '/auth/resendOTP',
+          map: {
+            "userId": StorageHelper().getUserId(),
+            "authMethod": "email",
+            "deviceType": Platform.isAndroid ? "android" : "ios",
+          },
+        );
+
+        if (response.statusCode == 200) {
+          if (context.mounted) {
+            showToast("Otp has been re-sent to your email", context: context);
+          }
+        } else {
+          print("Error: ${response.statusCode}");
+        }
       } catch (e) {
-        // Handle resend error
+        print("Error: $e");
       }
     }
   }
