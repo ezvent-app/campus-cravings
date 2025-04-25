@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/controllers/product_details_controller.dart';
 import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
@@ -124,6 +125,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                                   child: InkWellButtonWidget(
                                     borderRadius: BorderRadius.circular(28),
                                     onTap: () {
+                                      Get.find<ProductDetailsController>().setProductId(e.items[index].id);
                                       context.pushRoute(
                                         ProductDetailsRoute(
                                           product: Product(
