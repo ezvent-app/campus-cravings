@@ -83,7 +83,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   ),
   datePickerTheme: DatePickerThemeData(
     backgroundColor: Colors.white,
-    rangeSelectionBackgroundColor: Colors.purple,
+    rangeSelectionBackgroundColor: AppColors.accent,
     todayForegroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
       if (states.contains(WidgetState.selected)) {
         return Colors.white;
@@ -128,7 +128,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   scaffoldBackgroundColor: Colors.white,
   progressIndicatorTheme: ProgressIndicatorThemeData(
     linearTrackColor: Colors.grey.shade200,
-    color: Colors.purple,
+    color: AppColors.accent,
   ),
   primaryColor: AppColors.accent,
   chipTheme: ChipThemeData(

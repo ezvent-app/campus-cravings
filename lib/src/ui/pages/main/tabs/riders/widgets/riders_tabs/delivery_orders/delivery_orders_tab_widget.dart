@@ -19,13 +19,13 @@ class _ConsumerDeliveryOrdersTabWidgetState
       confirmDeliveryBottomSheet();
     });
     startTimer();
-    ref
-        .read(locationProvider.notifier)
-        .setupMarkersAndPolylines(
-          context: context,
-          ryderLocation: _ryderLocation,
-          markerWidget: CustomMarkerWidget(),
-        );
+    // ref
+    //     .read(locationProvider.notifier)
+    //     .setupMarkersAndPolylines(
+    //       context: context,
+    //       ryderLocation: _ryderLocation,
+    //       markerWidget: CustomMarkerWidget(),
+    //     );
 
     super.initState();
   }
