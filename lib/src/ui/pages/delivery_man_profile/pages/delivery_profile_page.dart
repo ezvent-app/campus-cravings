@@ -186,6 +186,7 @@ class DeliverySetupPage extends ConsumerWidget {
                                 "majors": majors,
                                 "monirs": minors,
                                 "club_organizations": clubs,
+                                // "isDelivery": true,
                                 "location": {"lat": 37.7749, "lng": -122.4194},
                               },
                             );

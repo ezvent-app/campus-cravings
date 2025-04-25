@@ -25,4 +25,5 @@ export 'router/routes.dart';
 export 'services/services.dart';
 export 'theme/theme.dart';
 export 'repository/repository.dart';
+export 'socket/socket.dart';
 export 'ui/ui.dart' hide SplashScreen;
