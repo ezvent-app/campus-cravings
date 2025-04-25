@@ -4,6 +4,7 @@ class StorageHelper {
   static const String _userId = "_id";
   static const String _accessToken = "accessToken";
   static const String _isProfileComple = "isProfileComplet";
+  static const String _isRiderProfileComple = "isRiderProfileComple";
   static final StorageHelper _singleton = StorageHelper._internal();
   StorageHelper._internal();
 
@@ -54,6 +55,14 @@ class StorageHelper {
 
   void saveIsProfilefileComplete(bool value) {
     _savePref(_isProfileComple, value);
+  }
+
+  void saveRiderProfileComplete(bool value) {
+    _savePref(_isRiderProfileComple, value);
+  }
+
+  bool getRiderProfilefileComplete() {
+    return _getPref(_isRiderProfileComple) ?? false;
   }
 
   bool getIsProfilefileComplete() {

@@ -331,7 +331,7 @@ class DeliveryTabWidget extends ConsumerWidget {
             height: 48,
             margin: const EdgeInsets.only(bottom: 36),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // final json = {
                 //   "payment_method": "cash",
                 //   "tip": 3,
@@ -362,7 +362,21 @@ class DeliveryTabWidget extends ConsumerWidget {
                 //   ],
                 // };
                 // _repository.placeOrderMethod(json, context);
-                context.pushRoute(const CheckoutAddressRoute());
+                // context.pushRoute(const CheckoutAddressRoute());
+
+                await _repository.makePayment(
+                  context: context,
+                  purchaseName: "",
+                  title: "Garden Service",
+                  amountPaid: 500,
+                  merchantDisplayName: "Default Merchant",
+                  onSuccess: (transactionId) async {
+                    print(
+                      "Payment Successful with Transaction ID: $transactionId",
+                    );
+                    //  _repository.placeOrderMethod(json, context);
+                  },
+                );
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

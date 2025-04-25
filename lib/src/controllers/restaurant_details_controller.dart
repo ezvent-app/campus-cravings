@@ -3,7 +3,6 @@ import 'package:campuscravings/src/repository/home_repository/restaurant_reposit
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:intl/intl.dart';
 import '../models/restaurant_details_model.dart';
 
 class RestaurantDetailsController extends GetxController{

@@ -1,5 +1,7 @@
 import 'package:campuscravings/src/src.dart';
 
+import '../../../constants/storageHelper.dart';
+
 @RoutePage()
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -11,7 +13,10 @@ class MainPage extends StatelessWidget {
         HomeTabRoute(),
         OrdersTabRoute(),
         CartTabRoute(isFromNavBar: true),
-        RidersTabRoute(),
+        StorageHelper().getRiderProfilefileComplete() == true
+            ? RidersTabRoute()
+            : DeliveryRegistrationRoute(),
+
         ProfileTabRoute(),
       ],
       builder: (context, child, tabController) {
