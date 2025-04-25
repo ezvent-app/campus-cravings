@@ -59,7 +59,8 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                               builder:
                                   (context) => OrdersDetailsPage(
                                     storeName: order.restaurant.name,
-                                    deliveryAddress: order.address.address,
+                                    deliveryAddress:
+                                        order.address.address ?? '123 address',
                                     orderNumber: order.id.substring(0, 6),
                                     customizationList:
                                         order.items[0].customizationList,
