@@ -6,7 +6,7 @@ export 'main/tabs/profile/pages/payment_methods/new_card/new_card_page.dart';
 export 'onboarding/onboarding_page.dart';
 export 'main/tabs/profile/pages/payment_methods/payment_methods_page.dart';
 export 'main/main_paths.dart';
-export 'auth/auth.dart';
+export 'auth/auth.dart' hide newPasswordProvider;
 export 'main/tabs/orders/orders_path.dart';
 export 'main/tabs/profile/pages/profile_form/profile_form_paths.dart';
 export './delivery_man_profile/delivery_man_profile_path.dart';

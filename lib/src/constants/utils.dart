@@ -9,11 +9,9 @@ showToast(String message, {BuildContext? context, Color? bgColor}) {
   final overlayEntry = OverlayEntry(
     builder:
         (context) => Positioned(
-          top:
-              MediaQuery.of(context).padding.top +
-              10, 
-          left: 2,
-          right: 2,
+          top: MediaQuery.of(context).padding.top + 10,
+          left: 0,
+          right: 0,
           child: Material(
             color: Colors.transparent,
             child: Container(

@@ -188,7 +188,7 @@ class ChangePasswordRoute extends _i42.PageRouteInfo<void> {
   static _i42.PageInfo page = _i42.PageInfo(
     name,
     builder: (data) {
-      return const _i5.ChangePasswordPage();
+      return _i5.ChangePasswordPage();
     },
   );
 }
