@@ -22,6 +22,7 @@ class HttpService {
     final token = StorageHelper().getAccessToken();
     if (token != null) {
       setToken(token);
+      log(_baseUrl);
     } else {
       log("Token Not Found");
     }
