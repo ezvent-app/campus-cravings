@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/models/product_item_detail_model.dart';
 import 'package:campuscravings/src/src.dart';
 
 final cartItemsProvider = StateNotifierProvider<CartNotifier, List<CartItem>>(
@@ -44,6 +45,30 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     if (currentQuantity > 1) {
       final updatedItem = state[index].copyWith(quantity: currentQuantity - 1);
       state = [...state]..[index] = updatedItem;
+    }
+  }
+
+  void selectSize(int index, String sizeID) {
+    if (index >= 0 && index < state.length) {
+      final updatedItem = state[index].copyWith(size: sizeID);
+      state = [...state]..[index] = updatedItem;
+      print("✅ Size updated to $sizeID at index $index");
+    } else {
+      print(
+        "❌ Invalid index for selectSize: $index (List length: ${state.length})",
+      );
+    }
+  }
+
+  void updateCustomization(int index, List<CustomizationModel> customizations) {
+    if (index >= 0 && index < state.length) {
+      final updatedItem = state[index].copyWith(customization: customizations);
+      state = [...state]..[index] = updatedItem;
+      print("✅ Customizations updated at index $index");
+    } else {
+      print(
+        "❌ Invalid index for updateCustomization: $index (List length: ${state.length})",
+      );
     }
   }
 }

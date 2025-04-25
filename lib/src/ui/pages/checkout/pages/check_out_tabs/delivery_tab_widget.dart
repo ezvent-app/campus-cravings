@@ -343,17 +343,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       "coordinates": [73.1234, 33.5678],
                     },
                   },
-                  "items": [
-                    {
-                      "item_id": "680a4eed4c04dca91c7a1ad8",
-                      "quantity": 2,
-                      "customizations": [
-                        "680a4eed4c04dca91c7a1ad9", // Customization Id
-                        "680a4eed4c04dca91c7a1adb", // Customization Id
-                      ],
-                      "size": "680a4eed4c04dca91c7a1adc",
-                    },
-                  ],
+                  "items": orderItemsJson,
                 };
                 _repository.placeOrderMethod(json, context);
                 // context.pushRoute(const CheckoutAddressRoute());

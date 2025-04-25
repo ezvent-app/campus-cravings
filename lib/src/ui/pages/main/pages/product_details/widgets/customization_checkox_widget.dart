@@ -1,26 +1,25 @@
 import 'package:campuscravings/src/models/product_item_detail_model.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../../../src.dart';
 
-class CustomizationCheckboxWidget extends StatefulWidget {
+class CustomizationCheckboxWidget extends ConsumerStatefulWidget {
   final List<CustomizationModel> customizations;
 
-  const CustomizationCheckboxWidget({
-    required this.customizations,
-    Key? key,
-  }) : super(key: key);
+  const CustomizationCheckboxWidget({required this.customizations, super.key});
 
   @override
-  State<CustomizationCheckboxWidget> createState() => _CustomizationCheckboxWidgetState();
+  ConsumerState<CustomizationCheckboxWidget> createState() =>
+      _ConsumerCustomizationCheckboxWidgetState();
 }
 
-class _CustomizationCheckboxWidgetState extends State<CustomizationCheckboxWidget> {
+class _ConsumerCustomizationCheckboxWidgetState
+    extends ConsumerState<CustomizationCheckboxWidget> {
   final List<CustomizationModel> _selectedCustomizations = [];
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final cartNotifier = ref.read(cartItemsProvider.notifier);
     return Column(
       children: [
         height(20),
@@ -35,14 +34,16 @@ class _CustomizationCheckboxWidgetState extends State<CustomizationCheckboxWidge
                 ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
               ),
             ),
-            Expanded(child: Text(
+            Expanded(
+              child: Text(
                 "add toppings to your meal",
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           ],
         ),
-        ...widget.customizations.map((CustomizationModel customization) {
+        ...List.generate(widget.customizations.length, (index) {
+          final customization = widget.customizations[index];
           final isSelected = _selectedCustomizations.contains(customization);
 
           return CheckboxListTile(
@@ -55,11 +56,16 @@ class _CustomizationCheckboxWidgetState extends State<CustomizationCheckboxWidge
                 } else {
                   _selectedCustomizations.remove(customization);
                 }
+
+                cartNotifier.updateCustomization(
+                  index,
+                  _selectedCustomizations,
+                );
               });
             },
             controlAffinity: ListTileControlAffinity.leading,
           );
-        })
+        }),
       ],
     );
   }

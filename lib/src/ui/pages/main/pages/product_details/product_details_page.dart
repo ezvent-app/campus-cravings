@@ -378,6 +378,12 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               .read(cartItemsProvider.notifier)
                               .addItem(
                                 CartItem(
+                                  size:
+                                      controller
+                                          .productItemDetailModel!
+                                          .sizes
+                                          .first
+                                          .id,
                                   customization:
                                       controller
                                           .productItemDetailModel

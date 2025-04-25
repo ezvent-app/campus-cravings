@@ -7,8 +7,10 @@ class CartItem {
   final int quantity;
   final String image;
   final List<CustomizationModel> customization;
+  final String size;
 
   CartItem({
+    required this.size,
     required this.image,
     required this.id,
     required this.name,
@@ -17,8 +19,13 @@ class CartItem {
     required this.customization,
   });
 
-  CartItem copyWith({int? quantity}) => CartItem(
-    customization: customization,
+  CartItem copyWith({
+    int? quantity,
+    String? size,
+    List<CustomizationModel>? customization,
+  }) => CartItem(
+    size: size ?? this.size,
+    customization: customization ?? this.customization,
     image: image,
     id: id,
     name: name,
@@ -33,6 +40,7 @@ extension CartItemToJson on CartItem {
       "item_id": id,
       "quantity": quantity,
       "customizations": customization.map((e) => e.id).toList(),
+      "size": size,
     };
   }
 }

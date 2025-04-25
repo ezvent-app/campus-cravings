@@ -19,6 +19,7 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final cartNotifier = ref.read(cartItemsProvider.notifier);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,66 +43,68 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
           ],
         ),
         GetBuilder<ProductDetailsController>(
-            builder: (controller){
-              return ListView.separated(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: controller.productItemDetailModel?.sizes.length ?? 0,
-                padding: const EdgeInsets.only(top: 10),
-                itemBuilder: (context, index) {
-                  final size = controller.productItemDetailModel?.sizes[index];
-                  return InkWellButtonWidget(
-                    onTap: () {
-                      setState(() {
-                        _selectedSize = index;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 25,
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 20,
-                            height: 20,
-                            margin: const EdgeInsets.only(right: 12),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: _selectedSize == index
-                                    ? AppColors.accent
-                                    : AppColors.dividerColor,
-                                width: _selectedSize == index ? 6 : 1,
-                              ),
+          builder: (controller) {
+            return ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: controller.productItemDetailModel?.sizes.length ?? 0,
+              padding: const EdgeInsets.only(top: 10),
+              itemBuilder: (context, index) {
+                final size = controller.productItemDetailModel?.sizes[index];
+                return InkWellButtonWidget(
+                  onTap: () {
+                    setState(() {
+                      _selectedSize = index;
+                      cartNotifier.selectSize(index, size.id);
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 25,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 20,
+                          height: 20,
+                          margin: const EdgeInsets.only(right: 12),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color:
+                                  _selectedSize == index
+                                      ? AppColors.accent
+                                      : AppColors.dividerColor,
+                              width: _selectedSize == index ? 6 : 1,
                             ),
                           ),
-                          Text(
-                            size!.name ?? '',
-                            style: const TextStyle(color: Color(0xff2E3138)),
-                          ),
-                          const Spacer(),
-                          Text(
-                            '\$+${size.price.toStringAsFixed(2)}',
-                            style: const TextStyle(color: Color(0xff2E3138)),
-                          ),
-                        ],
-                      ),
+                        ),
+                        Text(
+                          size!.name,
+                          style: const TextStyle(color: Color(0xff2E3138)),
+                        ),
+                        const Spacer(),
+                        Text(
+                          '\$+${size.price.toStringAsFixed(2)}',
+                          style: const TextStyle(color: Color(0xff2E3138)),
+                        ),
+                      ],
                     ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Divider(
-                    color: AppColors.dividerColor,
-                    height: 0,
-                    endIndent: 25,
-                    indent: 25,
-                  );
-                },
-              );
-            }
-        )
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider(
+                  color: AppColors.dividerColor,
+                  height: 0,
+                  endIndent: 25,
+                  indent: 25,
+                );
+              },
+            );
+          },
+        ),
       ],
     );
   }
