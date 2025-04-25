@@ -30,6 +30,7 @@ class UserInfo {
   String? userName;
   String? authMethod;
   String? email;
+  String? phoneNumber;
   List<Addresses>? addresses;
   String? status;
   bool? isRestaurant;
@@ -66,12 +67,14 @@ class UserInfo {
     this.notificationCount,
     this.planPro,
     this.iV,
+    this.phoneNumber,
     this.imgUrl,
   });
 
   UserInfo.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     firstName = json['firstName'];
+    phoneNumber = json['phoneNumber'];
     lastName = json['lastName'];
     fullName = json['fullName'];
     userName = json['userName'];
@@ -101,6 +104,7 @@ class UserInfo {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
+    data['phoneNumber'] = this.phoneNumber;
     data['firstName'] = this.firstName;
     data['lastName'] = this.lastName;
     data['fullName'] = this.fullName;
