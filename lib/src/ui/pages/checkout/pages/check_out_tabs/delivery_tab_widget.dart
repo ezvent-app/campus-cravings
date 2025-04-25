@@ -1,11 +1,21 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/pages/main/tabs/cart/cart_tab.dart';
 
 class DeliveryTabWidget extends ConsumerWidget {
-  const DeliveryTabWidget({super.key});
+  DeliveryTabWidget({super.key});
 
+  final PlaceOrderRepository _repository = PlaceOrderRepository();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
+    final cartItems = ref.watch(cartProvider);
+    final cartNotifier = ref.read(cartProvider.notifier);
+    final subtotal = cartItems
+        .map((item) => item.price * item.quantity)
+        .fold(0.0, (a, b) => a + b);
+
+    final tip = ref.watch(selectedTipProvider);
+    final total = subtotal + tip;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: BouncingScrollPhysics(),
@@ -69,7 +79,8 @@ class DeliveryTabWidget extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Column(
-                  children: List.generate(4, (index) {
+                  children: List.generate(cartItems.length, (index) {
+                    final item = cartItems[index];
                     return Column(
                       children: [
                         const Divider(
@@ -82,7 +93,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               PngAsset(
-                                'mock_product_1',
+                                item.image,
                                 height: 80,
                                 width: 80,
                                 fit: BoxFit.cover,
@@ -96,7 +107,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Mixed Vegetable Salad',
+                                        item.title,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(
@@ -107,21 +118,19 @@ class DeliveryTabWidget extends ConsumerWidget {
                                         ),
                                       ),
                                       height(10),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '\$12.00',
-                                            overflow: TextOverflow.ellipsis,
-                                            style:
-                                                Theme.of(
-                                                  context,
-                                                ).textTheme.titleSmall,
-                                          ),
-                                          width(10),
-                                          QuantitySelectorWidget(),
-                                        ],
+                                      QuantitySelectorWidget(
+                                        onQuantityDecrementChanged:
+                                            item.quantity <= 1
+                                                ? null
+                                                : () => cartNotifier
+                                                    .decrementQuantity(index),
+                                        onQuantityIncrementChanged:
+                                            item.quantity >= 10
+                                                ? null
+                                                : () => cartNotifier
+                                                    .incrementQuantity(index),
+                                        price: item.price,
+                                        quantity: item.quantity,
                                       ),
                                     ],
                                   ),
@@ -235,7 +244,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$24.00',
+                          "\$${cartItems.map((item) => item.price * item.quantity).fold(0.0, (a, b) => a + b).toStringAsFixed(2)}",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -262,7 +271,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$2.00',
+                          '\$ $tip',
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -301,7 +310,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$26.00',
+                          "\$$total",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -323,6 +332,36 @@ class DeliveryTabWidget extends ConsumerWidget {
             margin: const EdgeInsets.only(bottom: 36),
             child: ElevatedButton(
               onPressed: () {
+                // final json = {
+                //   "payment_method": "cash",
+                //   "tip": 3,
+                //   "delivery_fee": 2,
+                //   "addresses": {
+                //     "address": "123 Main St",
+                //     "coordinates": {
+                //       "type": "Point",
+                //       "coordinates": [73.1234, 33.5678],
+                //     },
+                //   },
+                //   "items": [
+                //     {
+                //       "item_id": "68062020b63dae4410847f75",
+                //       "quantity": 2,
+                //       "customizations": [
+                //         "68062020b63dae4410847f76",
+                //         "68062020b63dae4410847f77",
+                //       ],
+                //     },
+                //     {
+                //       "item_id": "68062026b63dae4410847f82",
+                //       "quantity": 5,
+                //       "customizations": [
+                //         "68062026b63dae4410847f85", // Customization Id
+                //       ],
+                //     },
+                //   ],
+                // };
+                // _repository.placeOrderMethod(json, context);
                 context.pushRoute(const CheckoutAddressRoute());
               },
               style: ElevatedButton.styleFrom(
@@ -394,8 +433,11 @@ class DeliveryTabWidget extends ConsumerWidget {
                         tipsList.length,
                         (i) => InkWellButtonWidget(
                           borderRadius: BorderRadius.circular(15),
-                          onTap:
-                              () => ref.read(tipsProvider.notifier).state = i,
+                          onTap: () {
+                            ref.read(tipsProvider.notifier).state = i;
+                            ref.read(selectedTipProvider.notifier).state =
+                                tipsList[i];
+                          },
                           child: Padding(
                             padding: const EdgeInsets.all(5),
                             child: Container(
@@ -434,7 +476,19 @@ class DeliveryTabWidget extends ConsumerWidget {
                   },
                 ),
                 height(20),
-                CustomTextField(label: 'Enter tip', hintText: '\$2'),
+                Consumer(
+                  builder: (context, ref, child) {
+                    return CustomTextField(
+                      label: 'Enter tip',
+                      hintText: '\$2',
+                      textInputType: TextInputType.number,
+                      onSubmitted:
+                          (value) =>
+                              ref.read(selectedTipProvider.notifier).state =
+                                  int.tryParse(value)!,
+                    );
+                  },
+                ),
                 height(30),
                 RoundedButtonWidget(
                   btnTitle: locale.confirm,
@@ -450,3 +504,4 @@ class DeliveryTabWidget extends ConsumerWidget {
 }
 
 final tipsProvider = StateProvider((ref) => 0);
+final selectedTipProvider = StateProvider((ref) => 0);

@@ -38,6 +38,12 @@ dependencies:
   google_maps_flutter: ^2.12.1
   geolocator: ^14.0.0
   custom_marker_builder: ^0.0.3+1
+  logger: ^2.5.0
+  get: ^4.7.2
+  shimmer: ^3.0.0
+  location: ^8.0.0
+  cached_network_image: ^3.4.1
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:

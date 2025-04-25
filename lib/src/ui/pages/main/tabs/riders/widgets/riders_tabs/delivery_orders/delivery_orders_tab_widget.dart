@@ -19,6 +19,14 @@ class _ConsumerDeliveryOrdersTabWidgetState
       confirmDeliveryBottomSheet();
     });
     startTimer();
+    ref
+        .read(locationProvider.notifier)
+        .setupMarkersAndPolylines(
+          context: context,
+          ryderLocation: _ryderLocation,
+          markerWidget: CustomMarkerWidget(),
+        );
+
     super.initState();
   }
 
@@ -42,6 +50,22 @@ class _ConsumerDeliveryOrdersTabWidgetState
     super.dispose();
   }
 
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14,
+  );
+
+  final LatLng _ryderLocation = const LatLng(33.642631, 72.961899);
+
+  Future<void> animateToUserLocation(LatLng latLng) async {
+    final controller = await _controller.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(CameraPosition(target: latLng, zoom: 16)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -51,6 +75,15 @@ class _ConsumerDeliveryOrdersTabWidgetState
     double topPosition = height * 0.44;
     double leftPosition = wdth * 0.85;
     double buttonWidth = wdth * 0.8;
+
+    final locationAsync = ref.watch(locationProvider);
+
+    locationAsync.whenData((locationModel) {
+      animateToUserLocation(locationModel.latLng);
+    });
+
+    final locationState = ref.watch(locationProvider);
+    final location = locationState.value;
     return Builder(
       builder: (context) {
         return Consumer(
@@ -58,48 +91,46 @@ class _ConsumerDeliveryOrdersTabWidgetState
             final isAccept = ref.watch(riderProvider);
             return Stack(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: height * 0.9,
-                  child: Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.only(
-                      bottom: isAccept["isAccept"] ? 100 : 0,
-                    ),
-                    child: const PngAsset(
-                      'map_image',
-                      fit: BoxFit.fitWidth,
-                    ),
+                Positioned.fill(
+                  child: GoogleMap(
+                    mapType: MapType.satellite,
+                    myLocationEnabled: true,
+                    indoorViewEnabled: true,
+                    trafficEnabled: true,
+                    initialCameraPosition: _kGooglePlex,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                    markers: location?.markers ?? {},
+                    polylines: location?.polylines ?? {},
                   ),
                 ),
                 isAccept["isAccept"]
                     ? Positioned(
-                        top: topPosition,
-                        left: leftPosition - buttonWidth / 2,
-                        child: Card(
-                          color: AppColors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          margin: EdgeInsets.all(10),
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Row(
-                              children: [
-                                SvgAssets("rider_dir", width: 28, height: 28),
-                                width(10),
-                                Text(
-                                  "Navigation",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall!
-                                      .copyWith(color: AppColors.white),
-                                ),
-                              ],
-                            ),
+                      top: topPosition,
+                      left: leftPosition - buttonWidth / 2,
+                      child: Card(
+                        color: AppColors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        margin: EdgeInsets.all(10),
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Row(
+                            children: [
+                              SvgAssets("rider_dir", width: 28, height: 28),
+                              width(10),
+                              Text(
+                                "Navigation",
+                                style: Theme.of(context).textTheme.titleSmall!
+                                    .copyWith(color: AppColors.white),
+                              ),
+                            ],
                           ),
                         ),
-                      )
+                      ),
+                    )
                     : SizedBox(),
                 isAccept["isAccept"]
                     ? AnimatedRidersDeliveryDetailsWrapper()
@@ -139,9 +170,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                         width(10),
                         Text(
                           'Guaranteed',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
+                          style: Theme.of(context).textTheme.bodyMedium!
                               .copyWith(color: AppColors.black),
                         ),
                       ],
@@ -214,9 +243,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                             children: [
                               Text(
                                 'Pickup',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
+                                style: Theme.of(context).textTheme.bodyMedium!
                                     .copyWith(color: AppColors.black),
                               ),
                               Text(
@@ -226,9 +253,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                               height(48),
                               Text(
                                 'Customer Dropoff',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
+                                style: Theme.of(context).textTheme.bodyMedium!
                                     .copyWith(color: AppColors.black),
                               ),
                             ],
@@ -285,10 +310,10 @@ class _ConsumerDeliveryOrdersTabWidgetState
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium!.copyWith(
-                                color: AppColors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
+                            color: AppColors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),

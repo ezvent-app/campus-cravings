@@ -6,13 +6,13 @@ class LoginPage extends ConsumerWidget {
   LoginPage({super.key});
 
   ValueNotifier<bool> password = ValueNotifier<bool>(false);
-  HttpApiServices services = HttpApiServices();
+  HttpAPIServices services = HttpAPIServices();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     final locale = AppLocalizations.of(context)!;
-    HttpApiServices services = HttpApiServices();
+    HttpAPIServices services = HttpAPIServices();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(

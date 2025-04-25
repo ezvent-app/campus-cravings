@@ -25,7 +25,7 @@ class ProfileFormPage extends ConsumerStatefulWidget {
 class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
   final List<String> _roles = ['Student', 'Faculty'];
   late String _selectedRole;
-  HttpApiServices services = HttpApiServices();
+  HttpAPIServices services = HttpAPIServices();
   File? image;
 
   @override

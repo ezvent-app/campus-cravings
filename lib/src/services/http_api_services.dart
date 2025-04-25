@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:campuscravings/src/src.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
-class HttpApiServices extends BaseApiServices {
+class HttpAPIServices extends BaseApiServices {
   final HttpService service = HttpService();
   late SharedPreferences pref;
   @override
