@@ -3,8 +3,21 @@ import 'package:campuscravings/src/src.dart';
 import 'package:flutter/cupertino.dart';
 
 @RoutePage()
-class HomeTabPage extends StatelessWidget {
+class HomeTabPage extends StatefulWidget {
   const HomeTabPage({super.key});
+
+  @override
+  State<HomeTabPage> createState() => _HomeTabPageState();
+}
+
+class _HomeTabPageState extends State<HomeTabPage> {
+  @override
+  void initState() {
+    // TODO: implement
+    UserInfoRepository info = UserInfoRepository();
+    info.fetchUserProfile();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

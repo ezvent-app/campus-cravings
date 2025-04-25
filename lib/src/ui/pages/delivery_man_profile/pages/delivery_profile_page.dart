@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -197,6 +198,7 @@ class DeliverySetupPage extends ConsumerWidget {
                               context.router.replaceAll([
                                 const AddPayoutRoute(),
                               ]);
+                              StorageHelper().saveRiderProfileComplete(true);
                             } else {
                               showToast(
                                 context: context,
