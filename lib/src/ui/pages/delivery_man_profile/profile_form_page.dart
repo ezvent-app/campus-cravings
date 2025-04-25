@@ -118,7 +118,8 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                 String base64Image = base64Encode(bytes);
                                 ref.read(signUpProvider.notifier).state = {
                                   ...ref.read(signUpProvider),
-                                  'imgBase64': base64Image,
+                                  'imgBase64':
+                                      'data:image/${result.files.single.extension};base64,$base64Image',
                                 };
                               }
                             }

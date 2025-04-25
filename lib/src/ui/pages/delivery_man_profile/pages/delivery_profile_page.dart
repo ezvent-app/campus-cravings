@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -71,7 +74,8 @@ class DeliverySetupPage extends ConsumerWidget {
                     String base64Image = base64Encode(bytes);
                     ref.read(deliverySetupProvider.notifier).state = {
                       ...ref.read(deliverySetupProvider),
-                      'imgBase64': base64Image,
+                      'imgBase64':
+                          'data:image/${result.files.single.extension};base64,$base64Image',
                     };
                   }
                 }
@@ -186,6 +190,7 @@ class DeliverySetupPage extends ConsumerWidget {
                                 "majors": majors,
                                 "monirs": minors,
                                 "club_organizations": clubs,
+                                // "isDelivery": true,
                                 "location": {"lat": 37.7749, "lng": -122.4194},
                               },
                             );
@@ -193,6 +198,7 @@ class DeliverySetupPage extends ConsumerWidget {
                               context.router.replaceAll([
                                 const AddPayoutRoute(),
                               ]);
+                              StorageHelper().saveRiderProfileComplete(true);
                             } else {
                               showToast(
                                 context: context,
