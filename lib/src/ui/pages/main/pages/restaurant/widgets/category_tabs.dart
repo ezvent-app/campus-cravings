@@ -146,7 +146,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                                               24,
                                             ),
                                             child: CustomNetworkImage(
-                                              e.items[index].images[0],
+                                              e.items[index].image[0],
                                               fit: BoxFit.cover,
                                               height: 100,
                                               width: 100,

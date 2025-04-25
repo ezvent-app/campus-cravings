@@ -30,7 +30,7 @@ class RestaurantRepository{
 
   Future<RestaurantDetailsModel?> getRestaurantAllCategories({required String restaurantId}) async{
     try{
-      final response = await _httpApiServices.getAPI('/restaurants/getrestaurantAllCategory/68061fbab63dae4410847f2a');
+      final response = await _httpApiServices.getAPI('/restaurants/getrestaurantAllCategory/680bb695c2c1e39fb839c441');
       Logger().i("${response.statusCode} - ${response.body}");
       if(response.statusCode != 200) return null;
       return RestaurantDetailsModel.fromJson(jsonDecode(response.body)['RestaurantData']);
