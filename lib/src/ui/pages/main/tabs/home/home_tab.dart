@@ -9,8 +9,8 @@ class HomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    // UserInfoRepository userInfo = UserInfoRepository();
-    // userInfo.fetchUserProfile();
+    UserInfoRepository info = UserInfoRepository();
+    info.fetchUserProfile();
     return Scaffold(
       body: SafeArea(
         bottom: false,

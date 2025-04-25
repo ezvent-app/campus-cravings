@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 
 import '../../models/User Model/user_info_model.dart';
@@ -12,7 +13,10 @@ class UserInfoRepository {
       print('User Info Response: ${response.body}');
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final user = UserModel.fromJson(data['userInfo']); // <- FIXED
+        final user = UserModel.fromJson(data);
+        final isRider = data['userInfo']['isDelivery'];
+        StorageHelper().saveRiderProfileComplete(isRider);
+
         print('Parsed UserModel: ${user.toJson()}');
         return UserModel.fromJson(data);
       } else {
