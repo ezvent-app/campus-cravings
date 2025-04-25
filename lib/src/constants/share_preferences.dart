@@ -12,6 +12,15 @@ class SharePreferences {
   static setString({required String key, value}) async =>
       await pref.setString(key, value);
 
+  // SET LIST
+
+  static setList({required String key, dynamic value}) async =>
+      await pref.setStringList(key, value);
+
+  // GET LIST
+
+  static getList(String key) => pref.getStringList(key);
+
   // GET STRING
 
   static getString(String key) => pref.getString(key);

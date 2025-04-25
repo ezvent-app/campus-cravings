@@ -4,7 +4,7 @@ import 'package:campuscravings/src/models/Rider_History_Model/rider_history.dart
 import 'package:campuscravings/src/src.dart';
 
 class HistoryRepository {
-  final HttpApiServices services = HttpApiServices();
+  final HttpAPIServices services = HttpAPIServices();
 
   Future<RiderHistory> fetchUserHistory() async {
     try {
@@ -12,6 +12,10 @@ class HistoryRepository {
       print('Response: ${response.body}');
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        final riderHistory = RiderHistory.fromJson(data);
+        // ✅ Print parsed model details
+        print('\nParsed RiderHistory Model:');
+        print('Message: ${riderHistory.message}');
         return RiderHistory.fromJson(data);
       } else {
         return Future.error(

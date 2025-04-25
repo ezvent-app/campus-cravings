@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class HttpService {
   static final HttpService _instance = HttpService._internal();
@@ -14,7 +15,7 @@ class HttpService {
   final Map<String, String> _headers = {"Content-Type": "application/json"};
 
   void setToken(String token) {
-    _headers["x-access-token"] = "$token";
+    _headers["x-access-token"] = token;
     _headers["Authorization"] = "Bearer $token";
   }
 
@@ -51,7 +52,9 @@ class HttpService {
       final response = await http
           .post(url, headers: _headers, body: jsonEncode(data))
           .timeout(const Duration(seconds: 60));
-      log("POST response: ${response.body}");
+      log(
+        "POST response Status Code ${response.statusCode} : ${response.body}",
+      );
       return response;
     } catch (e) {
       log("POST request error: $e");

@@ -8,7 +8,7 @@ class CustomAppBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isIOS = Platform.isIOS;
     return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 32),
+      padding: const EdgeInsets.only(top: 10, bottom: 32),
       child: Row(
         children: [
           Padding(

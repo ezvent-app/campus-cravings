@@ -25,7 +25,7 @@ class ProfileFormPage extends ConsumerStatefulWidget {
 class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
   final List<String> _roles = ['Student', 'Faculty'];
   late String _selectedRole;
-  HttpApiServices services = HttpApiServices();
+  HttpAPIServices services = HttpAPIServices();
   File? image;
 
   @override
@@ -118,7 +118,8 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                 String base64Image = base64Encode(bytes);
                                 ref.read(signUpProvider.notifier).state = {
                                   ...ref.read(signUpProvider),
-                                  'imgBase64': base64Image,
+                                  'imgBase64':
+                                      'data:image/${result.files.single.extension};base64,$base64Image',
                                 };
                               }
                             }

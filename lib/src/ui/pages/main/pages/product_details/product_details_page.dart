@@ -1,4 +1,6 @@
+import 'package:campuscravings/src/controllers/product_catalog_controller.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:get/get.dart';
 
 @RoutePage()
 class ProductDetailsPage extends ConsumerStatefulWidget {
@@ -50,8 +52,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             },
                             itemBuilder: (context, index) {
                               return PngAsset(
-                                productImages[
-                                    index], // Replace with actual asset reference
+                                productImages[index], // Replace with actual asset reference
                                 fit: BoxFit.fitWidth,
                               );
                             },
@@ -101,8 +102,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(productImages.length, (
-                            index,
-                          ) {
+                              index,
+                              ) {
                             bool isSelected = _selectedIndex == index;
                             return AnimatedContainer(
                               duration: Duration(milliseconds: 300),
@@ -112,7 +113,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.white),
-                                color: isSelected
+                                color:
+                                isSelected
                                     ? Colors.white
                                     : Colors.transparent,
                               ),
@@ -126,13 +128,13 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 25,
+                          horizontal: 20,
                           vertical: 20,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
+                            Wrap(
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +148,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                     ),
                                     SizedBox(height: 5),
                                     Text(
-                                      'Double Hamburger',
+                                      "controller.selectedProductItem.itemDetails.name",
                                       style: TextStyle(
                                         color: Color(0xff27261E),
                                         fontWeight: FontWeight.w600,
@@ -155,8 +157,12 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                     ),
                                   ],
                                 ),
-                                Spacer(),
-                                QuantitySelectorWidget(),
+                                QuantitySelectorWidget(
+                                  quantity: 1,
+                                  price: 12,
+                                  onQuantityDecrementChanged: () {},
+                                  onQuantityIncrementChanged: () {},
+                                ),
                               ],
                             ),
                             Padding(
@@ -166,7 +172,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           locale.calories,
@@ -204,7 +210,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           locale.time,
@@ -226,7 +232,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                                 left: 5,
                                               ),
                                               child: Text(
-                                                '15${locale.m}',
+                                                "controller.selectedProductItem.itemDetails.estimatedPreparationTime}${locale.m}",
                                                 style: TextStyle(
                                                   color: Color(0xff27261E),
                                                   fontWeight: FontWeight.w600,
@@ -242,7 +248,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                 ],
                               ),
                             ),
-                            ProductDescriptionWidget(),
+                            ProductDescriptionWidget(description: '',),
                           ],
                         ),
                       ),

@@ -50,9 +50,9 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
             child: Text(
               locale.viewProfile,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: AppColors.black,
-                    decoration: TextDecoration.underline,
-                  ),
+                color: AppColors.black,
+                decoration: TextDecoration.underline,
+              ),
             ),
           ),
         ),
@@ -157,9 +157,9 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                               style: Theme.of(
                                 context,
                               ).textTheme.titleSmall!.copyWith(
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.w800,
-                                  ),
+                                fontSize: 21,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                             height(5),
                             Container(
@@ -181,16 +181,17 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                       Container(
                         margin: const EdgeInsets.only(top: 19),
                         height: 10,
-                        color: widget.isMinHeight
-                            ? Colors.white
-                            : const Color(0xFFF5F5F5),
+                        color:
+                            widget.isMinHeight
+                                ? Colors.white
+                                : const Color(0xFFF5F5F5),
                       ),
                       Text(
                         locale.deliveryDetails,
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              fontSize: 21,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          fontSize: 21,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       height(24),
                       Text(
@@ -205,17 +206,17 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                       Text(
                         'Flat / Suite / Floor: 174',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: AppColors.black,
-                            ),
+                          color: AppColors.black,
+                        ),
                       ),
                       const Divider(color: Color(0xFFF5F5F5), thickness: 1),
                       const SizedBox(height: 20),
                       Text(
                         locale.orderSummary,
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              fontSize: 21,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          fontSize: 21,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                       const SizedBox(height: 2),
                       const Text(
@@ -238,18 +239,18 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                               style: Theme.of(
                                 context,
                               ).textTheme.titleSmall!.copyWith(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
                               '\$15.81',
                               style: Theme.of(
                                 context,
                               ).textTheme.titleSmall!.copyWith(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ],
                         ),
@@ -276,9 +277,9 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                     child: Text(
                       locale.addDeliveryNote,
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
@@ -321,8 +322,8 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                           ),
                           width(50),
                           IconButton(
-                            onPressed: () =>
-                                context.replaceRoute(HomeTabRoute()),
+                            onPressed:
+                                () => context.replaceRoute(HomeTabRoute()),
                             icon: Icon(Icons.clear, color: AppColors.email),
                           ),
                         ],
@@ -361,9 +362,9 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                       Text(
                         "${locale.wantToLeaveTipFor} Robert",
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: AppColors.lightText,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          color: AppColors.lightText,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       Wrap(
                         children: List.generate(
@@ -383,9 +384,10 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                    color: selectedIndex == i
-                                        ? AppColors.black
-                                        : Colors.grey,
+                                    color:
+                                        selectedIndex == i
+                                            ? AppColors.black
+                                            : Colors.grey,
                                   ),
                                 ),
                                 child: Center(
@@ -396,10 +398,11 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                                       style: Theme.of(
                                         context,
                                       ).textTheme.bodyLarge!.copyWith(
-                                            color: selectedIndex == i
+                                        color:
+                                            selectedIndex == i
                                                 ? AppColors.black
                                                 : Colors.grey,
-                                          ),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -412,9 +415,9 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                       Text(
                         locale.comment,
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: AppColors.lightText,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          color: AppColors.lightText,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       height(5),
                       CustomTextField(maxLines: 3),

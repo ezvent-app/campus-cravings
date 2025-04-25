@@ -19,12 +19,13 @@ class HistoryTabWidget extends StatelessWidget {
                 children: [
                   const Divider(color: AppColors.dividerColor, height: 40),
                   InkWellButtonWidget(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OrdersDetailsPage(),
-                      ),
-                    ),
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OrdersDetailsPage(),
+                          ),
+                        ),
                     child: SizedBox(
                       height: 95,
                       child: Row(
@@ -57,9 +58,10 @@ class HistoryTabWidget extends StatelessWidget {
                                         'Pizza Hut',
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.titleSmall,
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.titleSmall,
                                       ),
                                       Text(
                                         '#162432',
@@ -67,9 +69,8 @@ class HistoryTabWidget extends StatelessWidget {
                                         style: Theme.of(
                                           context,
                                         ).textTheme.bodyMedium!.copyWith(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                            ),
+                                          decoration: TextDecoration.underline,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -81,9 +82,10 @@ class HistoryTabWidget extends StatelessWidget {
                                       Text(
                                         '\$12.00',
                                         overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.titleSmall,
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.titleSmall,
                                       ),
                                       Container(
                                         height: 50,
@@ -93,9 +95,10 @@ class HistoryTabWidget extends StatelessWidget {
                                       Text(
                                         '3 ${locale.items}',
                                         overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium,
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.bodyMedium,
                                       ),
                                       Card(
                                         color: AppColors.black,
@@ -116,8 +119,8 @@ class HistoryTabWidget extends StatelessWidget {
                                             style: Theme.of(
                                               context,
                                             ).textTheme.bodySmall!.copyWith(
-                                                  color: AppColors.white,
-                                                ),
+                                              color: AppColors.white,
+                                            ),
                                           ),
                                         ),
                                       ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -20,8 +22,8 @@ class DeliverySetupPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    HttpApiServices services = HttpApiServices();
-    print("args: ${aboutYou}");
+    HttpAPIServices services = HttpAPIServices();
+    print("args: $aboutYou");
     final locale = AppLocalizations.of(context)!;
     return BaseWrapper(
       label: locale.deliveryProfile,
@@ -71,7 +73,8 @@ class DeliverySetupPage extends ConsumerWidget {
                     String base64Image = base64Encode(bytes);
                     ref.read(deliverySetupProvider.notifier).state = {
                       ...ref.read(deliverySetupProvider),
-                      'imgBase64': base64Image,
+                      'imgBase64':
+                          'data:image/${result.files.single.extension};base64,$base64Image',
                     };
                   }
                 }

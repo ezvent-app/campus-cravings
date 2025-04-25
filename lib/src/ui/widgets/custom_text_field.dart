@@ -50,6 +50,7 @@ class CustomTextField extends ConsumerWidget {
           onFieldSubmitted: onSubmitted,
           obscureText: obscureText,
           keyboardType: textInputType,
+          controller: controller,
           textInputAction: textInputAction,
           onTapOutside: (event) {
             if (dismissOnTapOutside) {

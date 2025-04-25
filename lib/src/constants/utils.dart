@@ -4,16 +4,10 @@ showToast(String message, {BuildContext? context, Color? bgColor}) {
   if (context == null) return;
 
   final overlay = Overlay.of(context);
-  if (overlay == null) return;
 
   final overlayEntry = OverlayEntry(
     builder:
-        (context) => Positioned(
-          top:
-              MediaQuery.of(context).padding.top +
-              10, // Adjust the top position
-          left: 2,
-          right: 2,
+        (context) => Center(
           child: Material(
             color: Colors.transparent,
             child: Container(
@@ -30,8 +24,9 @@ showToast(String message, {BuildContext? context, Color? bgColor}) {
 
   overlay.insert(overlayEntry);
 
-  // Remove the toast after a delay
-  Future.delayed(const Duration(seconds: 3), () {
+  Future.delayed(const Duration(seconds: 1), () {
     overlayEntry.remove();
   });
 }
+
+printThis(String message) => debugPrint(message);

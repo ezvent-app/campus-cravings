@@ -14,7 +14,7 @@ class BaseWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 10),
+      appBar: AppBar(toolbarHeight: 0),
 
       body: Column(
         children: [
