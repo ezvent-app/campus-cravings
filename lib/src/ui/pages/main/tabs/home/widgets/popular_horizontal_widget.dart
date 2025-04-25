@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/controllers/product_catalog_controller.dart';
+import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
@@ -23,7 +24,6 @@ class _PopularHorizontalWidgetState
   ];
   @override
   Widget build(BuildContext context) {
-    Get.find<ProductCatalogController>().getPopularItems();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -64,7 +64,7 @@ class _PopularHorizontalWidgetState
                     final item = controller.listOfPopularItems[index];
                     return InkWell(
                       onTap: (){
-                        controller.mapSelectedProductItem(item);
+                        Get.find<RestaurantDetailsController>().setRestaurantId(item.itemDetails.restaurant);
                         context.pushRoute(
                           RestaurantRoute()
                         );

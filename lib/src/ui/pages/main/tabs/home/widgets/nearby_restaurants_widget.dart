@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/constants/get_builder_id_constants.dart';
+import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
 import 'package:campuscravings/src/controllers/resturant_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:get/get.dart';
@@ -46,6 +47,7 @@ class _NearbyRestaurantsWidgetState
                   final restaurant = controller.listOfNearByRestaurants[index];
                   return InkWellButtonWidget(
                     onTap: () {
+                      Get.find<RestaurantDetailsController>().setRestaurantId(restaurant.id);
                       context.pushRoute(const RestaurantRoute());
                     },
                     child: Padding(

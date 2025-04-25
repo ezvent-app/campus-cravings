@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 class LocationController extends GetxController{
 
   LocationData? _locationData;
+  LocationData? get locationData => _locationData;
   final LocationService _locationService;
   bool _isOperationInProgress = false;
   bool get isOperationInProgress => _isOperationInProgress;
