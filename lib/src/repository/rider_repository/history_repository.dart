@@ -4,7 +4,7 @@ import 'package:campuscravings/src/models/Rider_History_Model/rider_history.dart
 import 'package:campuscravings/src/src.dart';
 
 class HistoryRepository {
-  final HttpApiServices services = HttpApiServices();
+  final HttpAPIServices services = HttpAPIServices();
 
   Future<RiderHistory> fetchUserHistory() async {
     try {

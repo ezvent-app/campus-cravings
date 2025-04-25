@@ -1,10 +1,11 @@
 import 'dart:async';
+
 import 'package:campuscravings/src/src.dart';
 
 import '../../models/User Model/user_info_model.dart';
 
 class UserInfoRepository {
-  final HttpApiServices services = HttpApiServices();
+  final HttpAPIServices services = HttpAPIServices();
 
   Future<UserModel> fetchUserProfile() async {
     try {
