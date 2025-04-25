@@ -276,7 +276,12 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                         var signUpNotifer = ref.watch(signUpProvider);
                         return RoundedButtonWidget(
                           btnTitle:
-                              widget.newUser ? locale.register : locale.save,
+                              widget.newUser
+                                  ? locale.register
+                                  : isActive
+                                  ? locale.next
+                                  : locale.save,
+
                           isLoading: signUpNotifer['isLoading'] ?? false,
                           onTap:
                               widget.newUser
@@ -373,7 +378,9 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                     }
                                   }
                                   : isActive
-                                  ? () => context.maybePop()
+                                  ? () => context.pushRoute(
+                                    const StudentProfileDetailsRoute(),
+                                  )
                                   : null,
                         );
                       },
