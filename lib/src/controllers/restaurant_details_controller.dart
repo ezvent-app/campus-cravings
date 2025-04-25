@@ -7,9 +7,9 @@ class RestaurantDetailsController extends GetxController{
   RestaurantDetailsController(this._restaurantRepository);
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-
   String _restaurantId = '';
   String get restaurantId => _restaurantId;
+
 
   void setRestaurantId(String restaurantId){
     _restaurantId = restaurantId;

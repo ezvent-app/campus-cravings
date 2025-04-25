@@ -23,8 +23,8 @@ class ProductCatalogController extends GetxController{
       if(_listOfPopularItems.isNotEmpty) return;
       _isLoading = true;
       update([popularItemBuilderId]);
-      if(Get.find<LocationController>().isOperationInProgress){
-        await Future.delayed(Duration(seconds: 4));
+      while(Get.find<LocationController>().isOperationInProgress){
+        await Future.delayed(Duration(milliseconds: 500));
       }
       final location = await Get.find<LocationController>().getCurrentLocation();
       if(location == null){

@@ -15,7 +15,6 @@ class _NearbyRestaurantsWidgetState
     extends ConsumerState<NearbyRestaurantsWidget> {
   @override
   Widget build(BuildContext context) {
-    Get.find<RestaurantController>().getNearByRestaurants();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,6 +30,9 @@ class _NearbyRestaurantsWidgetState
         ),
         GetBuilder<RestaurantController>(
             id: nearByRestaurantBuilderId,
+            initState: (state){
+              Get.find<RestaurantController>().getNearByRestaurants();
+            },
             builder: (controller) {
               if(controller.isLoading) {
                 return _buildRestaurantShimmer();

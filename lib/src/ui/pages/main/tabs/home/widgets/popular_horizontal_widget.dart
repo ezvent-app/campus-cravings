@@ -129,19 +129,19 @@ class _PopularHorizontalWidgetState
                                         color: Color(0xFFD9D9D9),
                                       ),
                                     ),
-                                    const SvgAssets(
-                                      'linear_star',
-                                      width: 10,
-                                      height: 10,
-                                    ),
-                                    width(3),
-                                    const Text(
-                                      '4.7',
-                                      style: TextStyle(
-                                        color: AppColors.lightText,
-                                        fontSize: 10,
-                                      ),
-                                    ),
+                                    // const SvgAssets(
+                                    //   'linear_star',
+                                    //   width: 10,
+                                    //   height: 10,
+                                    // ),
+                                    // width(3),
+                                    // const Text(
+                                    //   '4.7',
+                                    //   style: TextStyle(
+                                    //     color: AppColors.lightText,
+                                    //     fontSize: 10,
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                                 height(2),

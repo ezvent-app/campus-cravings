@@ -308,7 +308,7 @@ class CheckoutAddressRoute extends _i41.PageRouteInfo<void> {
   static _i41.PageInfo page = _i41.PageInfo(
     name,
     builder: (data) {
-      return const _i10.CheckoutAddressPage();
+      return _i10.CheckoutAddressPage();
     },
   );
 }
@@ -827,7 +827,7 @@ class PlacingOrderRoute extends _i41.PageRouteInfo<void> {
   static _i41.PageInfo page = _i41.PageInfo(
     name,
     builder: (data) {
-      return const _i30.PlacingOrderPage();
+      return _i30.PlacingOrderPage();
     },
   );
 }

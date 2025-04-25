@@ -24,11 +24,10 @@ class RestaurantController extends GetxController{
     try{
       _isLoading = true;
       update([nearByRestaurantBuilderId]);
-      if(Get.find<LocationController>().isOperationInProgress){
-        await Future.delayed(Duration(seconds: 4));
+      while(Get.find<LocationController>().isOperationInProgress){
+        await Future.delayed(Duration(milliseconds: 1500));
       }
       _locationData = await Get.find<LocationController>().getCurrentLocation();
-      Logger().i(_locationData);
       if(_locationData == null) {
         _isLoading = false;
         update([nearByRestaurantBuilderId]);

@@ -169,11 +169,10 @@ class _DeliveringPageState extends State<DeliveringPage> {
               ),
               Expanded(
                 child: GoogleMap(
-                  // mapType: MapType.satellite,
+                  mapType: MapType.satellite,
                   myLocationEnabled: true,
                   indoorViewEnabled: true,
                   trafficEnabled: true,
-
                   initialCameraPosition: _kGooglePlex,
                   onMapCreated: (GoogleMapController googleMapController) {
                     _controller.complete(googleMapController);

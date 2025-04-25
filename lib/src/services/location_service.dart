@@ -1,7 +1,6 @@
 import 'package:location/location.dart';
-import 'package:logger/logger.dart';
 
-class LocationService{
+class LocationService {
   final _location = Location();
 
   Future<bool> _checkIfServiceEnabled() async {
@@ -14,6 +13,7 @@ class LocationService{
     }
     return true;
   }
+
   Future<bool> checkIfPermissionGranted() async {
     if (await _checkIfServiceEnabled() == false) return false;
     final permissionStatus = await _location.hasPermission();
@@ -27,7 +27,7 @@ class LocationService{
   }
 
   Future<LocationData?> getCurrentLocation() async {
-    if(await checkIfPermissionGranted() == false) return null;
+    if (await checkIfPermissionGranted() == false) return null;
     return await _location.getLocation();
   }
 }

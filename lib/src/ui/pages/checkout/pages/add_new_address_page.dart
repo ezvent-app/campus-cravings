@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class CheckOutAddNewAddressPage extends StatelessWidget {
+class CheckOutAddNewAddressPage extends ConsumerWidget {
   CheckOutAddNewAddressPage({super.key});
 
   // Text field controllers
@@ -9,8 +11,22 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
   TextEditingController floorController = TextEditingController();
   TextEditingController roomController = TextEditingController();
 
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14,
+  );
+
+  Future<void> animateToUserLocation(LatLng latLng) async {
+    final controller = await _controller.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(CameraPosition(target: latLng, zoom: 16)),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     final wdth = size.width;
@@ -28,10 +44,30 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
       ),
     );
     final isIOS = Platform.isIOS;
+
+    final loc = ref.watch(locationProvider);
+    final locationMethod = ref.read(locationProvider.notifier);
+
+    loc.whenData((locationModel) {
+      animateToUserLocation(locationModel.latLng);
+    });
+
     return Scaffold(
       body: Stack(
         children: [
-          PngAsset("map_image", height: size.height, fit: BoxFit.cover),
+          Positioned.fill(
+            child: GoogleMap(
+              mapType: MapType.satellite,
+              myLocationEnabled: true,
+              indoorViewEnabled: true,
+              trafficEnabled: true,
+              myLocationButtonEnabled: false,
+              initialCameraPosition: _kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+            ),
+          ),
           Positioned(
             top: 50,
             left: 10,
@@ -63,7 +99,11 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed:
+                      () async =>
+                          await ref
+                              .read(locationProvider.notifier)
+                              .refreshLocation(),
                   icon: SvgAssets("location_search"),
                 ),
               ),
@@ -87,47 +127,77 @@ class CheckOutAddNewAddressPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomTextField(label: locale.location),
-                    height(20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: CustomTextField(label: locale.enterFloor),
-                        ),
-                        width(20),
-                        Expanded(
-                          child: CustomTextField(label: locale.enterRoomNumber),
-                        ),
-                      ],
+                    loc.when(
+                      data: (loc) {
+                        return Column(
+                          children: [
+                            CustomTextField(
+                              label: locale.location,
+                              controller: loc.locationController,
+                            ),
+                            height(20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: CustomTextField(
+                                    textInputType: TextInputType.number,
+                                    label: locale.enterFloor,
+                                    controller: loc.floorController,
+                                  ),
+                                ),
+                                width(20),
+                                Expanded(
+                                  child: CustomTextField(
+                                    textInputType: TextInputType.number,
+                                    label: locale.enterRoomNumber,
+                                    controller: loc.roomNoController,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            height(20),
+                            CustomTextField(
+                              label: locale.saveAs,
+                              hintText: locale.home,
+                              controller: loc.saveAsController,
+                            ),
+                            height(10),
+                            Row(
+                              children: [
+                                Switch(
+                                  value: loc.isDefault,
+                                  onChanged:
+                                      (value) => locationMethod
+                                          .defaultAddressMethod(value),
+                                  activeColor: Colors.white,
+                                  inactiveThumbColor: Colors.grey,
+                                  inactiveTrackColor: Colors.grey.shade400,
+                                ),
+
+                                width(10),
+                                Text(
+                                  locale.setDefault,
+                                  style: Theme.of(context).textTheme.bodyMedium!
+                                      .copyWith(color: AppColors.black),
+                                ),
+                              ],
+                            ),
+                            height(40),
+                            RoundedButtonWidget(
+                              btnTitle: locale.save,
+                              onTap:
+                                  () async => await ref
+                                      .read(locationProvider.notifier)
+                                      .saveAddress(context),
+                            ),
+                            height(20),
+                          ],
+                        );
+                      },
+                      loading: () => SizedBox(),
+                      error: (e, _) => Text("Error: $e"),
                     ),
-                    height(20),
-                    CustomTextField(
-                      label: locale.saveAs,
-                      hintText: locale.home,
-                    ),
-                    height(10),
-                    Row(
-                      children: [
-                        Switch(
-                          value: true,
-                          onChanged: (value) {},
-                          trackColor: WidgetStateProperty.all(Colors.black),
-                        ),
-                        width(10),
-                        Text(
-                          locale.setDefault,
-                          style: Theme.of(context).textTheme.bodyMedium!
-                              .copyWith(color: AppColors.black),
-                        ),
-                      ],
-                    ),
-                    height(40),
-                    RoundedButtonWidget(
-                      btnTitle: locale.save,
-                      onTap: () => Navigator.pop(context),
-                    ),
-                    height(20),
                   ],
                 ),
               ),
