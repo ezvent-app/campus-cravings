@@ -12,7 +12,8 @@ class UserInfoRepository {
       print('User Info Response: ${response.body}');
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final user = UserModel.fromJson(data['userInfo']); // <- FIXED
+        final user = UserModel.fromJson(data);
+
         print('Parsed UserModel: ${user.toJson()}');
         return UserModel.fromJson(data);
       } else {

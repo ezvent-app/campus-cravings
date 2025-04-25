@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -8,6 +9,8 @@ class HomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    UserInfoRepository info = UserInfoRepository();
+    info.fetchUserProfile();
     return Scaffold(
       body: SafeArea(
         bottom: false,

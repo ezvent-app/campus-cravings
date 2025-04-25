@@ -85,6 +85,14 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                                 fit: BoxFit.cover,
                                 borderRadius: BorderRadius.circular(10),
                               ),
+                              // CustomNetworkImage(
+                              //   order.items.isNotEmpty
+                              //       ? order.items[index].imageUrl
+                              //       : 'https://example.com/default_image.png',
+                              //   width: 90,
+                              //   height: 90,
+                              //   fit: BoxFit.cover,
+                              // ),
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(
