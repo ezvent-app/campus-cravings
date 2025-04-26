@@ -65,7 +65,6 @@ class RestaurantDetailsController extends GetxController{
   }
   bool isRestaurantOpen() {
     final restaurantTime = getRestaurantTimingForToday();
-    Logger().i(restaurantTime);
     if (restaurantTime == 'closed') return false;
     final parts = restaurantTime.split('-');
     if (parts.length != 2) return false;
