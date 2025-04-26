@@ -59,7 +59,8 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                               builder:
                                   (context) => OrdersDetailsPage(
                                     storeName: order.restaurant.name,
-                                    deliveryAddress: order.address.address,
+                                    deliveryAddress:
+                                        order.address.address ?? '123 address',
                                     orderNumber: order.id.substring(0, 6),
                                     customizationList:
                                         order.items[0].customizationList,
@@ -84,6 +85,14 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                                 fit: BoxFit.cover,
                                 borderRadius: BorderRadius.circular(10),
                               ),
+                              // CustomNetworkImage(
+                              //   order.items.isNotEmpty
+                              //       ? order.items[index].imageUrl
+                              //       : 'https://example.com/default_image.png',
+                              //   width: 90,
+                              //   height: 90,
+                              //   fit: BoxFit.cover,
+                              // ),
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(

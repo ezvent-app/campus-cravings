@@ -27,7 +27,7 @@ class ImageConfirmationPage extends StatelessWidget {
             child: Image.file(
               File(image.path),
               width: double.infinity,
-              height: 600,
+              height: size.height * 0.7,
               fit: BoxFit.cover,
             ),
           ),

@@ -188,7 +188,7 @@ class ChangePasswordRoute extends _i42.PageRouteInfo<void> {
   static _i42.PageInfo page = _i42.PageInfo(
     name,
     builder: (data) {
-      return const _i5.ChangePasswordPage();
+      return _i5.ChangePasswordPage();
     },
   );
 }
@@ -454,15 +454,17 @@ class DeliverySetupRouteArgs {
 /// generated route for
 /// [_i16.ForgetPasswordOTPPage]
 class ForgetPasswordOTPRoute extends _i42.PageRouteInfo<void> {
-  const ForgetPasswordOTPRoute({List<_i42.PageRouteInfo>? children})
-    : super(ForgetPasswordOTPRoute.name, initialChildren: children);
+  const ForgetPasswordOTPRoute({
+    List<_i42.PageRouteInfo>? children,
+    required email,
+  }) : super(ForgetPasswordOTPRoute.name, initialChildren: children);
 
   static const String name = 'ForgetPasswordOTPRoute';
 
   static _i42.PageInfo page = _i42.PageInfo(
     name,
     builder: (data) {
-      return const _i16.ForgetPasswordOTPPage();
+      return const _i16.ForgetPasswordOTPPage(email: '');
     },
   );
 }

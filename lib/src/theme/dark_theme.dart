@@ -79,7 +79,7 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   scaffoldBackgroundColor: Colors.black,
   progressIndicatorTheme: ProgressIndicatorThemeData(
     linearTrackColor: Colors.grey.shade800,
-    color: Colors.purple,
+    color: AppColors.accent,
   ),
   primaryColor: AppColors.accent,
   textTheme: const TextTheme(

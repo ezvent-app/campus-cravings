@@ -1,193 +1,287 @@
 import 'package:campuscravings/src/constants/storageHelper.dart'
     show StorageHelper;
+import 'package:campuscravings/src/models/User%20Model/user_info_model.dart';
+import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class ProfileTabPage extends StatelessWidget {
+class ProfileTabPage extends ConsumerStatefulWidget {
   const ProfileTabPage({super.key});
+
+  @override
+  ConsumerState<ProfileTabPage> createState() => _ProfileTabPageState();
+}
+
+class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadUserProfile();
+    });
+  }
+
+  Future<void> _loadUserProfile() async {
+    // Set isLoading to true before fetching data
+    ref.read(profileTabProvider.notifier).state = {
+      ...ref.read(profileTabProvider),
+      'isLoading': true,
+    };
+
+    try {
+      UserInfoRepository info = UserInfoRepository();
+      UserModel data = await info.fetchUserProfile();
+      ref.read(profileTabProvider.notifier).state = {
+        ...ref.read(profileTabProvider),
+        'firstName': data.userInfo!.firstName,
+        'lastName': data.userInfo!.lastName,
+        'phoneNumber': data.userInfo!.phoneNumber,
+        'networkImage': data.userInfo!.imgUrl,
+        'isLoading': false, // Set isLoading to false after fetching
+      };
+    } catch (e) {
+      // Handle error and set isLoading to false
+      ref.read(profileTabProvider.notifier).state = {
+        ...ref.read(profileTabProvider),
+        'isLoading': false,
+      };
+      // Optionally show an error message
+      showToast("Failed to load profile", context: context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final profileData = ref.watch(profileTabProvider);
     return Scaffold(
       backgroundColor: const Color(0xFFFBFBFA),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 50),
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.person,
-                                size: 35,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Row(
                             children: [
-                              Text(
-                                "Andrew Ainsley",
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              height(5),
-                              InkWellButtonWidget(
-                                onTap: () {
-                                  context.pushRoute(
-                                    ProfileFormRoute(newUser: false),
-                                  );
-                                },
-                                child: Text(
-                                  locale.editProfile,
-                                  style: TextStyle(color: AppColors.lightText),
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
+                                child:
+                                    profileData['networkImage'].isNotEmpty
+                                        ? ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          child: Image.network(
+                                            profileData['networkImage'],
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) =>
+                                                    const Center(
+                                                      child: Icon(
+                                                        Icons.person,
+                                                        size: 35,
+                                                        color: AppColors.white,
+                                                      ),
+                                                    ),
+                                          ),
+                                        )
+                                        : const Center(
+                                          child: Icon(
+                                            Icons.person,
+                                            size: 35,
+                                            color: AppColors.white,
+                                          ),
+                                        ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        border: Border.all(
-                          color: const Color(0xFFF4F4F4),
-                          width: 2,
-                        ),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWellButtonWidget(
-                          borderRadius: BorderRadius.circular(8),
-                          onTap: () {},
-                          child: const Center(
-                            child: Icon(
-                              Icons.keyboard_arrow_right,
-                              size: 30,
-                              color: Color(0xff443A39),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                ProfileGroupButton(
-                  options: [
-                    ProfileOption(
-                      icon: 'paymentMethod',
-                      label: locale.paymentMethods,
-                      onPressed: () {
-                        context.pushRoute(
-                          PaymentMethodsRoute(fromCheckout: false),
-                        );
-                      },
-                    ),
-                    ProfileOption(
-                      icon: 'address',
-                      label: locale.savedAddresses,
-                      onPressed: () {
-                        context.pushRoute(const SavedAddressesRoute());
-                      },
-                    ),
-                    ProfileOption(
-                      icon: 'promo',
-                      label: locale.promoCode,
-                      onPressed: () {
-                        context.pushRoute(const PromoCodeRoute());
-                      },
-                    ),
-                  ],
-                ),
-                ProfileGroupButton(
-                  options: [
-                    ProfileOption(
-                      icon: 'notification',
-                      label: locale.notifications,
-                      onPressed: () {
-                        context.pushRoute(const NotificationsRoute());
-                      },
-                    ),
-                    ProfileOption(
-                      icon: 'lock',
-                      label: locale.changePassword,
-                      onPressed: () {
-                        context.pushRoute(const ChangePasswordRoute());
-                      },
-                    ),
-                    ProfileOption(
-                      icon: 'locale',
-                      label: locale.changeLanguage,
-                      onPressed: () {
-                        context.pushRoute(const ChangeLanguageRoute());
-                      },
-                    ),
-                    ProfileOption(
-                      icon: 'help',
-                      label: locale.help,
-                      onPressed: () {
-                        context.pushRoute(const HelpRoute());
-                      },
-                    ),
-                  ],
-                ),
-                ProfileGroupButton(
-                  options: [
-                    ProfileOption(
-                      icon: 'logout',
-                      label: locale.logOut,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (context) => AlertDialog(
-                                title: const Text("Confirm Logout"),
-                                content: const Text(
-                                  "Are you sure you want to logout?",
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text("No"),
+                              const SizedBox(width: 20),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${profileData['firstName']} ${profileData['lastName']}",
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      StorageHelper().clear();
-                                      Navigator.pop(context);
-                                      context.replaceRoute(LoginRoute());
+                                  height(5),
+                                  InkWellButtonWidget(
+                                    onTap: () {
+                                      context.pushRoute(
+                                        ProfileFormRoute(newUser: false),
+                                      );
                                     },
-                                    child: const Text("Yes"),
+                                    child: Text(
+                                      locale.editProfile,
+                                      style: TextStyle(
+                                        color: AppColors.lightText,
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
-                        );
-                      },
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            border: Border.all(
+                              color: const Color(0xFFF4F4F4),
+                              width: 2,
+                            ),
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWellButtonWidget(
+                              borderRadius: BorderRadius.circular(8),
+                              onTap: () {},
+                              child: const Center(
+                                child: Icon(
+                                  Icons.keyboard_arrow_right,
+                                  size: 30,
+                                  color: Color(0xff443A39),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    ProfileGroupButton(
+                      options: [
+                        ProfileOption(
+                          icon: 'paymentMethod',
+                          label: locale.paymentMethods,
+                          onPressed: () {
+                            context.pushRoute(
+                              PaymentMethodsRoute(fromCheckout: false),
+                            );
+                          },
+                        ),
+                        ProfileOption(
+                          icon: 'address',
+                          label: locale.savedAddresses,
+                          onPressed: () {
+                            context.pushRoute(const SavedAddressesRoute());
+                          },
+                        ),
+                        ProfileOption(
+                          icon: 'promo',
+                          label: locale.promoCode,
+                          onPressed: () {
+                            context.pushRoute(const PromoCodeRoute());
+                          },
+                        ),
+                      ],
+                    ),
+                    ProfileGroupButton(
+                      options: [
+                        ProfileOption(
+                          icon: 'notification',
+                          label: locale.notifications,
+                          onPressed: () {
+                            context.pushRoute(const NotificationsRoute());
+                          },
+                        ),
+                        ProfileOption(
+                          icon: 'lock',
+                          label: locale.changePassword,
+                          onPressed: () {
+                            context.pushRoute(const ChangePasswordRoute());
+                          },
+                        ),
+                        ProfileOption(
+                          icon: 'locale',
+                          label: locale.changeLanguage,
+                          onPressed: () {
+                            context.pushRoute(const ChangeLanguageRoute());
+                          },
+                        ),
+                        ProfileOption(
+                          icon: 'help',
+                          label: locale.help,
+                          onPressed: () {
+                            context.pushRoute(const HelpRoute());
+                          },
+                        ),
+                      ],
+                    ),
+                    ProfileGroupButton(
+                      options: [
+                        ProfileOption(
+                          icon: 'logout',
+                          label: locale.logOut,
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder:
+                                  (context) => AlertDialog(
+                                    title: const Text("Confirm Logout"),
+                                    content: const Text(
+                                      "Are you sure you want to logout?",
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text("No"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          StorageHelper().clear();
+                                          Navigator.pop(context);
+                                          context.replaceRoute(LoginRoute());
+                                        },
+                                        child: const Text("Yes"),
+                                      ),
+                                    ],
+                                  ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          if (profileData['isLoading'])
+            Container(
+              color: Colors.black.withOpacity(
+                0.3,
+              ), // Semi-transparent background
+              child: const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
 }
+
+final profileTabProvider = StateProvider<Map<String, dynamic>>(
+  (ref) => {
+    'firstName': '',
+    'lastName': '',
+    'phoneNumber': '',
+    'isLoading': false,
+    'imgBase64': '',
+    'networkImage': '',
+  },
+);

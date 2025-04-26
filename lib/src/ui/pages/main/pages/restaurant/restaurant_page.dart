@@ -1,10 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
 import 'package:campuscravings/src/controllers/resturant_controller.dart';
 import 'package:campuscravings/src/src.dart';
-import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 
 @RoutePage()
@@ -13,13 +10,11 @@ class RestaurantPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Get.find<RestaurantDetailsController>().getRestaurantDetails();
     final locale = AppLocalizations.of(context)!;
     final isIOS = Platform.isIOS;
     return Scaffold(
       body: GetBuilder<RestaurantDetailsController>(
-          initState: (state){
-            Get.find<RestaurantDetailsController>().getRestaurantDetails();
-          },
           builder: (controller){
             if(controller.isLoading) {
               return _buildRestaurantDetailsShimmer(context);
@@ -37,8 +32,8 @@ class RestaurantPage extends ConsumerWidget {
                   height: 350,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: CachedNetworkImageProvider(controller.restaurantDetails!.restaurant.restaurantImages[0]),
-                      fit: BoxFit.contain,
+                      image: AssetImage("assets/images/png/mock_product_1.png"),
+                      fit: BoxFit.fitWidth,
                     ),
                   ),
                   child: Padding(
