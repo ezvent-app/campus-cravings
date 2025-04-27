@@ -53,7 +53,7 @@ class HttpAPIServices extends BaseApiServices {
   }) async {
     try {
       await service.loadToken();
-      final response = await service.putRequest(url, map);
+      final response = await service.patchRequest(url, map);
       return response;
     } catch (e) {
       log("Error in PATCH request: $e");

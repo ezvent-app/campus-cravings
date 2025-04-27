@@ -78,6 +78,23 @@ class HttpService {
     }
   }
 
+  Future<http.Response> patchRequest(
+    String endpoint,
+    Map<String, dynamic> data,
+  ) async {
+    final url = Uri.parse(_baseUrl + endpoint);
+    try {
+      final response = await http
+          .patch(url, headers: _headers, body: jsonEncode(data))
+          .timeout(const Duration(seconds: 60));
+      log("PUT response: ${response.body}");
+      return response;
+    } catch (e) {
+      log("PUT request error: $e");
+      rethrow;
+    }
+  }
+
   Future<http.Response> deleteRequest(String endpoint) async {
     final url = Uri.parse(_baseUrl + endpoint);
     try {

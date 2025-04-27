@@ -36,12 +36,12 @@ class HelpFAQPage extends ConsumerWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Theme(
-              data: Theme.of(context).copyWith(
-                dividerColor: Colors.transparent,
-              ),
+              data: Theme.of(
+                context,
+              ).copyWith(dividerColor: Colors.transparent),
               child: ExpansionTile(
                 initiallyExpanded: expansionState[index],
-                title: Text(order.name),
+                title: Text(order.name, textAlign: TextAlign.start),
                 tilePadding: EdgeInsets.zero,
                 onExpansionChanged: (value) {
                   ref
@@ -74,7 +74,7 @@ class ExpansionNotifier extends StateNotifier<List<bool>> {
   // Toggle a specific FAQ item
   void toggle(int index) {
     state = [
-      for (int i = 0; i < state.length; i++) i == index ? !state[i] : state[i]
+      for (int i = 0; i < state.length; i++) i == index ? !state[i] : state[i],
     ];
   }
 }
@@ -82,5 +82,5 @@ class ExpansionNotifier extends StateNotifier<List<bool>> {
 // **Correct use of family provider**
 final expansionProvider =
     StateNotifierProvider.family<ExpansionNotifier, List<bool>, int>(
-  (ref, itemCount) => ExpansionNotifier(itemCount),
-);
+      (ref, itemCount) => ExpansionNotifier(itemCount),
+    );
