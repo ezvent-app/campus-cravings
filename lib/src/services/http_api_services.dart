@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:campuscravings/src/src.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
 class HttpAPIServices extends BaseApiServices {
   final HttpService service = HttpService();
@@ -53,7 +52,7 @@ class HttpAPIServices extends BaseApiServices {
   }) async {
     try {
       await service.loadToken();
-      final response = await service.putRequest(url, map);
+      final response = await service.patchRequest(url, map);
       return response;
     } catch (e) {
       log("Error in PATCH request: $e");

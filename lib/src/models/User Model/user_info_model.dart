@@ -7,16 +7,14 @@ class UserModel {
   UserModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     userInfo =
-        json['userInfo'] != null
-            ? new UserInfo.fromJson(json['userInfo'])
-            : null;
+        json['userInfo'] != null ? UserInfo.fromJson(json['userInfo']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
-    if (this.userInfo != null) {
-      data['userInfo'] = this.userInfo!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['message'] = message;
+    if (userInfo != null) {
+      data['userInfo'] = userInfo!.toJson();
     }
     return data;
   }
@@ -83,7 +81,7 @@ class UserInfo {
     if (json['addresses'] != null) {
       addresses = <Addresses>[];
       json['addresses'].forEach((v) {
-        addresses!.add(new Addresses.fromJson(v));
+        addresses!.add(Addresses.fromJson(v));
       });
     }
     status = json['status'];
@@ -102,31 +100,31 @@ class UserInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['phoneNumber'] = this.phoneNumber;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['fullName'] = this.fullName;
-    data['userName'] = this.userName;
-    data['authMethod'] = this.authMethod;
-    data['email'] = this.email;
-    if (this.addresses != null) {
-      data['addresses'] = this.addresses!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['phoneNumber'] = phoneNumber;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['fullName'] = fullName;
+    data['userName'] = userName;
+    data['authMethod'] = authMethod;
+    data['email'] = email;
+    if (addresses != null) {
+      data['addresses'] = addresses!.map((v) => v.toJson()).toList();
     }
-    data['status'] = this.status;
-    data['isRestaurant'] = this.isRestaurant;
-    data['isDelivery'] = this.isDelivery;
-    data['isCustomer'] = this.isCustomer;
-    data['isAdmin'] = this.isAdmin;
-    data['isEmailVerified'] = this.isEmailVerified;
-    data['isPhoneVerified'] = this.isPhoneVerified;
-    data['isProfileCompleted'] = this.isProfileCompleted;
-    data['lastAccess'] = this.lastAccess;
-    data['notificationCount'] = this.notificationCount;
-    data['planPro'] = this.planPro;
-    data['__v'] = this.iV;
-    data['imgUrl'] = this.imgUrl;
+    data['status'] = status;
+    data['isRestaurant'] = isRestaurant;
+    data['isDelivery'] = isDelivery;
+    data['isCustomer'] = isCustomer;
+    data['isAdmin'] = isAdmin;
+    data['isEmailVerified'] = isEmailVerified;
+    data['isPhoneVerified'] = isPhoneVerified;
+    data['isProfileCompleted'] = isProfileCompleted;
+    data['lastAccess'] = lastAccess;
+    data['notificationCount'] = notificationCount;
+    data['planPro'] = planPro;
+    data['__v'] = iV;
+    data['imgUrl'] = imgUrl;
     return data;
   }
 }
@@ -141,19 +139,19 @@ class Addresses {
   Addresses.fromJson(Map<String, dynamic> json) {
     coordinates =
         json['coordinates'] != null
-            ? new Coordinates.fromJson(json['coordinates'])
+            ? Coordinates.fromJson(json['coordinates'])
             : null;
     address = json['address'];
     sId = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.coordinates != null) {
-      data['coordinates'] = this.coordinates!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (coordinates != null) {
+      data['coordinates'] = coordinates!.toJson();
     }
-    data['address'] = this.address;
-    data['_id'] = this.sId;
+    data['address'] = address;
+    data['_id'] = sId;
     return data;
   }
 }
@@ -170,9 +168,9 @@ class Coordinates {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['coordinates'] = this.coordinates;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['type'] = type;
+    data['coordinates'] = coordinates;
     return data;
   }
 }

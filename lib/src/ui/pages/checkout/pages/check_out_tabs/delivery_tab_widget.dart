@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:campuscravings/src/src.dart';
 
 class DeliveryTabWidget extends ConsumerWidget {
@@ -322,58 +324,12 @@ class DeliveryTabWidget extends ConsumerWidget {
             ),
           ),
           const Divider(height: 48, color: AppColors.dividerColor),
-          Container(
-            width: double.infinity,
-            height: 48,
-            margin: const EdgeInsets.only(bottom: 36),
-            child: ElevatedButton(
-              onPressed: () async {
-                List<Map<String, dynamic>> orderItemsJson =
-                    cartItems.map((item) => item.toOrderItemJson()).toList();
-
-                final json = {
-                  "payment_method": "cash",
-                  "tip": tip,
-                  "delivery_fee": 2,
-                  "order_type": "delivery",
-                  "addresses": {
-                    "address": "123 Main St",
-                    "coordinates": {
-                      "type": "Point",
-                      "coordinates": [73.1234, 33.5678],
-                    },
-                  },
-                  "items": orderItemsJson,
-                };
-                _repository.placeOrderMethod(json, context);
-                // context.pushRoute(const CheckoutAddressRoute());
-
-                // await _repository.makePayment(
-                //   context: context,
-                //   purchaseName: "",
-                //   title: "Garden Service",
-                //   amountPaid: 500,
-                //   merchantDisplayName: "Default Merchant",
-                //   onSuccess: (transactionId) async {
-                //     print(
-                //       "Payment Successful with Transaction ID: $transactionId",
-                //     );
-                //     //  _repository.placeOrderMethod(json, context);
-                //   },
-                // );
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.background,
-              ),
-              child: Text(
-                '${locale.placeOrder} - \$26.00',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-            ),
+          CheckPlaceOrderButtonWidget(
+            repository: _repository,
+            orderType: "delivery",
+            cartItems: cartItems,
+            tip: tip,
+            locale: locale,
           ),
         ],
       ),
@@ -497,6 +453,78 @@ class DeliveryTabWidget extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class CheckPlaceOrderButtonWidget extends ConsumerWidget {
+  const CheckPlaceOrderButtonWidget({
+    super.key,
+    required this.cartItems,
+    required this.tip,
+    required this.locale,
+    required this.orderType,
+    required this.repository,
+  });
+
+  final List<CartItem> cartItems;
+  final int tip;
+  final AppLocalizations locale;
+  final String orderType;
+  final PlaceOrderRepository repository;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final address = ref.watch(locationProvider);
+    return Container(
+      width: double.infinity,
+      height: 48,
+      margin: const EdgeInsets.only(bottom: 36),
+      child: ElevatedButton(
+        onPressed: () async {
+          List<Map<String, dynamic>> orderItemsJson =
+              cartItems.map((item) => item.toOrderItemJson()).toList();
+
+          final json = {
+            "payment_method": "cash",
+            "tip": tip,
+            "delivery_fee": 2,
+            "restaurant_id":'',
+            "order_type": orderType,
+            "addresses": address.value?.addresses ?? "",
+            "items": orderItemsJson,
+          };
+
+          log("CHECKOUT JSON $json");
+          repository.placeOrderMethod(json, context);
+          // context.pushRoute(const CheckoutAddressRoute());
+
+          // await _repository.makePayment(
+          //   context: context,
+          //   purchaseName: "",
+          //   title: "Garden Service",
+          //   amountPaid: 500,
+          //   merchantDisplayName: "Default Merchant",
+          //   onSuccess: (transactionId) async {
+          //     print(
+          //       "Payment Successful with Transaction ID: $transactionId",
+          //     );
+          //     //  _repository.placeOrderMethod(json, context);
+          //   },
+          // );
+        },
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.background,
+        ),
+        child: Text(
+          '${locale.placeOrder} - \$26.00',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+      ),
     );
   }
 }

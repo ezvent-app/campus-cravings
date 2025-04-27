@@ -342,7 +342,7 @@ class DeliveringRoute extends _i42.PageRouteInfo<void> {
   static _i42.PageInfo page = _i42.PageInfo(
     name,
     builder: (data) {
-      return const _i12.DeliveringPage();
+      return _i12.DeliveringPage();
     },
   );
 }
@@ -1072,7 +1072,7 @@ class SavedAddressesRoute extends _i42.PageRouteInfo<void> {
   static _i42.PageInfo page = _i42.PageInfo(
     name,
     builder: (data) {
-      return const _i38.SavedAddressesPage();
+      return _i38.SavedAddressesPage();
     },
   );
 }

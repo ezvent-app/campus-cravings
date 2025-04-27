@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:geocoding/geocoding.dart';
 
 import '../../models/User Model/user_info_model.dart';
 
@@ -34,4 +35,20 @@ class UserInfoRepository {
       }
     }
   }
+
+  Future<String?> _getAddressFromLatLng(LatLng latLng) async {
+    try {
+      final placemarks = await placemarkFromCoordinates(
+        latLng.latitude,
+        latLng.longitude,
+      );
+      final place = placemarks.first;
+      return "${place.name}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+    } catch (e) {
+      return null;
+    }
+  }
+
+
+  
 }
