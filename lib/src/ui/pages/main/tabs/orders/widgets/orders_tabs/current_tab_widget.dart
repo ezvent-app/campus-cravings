@@ -54,8 +54,8 @@ class _CurrentOrdersTabWidgetState
             child: Padding(
               padding: const EdgeInsets.only(top: 50),
               child: Text(
-                'No Orders found yet!',
-                style: Theme.of(context).textTheme.titleMedium,
+                'No orders found yet!',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           );

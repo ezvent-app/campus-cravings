@@ -39,8 +39,8 @@ class RidersHistoryTabWidget extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 50),
               child: Text(
-                'No History found yet!',
-                style: Theme.of(context).textTheme.titleMedium,
+                'No history found yet!',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           );
