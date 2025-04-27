@@ -10,6 +10,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i42;
+import 'package:campuscravings/src/models/Rider_History_Model/rider_history.dart'
+    as _i44;
 import 'package:campuscravings/src/src.dart' as _i43;
 import 'package:campuscravings/src/ui/pages/address_form/address_form_page.dart'
     as _i2;
@@ -301,18 +303,37 @@ class CheckOutTabRoute extends _i42.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i10.CheckoutAddressPage]
-class CheckoutAddressRoute extends _i42.PageRouteInfo<void> {
-  const CheckoutAddressRoute({List<_i42.PageRouteInfo>? children})
-    : super(CheckoutAddressRoute.name, initialChildren: children);
+class CheckoutAddressRoute
+    extends _i42.PageRouteInfo<CheckoutAddressRouteArgs> {
+  CheckoutAddressRoute({_i43.Key? key, List<_i42.PageRouteInfo>? children})
+    : super(
+        CheckoutAddressRoute.name,
+        args: CheckoutAddressRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'CheckoutAddressRoute';
 
   static _i42.PageInfo page = _i42.PageInfo(
     name,
     builder: (data) {
-      return _i10.CheckoutAddressPage();
+      final args = data.argsAs<CheckoutAddressRouteArgs>(
+        orElse: () => const CheckoutAddressRouteArgs(),
+      );
+      return _i10.CheckoutAddressPage(key: args.key);
     },
   );
+}
+
+class CheckoutAddressRouteArgs {
+  const CheckoutAddressRouteArgs({this.key});
+
+  final _i43.Key? key;
+
+  @override
+  String toString() {
+    return 'CheckoutAddressRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -333,18 +354,41 @@ class ContactSupportRoute extends _i42.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i12.DeliveringPage]
-class DeliveringRoute extends _i42.PageRouteInfo<void> {
-  const DeliveringRoute({List<_i42.PageRouteInfo>? children})
-    : super(DeliveringRoute.name, initialChildren: children);
+class DeliveringRoute extends _i42.PageRouteInfo<DeliveringRouteArgs> {
+  DeliveringRoute({
+    _i43.Key? key,
+    String? id,
+    List<_i42.PageRouteInfo>? children,
+  }) : super(
+         DeliveringRoute.name,
+         args: DeliveringRouteArgs(key: key, id: id),
+         initialChildren: children,
+       );
 
   static const String name = 'DeliveringRoute';
 
   static _i42.PageInfo page = _i42.PageInfo(
     name,
     builder: (data) {
-      return const _i12.DeliveringPage();
+      final args = data.argsAs<DeliveringRouteArgs>(
+        orElse: () => const DeliveringRouteArgs(),
+      );
+      return _i12.DeliveringPage(key: args.key, id: args.id);
     },
   );
+}
+
+class DeliveringRouteArgs {
+  const DeliveringRouteArgs({this.key, this.id});
+
+  final _i43.Key? key;
+
+  final String? id;
+
+  @override
+  String toString() {
+    return 'DeliveringRouteArgs{key: $key, id: $id}';
+  }
 }
 
 /// generated route for
@@ -726,6 +770,11 @@ class OrdersDetailsRoute extends _i42.PageRouteInfo<OrdersDetailsRouteArgs> {
     String? storeName,
     String? deliveryAddress,
     String? orderNumber,
+    List<_i44.Customization>? customizationList,
+    List<String>? name,
+    int? quantity,
+    String? totalPrice,
+    List<String?>? sizeNames,
     List<_i42.PageRouteInfo>? children,
   }) : super(
          OrdersDetailsRoute.name,
@@ -734,6 +783,11 @@ class OrdersDetailsRoute extends _i42.PageRouteInfo<OrdersDetailsRouteArgs> {
            storeName: storeName,
            deliveryAddress: deliveryAddress,
            orderNumber: orderNumber,
+           customizationList: customizationList,
+           name: name,
+           quantity: quantity,
+           totalPrice: totalPrice,
+           sizeNames: sizeNames,
          ),
          initialChildren: children,
        );
@@ -751,6 +805,11 @@ class OrdersDetailsRoute extends _i42.PageRouteInfo<OrdersDetailsRouteArgs> {
         storeName: args.storeName,
         deliveryAddress: args.deliveryAddress,
         orderNumber: args.orderNumber,
+        customizationList: args.customizationList,
+        name: args.name,
+        quantity: args.quantity,
+        totalPrice: args.totalPrice,
+        sizeNames: args.sizeNames,
       );
     },
   );
@@ -762,6 +821,11 @@ class OrdersDetailsRouteArgs {
     this.storeName,
     this.deliveryAddress,
     this.orderNumber,
+    this.customizationList,
+    this.name,
+    this.quantity,
+    this.totalPrice,
+    this.sizeNames,
   });
 
   final _i43.Key? key;
@@ -772,9 +836,19 @@ class OrdersDetailsRouteArgs {
 
   final String? orderNumber;
 
+  final List<_i44.Customization>? customizationList;
+
+  final List<String>? name;
+
+  final int? quantity;
+
+  final String? totalPrice;
+
+  final List<String?>? sizeNames;
+
   @override
   String toString() {
-    return 'OrdersDetailsRouteArgs{key: $key, storeName: $storeName, deliveryAddress: $deliveryAddress, orderNumber: $orderNumber}';
+    return 'OrdersDetailsRouteArgs{key: $key, storeName: $storeName, deliveryAddress: $deliveryAddress, orderNumber: $orderNumber, customizationList: $customizationList, name: $name, quantity: $quantity, totalPrice: $totalPrice, sizeNames: $sizeNames}';
   }
 }
 
@@ -880,18 +954,36 @@ class PaymentMethodsRouteArgs {
 
 /// generated route for
 /// [_i31.PlacingOrderPage]
-class PlacingOrderRoute extends _i42.PageRouteInfo<void> {
-  const PlacingOrderRoute({List<_i42.PageRouteInfo>? children})
-    : super(PlacingOrderRoute.name, initialChildren: children);
+class PlacingOrderRoute extends _i42.PageRouteInfo<PlacingOrderRouteArgs> {
+  PlacingOrderRoute({_i43.Key? key, List<_i42.PageRouteInfo>? children})
+    : super(
+        PlacingOrderRoute.name,
+        args: PlacingOrderRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'PlacingOrderRoute';
 
   static _i42.PageInfo page = _i42.PageInfo(
     name,
     builder: (data) {
-      return _i31.PlacingOrderPage();
+      final args = data.argsAs<PlacingOrderRouteArgs>(
+        orElse: () => const PlacingOrderRouteArgs(),
+      );
+      return _i31.PlacingOrderPage(key: args.key);
     },
   );
+}
+
+class PlacingOrderRouteArgs {
+  const PlacingOrderRouteArgs({this.key});
+
+  final _i43.Key? key;
+
+  @override
+  String toString() {
+    return 'PlacingOrderRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

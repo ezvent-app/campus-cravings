@@ -84,7 +84,7 @@ class CheckoutAddressPage extends ConsumerWidget {
             SizedBox(height: size.height * .05),
             RoundedButtonWidget(
               btnTitle: locale.apply,
-              onTap: () => context.pushRoute(const PlacingOrderRoute()),
+              onTap: () => context.pushRoute(PlacingOrderRoute()),
             ),
           ],
         ),

@@ -13,6 +13,7 @@ class LoginPage extends ConsumerWidget {
     final size = MediaQuery.of(context).size;
     final locale = AppLocalizations.of(context)!;
     HttpAPIServices services = HttpAPIServices();
+    final socketController = ref.read(socketControllerProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -139,6 +140,10 @@ class LoginPage extends ConsumerWidget {
                                         print('Storge Token: $token1');
 
                                         print('tokeen: $token');
+                                        final socketController = ref.read(
+                                          socketControllerProvider,
+                                        );
+                                        socketController.connect(token);
 
                                         ref.read(loginProvider.notifier).state =
                                             {'email': '', 'password': ''};

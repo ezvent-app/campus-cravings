@@ -24,84 +24,87 @@ class _NearbyRestaurantsWidgetState
           child: Text(
             'Restaurants Nearby',
             style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
         GetBuilder<RestaurantController>(
-            id: nearByRestaurantBuilderId,
-            initState: (state){
-              Get.find<RestaurantController>().getNearByRestaurants();
-            },
-            builder: (controller) {
-              if(controller.isLoading) {
-                return _buildRestaurantShimmer();
-              } else if(controller.isLoading == false && controller.listOfNearByRestaurants.isEmpty) {
-                return const Center(
-                  child: Text('No nearby restaurants found'),
-                );
-              }
-              return Column(
-                children: List.generate(controller.listOfNearByRestaurants.length, (index) {
-                  final restaurant = controller.listOfNearByRestaurants[index];
-                  return InkWellButtonWidget(
-                    onTap: () {
-                      Get.find<RestaurantDetailsController>().setRestaurantId(restaurant.id);
-                      context.pushRoute(const RestaurantRoute());
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 25,
-                      ),
-                      child: Row(
-                        children: [
-                          PngAsset(
-                            'mock_product_1',
-                            borderRadius: BorderRadius.circular(200),
-                            fit: BoxFit.cover,
-                            width: 110,
-                            height: 110,
-                          ),
-                          const SizedBox(width: 25),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${restaurant.brandName}',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Color(0xff443A39),
-                                ),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                '${restaurant.cuisine}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xffB4B0B0),
-                                ),
-                              ),
-                              SizedBox(height: 7),
-                              Text(
-                                '8am - 9pm | ${controller.getDistanceInMiles(lat: restaurant.address.coordinates.coordinates[1], lng: restaurant.address.coordinates.coordinates[0]).toStringAsFixed(2)} mil away',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff443A39),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-              );
+          id: nearByRestaurantBuilderId,
+          initState: (state) {
+            Get.find<RestaurantController>().getNearByRestaurants();
+          },
+          builder: (controller) {
+            if (controller.isLoading) {
+              return _buildRestaurantShimmer();
+            } else if (controller.isLoading == false &&
+                controller.listOfNearByRestaurants.isEmpty) {
+              return const Center(child: Text('No nearby restaurants found'));
             }
-        )
+            return Column(
+              children: List.generate(controller.listOfNearByRestaurants.length, (
+                index,
+              ) {
+                final restaurant = controller.listOfNearByRestaurants[index];
+                return InkWellButtonWidget(
+                  onTap: () {
+                    Get.find<RestaurantDetailsController>().setRestaurantId(
+                      restaurant.id,
+                    );
+                    context.pushRoute(const RestaurantRoute());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 25,
+                    ),
+                    child: Row(
+                      children: [
+                        PngAsset(
+                          'mock_product_1',
+                          borderRadius: BorderRadius.circular(200),
+                          fit: BoxFit.cover,
+                          width: 110,
+                          height: 110,
+                        ),
+                        const SizedBox(width: 25),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              restaurant.brandName,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xff443A39),
+                              ),
+                            ),
+                            SizedBox(height: 3),
+                            Text(
+                              restaurant.cuisine,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xffB4B0B0),
+                              ),
+                            ),
+                            SizedBox(height: 7),
+                            Text(
+                              '8am - 9pm | ${controller.getDistanceInMiles(lat: restaurant.address.coordinates.coordinates[1], lng: restaurant.address.coordinates.coordinates[0]).toStringAsFixed(2)} mil away',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff443A39),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+            );
+          },
+        ),
       ],
     );
   }
@@ -168,5 +171,4 @@ class _NearbyRestaurantsWidgetState
       }),
     );
   }
-
 }

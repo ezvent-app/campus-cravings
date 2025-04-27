@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart' as geo;
 import 'package:location/location.dart';
 
 class LocationService {
@@ -26,8 +27,11 @@ class LocationService {
     return false;
   }
 
-  Future<LocationData?> getCurrentLocation() async {
+  Future<geo.Position?> getCurrentLocation() async {
     if (await checkIfPermissionGranted() == false) return null;
-    return await _location.getLocation();
+    return await geo.Geolocator.getCurrentPosition(locationSettings: geo.LocationSettings(
+      accuracy: geo.LocationAccuracy.best,
+      timeLimit: Duration(seconds: 5),
+    ));
   }
 }
