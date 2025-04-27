@@ -1,9 +1,14 @@
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class OrdersTabPage extends StatelessWidget {
+class OrdersTabPage extends StatefulWidget {
   const OrdersTabPage({super.key});
 
+  @override
+  State<OrdersTabPage> createState() => _OrdersTabPageState();
+}
+
+class _OrdersTabPageState extends State<OrdersTabPage> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;

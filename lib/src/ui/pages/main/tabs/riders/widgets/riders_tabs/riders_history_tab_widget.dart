@@ -66,6 +66,7 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                                         order.items[0].customizationList,
                                     name: allItemNames,
                                     quantity: order.items[0].quantity,
+                                    items: order.items,
                                     totalPrice: order.totalPrice
                                         .toStringAsFixed(2),
                                     sizeNames: allSizeNames,

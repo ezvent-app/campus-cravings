@@ -11,6 +11,7 @@ class OrdersDetailsPage extends StatelessWidget {
   final int? quantity;
   final String? totalPrice;
   final List<String?>? sizeNames;
+  final List<Item>? items;
   const OrdersDetailsPage({
     super.key,
     this.storeName,
@@ -21,6 +22,7 @@ class OrdersDetailsPage extends StatelessWidget {
     this.quantity,
     this.totalPrice,
     this.sizeNames,
+    this.items,
   });
 
   @override
@@ -75,8 +77,9 @@ class OrdersDetailsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Column(
-                    children: List.generate(customizationList!.length, (index) {
-                      final customization = customizationList?[index];
+                    children: List.generate(items!.length, (index) {
+                      final item = items?[index];
+                      final customzation = item?.customizationList;
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -99,6 +102,7 @@ class OrdersDetailsPage extends StatelessWidget {
                           width(17),
                           Expanded(
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -128,12 +132,71 @@ class OrdersDetailsPage extends StatelessWidget {
                                       ),
                                     ),
                                     children: [
-                                      Text(
-                                        "${sizeNames![index]}",
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.bodySmall,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0,
+                                          vertical: 8.0,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start, // Align everything to start
+                                          children: [
+                                            // Customization heading
+                                            Text(
+                                              "Customization:",
+                                              style:
+                                                  Theme.of(
+                                                    context,
+                                                  ).textTheme.titleSmall,
+                                            ),
+                                            const SizedBox(
+                                              height: 8,
+                                            ), // Space between heading and items
+                                            // Customization items list
+                                            ...List.generate(
+                                              customzation!.length,
+                                              (index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        vertical: 2.0,
+                                                      ),
+                                                  child: Text(
+                                                    customzation[index].name,
+                                                    style:
+                                                        Theme.of(
+                                                          context,
+                                                        ).textTheme.bodySmall,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+
+                                            const SizedBox(
+                                              height: 12,
+                                            ), // Space before Size row
+                                            // Size row
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Size: ",
+                                                  style:
+                                                      Theme.of(
+                                                        context,
+                                                      ).textTheme.titleSmall,
+                                                ),
+                                                Text(
+                                                  "${sizeNames![index]}",
+                                                  style:
+                                                      Theme.of(
+                                                        context,
+                                                      ).textTheme.bodySmall,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
