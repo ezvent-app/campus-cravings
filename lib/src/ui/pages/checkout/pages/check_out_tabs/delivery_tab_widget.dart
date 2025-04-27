@@ -1,5 +1,4 @@
 import 'package:campuscravings/src/src.dart';
-import 'package:campuscravings/src/ui/pages/main/tabs/cart/cart_tab.dart';
 
 class DeliveryTabWidget extends ConsumerWidget {
   DeliveryTabWidget({super.key});
@@ -8,8 +7,8 @@ class DeliveryTabWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
-    final cartItems = ref.watch(cartProvider);
-    final cartNotifier = ref.read(cartProvider.notifier);
+    final cartItems = ref.watch(cartItemsProvider);
+    final cartNotifier = ref.read(cartItemsProvider.notifier);
     final subtotal = cartItems
         .map((item) => item.price * item.quantity)
         .fold(0.0, (a, b) => a + b);
@@ -51,10 +50,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                     ],
                   ),
                 ),
-                HomeLocationWidget(
-                  title: locale.home,
-                  subTitle: '5259 Blue Bill Park, PC 4627',
-                ),
+                HomeLocationWidget(title: locale.home, subTitle: ''),
               ],
             ),
           ),
@@ -107,7 +103,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        item.title,
+                                        item.name,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(
@@ -271,7 +267,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$ $tip',
+                          '\$2',
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -331,38 +327,40 @@ class DeliveryTabWidget extends ConsumerWidget {
             height: 48,
             margin: const EdgeInsets.only(bottom: 36),
             child: ElevatedButton(
-              onPressed: () {
-                // final json = {
-                //   "payment_method": "cash",
-                //   "tip": 3,
-                //   "delivery_fee": 2,
-                //   "addresses": {
-                //     "address": "123 Main St",
-                //     "coordinates": {
-                //       "type": "Point",
-                //       "coordinates": [73.1234, 33.5678],
-                //     },
+              onPressed: () async {
+                List<Map<String, dynamic>> orderItemsJson =
+                    cartItems.map((item) => item.toOrderItemJson()).toList();
+
+                final json = {
+                  "payment_method": "cash",
+                  "tip": tip,
+                  "delivery_fee": 2,
+                  "order_type": "delivery",
+                  "addresses": {
+                    "address": "123 Main St",
+                    "coordinates": {
+                      "type": "Point",
+                      "coordinates": [73.1234, 33.5678],
+                    },
+                  },
+                  "items": orderItemsJson,
+                };
+                _repository.placeOrderMethod(json, context);
+                // context.pushRoute(const CheckoutAddressRoute());
+
+                // await _repository.makePayment(
+                //   context: context,
+                //   purchaseName: "",
+                //   title: "Garden Service",
+                //   amountPaid: 500,
+                //   merchantDisplayName: "Default Merchant",
+                //   onSuccess: (transactionId) async {
+                //     print(
+                //       "Payment Successful with Transaction ID: $transactionId",
+                //     );
+                //     //  _repository.placeOrderMethod(json, context);
                 //   },
-                //   "items": [
-                //     {
-                //       "item_id": "68062020b63dae4410847f75",
-                //       "quantity": 2,
-                //       "customizations": [
-                //         "68062020b63dae4410847f76",
-                //         "68062020b63dae4410847f77",
-                //       ],
-                //     },
-                //     {
-                //       "item_id": "68062026b63dae4410847f82",
-                //       "quantity": 5,
-                //       "customizations": [
-                //         "68062026b63dae4410847f85", // Customization Id
-                //       ],
-                //     },
-                //   ],
-                // };
-                // _repository.placeOrderMethod(json, context);
-                context.pushRoute(const CheckoutAddressRoute());
+                // );
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

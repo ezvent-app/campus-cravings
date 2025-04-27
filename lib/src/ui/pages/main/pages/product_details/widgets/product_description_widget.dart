@@ -26,7 +26,7 @@ class _ProductDescriptionWidgetState
             TextSpan(
               text: widget.description.length > 14
                   ? !_expanded
-                  ? '${widget.description.substring(0, widget.description.length >= 151 ? 151 : widget.description.length)}...'
+                  ? '${widget.description.substring(0, widget.description.length >= 150 ? 151 : widget.description.length)}...'
                   : widget.description
                   : widget.description,
               style: const TextStyle(

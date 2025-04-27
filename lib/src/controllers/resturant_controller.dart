@@ -1,14 +1,11 @@
 import 'package:campuscravings/src/controllers/location_controller.dart';
 import 'package:campuscravings/src/models/near_by_restaurant_model.dart';
-import 'package:campuscravings/src/models/restaurant_details_model.dart';
 import 'package:campuscravings/src/repository/home_repository/restaurant_repository.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:logger/logger.dart';
-
 import '../constants/get_builder_id_constants.dart';
-import '../services/location_service.dart';
 
 class RestaurantController extends GetxController{
 
@@ -16,7 +13,7 @@ class RestaurantController extends GetxController{
   RestaurantController(this._restaurantRepository);
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  LocationData? _locationData;
+  Position? _locationData;
   List<NearByRestaurantModel> _listOfNearByRestaurants = [];
   List<NearByRestaurantModel> get listOfNearByRestaurants => _listOfNearByRestaurants;
 
@@ -33,7 +30,7 @@ class RestaurantController extends GetxController{
         update([nearByRestaurantBuilderId]);
         return;
       }
-      _listOfNearByRestaurants = (await _restaurantRepository.getNearByRestaurants(lat: _locationData!.latitude!, lng: _locationData!.longitude!)) ?? [];
+      _listOfNearByRestaurants = (await _restaurantRepository.getNearByRestaurants(lat: _locationData!.latitude, lng: _locationData!.longitude)) ?? [];
       _isLoading = false;
       update([nearByRestaurantBuilderId]);
       return;

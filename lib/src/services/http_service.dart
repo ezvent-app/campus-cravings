@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
 class HttpService {
   static final HttpService _instance = HttpService._internal();

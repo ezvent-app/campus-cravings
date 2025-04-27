@@ -1,5 +1,4 @@
 import 'package:campuscravings/src/src.dart';
-import 'package:campuscravings/src/ui/pages/main/tabs/cart/cart_tab.dart';
 
 class PickUpTabWidget extends ConsumerWidget {
   const PickUpTabWidget({super.key});
@@ -7,8 +6,8 @@ class PickUpTabWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
-    final cartItems = ref.watch(cartProvider);
-    final cartNotifier = ref.read(cartProvider.notifier);
+    final cartItems = ref.watch(cartItemsProvider);
+    final cartNotifier = ref.read(cartItemsProvider.notifier);
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: BouncingScrollPhysics(),
@@ -64,7 +63,7 @@ class PickUpTabWidget extends ConsumerWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        item.title,
+                                        item.name,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(

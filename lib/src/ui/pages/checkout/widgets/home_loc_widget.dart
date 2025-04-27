@@ -64,171 +64,153 @@ class HomeLocationWidget extends StatelessWidget {
                                       (context, index) => height(15),
                                   itemBuilder: (context, index) {
                                     final address = addressList[index];
-                                    return InkWellButtonWidget(
-                                      onTap: () async {
-                                        await SharePreferences.clearValue(
-                                          'selectedAddress',
-                                        );
-                                        await SharePreferences.setList(
-                                          key: "selectedAddress",
-                                          value: address,
-                                        );
-                                        context.maybePop();
-                                      },
-                                      child: Card(
-                                        shape: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            10,
-                                          ),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              const SvgAssets(
-                                                'location',
-                                                height: 52,
-                                                width: 52,
-                                              ),
-                                              const SizedBox(width: 16),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          address['saveAs'] ??
-                                                              locale.home,
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontSize: 18,
-                                                            color:
-                                                                AppColors
-                                                                    .primary,
-                                                          ),
+                                    return Card(
+                                      shape: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Row(
+                                          children: [
+                                            const SvgAssets(
+                                              'location',
+                                              height: 52,
+                                              width: 52,
+                                            ),
+                                            const SizedBox(width: 16),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        address['saveAs'] ??
+                                                            locale.home,
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 18,
+                                                          color:
+                                                              AppColors.primary,
                                                         ),
-                                                        if (address['isDefault'] ==
-                                                            true)
-                                                          Container(
-                                                            padding:
-                                                                const EdgeInsets.symmetric(
-                                                                  horizontal:
-                                                                      10,
-                                                                  vertical: 6,
-                                                                ),
-                                                            margin:
-                                                                const EdgeInsets.only(
-                                                                  left: 30,
-                                                                  bottom: 2,
-                                                                ),
-                                                            decoration: BoxDecoration(
-                                                              color:
-                                                                  const Color(
-                                                                    0xFFEBEBEB,
-                                                                  ),
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    6,
-                                                                  ),
-                                                            ),
-                                                            child: Text(
-                                                              locale
-                                                                  .defaultValue,
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 10,
-                                                                color:
-                                                                    AppColors
-                                                                        .primary,
+                                                      ),
+                                                      if (address['isDefault'] ==
+                                                          true)
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                                vertical: 6,
                                                               ),
+                                                          margin:
+                                                              const EdgeInsets.only(
+                                                                left: 30,
+                                                                bottom: 2,
+                                                              ),
+                                                          decoration: BoxDecoration(
+                                                            color: const Color(
+                                                              0xFFEBEBEB,
                                                             ),
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  6,
+                                                                ),
                                                           ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
                                                           child: Text(
-                                                            address['fullAddress'] ??
-                                                                '',
-                                                            style:
-                                                                Theme.of(
-                                                                      context,
-                                                                    )
-                                                                    .textTheme
-                                                                    .bodyMedium,
+                                                            locale.defaultValue,
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 10,
+                                                              color:
+                                                                  AppColors
+                                                                      .primary,
+                                                            ),
                                                           ),
                                                         ),
-                                                        Consumer(
-                                                          builder: (
-                                                            context,
-                                                            ref,
-                                                            child,
-                                                          ) {
-                                                            final isSelected =
-                                                                ref.watch(
-                                                                  checkOutProvider,
-                                                                );
-                                                            return InkWellButtonWidget(
-                                                              onTap:
-                                                                  () =>
-                                                                      ref
-                                                                          .read(
-                                                                            checkOutProvider.notifier,
-                                                                          )
-                                                                          .state = !isSelected,
-                                                              child: Container(
-                                                                width: 20,
-                                                                height: 20,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                decoration: BoxDecoration(
-                                                                  shape:
-                                                                      BoxShape
-                                                                          .circle,
-                                                                  color:
-                                                                      isSelected
-                                                                          ? AppColors
-                                                                              .accent
-                                                                          : Colors
-                                                                              .transparent,
-                                                                  border: Border.all(
-                                                                    color:
-                                                                        AppColors
-                                                                            .accent,
-                                                                    width: 1,
-                                                                  ),
-                                                                ),
-                                                                child:
-                                                                    isSelected
-                                                                        ? Center(
-                                                                          child: Icon(
-                                                                            Icons.done,
-                                                                            color:
-                                                                                AppColors.white,
-                                                                            size:
-                                                                                15,
-                                                                          ),
-                                                                        )
-                                                                        : SizedBox(),
-                                                              ),
-                                                            );
-                                                          },
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
+                                                          address['fullAddress'] ??
+                                                              '',
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyMedium,
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                      ),
+                                                      Consumer(
+                                                        builder: (
+                                                          context,
+                                                          ref,
+                                                          child,
+                                                        ) {
+                                                          final isSelected = ref
+                                                              .watch(
+                                                                checkOutProvider,
+                                                              );
+                                                          return InkWellButtonWidget(
+                                                            onTap:
+                                                                () =>
+                                                                    ref
+                                                                        .read(
+                                                                          checkOutProvider
+                                                                              .notifier,
+                                                                        )
+                                                                        .state = !isSelected,
+                                                            child: Container(
+                                                              width: 20,
+                                                              height: 20,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              decoration: BoxDecoration(
+                                                                shape:
+                                                                    BoxShape
+                                                                        .circle,
+                                                                color:
+                                                                    isSelected
+                                                                        ? AppColors
+                                                                            .accent
+                                                                        : Colors
+                                                                            .transparent,
+                                                                border: Border.all(
+                                                                  color:
+                                                                      AppColors
+                                                                          .accent,
+                                                                  width: 1,
+                                                                ),
+                                                              ),
+                                                              child:
+                                                                  isSelected
+                                                                      ? Center(
+                                                                        child: Icon(
+                                                                          Icons
+                                                                              .done,
+                                                                          color:
+                                                                              AppColors.white,
+                                                                          size:
+                                                                              15,
+                                                                        ),
+                                                                      )
+                                                                      : SizedBox(),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     );
