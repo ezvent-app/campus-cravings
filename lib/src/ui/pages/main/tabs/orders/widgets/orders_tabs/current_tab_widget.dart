@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/repository/user_order_repo/user_history_provider.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 
 class CurrentOrdersTabWidget extends ConsumerStatefulWidget {
   const CurrentOrdersTabWidget({super.key});
@@ -100,12 +101,12 @@ class _CurrentOrdersTabWidgetState
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          PngAsset(
-                            'mock_product_1',
+                          CustomNetworkImage(
                             height: 80,
                             width: 80,
                             fit: BoxFit.cover,
                             borderRadius: BorderRadius.circular(10),
+                            order.user.image,
                           ),
                           Expanded(
                             child: Padding(

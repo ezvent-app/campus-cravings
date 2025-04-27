@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/repository/user_order_repo/user_history_provider.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 
 class HistoryTabWidget extends ConsumerStatefulWidget {
   const HistoryTabWidget({super.key});
@@ -99,21 +100,13 @@ class _HistoryTabWidgetState extends ConsumerState<HistoryTabWidget> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              PngAsset(
-                                'mock_product_1',
+                              CustomNetworkImage(
                                 height: 80,
                                 width: 80,
                                 fit: BoxFit.cover,
                                 borderRadius: BorderRadius.circular(10),
+                                order.user.image,
                               ),
-                              // CustomNetworkImage(
-                              //   order.items.isNotEmpty
-                              //       ? order.items[index].imageUrl
-                              //       : 'https://example.com/default_image.png',
-                              //   width: 90,
-                              //   height: 90,
-                              //   fit: BoxFit.cover,
-                              // ),
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(

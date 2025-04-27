@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/repository/rider_repository/history_provider.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 
 class RidersHistoryTabWidget extends ConsumerWidget {
   const RidersHistoryTabWidget({super.key});
@@ -89,21 +90,20 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              PngAsset(
-                                'mock_product_1',
+                              // PngAsset(
+                              //   'mock_product_1',
+                              // height: 80,
+                              // width: 80,
+                              // fit: BoxFit.cover,
+                              // borderRadius: BorderRadius.circular(10),
+                              // ),
+                              CustomNetworkImage(
                                 height: 80,
                                 width: 80,
                                 fit: BoxFit.cover,
                                 borderRadius: BorderRadius.circular(10),
+                                order.user.image,
                               ),
-                              // CustomNetworkImage(
-                              //   order.items.isNotEmpty
-                              //       ? order.items[index].imageUrl
-                              //       : 'https://example.com/default_image.png',
-                              //   width: 90,
-                              //   height: 90,
-                              //   fit: BoxFit.cover,
-                              // ),
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(
