@@ -33,7 +33,17 @@ class _HistoryTabWidgetState extends ConsumerState<HistoryTabWidget> {
       error: (err, stack) => Center(child: Text('Error: $err')),
       data: (history) {
         final orders = history.orders;
-        if (orders == null || orders.isEmpty) {
+        final filteredOrders =
+            orders
+                ?.where(
+                  (order) =>
+                      order.status == 'delivered' ||
+                      order.status == 'cancelled' ||
+                      order.status == 'completed',
+                )
+                .toList() ??
+            [];
+        if (filteredOrders.isEmpty) {
           return Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 50),
@@ -52,8 +62,8 @@ class _HistoryTabWidgetState extends ConsumerState<HistoryTabWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
-                children: List.generate(orders!.length, (index) {
-                  final order = orders[index];
+                children: List.generate(filteredOrders!.length, (index) {
+                  final order = filteredOrders[index];
                   final allItemNames = order.items.map((e) => e.name).toList();
                   final allSizeNames =
                       order.items.map((e) => e.size?.name).toList();
@@ -183,10 +193,9 @@ class _HistoryTabWidgetState extends ConsumerState<HistoryTabWidget> {
                                                     vertical: 5,
                                                   ),
                                               child: Text(
-                                                order.status ==
-                                                        'order_dispatched'
-                                                    ? 'Dispatched'
-                                                    : order.status,
+                                                _getOrderStatusText(
+                                                  order.status,
+                                                ),
                                                 style: Theme.of(
                                                   context,
                                                 ).textTheme.bodySmall!.copyWith(
@@ -214,5 +223,19 @@ class _HistoryTabWidgetState extends ConsumerState<HistoryTabWidget> {
         );
       },
     );
+  }
+}
+
+String _getOrderStatusText(String status) {
+  switch (status) {
+    case 'delivered':
+      return 'Delivered';
+    case 'cancelled':
+      return 'Cancelled';
+    case 'completed':
+      return 'Completed';
+
+    default:
+      return 'Unknown';
   }
 }

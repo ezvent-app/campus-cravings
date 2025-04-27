@@ -36,10 +36,19 @@ class _CurrentOrdersTabWidgetState
       error: (err, stack) => Center(child: Text('Error: $err')),
       data: (history) {
         final orders = history.orders;
-        final pendingOrders =
-            orders?.where((order) => order.status == 'pending').toList() ?? [];
+        final filteredOrders =
+            orders
+                ?.where(
+                  (order) =>
+                      order.status == 'pending' ||
+                      order.status == 'order_accepted' ||
+                      order.status == 'order_prepared' ||
+                      order.status == 'order_dispatched',
+                )
+                .toList() ??
+            [];
 
-        if (pendingOrders.isEmpty) {
+        if (filteredOrders.isEmpty) {
           return Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 50),
@@ -56,8 +65,8 @@ class _CurrentOrdersTabWidgetState
           physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(pendingOrders.length, (index) {
-              final order = pendingOrders[index];
+            children: List.generate(filteredOrders.length, (index) {
+              final order = filteredOrders[index];
               final allItemNames = order.items.map((e) => e.name).toList();
               final allSizeNames =
                   order.items.map((e) => e.size?.name).toList();
@@ -174,7 +183,7 @@ class _CurrentOrdersTabWidgetState
                                             vertical: 5,
                                           ),
                                           child: Text(
-                                            'Pending',
+                                            _getOrderStatusText(order.status),
                                             style: Theme.of(
                                               context,
                                             ).textTheme.bodySmall!.copyWith(
@@ -200,5 +209,20 @@ class _CurrentOrdersTabWidgetState
         );
       },
     );
+  }
+}
+
+String _getOrderStatusText(String status) {
+  switch (status) {
+    case 'pending':
+      return 'Pending';
+    case 'order_accepted':
+      return 'Accepted';
+    case 'order_prepared':
+      return 'Prepared';
+    case 'order_dispatched':
+      return 'Dispatched';
+    default:
+      return 'Unknown';
   }
 }
