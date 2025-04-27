@@ -209,27 +209,27 @@ class OrdersDetailsPage extends StatelessWidget {
                     }),
                   ),
                   height(30),
-                  Text(
-                    locale.imageSubmission,
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  height(20),
-                  Container(
-                    height: size.height * .17,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      image: DecorationImage(
-                        fit: BoxFit.fitWidth,
-                        image: NetworkImage(
-                          "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1000w,f_auto,q_auto:best/rockcms/2024-02/burger-king-free-whoppers-2x1-zz-240229-461734.jpg",
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Text(
+                  //   locale.imageSubmission,
+                  //   style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  //     fontSize: 16,
+                  //     fontWeight: FontWeight.w500,
+                  //   ),
+                  // ),
+                  // height(20),
+                  // Container(
+                  //   height: size.height * .17,
+                  //   width: size.width,
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(5),
+                  //     image: DecorationImage(
+                  //       fit: BoxFit.fitWidth,
+                  //       image: NetworkImage(
+                  //         "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1000w,f_auto,q_auto:best/rockcms/2024-02/burger-king-free-whoppers-2x1-zz-240229-461734.jpg",
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   height(30),
                   InkWellButtonWidget(
                     onTap: () => context.pushRoute(ContactSupportRoute()),
