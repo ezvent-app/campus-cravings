@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:campuscravings/src/controllers/product_details_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:get/get.dart';
@@ -58,9 +56,9 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                     setState(() {
                       _selectedSize = index;
                       cartNotifier.selectSize(index, size.id, size.price);
-                      log(
-                        '👉 Selected sizeId after tap: ${cartNotifier.selectedSizeId}',
-                      );
+                      controller
+                          .getTotalPrice(sizePrice: size.price)
+                          .toStringAsFixed(2);
                     });
                   },
                   child: Padding(
