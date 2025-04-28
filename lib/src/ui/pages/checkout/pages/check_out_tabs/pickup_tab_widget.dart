@@ -1,13 +1,20 @@
 import 'package:campuscravings/src/src.dart';
 
-class PickUpTabWidget extends ConsumerWidget {
-  const PickUpTabWidget({super.key});
+class PickupTabWidget extends ConsumerWidget {
+  PickupTabWidget({super.key});
 
+  final PlaceOrderRepository _repository = PlaceOrderRepository();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     final cartItems = ref.watch(cartItemsProvider);
     final cartNotifier = ref.read(cartItemsProvider.notifier);
+    final subtotal = cartItems
+        .map((item) => item.price * item.quantity)
+        .fold(0.0, (a, b) => a + b);
+
+    final tip = ref.watch(selectedTipProvider);
+    final total = subtotal + tip;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: BouncingScrollPhysics(),
@@ -75,10 +82,18 @@ class PickUpTabWidget extends ConsumerWidget {
                                       ),
                                       height(10),
                                       QuantitySelectorWidget(
-                                        price: 2,
-                                        quantity: 1,
-                                        onQuantityDecrementChanged: () {},
-                                        onQuantityIncrementChanged: () {},
+                                        onQuantityDecrementChanged:
+                                            item.quantity <= 1
+                                                ? null
+                                                : () => cartNotifier
+                                                    .decrementQuantity(index),
+                                        onQuantityIncrementChanged:
+                                            item.quantity >= 10
+                                                ? null
+                                                : () => cartNotifier
+                                                    .incrementQuantity(index),
+                                        price: item.price,
+                                        quantity: item.quantity,
                                       ),
                                     ],
                                   ),
@@ -181,6 +196,72 @@ class PickUpTabWidget extends ConsumerWidget {
                 Row(
                   children: [
                     Text(
+                      locale.subTotal,
+                      style: TextStyle(
+                        color: Color(0xff424242),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: Text(
+                          "\$${cartItems.map((item) => item.price * item.quantity).fold(0.0, (a, b) => a + b).toStringAsFixed(2)}",
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            color: Color(0xff424242),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text(
+                      locale.deliveryFee,
+                      style: TextStyle(
+                        color: Color(0xff424242),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: Text(
+                          '\$2',
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            color: Color(0xff424242),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                TextButton(
+                  onPressed: () async => await orderTipSheetMethod(context),
+                  child: Text(
+                    '+ ${locale.addTip}',
+                    style: TextStyle(
+                      color: AppColors.accent,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Divider(height: 40, color: AppColors.dividerColor),
+                Row(
+                  children: [
+                    Text(
                       locale.total,
                       style: TextStyle(
                         color: Color(0xff424242),
@@ -192,7 +273,7 @@ class PickUpTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$24.00',
+                          "\$$total",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -214,7 +295,7 @@ class PickUpTabWidget extends ConsumerWidget {
             margin: const EdgeInsets.only(bottom: 36),
             child: ElevatedButton(
               onPressed: () {
-                context.pushRoute(const CheckoutAddressRoute());
+                context.pushRoute(CheckoutAddressRoute());
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -231,6 +312,126 @@ class PickUpTabWidget extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<dynamic> orderTipSheetMethod(BuildContext context) {
+    List tipsList = [1, 5, 10, 15];
+    final locale = AppLocalizations.of(context)!;
+
+    return showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Card(
+          margin: EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          locale.addTip,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.clear, color: AppColors.email),
+                    ),
+                  ],
+                ),
+                height(20),
+                Text(
+                  "${locale.wantToLeaveTipFor} Robert",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: AppColors.lightText,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Consumer(
+                  builder: (context, ref, _) {
+                    var selectedIndex = ref.watch(tipsProvider);
+                    return Wrap(
+                      children: List.generate(
+                        tipsList.length,
+                        (i) => InkWellButtonWidget(
+                          borderRadius: BorderRadius.circular(15),
+                          onTap: () {
+                            ref.read(tipsProvider.notifier).state = i;
+                            ref.read(selectedTipProvider.notifier).state =
+                                tipsList[i];
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Container(
+                              width: 140,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color:
+                                      selectedIndex == i
+                                          ? AppColors.black
+                                          : Colors.grey,
+                                ),
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: Text(
+                                    "\$${tipsList[i]}",
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyLarge!.copyWith(
+                                      color:
+                                          selectedIndex == i
+                                              ? AppColors.black
+                                              : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                height(20),
+                Consumer(
+                  builder: (context, ref, child) {
+                    return CustomTextField(
+                      label: 'Enter tip',
+                      hintText: '\$2',
+                      textInputType: TextInputType.number,
+                      onSubmitted:
+                          (value) =>
+                              ref.read(selectedTipProvider.notifier).state =
+                                  int.tryParse(value)!,
+                    );
+                  },
+                ),
+                height(30),
+                RoundedButtonWidget(
+                  btnTitle: locale.confirm,
+                  onTap: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

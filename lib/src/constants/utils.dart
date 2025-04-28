@@ -4,7 +4,6 @@ showToast(String message, {BuildContext? context, Color? bgColor}) {
   if (context == null) return;
 
   final overlay = Overlay.of(context);
-  if (overlay == null) return;
 
   final overlayEntry = OverlayEntry(
     builder:
@@ -29,7 +28,7 @@ showToast(String message, {BuildContext? context, Color? bgColor}) {
   overlay.insert(overlayEntry);
 
   // Remove the toast after a delay
-  Future.delayed(const Duration(seconds: 3), () {
+  Future.delayed(const Duration(seconds: 1), () {
     overlayEntry.remove();
   });
 }

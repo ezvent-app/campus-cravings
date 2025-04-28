@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/raise_ticket/raise_ticket_tab.dart';
 
 @RoutePage()
 class HelpPage extends StatelessWidget {
@@ -18,49 +19,58 @@ class HelpPage extends StatelessWidget {
             options: [
               HelpOption(
                 label: locale.order,
-                onPressed: () => context.pushRoute(HelpFAQRoute(
-                    type: FAQS.order,
-                    title: locale.order,
-                    faqs: helpOrderModelList)),
+                onPressed:
+                    () => context.pushRoute(
+                      HelpFAQRoute(
+                        type: FAQS.order,
+                        title: locale.order,
+                        faqs: orderFaqList,
+                      ),
+                    ),
               ),
               HelpOption(
                 label: locale.delivery,
-                onPressed: () => context.pushRoute(HelpFAQRoute(
-                    type: FAQS.delivery,
-                    title: locale.delivery,
-                    faqs: helpOrderModelList)),
+                onPressed:
+                    () => context.pushRoute(
+                      HelpFAQRoute(
+                        type: FAQS.delivery,
+                        title: locale.delivery,
+                        faqs: deliveryFaqList,
+                      ),
+                    ),
               ),
               HelpOption(
                 label: locale.payment,
-                onPressed: () => context.pushRoute(HelpFAQRoute(
-                    type: FAQS.payment,
-                    title: locale.payment,
-                    faqs: helpOrderModelList)),
-              ),
-              HelpOption(
-                label: locale.promotion,
-                onPressed: () => context.pushRoute(HelpFAQRoute(
-                    type: FAQS.promotion,
-                    title: locale.promotion,
-                    faqs: helpOrderModelList)),
+                onPressed:
+                    () => context.pushRoute(
+                      HelpFAQRoute(
+                        type: FAQS.payment,
+                        title: locale.payment,
+                        faqs: paymentFaqList,
+                      ),
+                    ),
               ),
               HelpOption(
                 label: locale.account,
-                onPressed: () => context.pushRoute(HelpFAQRoute(
-                    type: FAQS.account,
-                    title: locale.account,
-                    faqs: helpOrderModelList)),
+                onPressed:
+                    () => context.pushRoute(
+                      HelpFAQRoute(
+                        type: FAQS.account,
+                        title: locale.account,
+                        faqs: accountFaqList,
+                      ),
+                    ),
               ),
+            ],
+          ),
+          ProfileGroupButton(
+            isHelp: true,
+            options: [
               HelpOption(
-                label: locale.refund,
-                onPressed: () => context.pushRoute(HelpFAQRoute(
-                    type: FAQS.refund,
-                    title: locale.refund,
-                    faqs: helpOrderModelList)),
-              ),
-              HelpOption(
-                label: locale.contactSupport,
-                onPressed: () => context.pushRoute(const ContactSupportRoute()),
+                label: "Raise a Ticket",
+                onPressed: () {
+                  context.pushRoute(RaiseTicketRoute());
+                },
               ),
             ],
           ),

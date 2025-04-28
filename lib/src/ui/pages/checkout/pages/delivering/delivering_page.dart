@@ -6,13 +6,15 @@ import 'package:geolocator/geolocator.dart';
 
 @RoutePage()
 class DeliveringPage extends StatefulWidget {
-  const DeliveringPage({super.key});
+  final String? id;
+  const DeliveringPage({super.key, this.id});
 
   @override
   State<DeliveringPage> createState() => _DeliveringPageState();
 }
 
 class _DeliveringPageState extends State<DeliveringPage> {
+  int step = 1;
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -31,6 +33,7 @@ class _DeliveringPageState extends State<DeliveringPage> {
   @override
   void initState() {
     super.initState();
+    print("Widget ID: ${widget.id}");
     _getCurrentLocation();
     Future.delayed(Duration(seconds: 2), () {
       _setupMarkersAndPolyline();
@@ -133,19 +136,15 @@ class _DeliveringPageState extends State<DeliveringPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      locale.pickingUpYourorder,
+                      "Your order has been placed",
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     height(5),
                     Row(
                       children: [
                         Text(
-                          locale.arrivingAt,
+                          "Prep usually starts within 2-3 minutes.",
                           style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        Text(
-                          '10:15 PM',
-                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ],
                     ),
@@ -159,7 +158,9 @@ class _DeliveringPageState extends State<DeliveringPage> {
                               top: 12,
                               bottom: 12,
                             ),
-                            color: Color(index < 3 ? 0xff0F984A : 0xffE5E1E5),
+                            color: Color(
+                              index <= step ? 0xff0F984A : 0xffE5E1E5,
+                            ),
                           ),
                         );
                       }),
@@ -167,23 +168,31 @@ class _DeliveringPageState extends State<DeliveringPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: GoogleMap(
-                  mapType: MapType.satellite,
-                  myLocationEnabled: true,
-                  indoorViewEnabled: true,
-                  trafficEnabled: true,
-                  initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController googleMapController) {
-                    _controller.complete(googleMapController);
-                  },
-                  markers: _markers,
-                  polylines: _polylines,
-                ),
-              ),
+              step == 0
+                  ? Container(
+                    width: double.infinity,
+                    height: 300,
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(color: Colors.grey.shade300),
+                    child: PngAsset("prepare", width: 237, height: 287),
+                  )
+                  : Expanded(
+                    child: GoogleMap(
+                      mapType: MapType.satellite,
+                      myLocationEnabled: true,
+                      indoorViewEnabled: true,
+                      trafficEnabled: true,
+                      initialCameraPosition: _kGooglePlex,
+                      onMapCreated: (GoogleMapController googleMapController) {
+                        _controller.complete(googleMapController);
+                      },
+                      markers: _markers,
+                      polylines: _polylines,
+                    ),
+                  ),
             ],
           ),
-          const AnimatedDeliveryDetailsWrapper(),
+          AnimatedDeliveryDetailsWrapper(step: step),
         ],
       ),
     );

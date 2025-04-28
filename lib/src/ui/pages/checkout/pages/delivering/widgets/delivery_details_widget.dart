@@ -1,10 +1,13 @@
 import 'package:campuscravings/src/src.dart';
 
 class DeliveryDetailsWidget extends ConsumerStatefulWidget {
+  final int step;
+
   final ScrollController scrollController;
   final bool isMinHeight;
   const DeliveryDetailsWidget({
     super.key,
+    required this.step,
     required this.scrollController,
     required this.isMinHeight,
   });
@@ -26,107 +29,121 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: Container(
-            height: 80,
-            width: 80,
-            margin: const EdgeInsets.only(bottom: 9),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-                image: NetworkImage(
-                  "https://s3-alpha-sig.figma.com/img/b271/70bb/8a7db32d95e2d59f88efb80e8417336c?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=U1TCftYFII4pIsidEmBhOUs96q6udmiVQ0z1YPKHJJVIjeh~m7r1gTCdGf3S4BIjHAEc9kRQ8fQ52UfUzwENj2Z~m07wfWB3juP9uNTyWdc5vTwW~OAvhjiaQpv9P26dbXTOL1Y~0JoCtG79QCMIKIj7rxV5IiM8wZjAFLAZptmXyP4S1O-miNft6j5CutQKKm-dcR8laXfyjXqsXc0OuVmkHbRuxVSLSrkBTsfoGSEXz7u6TTi5kwNyAResPYpa7VGC3gPrvx2IilBNP7obPKzZ126OBlwNN~hwG3VY9AF1E4gHblmLskYdulaJGBCNMOvtMeGdrWMD3W3-y5ElCw__",
-                ),
-              ),
-              shape: BoxShape.circle,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: () => context.pushRoute(DeliveryManProfileRoute()),
-          child: Center(
-            child: Text(
-              locale.viewProfile,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: AppColors.black,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 45),
-          child: Text(
-            locale.yourOrderGoodHandsFellowComputerScienceStudent,
-            textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
-          ),
-        ),
-        height(10),
-        InkWellButtonWidget(
-          onTap: () => orderReviewSheetMethod(context),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              stars.length,
-              (i) => Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: SvgAssets(
-                  'star',
-                  width: 20,
-                  height: 20,
-                  color: i == 4 ? AppColors.dividerColor : AppColors.yellow,
-                ),
-              ),
-            ),
-          ),
-        ),
-        height(15),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Row(
-            children: [
-              Container(
-                width: 36,
-                height: 36,
-                padding: const EdgeInsets.all(9),
-                margin: const EdgeInsets.only(right: 18),
-                decoration: const BoxDecoration(
-                  color: Color(0xffF5F5F5),
-                  shape: BoxShape.circle,
-                ),
-                child: const SvgAssets('call_icon', height: 37, width: 37),
-              ),
-              Expanded(
-                child: InkWellButtonWidget(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () => context.pushRoute(const CheckOutChatRoute()),
+        widget.step != 0
+            ? Column(
+              children: [
+                Center(
                   child: Container(
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffF5F5F5),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 17,
-                      vertical: 8,
-                    ),
-                    child: Text(
-                      locale.sendMessage,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
+                    height: 80,
+                    width: 80,
+                    margin: const EdgeInsets.only(bottom: 9),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        alignment: Alignment.center,
+                        image: NetworkImage(
+                          "https://s3-alpha-sig.figma.com/img/b271/70bb/8a7db32d95e2d59f88efb80e8417336c?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=U1TCftYFII4pIsidEmBhOUs96q6udmiVQ0z1YPKHJJVIjeh~m7r1gTCdGf3S4BIjHAEc9kRQ8fQ52UfUzwENj2Z~m07wfWB3juP9uNTyWdc5vTwW~OAvhjiaQpv9P26dbXTOL1Y~0JoCtG79QCMIKIj7rxV5IiM8wZjAFLAZptmXyP4S1O-miNft6j5CutQKKm-dcR8laXfyjXqsXc0OuVmkHbRuxVSLSrkBTsfoGSEXz7u6TTi5kwNyAResPYpa7VGC3gPrvx2IilBNP7obPKzZ126OBlwNN~hwG3VY9AF1E4gHblmLskYdulaJGBCNMOvtMeGdrWMD3W3-y5ElCw__",
+                        ),
+                      ),
+                      shape: BoxShape.circle,
+                      color: Colors.grey,
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
+                TextButton(
+                  onPressed: () => context.pushRoute(DeliveryManProfileRoute()),
+                  child: Center(
+                    child: Text(
+                      locale.viewProfile,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: AppColors.black,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 45),
+                  child: Text(
+                    locale.yourOrderGoodHandsFellowComputerScienceStudent,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
+                  ),
+                ),
+                height(10),
+                InkWellButtonWidget(
+                  onTap: () => orderReviewSheetMethod(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      stars.length,
+                      (i) => Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: SvgAssets(
+                          'star',
+                          width: 20,
+                          height: 20,
+                          color:
+                              i == 4
+                                  ? AppColors.dividerColor
+                                  : AppColors.yellow,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                height(15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 36,
+                        height: 36,
+                        padding: const EdgeInsets.all(9),
+                        margin: const EdgeInsets.only(right: 18),
+                        decoration: const BoxDecoration(
+                          color: Color(0xffF5F5F5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const SvgAssets(
+                          'call_icon',
+                          height: 37,
+                          width: 37,
+                        ),
+                      ),
+                      Expanded(
+                        child: InkWellButtonWidget(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap:
+                              () =>
+                                  context.pushRoute(const CheckOutChatRoute()),
+                          child: Container(
+                            height: 36,
+                            decoration: BoxDecoration(
+                              color: const Color(0xffF5F5F5),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 17,
+                              vertical: 8,
+                            ),
+                            child: Text(
+                              locale.sendMessage,
+                              style: Theme.of(context).textTheme.bodyMedium!
+                                  .copyWith(color: AppColors.black),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+            : SizedBox(),
         Container(
           margin: const EdgeInsets.only(top: 19),
           height: 10,
@@ -146,46 +163,52 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: size.height * .26,
-                        padding: EdgeInsets.all(Dimensions.paddingSizeDefault),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              locale.deliveryComplete,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.titleSmall!.copyWith(
-                                fontSize: 21,
-                                fontWeight: FontWeight.w800,
-                              ),
+                      widget.step != 0
+                          ? Container(
+                            height: size.height * .26,
+                            padding: EdgeInsets.all(
+                              Dimensions.paddingSizeDefault,
                             ),
-                            height(5),
-                            Container(
-                              height: size.height * .17,
-                              width: size.width,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                image: DecorationImage(
-                                  fit: BoxFit.fitWidth,
-                                  image: NetworkImage(
-                                    "https://s3-alpha-sig.figma.com/img/4f41/2318/07c864fa1ad0906cecdac853a6d4d38f?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=gbKWIlt239MAe2JvBH5lU31hP94h8Yk9EGf~u3oYUxIS5xAO0h7irSRwtfbneeBzZRjUJ8h9lRLJ8o9kQ0eJY7IRkNlTnjLP361dRw6Gxe8n5CpxfXHAfwDpHpUF2dUAR19j927ZPOpMzCsrWRTxkFCBLozGEOGe0L6084D6wznpQ4RPRZBf2p83L2FFHWB1JuI-ZF4X~C5CW7APtbaSihPpbN9sD-Q3Jt7eex99oul~SN0JKp~RpX7-mL6mwijT1afUyw~3AnHMNJHnxOhFFv9AXpv5UqebhhrnwAnnQDiAVJ9q1bKkykz3aJdC5hPGgdcuIGAva5j6qADz7NxUNQ__",
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  locale.deliveryComplete,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleSmall!.copyWith(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.w800,
                                   ),
                                 ),
-                              ),
+                                height(5),
+                                Container(
+                                  height: size.height * .17,
+                                  width: size.width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    image: DecorationImage(
+                                      fit: BoxFit.fitWidth,
+                                      image: NetworkImage(
+                                        "https://s3-alpha-sig.figma.com/img/4f41/2318/07c864fa1ad0906cecdac853a6d4d38f?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=gbKWIlt239MAe2JvBH5lU31hP94h8Yk9EGf~u3oYUxIS5xAO0h7irSRwtfbneeBzZRjUJ8h9lRLJ8o9kQ0eJY7IRkNlTnjLP361dRw6Gxe8n5CpxfXHAfwDpHpUF2dUAR19j927ZPOpMzCsrWRTxkFCBLozGEOGe0L6084D6wznpQ4RPRZBf2p83L2FFHWB1JuI-ZF4X~C5CW7APtbaSihPpbN9sD-Q3Jt7eex99oul~SN0JKp~RpX7-mL6mwijT1afUyw~3AnHMNJHnxOhFFv9AXpv5UqebhhrnwAnnQDiAVJ9q1bKkykz3aJdC5hPGgdcuIGAva5j6qADz7NxUNQ__",
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 19),
-                        height: 10,
-                        color:
-                            widget.isMinHeight
-                                ? Colors.white
-                                : const Color(0xFFF5F5F5),
-                      ),
+                          )
+                          : SizedBox(),
+                      widget.step != 0
+                          ? Container(
+                            margin: const EdgeInsets.only(top: 19),
+                            height: 10,
+                            color:
+                                widget.isMinHeight
+                                    ? Colors.white
+                                    : const Color(0xFFF5F5F5),
+                          )
+                          : SizedBox(),
                       Text(
                         locale.deliveryDetails,
                         style: Theme.of(context).textTheme.titleSmall!.copyWith(

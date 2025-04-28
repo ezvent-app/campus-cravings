@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:campuscravings/src/models/User%20Model/user_info_model.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:custom_marker_builder/custom_marker_builder.dart';
 import 'package:geocoding/geocoding.dart';
@@ -8,6 +11,8 @@ final locationProvider = AsyncNotifierProvider<LocationNotifier, LocationModel>(
 );
 
 class LocationNotifier extends AsyncNotifier<LocationModel> {
+  final HttpAPIServices services = HttpAPIServices();
+
   @override
   Future<LocationModel> build() async {
     return await _getCurrentLocation();
@@ -64,7 +69,7 @@ class LocationNotifier extends AsyncNotifier<LocationModel> {
         latLng.longitude,
       );
       final place = placemarks.first;
-      return "${place.name}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+      return "${place.street}, ${place.locality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}";
     } catch (e) {
       return null;
     }
@@ -81,23 +86,33 @@ class LocationNotifier extends AsyncNotifier<LocationModel> {
     try {
       final current = state.value!;
       final address = {
-        'fullAddress':
+        'address':
             "${current.locationController.text}, ${current.floorController.text}, ${current.roomNoController.text}",
-        'saveAs': current.saveAsController.text,
-        'isDefault': current.isDefault,
+        "coordinates": {
+          "type": "Point",
+          "coordinates": [current.latLng.latitude, current.latLng.longitude],
+        },
+        // 'saveAs': current.saveAsController.text,
+        // 'isDefault': current.isDefault,
       };
 
-      final existingList = SharePreferences.getList('saved_address') ?? [];
-
-      existingList.add(jsonEncode(address));
-
-      await SharePreferences.setList(key: 'saved_address', value: existingList);
+      final res = await services.patchAPI(
+        map: address,
+        url: "/user/addAddress/",
+      );
+      final body = jsonDecode(res.body);
+      if (res.statusCode == 200) {
+        if (context.mounted) {
+          showToast(body['message'], context: context);
+          context.maybePop();
+        }
+      } else {
+        if (context.mounted) {
+          showToast(body['message'], context: context);
+        }
+      }
 
       printThis('Saved JSON: $address');
-      if (context.mounted) {
-        showToast("Address saved", context: context);
-        context.maybePop();
-      }
     } catch (e) {
       printThis(e.toString());
     }
@@ -105,17 +120,16 @@ class LocationNotifier extends AsyncNotifier<LocationModel> {
 
   Future<void> selectedAddress(
     BuildContext context,
-    Map<String, dynamic> address,
+    OrderAddress address,
+    int index,
   ) async {
     try {
-      final newList = [jsonEncode(address)];
-
-      await SharePreferences.setList(key: 'selectedAddress', value: newList);
-
-      printThis('Saved JSON: $address');
-
-      if (context.mounted) {
-        context.maybePop();
+      final current = state.value;
+      if (current != null) {
+        log("ADDRESS ${address.address}");
+        state = AsyncValue.data(
+          current.copyWith(addresses: address, selectedIndex: index),
+        );
       }
     } catch (e) {
       printThis(e.toString());
@@ -176,8 +190,12 @@ class LocationModel {
   final TextEditingController roomNoController;
   final TextEditingController saveAsController;
   final bool isDefault;
+  final OrderAddress? addresses;
+  final int? selectedIndex;
 
   LocationModel({
+    this.selectedIndex = -1,
+    this.addresses,
     required this.latLng,
     required this.address,
     this.markers = const {},
@@ -204,8 +222,12 @@ class LocationModel {
     TextEditingController? roomNoController,
     TextEditingController? saveAsController,
     bool? isDefault,
+    OrderAddress? addresses,
+    int? selectedIndex,
   }) {
     return LocationModel(
+      selectedIndex: selectedIndex ?? this.selectedIndex,
+      addresses: addresses ?? this.addresses,
       latLng: latLng ?? this.latLng,
       address: address ?? this.address,
       markers: markers ?? this.markers,
@@ -216,5 +238,29 @@ class LocationModel {
       saveAsController: saveAsController ?? this.saveAsController,
       isDefault: isDefault ?? this.isDefault,
     );
+  }
+}
+
+class OrderAddress {
+  Coordinates? coordinates;
+  String? address;
+
+  OrderAddress({this.coordinates, this.address});
+
+  OrderAddress.fromJson(Map<String, dynamic> json) {
+    coordinates =
+        json['coordinates'] != null
+            ? Coordinates.fromJson(json['coordinates'])
+            : null;
+    address = json['address'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (coordinates != null) {
+      data['coordinates'] = coordinates!.toJson();
+    }
+    data['address'] = address;
+    return data;
   }
 }

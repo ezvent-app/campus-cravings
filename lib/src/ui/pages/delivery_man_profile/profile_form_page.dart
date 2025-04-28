@@ -3,7 +3,6 @@ import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart'; // Ensure this is imported for CircularProgressIndicator
 
 import '../../../constants/storageHelper.dart';
 
@@ -188,12 +187,13 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image:
-                                            signUpState['networkImage'] != null
+                                            image != null
+                                                ? FileImage(image!)
+                                                : signUpState['networkImage'] !=
+                                                    null
                                                 ? NetworkImage(
                                                   signUpState['networkImage'],
                                                 )
-                                                : image != null
-                                                ? FileImage(image!)
                                                 : const NetworkImage(
                                                       'https://images.app.goo.gl/him1uAKDAzpZeGW29',
                                                     )
@@ -281,51 +281,54 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                           hintText: locale.selectRole,
                         ),
                         height(12),
-                        Row(
-                          children: [
-                            Consumer(
-                              builder: (context, ref, child) {
-                                final isActive = ref.watch(
-                                  registerForDeliveryProvider,
-                                );
-                                return Transform.scale(
-                                  scale: 1.3,
-                                  child: Checkbox(
-                                    value: isActive,
-                                    onChanged:
-                                        (value) =>
-                                            ref
-                                                .read(
-                                                  registerForDeliveryProvider
-                                                      .notifier,
-                                                )
-                                                .state = value!,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    side: WidgetStateBorderSide.resolveWith(
-                                      (states) => const BorderSide(
-                                        width: 1.0,
-                                        color: Colors.grey,
+                        if (widget.newUser)
+                          Row(
+                            children: [
+                              Consumer(
+                                builder: (context, ref, child) {
+                                  final isActive = ref.watch(
+                                    registerForDeliveryProvider,
+                                  );
+                                  return Transform.scale(
+                                    scale: 1.3,
+                                    child: Checkbox(
+                                      value: isActive,
+                                      onChanged:
+                                          (value) =>
+                                              ref
+                                                  .read(
+                                                    registerForDeliveryProvider
+                                                        .notifier,
+                                                  )
+                                                  .state = value!,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          5.0,
+                                        ),
+                                      ),
+                                      side: WidgetStateBorderSide.resolveWith(
+                                        (states) => const BorderSide(
+                                          width: 1.0,
+                                          color: Colors.grey,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                            width(7),
-                            Text(
-                              widget.newUser
-                                  ? locale.registerForDelivery
-                                  : locale.registerDelivery,
-                              style: TextStyle(
-                                fontSize: Dimensions.fontSizeSmall,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff6C7278),
+                                  );
+                                },
                               ),
-                            ),
-                          ],
-                        ),
+                              width(7),
+                              Text(
+                                widget.newUser
+                                    ? locale.registerForDelivery
+                                    : locale.registerDelivery,
+                                style: TextStyle(
+                                  fontSize: Dimensions.fontSizeSmall,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff6C7278),
+                                ),
+                              ),
+                            ],
+                          ),
                         height(18),
                         Consumer(
                           builder: (context, ref, child) {
@@ -337,8 +340,8 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                               btnTitle:
                                   widget.newUser
                                       ? locale.register
-                                      : isActive
-                                      ? locale.next
+                                      // : isActive
+                                      // ? locale.next
                                       : locale.save,
                               isLoading: signUpNotifer['isLoading'] ?? false,
                               onTap:
@@ -444,11 +447,97 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                           };
                                         }
                                       }
-                                      : isActive
-                                      ? () => context.pushRoute(
-                                        const StudentProfileDetailsRoute(),
-                                      )
-                                      : null,
+                                      : () async {
+                                        try {
+                                          if (signUpNotifer['firstName']!
+                                              .isEmpty) {
+                                            showToast(
+                                              context: context,
+                                              "First name is required",
+                                            );
+                                            return;
+                                          }
+                                          if (signUpNotifer['lastName']!
+                                              .isEmpty) {
+                                            showToast(
+                                              context: context,
+                                              "Last name is required",
+                                            );
+                                            return;
+                                          }
+                                          if (signUpNotifer['phoneNumber']!
+                                              .isEmpty) {
+                                            showToast(
+                                              context: context,
+                                              "Phone number is required",
+                                            );
+                                            return;
+                                          }
+                                          if (signUpNotifer['imgBase64']!
+                                                  .isEmpty &&
+                                              signUpNotifer['networkImage']!
+                                                  .isEmpty) {
+                                            showToast(
+                                              context: context,
+                                              "Image is required",
+                                            );
+                                            return;
+                                          }
+                                          ref
+                                              .read(signUpProvider.notifier)
+                                              .state = {
+                                            ...signUpNotifer,
+                                            'isLoading': true,
+                                          };
+                                          final response = await services.patchAPI(
+                                            url: '/user/updateUser',
+                                            map: {
+                                              "firstName":
+                                                  signUpNotifer['firstName'],
+                                              "lastName":
+                                                  signUpNotifer['lastName'],
+                                              "imgUrl":
+                                                  signUpNotifer['imgBase64'] ??
+                                                  signUpNotifer['networkImage'],
+                                            },
+                                          );
+                                          final data = jsonDecode(
+                                            response.body,
+                                          );
+                                          if (response.statusCode == 201) {
+                                            if (context.mounted) {
+                                              context.maybePop();
+                                            }
+                                            showToast(
+                                              "Profile updated successfully",
+                                              context: context,
+                                            );
+                                          } else {
+                                            showToast(
+                                              data['message'] ??
+                                                  'Registration failed.',
+                                              context: context,
+                                            );
+                                          }
+                                        } catch (e) {
+                                          showToast(
+                                            "Something went wrong. Try again.",
+                                            context: context,
+                                          );
+                                        } finally {
+                                          ref
+                                              .read(signUpProvider.notifier)
+                                              .state = {
+                                            ...signUpNotifer,
+                                            'isLoading': false,
+                                          };
+                                        }
+                                      },
+                              // : isActive
+                              // ? () => context.pushRoute(
+                              //   const StudentProfileDetailsRoute(),
+                              // )
+                              // : null,
                             );
                           },
                         ),

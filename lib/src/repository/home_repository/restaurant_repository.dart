@@ -17,7 +17,7 @@ class RestaurantRepository{
 
   Future<List<NearByRestaurantModel>?> getNearByRestaurants({required double lat,required double lng}) async{
     try{
-      final response = await _httpApiServices.getAPI('/restaurants/getNearbyRestaurants?latitude=24.5113&longitude=67.6221');
+      final response = await _httpApiServices.getAPI('/restaurants/getNearbyRestaurants?latitude=33.5678&longitude=73.1234');
       if(response.statusCode != 200) return null;
       return (jsonDecode(response.body)['items'] as List)
           .map((e) => NearByRestaurantModel.fromJson(e))
@@ -30,7 +30,7 @@ class RestaurantRepository{
 
   Future<RestaurantDetailsModel?> getRestaurantAllCategories({required String restaurantId}) async{
     try{
-      final response = await _httpApiServices.getAPI('/restaurants/getrestaurantAllCategory/680bb695c2c1e39fb839c441');
+      final response = await _httpApiServices.getAPI('/restaurants/getrestaurantAllCategory/$restaurantId');
       Logger().i("${response.statusCode} - ${response.body}");
       if(response.statusCode != 200) return null;
       return RestaurantDetailsModel.fromJson(jsonDecode(response.body)['RestaurantData']);

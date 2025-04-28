@@ -2,9 +2,7 @@ import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class CheckOutTabPage extends StatelessWidget {
-  const CheckOutTabPage({
-    super.key,
-  });
+  const CheckOutTabPage({super.key});
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
@@ -62,7 +60,7 @@ class CheckOutTabPage extends StatelessWidget {
             ),
             Expanded(
               child: TabBarView(
-                children: [DeliveryTabWidget(), PickUpTabWidget()],
+                children: [DeliveryTabWidget(), PickupTabWidget()],
               ),
             ),
           ],

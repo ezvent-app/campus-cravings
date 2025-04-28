@@ -45,7 +45,7 @@ class DeliveryRegistrationPage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        context.pushRoute(ProfileFormRoute(newUser: false));
+                        context.pushRoute(StudentProfileDetailsRoute());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,

@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
 import 'package:campuscravings/src/controllers/resturant_controller.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -32,8 +34,8 @@ class RestaurantPage extends ConsumerWidget {
                   height: 350,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("assets/images/png/mock_product_1.png"),
-                      fit: BoxFit.fitWidth,
+                      image: CachedNetworkImageProvider("${controller.restaurantDetails!.restaurant.restaurantImages.isEmpty ? '' : controller.restaurantDetails!.restaurant.restaurantImages[0]}"),
+                      fit: BoxFit.contain,
                     ),
                   ),
                   child: Padding(

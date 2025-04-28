@@ -1,14 +1,9 @@
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class OrdersTabPage extends StatefulWidget {
-  const OrdersTabPage({super.key});
+class RaiseTicketPage extends StatelessWidget {
+  const RaiseTicketPage({super.key});
 
-  @override
-  State<OrdersTabPage> createState() => _OrdersTabPageState();
-}
-
-class _OrdersTabPageState extends State<OrdersTabPage> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
@@ -18,7 +13,7 @@ class _OrdersTabPageState extends State<OrdersTabPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
-            locale.orders,
+            locale.raiseATicket,
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
@@ -52,7 +47,7 @@ class _OrdersTabPageState extends State<OrdersTabPage> {
                     child: Container(
                       height: 44,
                       alignment: Alignment.center,
-                      child: Text(locale.current),
+                      child: Text("Active Tickets"),
                     ),
                   ),
                   Tab(
@@ -67,7 +62,10 @@ class _OrdersTabPageState extends State<OrdersTabPage> {
             ),
             Expanded(
               child: TabBarView(
-                children: [CurrentOrdersTabWidget(), HistoryTabWidget()],
+                children: [
+                  TicketTabWidget(type: TicketTabType.active),
+                  TicketTabWidget(type: TicketTabType.history),
+                ],
               ),
             ),
           ],
