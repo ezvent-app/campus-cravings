@@ -42,7 +42,7 @@ class _RaiseTicketPageState extends ConsumerState<RaiseTicketPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
-            locale.raiseATicket,
+            "Raise ticket",
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),

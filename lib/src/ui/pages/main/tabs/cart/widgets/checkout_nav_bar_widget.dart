@@ -16,7 +16,7 @@ class CheckoutNavBarWidget extends StatelessWidget {
           children: [
             Text("Sub Total", style: Theme.of(context).textTheme.bodyLarge),
             Text(
-              "\$${cartItems.map((item) => item.price * item.quantity).fold(0.0, (a, b) => a + b).toStringAsFixed(2)}",
+              "\$${cartItems.map((item) => item.price + item.sizePrice + item.customization.fold(0.0, (sum, customItem) => sum + customItem.price) * item.quantity).fold(0.0, (a, b) => a + b).toStringAsFixed(2)}",
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ],

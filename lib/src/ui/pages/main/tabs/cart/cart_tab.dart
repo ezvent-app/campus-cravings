@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 
 @RoutePage()
 class CartTabPage extends ConsumerWidget {
@@ -33,14 +34,15 @@ class CartTabPage extends ConsumerWidget {
                     children: [
                       // item.image.isEmpty
                       //     ?
-                      PngAsset(
-                        'mock_product_1',
-                        height: size.height * .13,
-                        width: size.width * .3,
-                        fit: BoxFit.cover,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                      // PngAsset(
+                      //   'mock_product_1',
+                      //   height: size.height * .13,
+                      //   width: size.width * .3,
+                      //   fit: BoxFit.cover,
+                      //   borderRadius: BorderRadius.circular(16),
+                      // ),
                       // : Image.network(item.image),
+                      CustomNetworkImage(item.image, fit: BoxFit.fitWidth),
                       Padding(
                         padding: EdgeInsets.only(left: 10, top: 15),
                         child: Column(
@@ -58,7 +60,14 @@ class CartTabPage extends ConsumerWidget {
                             ),
                             height(10),
                             QuantitySelectorWidget(
-                              price: item.price,
+                              price:
+                                  item.price +
+                                  item.sizePrice +
+                                  item.customization.fold(
+                                    0.0,
+                                    (sum, customItem) => sum + customItem.price,
+                                  ),
+
                               quantity: item.quantity,
                               onQuantityDecrementChanged:
                                   item.quantity <= 1

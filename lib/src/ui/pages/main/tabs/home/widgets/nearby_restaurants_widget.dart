@@ -2,6 +2,7 @@ import 'package:campuscravings/src/constants/get_builder_id_constants.dart';
 import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
 import 'package:campuscravings/src/controllers/resturant_controller.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -42,9 +43,8 @@ class _NearbyRestaurantsWidgetState
               return const Center(child: Text('No nearby restaurants found'));
             }
             return Column(
-              children: List.generate(controller.listOfNearByRestaurants.length, (
-                index,
-              ) {
+              children: List.generate(
+                  controller.listOfNearByRestaurants.length, (index) {
                 final restaurant = controller.listOfNearByRestaurants[index];
                 return InkWellButtonWidget(
                   onTap: () {
@@ -60,8 +60,8 @@ class _NearbyRestaurantsWidgetState
                     ),
                     child: Row(
                       children: [
-                        PngAsset(
-                          'mock_product_1',
+                        CustomNetworkImage(
+                          '${restaurant.restaurantImages.isEmpty ? '' : restaurant.restaurantImages[0]}',
                           borderRadius: BorderRadius.circular(200),
                           fit: BoxFit.cover,
                           width: 110,
@@ -88,7 +88,7 @@ class _NearbyRestaurantsWidgetState
                             ),
                             SizedBox(height: 7),
                             Text(
-                              '8am - 9pm | ${controller.getDistanceInMiles(lat: restaurant.address.coordinates.coordinates[1], lng: restaurant.address.coordinates.coordinates[0]).toStringAsFixed(2)} mil away',
+                              '${controller.getRestaurantTimingForToday(restaurant: restaurant)} | ${controller.getDistanceInMiles(lat: restaurant.address.coordinates.coordinates[1], lng: restaurant.address.coordinates.coordinates[0]).toStringAsFixed(2)} mil away',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,

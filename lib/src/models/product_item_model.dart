@@ -1,22 +1,24 @@
-class ProductItem {
+class ProductItemModel {
   final String id;
   final int totalOrdered;
   final String itemId;
   final ItemDetails itemDetails;
 
-  ProductItem({
+  ProductItemModel({
     required this.id,
     required this.totalOrdered,
     required this.itemId,
     required this.itemDetails,
   });
 
-  factory ProductItem.fromJson(Map<String, dynamic> json) {
-    return ProductItem(
-      id: json["_id"],
-      totalOrdered: json["totalOrdered"],
-      itemId: json["item_id"],
-      itemDetails: ItemDetails.fromJson(json["itemDetails"]),
+  factory ProductItemModel.fromJson(Map<String, dynamic> json) {
+    return ProductItemModel(
+      id: json["_id"] ?? "",
+      totalOrdered: json["totalOrdered"] ?? 0,
+      itemId: json["item_id"] ?? "",
+      itemDetails: json["itemDetails"] != null
+          ? ItemDetails.fromJson(json["itemDetails"])
+          : ItemDetails.empty(),
     );
   }
 }
@@ -52,22 +54,42 @@ class ItemDetails {
 
   factory ItemDetails.fromJson(Map<String, dynamic> json) {
     return ItemDetails(
-      id: json["_id"],
-      name: json["name"],
-      price: (json["price"] as num).toDouble(),
-      description: json["description"],
-      estimatedPreparationTime: json["estimated_preparation_time"],
-      customization: (json["customization"] as List)
-          .map((e) => Customization.fromJson(e))
-          .toList(),
-      image: List<String>.from(json["image"]),
-      category: json["category"],
-      restaurant: json["restaurant"],
-      createdAt: DateTime.parse(json["createdAt"]),
-      updatedAt: DateTime.parse(json["updatedAt"]),
-      v: json["__v"],
+      id: json["_id"] ?? "",
+      name: json["name"] ?? "",
+      price: (json["price"] ?? 0).toDouble(),
+      description: json["description"] ?? "",
+      estimatedPreparationTime: json["estimated_preparation_time"] ?? 0,
+      customization: (json["customization"] as List?)
+          ?.map((e) => Customization.fromJson(e))
+          .toList() ??
+          [],
+      image: (json["image"] as List?)?.map((e) => e.toString()).toList() ?? [],
+      category: json["category"] ?? "",
+      restaurant: json["restaurant"] ?? "",
+      createdAt: json["createdAt"] != null
+          ? DateTime.parse(json["createdAt"])
+          : DateTime.now(),
+      updatedAt: json["updatedAt"] != null
+          ? DateTime.parse(json["updatedAt"])
+          : DateTime.now(),
+      v: json["__v"] ?? 0,
     );
   }
+
+  factory ItemDetails.empty() => ItemDetails(
+    id: "",
+    name: "",
+    price: 0.0,
+    description: "",
+    estimatedPreparationTime: 0,
+    customization: [],
+    image: [],
+    category: "",
+    restaurant: "",
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    v: 0,
+  );
 }
 
 class Customization {
@@ -83,9 +105,9 @@ class Customization {
 
   factory Customization.fromJson(Map<String, dynamic> json) {
     return Customization(
-      name: json["name"],
-      price: (json["price"] as num).toDouble(),
-      id: json["_id"],
+      name: json["name"] ?? "",
+      price: (json["price"] ?? 0).toDouble(),
+      id: json["_id"] ?? "",
     );
   }
 }

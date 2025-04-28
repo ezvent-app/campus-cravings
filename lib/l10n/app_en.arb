@@ -122,7 +122,7 @@
   "help" : "Help",
   "logOut" : "Log Out",
   "paymentMethods" : "Payment Methods",
-   "paymentMethod" : "Payment Method",
+  "paymentMethod" : "Payment Method",
   "addNewCard" : "Add New Card",
   "cardNumber" : "Card Number",
   "expires" : "Expires",
