@@ -29,6 +29,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
     final locale = AppLocalizations.of(context)!;
     final isIOS = Platform.isIOS;
     final cartItems = ref.watch(cartItemsProvider);
+    final cartItemsNotifier = ref.read(cartItemsProvider.notifier);
 
     return Scaffold(
       body: GetBuilder<ProductDetailsController>(
@@ -364,31 +365,15 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       height: 49,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          // if (cartItems.any(
-                          //   (i) =>
-                          //       i.name ==
-                          //       controller.productItemDetailModel?.name,
-                          // )) {
-                          //   showToast(
-                          //     "Already exist in cart",
-                          //     context: context,
-                          //   );
-                          // } else {
                           ref
                               .read(cartItemsProvider.notifier)
                               .addItem(
                                 CartItem(
-                                  size:
-                                      controller
-                                          .productItemDetailModel!
-                                          .sizes
-                                          .first
-                                          .id,
+                                  sizePrice:
+                                      cartItemsNotifier.selectedSizePrice,
+                                  size: cartItemsNotifier.selectedSizeId,
                                   customization:
-                                      controller
-                                          .productItemDetailModel
-                                          ?.customization ??
-                                      [],
+                                      cartItemsNotifier.selectedCustomizations,
                                   image:
                                       controller
                                           .productItemDetailModel!
@@ -408,7 +393,6 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   quantity: controller.productQuantity,
                                 ),
                               );
-                          // }
                         },
                         label: Text(locale.addToCart),
                         icon: SvgAssets("shopping-cart", width: 16, height: 16),
