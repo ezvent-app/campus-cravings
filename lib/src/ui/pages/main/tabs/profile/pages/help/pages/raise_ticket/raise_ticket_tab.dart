@@ -13,7 +13,7 @@ class RaiseTicketPage extends StatelessWidget {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text(
-            locale.raiseATicket,
+            "Raise ticket",
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),

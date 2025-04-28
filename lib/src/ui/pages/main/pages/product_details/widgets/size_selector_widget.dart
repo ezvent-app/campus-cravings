@@ -55,7 +55,7 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                   onTap: () {
                     setState(() {
                       _selectedSize = index;
-                      cartNotifier.selectSize(index, size.id);
+                      cartNotifier.selectSize(index, size.id, size.price);
                     });
                   },
                   child: Padding(
