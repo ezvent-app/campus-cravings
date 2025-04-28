@@ -36,42 +36,37 @@ class ProductDetailsController extends GetxController {
     }
   }
 
+  double totalPrice = 0.00;
+  List<CustomizationModel> selectedCustomizations = [];
+  double selectedSizePrice = 0.0;
+
   void incrementProductQuantity() {
     _productQuantity++;
-    update();
+    getTotalPrice();
   }
 
   void decrementProductQuantity() {
     if (_productQuantity > 1) {
       _productQuantity--;
-      update();
+      getTotalPrice();
     }
   }
 
-  double getTotalPrice({
-    double sizePrice = 0.0, // Default value if no size price is provided
-    List<CustomizationModel> customizations =
-        const [], // Default empty list if no customizations
-  }) {
-    // Check if the product details are available
-    if (_productItemDetailModel == null) return 0.0;
+  void getTotalPrice() {
+    double basePrice = _productItemDetailModel?.price ?? 0.0;
 
-    // Default base price (from the product details)
-    double basePrice = _productItemDetailModel!.price;
-
-    // Default quantity (assuming it's assigned somewhere else in your logic)
-    int quantity = _productQuantity;
-
-    // Calculate total customizations price using customizations from cartItemsNotifier
     double customizationsPrice =
-        customizations.isNotEmpty
-            ? customizations.map((i) => i.price).fold(0.0, (a, b) => a + b)
+        selectedCustomizations.isNotEmpty
+            ? selectedCustomizations
+                .map((i) => i.price)
+                .fold(0.0, (a, b) => a + b)
             : 0.0;
 
-    // Final price per item (base price + size price + customization price)
-    double totalSingleItemPrice = basePrice + sizePrice + customizationsPrice;
+    double totalSingleItemPrice =
+        basePrice + selectedSizePrice + customizationsPrice;
 
-    // Multiply by quantity
-    return totalSingleItemPrice * quantity;
+    totalPrice = totalSingleItemPrice * _productQuantity;
+
+    update();
   }
 }

@@ -67,9 +67,9 @@ class _ConsumerCustomizationCheckboxWidgetState
                   index,
                   _selectedCustomizations,
                 );
-                controller
-                    .getTotalPrice(customizations: _selectedCustomizations)
-                    .toStringAsFixed(2);
+
+                controller.selectedCustomizations = _selectedCustomizations;
+                controller.getTotalPrice();
               });
             },
             controlAffinity: ListTileControlAffinity.leading,
