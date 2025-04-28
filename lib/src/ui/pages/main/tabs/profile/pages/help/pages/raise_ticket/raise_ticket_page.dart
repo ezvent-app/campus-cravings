@@ -1,8 +1,37 @@
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class RaiseTicketPage extends StatelessWidget {
-  const RaiseTicketPage({super.key});
+class RaiseTicketPage extends ConsumerStatefulWidget {
+  RaiseTicketPage({super.key});
+  final HttpAPIServices services = HttpAPIServices();
+
+  @override
+  ConsumerState<RaiseTicketPage> createState() => _RaiseTicketPageState();
+}
+
+class _RaiseTicketPageState extends ConsumerState<RaiseTicketPage> {
+  @override
+  void initState() {
+    super.initState();
+    _fetchTickets();
+  }
+
+  Future<void> _fetchTickets() async {
+    try {
+      final response = await widget.services.getAPI('/user/tickets');
+      // Parse the response
+      final Map<String, dynamic> data =
+          jsonDecode(response.body) as Map<String, dynamic>;
+      final List<Ticket> tickets =
+          (data['tickets'] as List)
+              .map((ticket) => Ticket.fromJson(ticket as Map<String, dynamic>))
+              .toList();
+      print(tickets);
+      ref.read(ticketProvider.notifier).setTickets(tickets);
+    } catch (e) {
+      debugPrint('Error fetching tickets: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,3 +103,23 @@ class RaiseTicketPage extends StatelessWidget {
     );
   }
 }
+
+class TicketNotifier extends StateNotifier<List<Ticket>> {
+  TicketNotifier() : super([]); // Initialize with empty list
+
+  // Set tickets from API response
+  void setTickets(List<Ticket> tickets) {
+    state = tickets;
+  }
+
+  // Delete a ticket by ID
+  void deleteTicket(String ticketId) {
+    state = state.where((ticket) => ticket.id != ticketId).toList();
+  }
+}
+
+final ticketProvider = StateNotifierProvider<TicketNotifier, List<Ticket>>((
+  ref,
+) {
+  return TicketNotifier();
+});

@@ -71,7 +71,7 @@ import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/c
     as _i11;
 import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/help_order_page/help_order_page.dart'
     as _i18;
-import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/raise_ticket/raise_ticket_tab.dart'
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/raise_ticket/raise_ticket_page.dart'
     as _i36;
 import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/ticket_messages_page/ticket_messages_page.dart'
     as _i43;
@@ -185,18 +185,36 @@ class ChangeLanguageRoute extends _i44.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.ChangePasswordPage]
-class ChangePasswordRoute extends _i44.PageRouteInfo<void> {
-  const ChangePasswordRoute({List<_i44.PageRouteInfo>? children})
-    : super(ChangePasswordRoute.name, initialChildren: children);
+class ChangePasswordRoute extends _i44.PageRouteInfo<ChangePasswordRouteArgs> {
+  ChangePasswordRoute({_i45.Key? key, List<_i44.PageRouteInfo>? children})
+    : super(
+        ChangePasswordRoute.name,
+        args: ChangePasswordRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'ChangePasswordRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      return _i5.ChangePasswordPage();
+      final args = data.argsAs<ChangePasswordRouteArgs>(
+        orElse: () => const ChangePasswordRouteArgs(),
+      );
+      return _i5.ChangePasswordPage(key: args.key);
     },
   );
+}
+
+class ChangePasswordRouteArgs {
+  const ChangePasswordRouteArgs({this.key});
+
+  final _i45.Key? key;
+
+  @override
+  String toString() {
+    return 'ChangePasswordRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -501,18 +519,40 @@ class DeliverySetupRouteArgs {
 
 /// generated route for
 /// [_i16.ForgetPasswordOTPPage]
-class ForgetPasswordOTPRoute extends _i44.PageRouteInfo<void> {
-  const ForgetPasswordOTPRoute({List<_i44.PageRouteInfo>? children})
-    : super(ForgetPasswordOTPRoute.name, initialChildren: children);
+class ForgetPasswordOTPRoute
+    extends _i44.PageRouteInfo<ForgetPasswordOTPRouteArgs> {
+  ForgetPasswordOTPRoute({
+    _i45.Key? key,
+    required String email,
+    List<_i44.PageRouteInfo>? children,
+  }) : super(
+         ForgetPasswordOTPRoute.name,
+         args: ForgetPasswordOTPRouteArgs(key: key, email: email),
+         initialChildren: children,
+       );
 
   static const String name = 'ForgetPasswordOTPRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      return const _i16.ForgetPasswordOTPPage(email: '');
+      final args = data.argsAs<ForgetPasswordOTPRouteArgs>();
+      return _i16.ForgetPasswordOTPPage(key: args.key, email: args.email);
     },
   );
+}
+
+class ForgetPasswordOTPRouteArgs {
+  const ForgetPasswordOTPRouteArgs({this.key, required this.email});
+
+  final _i45.Key? key;
+
+  final String email;
+
+  @override
+  String toString() {
+    return 'ForgetPasswordOTPRouteArgs{key: $key, email: $email}';
+  }
 }
 
 /// generated route for
@@ -779,6 +819,7 @@ class OrdersDetailsRoute extends _i44.PageRouteInfo<OrdersDetailsRouteArgs> {
     int? quantity,
     String? totalPrice,
     List<String?>? sizeNames,
+    List<_i46.Item>? items,
     List<_i44.PageRouteInfo>? children,
   }) : super(
          OrdersDetailsRoute.name,
@@ -792,6 +833,7 @@ class OrdersDetailsRoute extends _i44.PageRouteInfo<OrdersDetailsRouteArgs> {
            quantity: quantity,
            totalPrice: totalPrice,
            sizeNames: sizeNames,
+           items: items,
          ),
          initialChildren: children,
        );
@@ -814,6 +856,7 @@ class OrdersDetailsRoute extends _i44.PageRouteInfo<OrdersDetailsRouteArgs> {
         quantity: args.quantity,
         totalPrice: args.totalPrice,
         sizeNames: args.sizeNames,
+        items: args.items,
       );
     },
   );
@@ -830,6 +873,7 @@ class OrdersDetailsRouteArgs {
     this.quantity,
     this.totalPrice,
     this.sizeNames,
+    this.items,
   });
 
   final _i45.Key? key;
@@ -850,9 +894,11 @@ class OrdersDetailsRouteArgs {
 
   final List<String?>? sizeNames;
 
+  final List<_i46.Item>? items;
+
   @override
   String toString() {
-    return 'OrdersDetailsRouteArgs{key: $key, storeName: $storeName, deliveryAddress: $deliveryAddress, orderNumber: $orderNumber, customizationList: $customizationList, name: $name, quantity: $quantity, totalPrice: $totalPrice, sizeNames: $sizeNames}';
+    return 'OrdersDetailsRouteArgs{key: $key, storeName: $storeName, deliveryAddress: $deliveryAddress, orderNumber: $orderNumber, customizationList: $customizationList, name: $name, quantity: $quantity, totalPrice: $totalPrice, sizeNames: $sizeNames, items: $items}';
   }
 }
 
@@ -1125,18 +1171,36 @@ class PromoCodeRoute extends _i44.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i36.RaiseTicketPage]
-class RaiseTicketRoute extends _i44.PageRouteInfo<void> {
-  const RaiseTicketRoute({List<_i44.PageRouteInfo>? children})
-    : super(RaiseTicketRoute.name, initialChildren: children);
+class RaiseTicketRoute extends _i44.PageRouteInfo<RaiseTicketRouteArgs> {
+  RaiseTicketRoute({_i45.Key? key, List<_i44.PageRouteInfo>? children})
+    : super(
+        RaiseTicketRoute.name,
+        args: RaiseTicketRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'RaiseTicketRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      return const _i36.RaiseTicketPage();
+      final args = data.argsAs<RaiseTicketRouteArgs>(
+        orElse: () => const RaiseTicketRouteArgs(),
+      );
+      return _i36.RaiseTicketPage(key: args.key);
     },
   );
+}
+
+class RaiseTicketRouteArgs {
+  const RaiseTicketRouteArgs({this.key});
+
+  final _i45.Key? key;
+
+  @override
+  String toString() {
+    return 'RaiseTicketRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -1173,18 +1237,36 @@ class RidersTabRoute extends _i44.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i39.SavedAddressesPage]
-class SavedAddressesRoute extends _i44.PageRouteInfo<void> {
-  const SavedAddressesRoute({List<_i44.PageRouteInfo>? children})
-    : super(SavedAddressesRoute.name, initialChildren: children);
+class SavedAddressesRoute extends _i44.PageRouteInfo<SavedAddressesRouteArgs> {
+  SavedAddressesRoute({_i45.Key? key, List<_i44.PageRouteInfo>? children})
+    : super(
+        SavedAddressesRoute.name,
+        args: SavedAddressesRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'SavedAddressesRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      return _i39.SavedAddressesPage();
+      final args = data.argsAs<SavedAddressesRouteArgs>(
+        orElse: () => const SavedAddressesRouteArgs(),
+      );
+      return _i39.SavedAddressesPage(key: args.key);
     },
   );
+}
+
+class SavedAddressesRouteArgs {
+  const SavedAddressesRouteArgs({this.key});
+
+  final _i45.Key? key;
+
+  @override
+  String toString() {
+    return 'SavedAddressesRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -1260,6 +1342,7 @@ class TicketMessagesRoute extends _i44.PageRouteInfo<TicketMessagesRouteArgs> {
     _i45.Key? key,
     required String ticketId,
     Function? onDelete,
+    required List<_i45.TicketMessage> messages,
     List<_i44.PageRouteInfo>? children,
   }) : super(
          TicketMessagesRoute.name,
@@ -1267,6 +1350,7 @@ class TicketMessagesRoute extends _i44.PageRouteInfo<TicketMessagesRouteArgs> {
            key: key,
            ticketId: ticketId,
            onDelete: onDelete,
+           messages: messages,
          ),
          initialChildren: children,
        );
@@ -1281,6 +1365,7 @@ class TicketMessagesRoute extends _i44.PageRouteInfo<TicketMessagesRouteArgs> {
         key: args.key,
         ticketId: args.ticketId,
         onDelete: args.onDelete,
+        messages: args.messages,
       );
     },
   );
@@ -1291,6 +1376,7 @@ class TicketMessagesRouteArgs {
     this.key,
     required this.ticketId,
     this.onDelete,
+    required this.messages,
   });
 
   final _i45.Key? key;
@@ -1299,8 +1385,10 @@ class TicketMessagesRouteArgs {
 
   final Function? onDelete;
 
+  final List<_i45.TicketMessage> messages;
+
   @override
   String toString() {
-    return 'TicketMessagesRouteArgs{key: $key, ticketId: $ticketId, onDelete: $onDelete}';
+    return 'TicketMessagesRouteArgs{key: $key, ticketId: $ticketId, onDelete: $onDelete, messages: $messages}';
   }
 }
