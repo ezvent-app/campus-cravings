@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/repository/rider_repository/history_provider.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 
 class RidersHistoryTabWidget extends ConsumerWidget {
   const RidersHistoryTabWidget({super.key});
@@ -23,13 +24,23 @@ class RidersHistoryTabWidget extends ConsumerWidget {
       error: (err, stack) => Center(child: Text('Error: $err')),
       data: (history) {
         final orders = history.orders;
-        if (orders == null || orders.isEmpty) {
+        final filteredOrders =
+            orders
+                ?.where(
+                  (order) =>
+                      order.status == 'delivered' ||
+                      order.status == 'cancelled' ||
+                      order.status == 'completed',
+                )
+                .toList() ??
+            [];
+        if (filteredOrders.isEmpty) {
           return Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 50),
               child: Text(
-                'No Orders found yet!',
-                style: Theme.of(context).textTheme.titleMedium,
+                'No history found yet!',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           );
@@ -43,8 +54,8 @@ class RidersHistoryTabWidget extends ConsumerWidget {
             children: [
               HistoryChartWidget(size: size),
               Column(
-                children: List.generate(orders!.length, (index) {
-                  final order = orders[index];
+                children: List.generate(filteredOrders.length, (index) {
+                  final order = filteredOrders[index];
                   final allItemNames = order.items.map((e) => e.name).toList();
                   final allSizeNames =
                       order.items.map((e) => e.size?.name).toList();
@@ -66,6 +77,7 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                                         order.items[0].customizationList,
                                     name: allItemNames,
                                     quantity: order.items[0].quantity,
+                                    items: order.items,
                                     totalPrice: order.totalPrice
                                         .toStringAsFixed(2),
                                     sizeNames: allSizeNames,
@@ -78,21 +90,20 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              PngAsset(
-                                'mock_product_1',
+                              // PngAsset(
+                              //   'mock_product_1',
+                              // height: 80,
+                              // width: 80,
+                              // fit: BoxFit.cover,
+                              // borderRadius: BorderRadius.circular(10),
+                              // ),
+                              CustomNetworkImage(
                                 height: 80,
                                 width: 80,
                                 fit: BoxFit.cover,
                                 borderRadius: BorderRadius.circular(10),
+                                order.user.image,
                               ),
-                              // CustomNetworkImage(
-                              //   order.items.isNotEmpty
-                              //       ? order.items[index].imageUrl
-                              //       : 'https://example.com/default_image.png',
-                              //   width: 90,
-                              //   height: 90,
-                              //   fit: BoxFit.cover,
-                              // ),
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(
@@ -172,10 +183,9 @@ class RidersHistoryTabWidget extends ConsumerWidget {
                                                     vertical: 5,
                                                   ),
                                               child: Text(
-                                                order.status ==
-                                                        'order_dispatched'
-                                                    ? 'Dispatched'
-                                                    : order.status,
+                                                _getOrderStatusText(
+                                                  order.status,
+                                                ),
                                                 style: Theme.of(
                                                   context,
                                                 ).textTheme.bodySmall!.copyWith(
@@ -203,5 +213,19 @@ class RidersHistoryTabWidget extends ConsumerWidget {
         );
       },
     );
+  }
+}
+
+String _getOrderStatusText(String status) {
+  switch (status) {
+    case 'delivered':
+      return 'Delivered';
+    case 'cancelled':
+      return 'Cancelled';
+    case 'completed':
+      return 'Completed';
+
+    default:
+      return 'Unknown';
   }
 }
