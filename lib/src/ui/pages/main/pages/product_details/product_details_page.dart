@@ -367,6 +367,14 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       height: 50,
                       child: ElevatedButton.icon(
                         onPressed: () {
+                          if (cartItemsNotifier.selectedSizeId.isEmpty) {
+                            showToast(
+                              'Please select a size first',
+                              context: context,
+                            );
+                            return;
+                          }
+
                           ref
                               .read(cartItemsProvider.notifier)
                               .addItem(
@@ -404,7 +412,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.background, // Splash color
+                          foregroundColor: AppColors.background,
                         ),
                       ),
                     ),
