@@ -21,6 +21,7 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     // } else {
     final newQuantity = item.quantity.clamp(1, 10);
     state = [...state, item.copyWith(quantity: newQuantity)];
+    
     // }
   }
 

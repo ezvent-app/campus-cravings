@@ -269,7 +269,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$2',
+                          '\$10',
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
