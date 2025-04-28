@@ -45,6 +45,8 @@ dependencies:
     location: ^8.0.0
     cached_network_image: ^3.4.1
     geocoding: ^3.0.0
+    flutter_stripe: ^11.5.0
+#    in_app_purchase: ^3.2.1
 
 dev_dependencies:
     flutter_test:

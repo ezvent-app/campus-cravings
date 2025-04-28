@@ -48,4 +48,23 @@ class RestaurantController extends GetxController{
     return (Geolocator.distanceBetween(24.5113,67.6221, lat, lng)) / 1609.344;
   }
 
+  String getRestaurantTimingForToday({required NearByRestaurantModel restaurant}) {
+    {
+      final now = DateTime.now();
+      if (now.weekday == DateTime.monday) {
+        return restaurant.openingHours.monday;
+      } else if (now.weekday == DateTime.tuesday) {
+        return restaurant.openingHours.tuesday;
+      } else if (now.weekday == DateTime.wednesday) {
+        return restaurant.openingHours.wednesday;
+      } else if (now.weekday == DateTime.thursday) {
+        return restaurant.openingHours.thursday;
+      } else if (now.weekday == DateTime.friday) {
+        return restaurant.openingHours.friday;
+      } else if (now.weekday == DateTime.saturday) {
+        return restaurant.openingHours.saturday;
+      }
+      return restaurant.openingHours.sunday;
+    }
+  }
 }
