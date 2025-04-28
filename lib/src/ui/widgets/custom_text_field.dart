@@ -17,6 +17,7 @@ class CustomTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final Function(dynamic)? onSubmitted;
   final String? initialValue;
+  final FocusNode? focusNode;
 
   const CustomTextField({
     this.initialValue,
@@ -36,6 +37,7 @@ class CustomTextField extends StatefulWidget {
     this.prefixIcon,
     this.maxLines = 1,
     this.contentPadding,
+    this.focusNode
   });
 
   @override
@@ -86,6 +88,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         TextFormField(
           controller: _controller,
           onChanged: widget.onChanged,
+          focusNode: widget.focusNode,
           onFieldSubmitted: widget.onSubmitted,
           obscureText: widget.obscureText,
           keyboardType: widget.textInputType,

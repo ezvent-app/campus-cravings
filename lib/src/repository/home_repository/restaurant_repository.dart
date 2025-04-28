@@ -16,7 +16,7 @@ class RestaurantRepository {
   }) async {
     try {
       final response = await _httpApiServices.getAPI(
-        '/restaurants/getNearbyRestaurants?latitude=33.5678 &longitude=73.1234',
+        '/restaurants/getNearbyRestaurants?latitude=33.5678&longitude=73.1234',
       );
       if (response.statusCode != 200) return null;
       return (jsonDecode(response.body)['items'] as List)
@@ -33,7 +33,7 @@ class RestaurantRepository {
   }) async {
     try {
       final response = await _httpApiServices.getAPI(
-        '/restaurants/getrestaurantAllCategory/680fa66a9425b7cd2b7d31ee',
+        '/restaurants/getrestaurantAllCategory/$restaurantId',
       );
       Logger().i("${response.statusCode} - ${response.body}");
       if (response.statusCode != 200) return null;

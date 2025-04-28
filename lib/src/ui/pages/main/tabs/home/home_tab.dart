@@ -1,6 +1,9 @@
+import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
 import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/pages/main/tabs/home/search_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 @RoutePage()
 class HomeTabPage extends StatefulWidget {
@@ -88,18 +91,29 @@ class _HomeTabPageState extends State<HomeTabPage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: CustomTextField(
-                      style: TextStyle(fontSize: 17),
-                      hintText: locale.search,
-                      hintStyle: TextStyle(
-                        color: Color(0xFFB4B0B0),
-                        fontSize: 17,
-                      ),
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Icon(
-                          CupertinoIcons.search,
-                          color: AppColors.email,
+                    child: InkWellButtonWidget(
+                      onTap: (){
+                        Get.find<FoodAndRestaurantSearchController>().setSearchFoodAndRestaurants(value: true);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchPage())
+                        );
+                      },
+                      child: AbsorbPointer(
+                        child: CustomTextField(
+                          style: TextStyle(fontSize: 17),
+                          hintText: locale.search,
+                          hintStyle: TextStyle(
+                            color: Color(0xFFB4B0B0),
+                            fontSize: 17,
+                          ),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(
+                              CupertinoIcons.search,
+                              color: AppColors.email,
+                            ),
+                          ),
                         ),
                       ),
                     ),

@@ -12,8 +12,8 @@ class ProductCatalogController extends GetxController{
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  List<ProductItem> _listOfPopularItems = [];
-  List<ProductItem> get listOfPopularItems => _listOfPopularItems;
+  List<ProductItemModel> _listOfPopularItems = [];
+  List<ProductItemModel> get listOfPopularItems => _listOfPopularItems;
   ProductCatalogController(this._homeRepository);
 
   Future<void> getPopularItems() async{

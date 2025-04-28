@@ -43,9 +43,9 @@ class HttpService {
   }
 
   Future<http.Response> postRequest(
-    String endpoint,
-    Map<String, dynamic> data,
-  ) async {
+      String endpoint,
+      Map<String, dynamic> data,
+      ) async {
     final url = Uri.parse(_baseUrl + endpoint);
     try {
       final response = await http
@@ -62,9 +62,9 @@ class HttpService {
   }
 
   Future<http.Response> putRequest(
-    String endpoint,
-    Map<String, dynamic> data,
-  ) async {
+      String endpoint,
+      Map<String, dynamic> data,
+      ) async {
     final url = Uri.parse(_baseUrl + endpoint);
     try {
       final response = await http
@@ -79,9 +79,9 @@ class HttpService {
   }
 
   Future<http.Response> patchRequest(
-    String endpoint,
-    Map<String, dynamic> data,
-  ) async {
+      String endpoint,
+      Map<String, dynamic> data,
+      ) async {
     final url = Uri.parse(_baseUrl + endpoint);
     try {
       final response = await http

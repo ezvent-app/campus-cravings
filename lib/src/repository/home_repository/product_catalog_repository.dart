@@ -10,19 +10,19 @@ class ProductRepository {
   final HttpAPIServices _httpApiServices;
   ProductRepository(this._httpApiServices);
 
-  Future<List<ProductItem>?> getPopularItems({
+  Future<List<ProductItemModel>?> getPopularItems({
     required double lat,
     required double lng,
   }) async {
     try {
       final response = await _httpApiServices.getAPI(
-        '/restaurants/getNearbyPopularFood?latitude=24.5113&longitude=67.6221',
+        '/restaurants/getNearbyPopularFood?latitude=33.5678&longitude=73.1234',
       );
       Logger().i('${response.statusCode} - ${response.body}');
 
       if (response.statusCode != 200) return null;
       return (jsonDecode(response.body)['items'] as List)
-          .map((e) => ProductItem.fromJson(e))
+          .map((e) => ProductItemModel.fromJson(e))
           .toList();
     } catch (e) {
       Logger().e('Error in getPopularItems: $e');
@@ -35,7 +35,7 @@ class ProductRepository {
   }) async {
     try {
       final response = await _httpApiServices.getAPI(
-        '/categories/getitem/680fa85d9425b7cd2b7d320d',
+        '/categories/getitem/$itemId',
       );
       Logger().i('${response.statusCode} - ${response.body}');
       if (response.statusCode != 200) return null;
