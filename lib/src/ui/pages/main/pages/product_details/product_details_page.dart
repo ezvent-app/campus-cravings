@@ -396,9 +396,16 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                       controller.productItemDetailModel?.name ??
                                       '',
                                   price: double.parse(
-                                    controller.getTotalPrice().toStringAsFixed(
-                                      2,
-                                    ),
+                                    controller
+                                        .getTotalPrice(
+                                          sizePrice:
+                                              cartItemsNotifier
+                                                  .selectedSizePrice,
+                                          customizations:
+                                              cartItemsNotifier
+                                                  .selectedCustomizations,
+                                        )
+                                        .toStringAsFixed(2),
                                   ),
                                   quantity: controller.productQuantity,
                                 ),
