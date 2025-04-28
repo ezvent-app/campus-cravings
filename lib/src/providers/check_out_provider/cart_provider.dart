@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:campuscravings/src/models/product_item_detail_model.dart';
 import 'package:campuscravings/src/src.dart';
 
@@ -12,7 +10,7 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
 
   void addItem(CartItem item) {
     final index = state.indexWhere((e) => e.id == item.id);
-    log(item.sizePrice.toString());
+
     // if (index >= 0) {
     //   final existingItem = state[index];
     //   final newQuantity = (existingItem.quantity + item.quantity).clamp(1, 10);
@@ -21,7 +19,6 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     // } else {
     final newQuantity = item.quantity.clamp(1, 10);
     state = [...state, item.copyWith(quantity: newQuantity)];
-    
     // }
   }
 
@@ -51,36 +48,25 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     }
   }
 
-  String selectedSizeId = "";
-  double selectedSizePrice = 0.0;
-
+  String selectedSizeId = '';
+  double selectedSizePrice = 0.00;
   void selectSize(int index, String sizeID, double sizePrice) {
-    if (index >= 0 && index < state.length) {
-      final updatedItem = state[index].copyWith(
-        size: sizeID,
-        sizePrice: sizePrice,
-      );
-      state = [...state]..[index] = updatedItem;
-
-      // Save selected size and price globally also
+   
       selectedSizeId = sizeID;
       selectedSizePrice = sizePrice;
 
       printThis("✅ Size updated to $sizeID at index $index price $sizePrice");
-    } else {
-      printThis(
-        "❌ Invalid index for selectSize: $index (List length: ${state.length})",
-      );
-    }
+      printThis("👉 Selected sizeId after tap: $selectedSizeId");
+   
   }
 
   List<CustomizationModel> selectedCustomizations = [];
-  void updateCustomization(int index, List<CustomizationModel> customizations) {
-    selectedCustomizations = customizations;
 
+  void updateCustomization(int index, List<CustomizationModel> customizations) {
     if (index >= 0 && index < state.length) {
       final updatedItem = state[index].copyWith(customization: customizations);
       state = [...state]..[index] = updatedItem;
+      print("✅ Customizations updated at index $index");
     } else {
       print(
         "❌ Invalid index for updateCustomization: $index (List length: ${state.length})",

@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:campuscravings/src/src.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @RoutePage()
 class RaiseTicketPage extends ConsumerStatefulWidget {
@@ -19,17 +21,18 @@ class _RaiseTicketPageState extends ConsumerState<RaiseTicketPage> {
   Future<void> _fetchTickets() async {
     try {
       final response = await widget.services.getAPI('/user/tickets');
-      // Parse the response
       final Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
       final List<Ticket> tickets =
-          (data['tickets'] as List)
+          (data['tickets'] as List<dynamic>)
               .map((ticket) => Ticket.fromJson(ticket as Map<String, dynamic>))
               .toList();
-      print(tickets);
       ref.read(ticketProvider.notifier).setTickets(tickets);
     } catch (e) {
       debugPrint('Error fetching tickets: $e');
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Failed to load tickets')));
     }
   }
 
@@ -66,7 +69,7 @@ class _RaiseTicketPageState extends ConsumerState<RaiseTicketPage> {
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: Colors.transparent,
                 dividerColor: Colors.transparent,
-                unselectedLabelStyle: TextStyle(color: AppColors.black),
+                unselectedLabelStyle: const TextStyle(color: AppColors.black),
                 labelColor: AppColors.white,
                 labelStyle: Theme.of(
                   context,
@@ -76,7 +79,7 @@ class _RaiseTicketPageState extends ConsumerState<RaiseTicketPage> {
                     child: Container(
                       height: 44,
                       alignment: Alignment.center,
-                      child: Text("Active Tickets"),
+                      child: const Text("Active Tickets"),
                     ),
                   ),
                   Tab(
@@ -105,14 +108,30 @@ class _RaiseTicketPageState extends ConsumerState<RaiseTicketPage> {
 }
 
 class TicketNotifier extends StateNotifier<List<Ticket>> {
-  TicketNotifier() : super([]); // Initialize with empty list
+  final HttpAPIServices services;
 
-  // Set tickets from API response
+  TicketNotifier(this.services) : super([]);
+
+  Future<void> fetchTickets() async {
+    try {
+      final response = await services.getAPI('/user/tickets');
+      final Map<String, dynamic> data =
+          jsonDecode(response.body) as Map<String, dynamic>;
+      final List<Ticket> tickets =
+          (data['tickets'] as List<dynamic>)
+              .map((ticket) => Ticket.fromJson(ticket as Map<String, dynamic>))
+              .toList();
+      state = tickets;
+    } catch (e) {
+      debugPrint('Error fetching tickets: $e');
+      // Note: SnackBar requires BuildContext, handled in UI
+    }
+  }
+
   void setTickets(List<Ticket> tickets) {
     state = tickets;
   }
 
-  // Delete a ticket by ID
   void deleteTicket(String ticketId) {
     state = state.where((ticket) => ticket.id != ticketId).toList();
   }
@@ -121,5 +140,5 @@ class TicketNotifier extends StateNotifier<List<Ticket>> {
 final ticketProvider = StateNotifierProvider<TicketNotifier, List<Ticket>>((
   ref,
 ) {
-  return TicketNotifier();
+  return TicketNotifier(HttpAPIServices());
 });

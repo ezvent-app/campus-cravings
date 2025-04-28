@@ -22,7 +22,7 @@ class PlaceOrderRepository {
       }
     } else {
       if (context.mounted) {
-        showToast(body['message'], context: context);
+        showToast(body['errors'].toString(), context: context);
       }
     }
   }
