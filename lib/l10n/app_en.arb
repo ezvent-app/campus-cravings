@@ -107,6 +107,7 @@
   "current" : "Current",
   "history" : "History",
   "orders" : "Orders",
+  "raiseATicket": "Raise a Ticket",
   "completed" : "Completed",
   "orderDetails" : "Order details",
   "restaurant" : "Restaurant",

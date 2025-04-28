@@ -66,5 +66,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: PlacingOrderRoute.page, path: '/placing-order'),
     AutoRoute(page: DeliveringRoute.page, path: '/delivering'),
     AutoRoute(page: CheckOutTabRoute.page, path: '/check_out'),
+    AutoRoute(page: RaiseTicketRoute.page, path: '/raise_ticket'),
+    AutoRoute(page: TicketMessagesRoute.page, path: '/ticket_messages'),
   ];
 }

@@ -105,29 +105,35 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                                         ),
                               ),
                               const SizedBox(width: 20),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${profileData['firstName']} ${profileData['lastName']}",
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
-                                  height(5),
-                                  InkWellButtonWidget(
-                                    onTap: () {
-                                      context.pushRoute(
-                                        ProfileFormRoute(newUser: false),
-                                      );
-                                    },
-                                    child: Text(
-                                      locale.editProfile,
-                                      style: TextStyle(
-                                        color: AppColors.lightText,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${profileData['firstName']} ${profileData['lastName']}",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style:
+                                          Theme.of(
+                                            context,
+                                          ).textTheme.titleMedium,
+                                    ),
+                                    height(5),
+                                    InkWellButtonWidget(
+                                      onTap: () {
+                                        context.pushRoute(
+                                          ProfileFormRoute(newUser: false),
+                                        );
+                                      },
+                                      child: Text(
+                                        locale.editProfile,
+                                        style: TextStyle(
+                                          color: AppColors.lightText,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -178,13 +184,6 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                             context.pushRoute(const SavedAddressesRoute());
                           },
                         ),
-                        ProfileOption(
-                          icon: 'promo',
-                          label: locale.promoCode,
-                          onPressed: () {
-                            context.pushRoute(const PromoCodeRoute());
-                          },
-                        ),
                       ],
                     ),
                     ProfileGroupButton(
@@ -201,13 +200,6 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                           label: locale.changePassword,
                           onPressed: () {
                             context.pushRoute(const ChangePasswordRoute());
-                          },
-                        ),
-                        ProfileOption(
-                          icon: 'locale',
-                          label: locale.changeLanguage,
-                          onPressed: () {
-                            context.pushRoute(const ChangeLanguageRoute());
                           },
                         ),
                         ProfileOption(

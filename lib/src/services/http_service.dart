@@ -8,7 +8,7 @@ class HttpService {
   static final HttpService _instance = HttpService._internal();
   factory HttpService() => _instance;
 
-  final String _baseUrl = "http://192.168.100.6:5000/api";
+  final String _baseUrl = "http://192.168.18.101:5000/api";
   HttpService._internal();
 
   final Map<String, String> _headers = {"Content-Type": "application/json"};
@@ -87,10 +87,10 @@ class HttpService {
       final response = await http
           .patch(url, headers: _headers, body: jsonEncode(data))
           .timeout(const Duration(seconds: 60));
-      log("PATCH response: ${response.body}");
+      log("PUT response: ${response.body}");
       return response;
     } catch (e) {
-      log("PATCH request error: $e");
+      log("PUT request error: $e");
       rethrow;
     }
   }

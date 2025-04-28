@@ -289,12 +289,26 @@ class PickupTabWidget extends ConsumerWidget {
             ),
           ),
           const Divider(height: 48, color: AppColors.dividerColor),
-          CheckPlaceOrderButtonWidget(
-            repository: _repository,
-            orderType: "pickup",
-            cartItems: cartItems,
-            tip: tip,
-            locale: locale,
+          Container(
+            width: double.infinity,
+            height: 48,
+            margin: const EdgeInsets.only(bottom: 36),
+            child: ElevatedButton(
+              onPressed: () {
+                context.pushRoute(CheckoutAddressRoute());
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.background, // Splash color
+              ),
+              child: Text(
+                '${locale.placeOrder} - \$24.00',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ),
           ),
         ],
       ),

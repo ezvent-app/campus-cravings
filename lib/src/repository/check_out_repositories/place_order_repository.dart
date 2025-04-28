@@ -18,7 +18,7 @@ class PlaceOrderRepository {
     if (res.statusCode == 200 || res.statusCode == 201) {
       printThis("Order created ${res.body}");
       if (context.mounted) {
-        context.pushRoute(const CheckoutAddressRoute());
+        context.pushRoute(DeliveringRoute(id: body['order']['_id']));
       }
     } else {
       if (context.mounted) {
