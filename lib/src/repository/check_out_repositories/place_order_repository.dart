@@ -13,6 +13,7 @@ class PlaceOrderRepository {
   //CREATE ORDER API
 
   placeOrderMethod(Map<String, dynamic> json, BuildContext context) async {
+    print("JSON: $json");
     final res = await _services.postAPI(url: '/admin/order', map: json);
     final body = jsonDecode(res.body);
     if (res.statusCode == 200 || res.statusCode == 201) {

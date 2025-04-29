@@ -3,16 +3,17 @@ import 'dart:io';
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:intl/intl.dart';
 
 @RoutePage()
 class TicketMessagesPage extends ConsumerStatefulWidget {
   final String ticketId;
   final Function? onDelete;
+  final Function(String ticketId, TicketMessage) onAdd;
   final List<TicketMessage> messages;
 
   const TicketMessagesPage({
+    required this.onAdd,
     super.key,
     required this.ticketId,
     this.onDelete,
@@ -37,7 +38,12 @@ class _TicketMessagesPageState extends ConsumerState<TicketMessagesPage> {
     final locale = AppLocalizations.of(context)!;
     final notifier = ref.read(ticketMessagesProvider(widget.ticketId).notifier);
     final state = ref.watch(ticketMessagesProvider(widget.ticketId));
-    print("Messages: ${widget.messages.length}");
+    final messages =
+        ref
+            .watch(ticketProvider)
+            .firstWhere((ticket) => ticket.id == widget.ticketId)
+            .messages;
+    print("messages here: ${messages[0].sender}");
 
     return Scaffold(
       appBar: AppBar(
@@ -62,10 +68,10 @@ class _TicketMessagesPageState extends ConsumerState<TicketMessagesPage> {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: widget.messages.length,
+                itemCount: messages.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  final message = widget.messages[index];
+                  final message = messages[index];
                   final isUser = message.sender == 'user';
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
@@ -168,7 +174,7 @@ class _TicketMessagesPageState extends ConsumerState<TicketMessagesPage> {
                 IconButton(
                   icon: SvgAssets("Navigation"),
                   onPressed: () async {
-                    await notifier.sendMessage(context);
+                    await notifier.sendMessage(context, widget.onAdd);
                     _controller.clear();
                   },
                 ),
@@ -263,29 +269,50 @@ class TicketMessagesNotifier extends StateNotifier<TicketMessagesState> {
       state = state.copyWith(image: null);
     } catch (e) {
       debugPrint('Error sending image: $e');
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Failed to send image')));
+      showToast(context: context, 'Failed to send image');
     } finally {
       state = state.copyWith(isLoading: false);
     }
   }
 
-  Future<void> sendMessage(BuildContext context) async {
+  Future<void> sendMessage(
+    BuildContext context,
+    Function(String ticketId, TicketMessage message) onAdd,
+  ) async {
     if (state.message.isEmpty) return;
 
     try {
       state = state.copyWith(isLoading: true);
-      await services.patchAPI(
+      final response = await services.patchAPI(
         url: '/admin/tickets/reply/$ticketId',
         map: {'text': state.message},
       );
+
+      // Parse the response body into a Map<String, dynamic>
+      final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+
+      // Extract the latest message from the response
+      final ticket = responseData['ticket'] as Map<String, dynamic>;
+      final messages = ticket['messages'] as List<dynamic>;
+      final latestMessage = messages.last as Map<String, dynamic>;
+
+      // Create a TicketMessage object from the latest message
+      final message = TicketMessage(
+        sender: latestMessage['sender'] as String,
+        text: latestMessage['text'] as String,
+        imageUrl: (latestMessage['imageUrl'] as List<dynamic>).cast<String>(),
+        id: latestMessage['_id'] as String,
+        time: DateTime.parse(latestMessage['time'] as String),
+      );
+
+      // Call the onAdd callback with the ticketId and the new message
+      onAdd(ticketId, message);
+
+      // Reset the state
       state = state.copyWith(message: '', image: null);
     } catch (e) {
       debugPrint('Error sending message: $e');
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Failed to send message')));
+      showToast(context: context, 'Failed to send message');
     } finally {
       state = state.copyWith(isLoading: false);
     }

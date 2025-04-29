@@ -37,11 +37,17 @@ class TicketTabWidget extends ConsumerWidget {
                     TicketMessagesRoute(
                       messages: ticket.messages,
                       ticketId: ticket.id,
+                      onAdd: (String ticketId, TicketMessage message) {
+                        ref
+                            .read(ticketProvider.notifier)
+                            .addMessage(ticketId, message);
+                        print("Messages: ${ticket.messages}");
+                      },
                       // Pass the delete method to the next route/widget
                       onDelete:
                           () => ref
                               .read(ticketProvider.notifier)
-                              .deleteTicket(ticket.id),
+                              .deleteTicket(ticket.id, context),
                     ),
                   );
                 },

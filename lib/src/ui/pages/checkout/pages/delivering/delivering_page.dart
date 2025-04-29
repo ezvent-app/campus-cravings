@@ -1,20 +1,31 @@
 import 'dart:async';
 
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:custom_marker_builder/custom_marker_builder.dart';
 import 'package:geolocator/geolocator.dart';
 
 @RoutePage()
-class DeliveringPage extends StatefulWidget {
+class DeliveringPage extends ConsumerStatefulWidget {
   final String? id;
   const DeliveringPage({super.key, this.id});
 
   @override
-  State<DeliveringPage> createState() => _DeliveringPageState();
+  ConsumerState<DeliveringPage> createState() => _DeliveringPageState();
 }
 
-class _DeliveringPageState extends State<DeliveringPage> {
-  int step = 1;
+class _DeliveringPageState extends ConsumerState<DeliveringPage> {
+  int step = 0;
+  final statuses = [
+    "pending",
+    "order_accepted",
+    "order_prepared",
+    "accepted_by_rider",
+    "order_dispatched",
+    "delivered",
+    "cancelled",
+    "completed",
+  ];
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -30,25 +41,81 @@ class _DeliveringPageState extends State<DeliveringPage> {
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
 
+  // Add a flag to track if the component is mounted
+  bool _isMounted = true;
+
   @override
   void initState() {
     super.initState();
-    print("Widget ID: ${widget.id}");
-    _getCurrentLocation().then((_) {
-      _setupMarkersAndPolyline();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _setupSocket();
     });
+
+    _getCurrentLocation().then((_) {
+      if (_isMounted) {
+        _setupMarkersAndPolyline();
+      }
+    });
+  }
+
+  // New method to setup socket properly
+  void _setupSocket() async {
+    if (!_isMounted) return;
+
+    final socketController = ref.read(socketControllerProvider);
+
+    // First, ensure socket is connected before setting up listeners
+    print("Socket status: ${ref.read(socketStateProvider).status}");
+    if (ref.read(socketStateProvider).status != SocketStatus.connected) {
+      final token = StorageHelper().getAccessToken();
+      if (token == null) return;
+      socketController.connect(token);
+    }
+
+    // Only after connection is established, set up listeners
+    if (_isMounted) {
+      socketController.listenForStatusUpdates((Map<String, dynamic> data) {
+        print(data['status']);
+        if (_isMounted) {
+          ref.read(deliveringProvider.notifier).state = {
+            'status': data['status'],
+          };
+        }
+      });
+
+      // Join order room only after connection is established
+      if (widget.id != null) {
+        socketController.emitJoinOrder(widget.id!);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    // Mark as unmounted before disposing
+    _isMounted = false;
+
+    // Clean up socket listeners when disposing the widget
+    final socketController = ref.read(socketControllerProvider);
+    socketController.stopListeningForStatusUpdates();
+
+    super.dispose();
   }
 
   Future<void> _setupMarkersAndPolyline() async {
     // Wait until _customerLocation is set
     while (_customerLocation == null) {
       await Future.delayed(Duration(milliseconds: 100));
+      if (!_isMounted) return; // Exit if widget is disposed during wait
     }
 
     final bitmap = await CustomMapMarkerBuilder.fromWidget(
       context: context,
       marker: CustomMarkerWidget(),
     );
+
+    if (!_isMounted) return; // Check if widget is still mounted
 
     setState(() {
       _markers = {
@@ -94,11 +161,17 @@ class _DeliveringPageState extends State<DeliveringPage> {
     }
 
     Position position = await Geolocator.getCurrentPosition();
+
+    if (!_isMounted) return; // Check if widget is still mounted
+
     setState(() {
       _customerLocation = LatLng(position.latitude, position.longitude);
     });
 
     final GoogleMapController controller = await _controller.future;
+
+    if (!_isMounted) return; // Check if widget is still mounted
+
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(target: _customerLocation!, zoom: 12),
@@ -142,22 +215,30 @@ class _DeliveringPageState extends State<DeliveringPage> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: List.generate(5, (index) {
-                        return Expanded(
-                          child: Container(
-                            height: 4,
-                            margin: EdgeInsets.only(
-                              right: index == 4 ? 0 : 9,
-                              top: 12,
-                              bottom: 12,
-                            ),
-                            color: Color(
-                              index <= step ? 0xff0F984A : 0xffE5E1E5,
-                            ),
-                          ),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final status = ref.watch(deliveringProvider)['status'];
+                        print("Statusing: $status");
+                        return Row(
+                          children: List.generate(5, (index) {
+                            return Expanded(
+                              child: Container(
+                                height: 4,
+                                margin: EdgeInsets.only(
+                                  right: index == 4 ? 0 : 9,
+                                  top: 12,
+                                  bottom: 12,
+                                ),
+                                color: Color(
+                                  index <= statuses.indexOf(status ?? '')
+                                      ? 0xff0F984A
+                                      : 0xffE5E1E5,
+                                ),
+                              ),
+                            );
+                          }),
                         );
-                      }),
+                      },
                     ),
                   ],
                 ),
@@ -223,3 +304,7 @@ class CustomMarkerWidget extends StatelessWidget {
     );
   }
 }
+
+final deliveringProvider = StateProvider<Map<String, dynamic>>(
+  (ref) => {'status': ''},
+);
