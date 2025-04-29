@@ -199,6 +199,11 @@ class DeliverySetupPage extends ConsumerWidget {
                                 const AddPayoutRoute(),
                               ]);
                               StorageHelper().saveRiderProfileComplete(true);
+                            } else if (response.statusCode == 400) {
+                              showToast(
+                                context: context,
+                                "You are already registered as a rider!",
+                              );
                             } else {
                               showToast(
                                 context: context,

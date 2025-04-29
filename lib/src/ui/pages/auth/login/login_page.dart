@@ -122,9 +122,14 @@ class LoginPage extends ConsumerWidget {
                                       );
 
                                       final data = jsonDecode(response.body);
+                                      final Map<String, dynamic> state = {
+                                        'loading': false,
+                                      };
                                       if (response.statusCode == 201) {
                                         if (context.mounted) {
-                                          context.replaceRoute(MainRoute());
+                                          state['email'] = '';
+                                          state['password'] = '';
+                                          context.pushRoute(MainRoute());
                                         }
                                         final token =
                                             data['user']['accessToken'];
@@ -144,9 +149,6 @@ class LoginPage extends ConsumerWidget {
                                           socketControllerProvider,
                                         );
                                         socketController.connect(token);
-
-                                        ref.read(loginProvider.notifier).state =
-                                            {'email': '', 'password': ''};
                                       } else if (response.statusCode == 400) {
                                         showToast(
                                           context: context,
@@ -163,11 +165,19 @@ class LoginPage extends ConsumerWidget {
                                           "An unknown error occurred.",
                                         );
                                       }
+                                      ref.read(loginProvider.notifier).state = {
+                                        'email':
+                                            state['email'] ??
+                                            loginNotifier['email'],
+                                        'password':
+                                            state['password'] ??
+                                            loginNotifier['password'],
+                                        'loading': state['loading'],
+                                      };
                                     } catch (e) {
                                       showToast(
                                         "Login failed. Please try again.",
                                       );
-                                    } finally {
                                       ref.read(loginProvider.notifier).state = {
                                         ...loginNotifier,
                                         'isLoading': false,
