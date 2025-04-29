@@ -74,20 +74,6 @@ class HttpAPIServices extends BaseApiServices {
     }
   }
 
-  Future<http.Response> putAPI({
-    required String url,
-    required Map<String, dynamic> map,
-  }) async {
-    try {
-      await service.loadToken();
-      final response = await service.putRequest(url, map);
-      return response;
-    } catch (e) {
-      log("Error in PATCH request: $e");
-      throw _handleException(e);
-    }
-  }
-
   _handleException(dynamic e) {
     if (e is http.ClientException) {
       return const NetworkFailure();
