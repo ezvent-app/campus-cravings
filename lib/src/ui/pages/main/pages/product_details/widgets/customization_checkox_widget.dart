@@ -1,4 +1,7 @@
+import 'package:campuscravings/src/controllers/product_details_controller.dart';
 import 'package:campuscravings/src/models/product_item_detail_model.dart';
+import 'package:campuscravings/src/repository/home_repository/product_catalog_repository.dart';
+import 'package:get/get.dart';
 
 import '../../../../../../src.dart';
 
@@ -20,6 +23,9 @@ class _ConsumerCustomizationCheckboxWidgetState
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     final cartNotifier = ref.read(cartItemsProvider.notifier);
+    final controller = Get.put(
+      ProductDetailsController(ProductRepository(HttpAPIServices())),
+    );
     return Column(
       children: [
         height(20),
@@ -61,6 +67,9 @@ class _ConsumerCustomizationCheckboxWidgetState
                   index,
                   _selectedCustomizations,
                 );
+
+                controller.selectedCustomizations = _selectedCustomizations;
+                controller.getTotalPrice();
               });
             },
             controlAffinity: ListTileControlAffinity.leading,

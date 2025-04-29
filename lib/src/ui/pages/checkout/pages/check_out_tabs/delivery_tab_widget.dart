@@ -269,7 +269,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$2',
+                          '\$10',
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -308,7 +308,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          "\$$total",
+                          "\$${total.toStringAsFixed(2)}",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -325,6 +325,7 @@ class DeliveryTabWidget extends ConsumerWidget {
           ),
           const Divider(height: 48, color: AppColors.dividerColor),
           CheckPlaceOrderButtonWidget(
+            total: total,
             repository: _repository,
             orderType: "delivery",
             cartItems: cartItems,
@@ -461,6 +462,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
   const CheckPlaceOrderButtonWidget({
     super.key,
     required this.cartItems,
+    required this.total,
     required this.tip,
     required this.locale,
     required this.orderType,
@@ -472,6 +474,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
   final AppLocalizations locale;
   final String orderType;
   final PlaceOrderRepository repository;
+  final double total;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -488,8 +491,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
           final json = {
             "payment_method": "cash",
             "tip": tip,
-            "delivery_fee": 2,
-            "restaurant_id":'',
+            "delivery_fee": 10,
             "order_type": orderType,
             "addresses": address.value?.addresses ?? "",
             "items": orderItemsJson,
@@ -521,7 +523,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
           foregroundColor: AppColors.background,
         ),
         child: Text(
-          '${locale.placeOrder} - \$26.00',
+          '${locale.placeOrder} - \$${total.toStringAsFixed(2)}',
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
       ),

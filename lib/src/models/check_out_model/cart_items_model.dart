@@ -8,8 +8,10 @@ class CartItem {
   final String image;
   final List<CustomizationModel> customization;
   final String size;
+  final double sizePrice;
 
   CartItem({
+    required this.sizePrice,
     required this.size,
     required this.image,
     required this.id,
@@ -22,8 +24,10 @@ class CartItem {
   CartItem copyWith({
     int? quantity,
     String? size,
+    double? sizePrice,
     List<CustomizationModel>? customization,
   }) => CartItem(
+    sizePrice: sizePrice ?? this.sizePrice,
     size: size ?? this.size,
     customization: customization ?? this.customization,
     image: image,

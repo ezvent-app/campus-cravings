@@ -1,5 +1,5 @@
 import 'package:campuscravings/src/src.dart';
-import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/raise_ticket/raise_ticket_tab.dart';
+import 'package:campuscravings/src/ui/pages/main/tabs/profile/pages/help/pages/raise_ticket/raise_ticket_page.dart';
 
 @RoutePage()
 class HelpPage extends StatelessWidget {

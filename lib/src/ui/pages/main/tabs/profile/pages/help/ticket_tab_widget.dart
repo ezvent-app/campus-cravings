@@ -15,9 +15,10 @@ class TicketTabWidget extends ConsumerWidget {
     // Watch the ticket list from the provider, filter based on type
     final tickets =
         ref.watch(ticketProvider).where((ticket) {
+          print("Status: ${ticket.status}");
           return type == TicketTabType.active
-              ? ticket.isActive
-              : !ticket.isActive;
+              ? ticket.status == 'pending'
+              : ticket.status != 'pending';
         }).toList();
 
     return SingleChildScrollView(
@@ -34,6 +35,7 @@ class TicketTabWidget extends ConsumerWidget {
                 onPressed: () {
                   context.pushRoute(
                     TicketMessagesRoute(
+                      messages: ticket.messages,
                       ticketId: ticket.id,
                       // Pass the delete method to the next route/widget
                       onDelete:
@@ -53,32 +55,3 @@ class TicketTabWidget extends ConsumerWidget {
     );
   }
 }
-
-// Simple Ticket model
-class Ticket {
-  final String id;
-  final bool isActive;
-
-  Ticket({required this.id, required this.isActive});
-}
-
-// StateNotifier to manage the list of tickets
-class TicketNotifier extends StateNotifier<List<Ticket>> {
-  TicketNotifier()
-    : super([
-        Ticket(id: "1", isActive: true),
-        Ticket(id: "2", isActive: true),
-        Ticket(id: "3", isActive: false),
-      ]);
-
-  void deleteTicket(String ticketId) {
-    state = state.where((ticket) => ticket.id != ticketId).toList();
-  }
-}
-
-// Provider for the ticket list
-final ticketProvider = StateNotifierProvider<TicketNotifier, List<Ticket>>((
-  ref,
-) {
-  return TicketNotifier();
-});

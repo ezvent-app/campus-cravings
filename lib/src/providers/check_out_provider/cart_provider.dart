@@ -48,17 +48,19 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
     }
   }
 
-  void selectSize(int index, String sizeID) {
-    if (index >= 0 && index < state.length) {
-      final updatedItem = state[index].copyWith(size: sizeID);
-      state = [...state]..[index] = updatedItem;
-      print("✅ Size updated to $sizeID at index $index");
-    } else {
-      print(
-        "❌ Invalid index for selectSize: $index (List length: ${state.length})",
-      );
-    }
+  String selectedSizeId = '';
+  double selectedSizePrice = 0.00;
+  void selectSize(int index, String sizeID, double sizePrice) {
+   
+      selectedSizeId = sizeID;
+      selectedSizePrice = sizePrice;
+
+      printThis("✅ Size updated to $sizeID at index $index price $sizePrice");
+      printThis("👉 Selected sizeId after tap: $selectedSizeId");
+   
   }
+
+  List<CustomizationModel> selectedCustomizations = [];
 
   void updateCustomization(int index, List<CustomizationModel> customizations) {
     if (index >= 0 && index < state.length) {

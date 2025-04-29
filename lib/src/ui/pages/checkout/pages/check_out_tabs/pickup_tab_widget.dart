@@ -273,7 +273,7 @@ class PickupTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          "\$$total",
+                          "\$${total.toStringAsFixed(2)}",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -305,7 +305,7 @@ class PickupTabWidget extends ConsumerWidget {
                 foregroundColor: AppColors.background, // Splash color
               ),
               child: Text(
-                '${locale.placeOrder} - \$24.00',
+                '${locale.placeOrder} - \$${total.toStringAsFixed(2)}',
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
             ),

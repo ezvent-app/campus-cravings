@@ -2,8 +2,7 @@ import 'package:campuscravings/src/models/product_item_detail_model.dart';
 import 'package:campuscravings/src/repository/home_repository/product_catalog_repository.dart';
 import 'package:get/get.dart';
 
-class ProductDetailsController extends GetxController{
-
+class ProductDetailsController extends GetxController {
   final ProductRepository _productRepository;
   ProductDetailsController(this._productRepository);
   late String _productId;
@@ -15,37 +14,59 @@ class ProductDetailsController extends GetxController{
   int _productQuantity = 1;
   int get productQuantity => _productQuantity;
 
-  void setProductId(String productId){
+  void setProductId(String productId) {
     _productId = productId;
     _productQuantity = 1;
   }
 
-  Future<void> getProductDetails() async{
-    try{
+  Future<void> getProductDetails() async {
+    try {
       _isLoading = true;
       update();
-      _productItemDetailModel = await _productRepository.getProductItemDetails(itemId: _productId);
+      _productItemDetailModel = await _productRepository.getProductItemDetails(
+        itemId: _productId,
+      );
       _isLoading = false;
       update();
       return;
-    }catch(e){
+    } catch (e) {
       _isLoading = false;
       update();
       return;
     }
   }
-  void incrementProductQuantity(){
+
+  double totalPrice = 0.00;
+  List<CustomizationModel> selectedCustomizations = [];
+  double selectedSizePrice = 0.0;
+
+  void incrementProductQuantity() {
     _productQuantity++;
-    update();
+    getTotalPrice();
   }
-  void decrementProductQuantity(){
-    if(_productQuantity > 1){
+
+  void decrementProductQuantity() {
+    if (_productQuantity > 1) {
       _productQuantity--;
-      update();
+      getTotalPrice();
     }
   }
-  double getTotalPrice(){
-    if(_productItemDetailModel == null) return 0.0;
-    return _productItemDetailModel!.price * _productQuantity;
+
+  void getTotalPrice() {
+    double basePrice = _productItemDetailModel?.price ?? 0.0;
+
+    double customizationsPrice =
+        selectedCustomizations.isNotEmpty
+            ? selectedCustomizations
+                .map((i) => i.price)
+                .fold(0.0, (a, b) => a + b)
+            : 0.0;
+
+    double totalSingleItemPrice =
+        basePrice + selectedSizePrice + customizationsPrice;
+
+    totalPrice = totalSingleItemPrice * _productQuantity;
+
+    update();
   }
 }
