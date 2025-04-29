@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campuscravings/src/repository/rider_delivery_repo/rider_delivery_repo.dart';
 import 'package:campuscravings/src/src.dart';
 
 class DeliveryOrdersTabWidget extends ConsumerStatefulWidget {
@@ -280,6 +281,11 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                 ...isAccept,
                                 'isAccept': true,
                               };
+                              RiderDelvieryRepo repo = RiderDelvieryRepo();
+                              repo.orderAcceptedByRider(
+                                '680fdf337c362f1bc43f631e',
+                                {"status": "accepted_by_rider"},
+                              );
                               Navigator.pop(context);
                             },
                           );

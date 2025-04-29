@@ -1,9 +1,15 @@
+import 'package:campuscravings/src/repository/rider_delivery_repo/delivery_repository.dart';
 import 'package:campuscravings/src/src.dart';
 
 class ImageConfirmationPage extends StatelessWidget {
   final XFile image;
 
   const ImageConfirmationPage({super.key, required this.image});
+
+  Future<String> convertImageToBase64() async {
+    final bytes = await File(image.path).readAsBytes();
+    return base64Encode(bytes);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +70,21 @@ class ImageConfirmationPage extends StatelessWidget {
                                 height(30),
                                 RoundedButtonWidget(
                                   btnTitle: locale.ok,
-                                  onTap:
-                                      () => context.replaceRoute(MainRoute()),
+                                  onTap: () async {
+                                    String base64Image =
+                                        await convertImageToBase64();
+                                    RiderDelvieryRepo repo =
+                                        RiderDelvieryRepo();
+                                    repo.orderAcceptedByRider(
+                                      '680fdf337c362f1bc43f631e',
+                                      {
+                                        "image_url": base64Image,
+                                        "status": "delivered",
+                                      },
+                                    );
+                                    Navigator.pop(context);
+                                    context.replaceRoute(MainRoute());
+                                  },
                                 ),
                               ],
                             ),

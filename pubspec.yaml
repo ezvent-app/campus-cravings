@@ -46,6 +46,8 @@ dependencies:
     cached_network_image: ^3.4.1
     geocoding: ^3.0.0
     flutter_stripe: ^11.5.0
+    url_launcher: ^6.3.1
+    
 
 dev_dependencies:
     flutter_test:
