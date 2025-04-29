@@ -7,4 +7,5 @@ class SocketEvents {
   static const String eventNotification = 'notification';
   static const String joinOrderRoom = 'join-order-room';
   static const String orderStatusUpdated = 'order-status-updated';
+  static const String newRiderOrder = 'new-rider-order';
 }

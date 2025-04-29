@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/models/Rider_delivery_model/Rider_delivery_model.dart';
 import 'package:campuscravings/src/repository/rider_delivery_repo/rider_delivery_repo.dart';
 import 'package:campuscravings/src/src.dart';
@@ -25,10 +26,9 @@ class _RidersDeliveryDetailsWidgetState
 
   @override
   Widget build(BuildContext context) {
+    String? riderOrderId = StorageHelper().getRiderOrderId();
     final locale = AppLocalizations.of(context)!;
-    final riderDelivery = ref.watch(
-      riderDeliveryProvider("680fdf337c362f1bc43f631e"),
-    );
+    final riderDelivery = ref.watch(riderDeliveryProvider(riderOrderId!));
 
     return riderDelivery.when(
       data: (RiderDeliveryModel data) {
@@ -378,11 +378,12 @@ class _RidersDeliveryDetailsWidgetState
                           color: Color(0xff616161),
                         ),
                         onSubmit: () {
+                          String? riderOrderId =
+                              StorageHelper().getRiderOrderId();
                           RiderDelvieryRepo repo = RiderDelvieryRepo();
-                          repo.orderAcceptedByRider(
-                            '680fdf337c362f1bc43f631e',
-                            {"status": "accepted_by_rider"},
-                          );
+                          repo.orderAcceptedByRider(riderOrderId!, {
+                            "status": "accepted_by_rider",
+                          });
                           setState(() {
                             isStarted = true;
                           });

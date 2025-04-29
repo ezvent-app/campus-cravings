@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/repository/rider_delivery_repo/delivery_repository.dart';
 import 'package:campuscravings/src/src.dart';
 
@@ -45,9 +46,10 @@ class ImageConfirmationPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    final outerContext = context; // Capture outer context
                     showDialog(
                       context: context,
-                      builder: (context) {
+                      builder: (dialogContext) {
                         return SimpleDialog(
                           contentPadding: EdgeInsets.all(30),
                           children: [
@@ -59,31 +61,46 @@ class ImageConfirmationPage extends StatelessWidget {
                                 Text(
                                   locale.deliveryComplete,
                                   style:
-                                      Theme.of(context).textTheme.titleMedium,
+                                      Theme.of(
+                                        dialogContext,
+                                      ).textTheme.titleMedium,
                                 ),
                                 height(10),
                                 Text(
                                   locale.thankYouDeliveringOrderGreatJob,
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style:
+                                      Theme.of(
+                                        dialogContext,
+                                      ).textTheme.bodyMedium,
                                 ),
                                 height(30),
                                 RoundedButtonWidget(
                                   btnTitle: locale.ok,
                                   onTap: () async {
+                                    String? riderOrderId =
+                                        StorageHelper().getRiderOrderId();
                                     String base64Image =
                                         await convertImageToBase64();
                                     RiderDelvieryRepo repo =
                                         RiderDelvieryRepo();
-                                    repo.orderAcceptedByRider(
-                                      '680fdf337c362f1bc43f631e',
-                                      {
-                                        "image_url": base64Image,
-                                        "status": "delivered",
+                                    await repo
+                                        .orderAcceptedByRider(riderOrderId!, {
+                                          "image_url": base64Image,
+                                          "status": "delivered",
+                                        });
+
+                                    Navigator.pop(
+                                      dialogContext,
+                                    ); // close dialog
+                                    Future.delayed(
+                                      Duration(milliseconds: 0),
+                                      () {
+                                        outerContext.pushRoute(
+                                          const MainRoute(),
+                                        );
                                       },
                                     );
-                                    Navigator.pop(context);
-                                    context.replaceRoute(HomeTabRoute());
                                   },
                                 ),
                               ],
@@ -93,6 +110,7 @@ class ImageConfirmationPage extends StatelessWidget {
                       },
                     );
                   },
+
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.white,
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),

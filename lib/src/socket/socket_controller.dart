@@ -52,6 +52,13 @@ class SocketController {
     // });
   }
 
+  void listenForOrders(void Function(dynamic data) updateOrders) {
+    _socketService.on(SocketEvents.newRiderOrder, (data) {
+      print('Received orderStatusUpdated event: $data');
+      updateOrders(data);
+    });
+  }
+
   void listenForStatusUpdates(
     void Function(Map<String, dynamic> data) onLocationUpdate,
   ) {
