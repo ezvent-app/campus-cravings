@@ -1,26 +1,69 @@
+import 'dart:developer';
+
 import 'package:campuscravings/src/src.dart';
 
 class PickupTabWidget extends ConsumerWidget {
   PickupTabWidget({super.key});
 
   final PlaceOrderRepository _repository = PlaceOrderRepository();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     final cartItems = ref.watch(cartItemsProvider);
     final cartNotifier = ref.read(cartItemsProvider.notifier);
+    final address = ref.watch(locationProvider);
     final subtotal = cartItems
         .map((item) => item.price * item.quantity)
         .fold(0.0, (a, b) => a + b);
 
     final tip = ref.watch(selectedTipProvider);
-    final total = subtotal + tip;
+
+    double platformTenPercent = subtotal * 0.10;
+
+    String platformFee = '\$${platformTenPercent.toStringAsFixed(2)}';
+
+    final total = subtotal + tip + platformTenPercent;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: .08),
+                  blurRadius: 15,
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.only(top: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        locale.deliverTo,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      SizedBox(height: 20),
+                      Divider(height: 0, color: AppColors.dividerColor),
+                    ],
+                  ),
+                ),
+                HomeLocationWidget(title: locale.home, subTitle: ''),
+              ],
+            ),
+          ),
           Container(
             padding: const EdgeInsets.all(20),
             margin: const EdgeInsets.symmetric(vertical: 16),
@@ -223,7 +266,7 @@ class PickupTabWidget extends ConsumerWidget {
                 Row(
                   children: [
                     Text(
-                      locale.deliveryFee,
+                      "Platform fee",
                       style: TextStyle(
                         color: Color(0xff424242),
                         fontSize: 14,
@@ -234,7 +277,34 @@ class PickupTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$2',
+                          platformFee,
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            color: Color(0xff424242),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                Row(
+                  children: [
+                    Text(
+                      "Tip",
+                      style: TextStyle(
+                        color: Color(0xff424242),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: Text(
+                          "\$${tip.toString()}",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -289,26 +359,13 @@ class PickupTabWidget extends ConsumerWidget {
             ),
           ),
           const Divider(height: 48, color: AppColors.dividerColor),
-          Container(
-            width: double.infinity,
-            height: 48,
-            margin: const EdgeInsets.only(bottom: 36),
-            child: ElevatedButton(
-              onPressed: () {
-                context.pushRoute(CheckoutAddressRoute());
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.background, // Splash color
-              ),
-              child: Text(
-                '${locale.placeOrder} - \$${total.toStringAsFixed(2)}',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-            ),
+          PickUpPlaceOrderButtonWidget(
+            total: total,
+            repository: _repository,
+            orderType: "delivery",
+            cartItems: cartItems,
+            tip: tip,
+            locale: locale,
           ),
         ],
       ),
@@ -432,6 +489,77 @@ class PickupTabWidget extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class PickUpPlaceOrderButtonWidget extends ConsumerWidget {
+  const PickUpPlaceOrderButtonWidget({
+    super.key,
+    required this.cartItems,
+    required this.total,
+    required this.tip,
+    required this.locale,
+    required this.orderType,
+    required this.repository,
+  });
+
+  final List<CartItem> cartItems;
+  final int tip;
+  final AppLocalizations locale;
+  final String orderType;
+  final PlaceOrderRepository repository;
+  final double total;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final address = ref.watch(locationProvider);
+
+    return Container(
+      width: double.infinity,
+      height: 48,
+      margin: const EdgeInsets.only(bottom: 36),
+      child: ElevatedButton(
+        onPressed: () async {
+          List<Map<String, dynamic>> orderItemsJson =
+              cartItems.map((item) => item.toOrderItemJson()).toList();
+          final json = {
+            "payment_method": "card",
+            "tip": tip,
+            "delivery_fee": total,
+            "order_type": orderType,
+            "addresses": address.value?.addresses ?? "",
+            "items": orderItemsJson,
+          };
+          log("CHECKOUT JSON $json");
+          // repository.placeOrderMethod(json, context);
+          // context.pushRoute(const CheckoutAddressRoute());
+
+          await repository.makePayment(
+            context: context,
+            purchaseName: "Ali",
+            title: "Garden Service",
+            amountPaid: total.toDouble(),
+            merchantDisplayName: "Default Merchant",
+            onSuccess: (transactionId) async {
+              log("Payment Successful with Transaction ID: $transactionId");
+              repository.placeOrderMethod(json, context);
+              cartItems.clear();
+            },
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.background,
+        ),
+        child: Text(
+          '${locale.placeOrder} - \$${total.toStringAsFixed(2)}',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+      ),
     );
   }
 }

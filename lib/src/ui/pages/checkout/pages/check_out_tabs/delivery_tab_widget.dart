@@ -1,22 +1,73 @@
 import 'dart:developer';
 
 import 'package:campuscravings/src/src.dart';
+import 'package:geolocator/geolocator.dart';
 
 class DeliveryTabWidget extends ConsumerWidget {
   DeliveryTabWidget({super.key});
 
   final PlaceOrderRepository _repository = PlaceOrderRepository();
+
+  double calculateDeliveryFee({
+    required double distanceInMiles,
+    required int ordersInCampus,
+    required int ridersInCampus,
+  }) {
+    const double baseFee = 0.50;
+    const double perMileFee = 0.70;
+
+    double demandMultiplier =
+        ridersInCampus > 0 ? ordersInCampus / ridersInCampus : 1;
+
+    double milesBeyondFirst = (distanceInMiles > 1) ? (distanceInMiles - 1) : 0;
+
+    double totalFee =
+        baseFee + (perMileFee * milesBeyondFirst * demandMultiplier);
+
+    log("Delivery fee ${double.parse(totalFee.toStringAsFixed(2))}");
+
+    return double.parse(totalFee.toStringAsFixed(2));
+  }
+
+  double _calculateDistanceInMiles(LatLng from, LatLng to) {
+    double distanceInMeters = Geolocator.distanceBetween(
+      from.latitude,
+      from.longitude,
+      to.latitude,
+      to.longitude,
+    );
+    return distanceInMeters / 1609.34;
+  }
+
+  LatLng? getLatLngFromOrderAddress(OrderAddress? orderAddress) {
+    final coords = orderAddress?.coordinates?.coordinates;
+    if (coords != null && coords.length == 2) {
+      final double lat = coords[1]; // latitude
+      final double lng = coords[0]; // longitude
+      return LatLng(lat, lng);
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     final cartItems = ref.watch(cartItemsProvider);
     final cartNotifier = ref.read(cartItemsProvider.notifier);
+    final address = ref.watch(locationProvider);
     final subtotal = cartItems
         .map((item) => item.price * item.quantity)
         .fold(0.0, (a, b) => a + b);
 
     final tip = ref.watch(selectedTipProvider);
-    final total = subtotal + tip;
+
+    double platformTenPercent = subtotal * 0.10;
+
+    String platformFee = '\$${platformTenPercent.toStringAsFixed(2)}';
+
+    final locationAsync = ref.watch(locationProvider);
+    final total = subtotal + tip + platformTenPercent;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: BouncingScrollPhysics(),
@@ -258,7 +309,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                 Row(
                   children: [
                     Text(
-                      locale.deliveryFee,
+                      "Platform fee",
                       style: TextStyle(
                         color: Color(0xff424242),
                         fontSize: 14,
@@ -269,7 +320,84 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$10',
+                          platformFee,
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            color: Color(0xff424242),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                locationAsync.when(
+                  data: (locationModel) {
+                    final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
+                      address.value?.addresses,
+                    );
+                    if (restuatantLatLng == null) {
+                      return Text("Restaurant location is missing");
+                    }
+
+                    final distance = _calculateDistanceInMiles(
+                      locationModel.latLng,
+                      restuatantLatLng,
+                    );
+
+                    final deliveryFee = calculateDeliveryFee(
+                      distanceInMiles: distance,
+                      ordersInCampus: 20,
+                      ridersInCampus: 5,
+                    );
+
+                    return Row(
+                      children: [
+                        Text(
+                          locale.deliveryFee,
+                          style: TextStyle(
+                            color: Color(0xff424242),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 12),
+                            child: Text(
+                              "\$${deliveryFee.toStringAsFixed(2)}",
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                color: Color(0xff424242),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  loading: () => CircularProgressIndicator(),
+                  error: (err, stack) => Text("Error: $err"),
+                ),
+
+                Row(
+                  children: [
+                    Text(
+                      "Tip",
+                      style: TextStyle(
+                        color: Color(0xff424242),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: Text(
+                          "\$${tip.toString()}",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -294,43 +422,74 @@ class DeliveryTabWidget extends ConsumerWidget {
                   ),
                 ),
                 Divider(height: 40, color: AppColors.dividerColor),
-                Row(
-                  children: [
-                    Text(
-                      locale.total,
-                      style: TextStyle(
-                        color: Color(0xff424242),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 12),
-                        child: Text(
-                          "\$${total.toStringAsFixed(2)}",
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            color: Color(0xff424242),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+                locationAsync.when(
+                  data: (locationModel) {
+                    final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
+                      address.value?.addresses,
+                    );
+                    if (restuatantLatLng == null) {
+                      return Text("Restaurant location is missing");
+                    }
+
+                    final distance = _calculateDistanceInMiles(
+                      locationModel.latLng,
+                      restuatantLatLng,
+                    );
+
+                    final deliveryFee = calculateDeliveryFee(
+                      distanceInMiles: distance,
+                      ordersInCampus: 20,
+                      ridersInCampus: 5,
+                    );
+
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              locale.total,
+                              style: TextStyle(
+                                color: Color(0xff424242),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 12),
+                                child: Text(
+                                  "\$${(total + deliveryFee).toStringAsFixed(2)}",
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                    color: Color(0xff424242),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                  ],
+                        const Divider(
+                          height: 48,
+                          color: AppColors.dividerColor,
+                        ),
+                        CheckPlaceOrderButtonWidget(
+                          total: total + deliveryFee,
+                          repository: _repository,
+                          orderType: "delivery",
+                          cartItems: cartItems,
+                          tip: tip,
+                          locale: locale,
+                        ),
+                      ],
+                    );
+                  },
+                  loading: () => CircularProgressIndicator(),
+                  error: (err, stack) => SizedBox(),
                 ),
               ],
             ),
-          ),
-          const Divider(height: 48, color: AppColors.dividerColor),
-          CheckPlaceOrderButtonWidget(
-            total: total,
-            repository: _repository,
-            orderType: "delivery",
-            cartItems: cartItems,
-            tip: tip,
-            locale: locale,
           ),
         ],
       ),
@@ -479,6 +638,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final address = ref.watch(locationProvider);
+    final locationAsync = ref.watch(locationProvider);
     return Container(
       width: double.infinity,
       height: 48,
@@ -488,31 +648,58 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
           List<Map<String, dynamic>> orderItemsJson =
               cartItems.map((item) => item.toOrderItemJson()).toList();
 
-          final json = {
-            "payment_method": "cash",
-            "tip": tip,
-            "delivery_fee": 10,
-            "order_type": orderType,
-            "addresses": address.value?.addresses ?? "",
-            "items": orderItemsJson,
-          };
-
-          log("CHECKOUT JSON $json");
           // repository.placeOrderMethod(json, context);
           // context.pushRoute(const CheckoutAddressRoute());
 
-          await repository.makePayment(
-            context: context,
-            purchaseName: "Ali",
-            title: "Garden Service",
-            amountPaid: total.toDouble(),
-            merchantDisplayName: "Default Merchant",
-            onSuccess: (transactionId) async {
-              log("Payment Successful with Transaction ID: $transactionId");
-              repository.placeOrderMethod(json, context);
-              cartItems.clear();
-            },
+          final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
+            address.value?.addresses,
           );
+          locationAsync.whenData((locationModel) async {
+            if (restuatantLatLng != null) {
+              final distance = _calculateDistanceInMiles(
+                locationModel.latLng,
+                restuatantLatLng,
+              );
+
+              final double deliveryFee = calculateDeliveryFee(
+                distanceInMiles: distance,
+                ordersInCampus: 20,
+                ridersInCampus: 5,
+              );
+              log(
+                "...............................................................",
+              );
+              log("DISTANCE IN MILES $distance");
+              log('Total Delivery Fee: \$$deliveryFee');
+              log(
+                "...............................................................",
+              );
+
+              final json = {
+                "payment_method": "card",
+                "tip": tip,
+                "delivery_fee": deliveryFee,
+                "order_type": orderType,
+                "addresses": address.value?.addresses ?? "",
+                "items": orderItemsJson,
+              };
+              log("CHECKOUT JSON $json");
+              await repository.makePayment(
+                context: context,
+                purchaseName: "Ali",
+                title: "Garden Service",
+                amountPaid: total.toDouble(),
+                merchantDisplayName: "Default Merchant",
+                onSuccess: (transactionId) async {
+                  log("Payment Successful with Transaction ID: $transactionId");
+                  repository.placeOrderMethod(json, context);
+                  cartItems.clear();
+                },
+              );
+            } else {
+              log("Customer location is not available.");
+            }
+          });
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
@@ -527,6 +714,46 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  double calculateDeliveryFee({
+    required double distanceInMiles,
+    required int ordersInCampus,
+    required int ridersInCampus,
+  }) {
+    const double baseFee = 0.50;
+    const double perMileFee = 0.70;
+
+    double demandMultiplier =
+        ridersInCampus > 0 ? ordersInCampus / ridersInCampus : 1;
+
+    double milesBeyondFirst = (distanceInMiles > 1) ? (distanceInMiles - 1) : 0;
+
+    double totalFee =
+        baseFee + (perMileFee * milesBeyondFirst * demandMultiplier);
+
+    return double.parse(totalFee.toStringAsFixed(2));
+  }
+
+  double _calculateDistanceInMiles(LatLng from, LatLng to) {
+    double distanceInMeters = Geolocator.distanceBetween(
+      from.latitude,
+      from.longitude,
+      to.latitude,
+      to.longitude,
+    );
+
+    return distanceInMeters / 1609.34;
+  }
+
+  LatLng? getLatLngFromOrderAddress(OrderAddress? orderAddress) {
+    final coords = orderAddress?.coordinates?.coordinates;
+    if (coords != null && coords.length == 2) {
+      final double lat = coords[1]; // latitude
+      final double lng = coords[0]; // longitude
+      return LatLng(lat, lng);
+    }
+    return null;
   }
 }
 
