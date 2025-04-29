@@ -388,7 +388,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
                               RiderDelvieryRepo repo = RiderDelvieryRepo();
                               repo.orderAcceptedByRider(order.id, {
-                                "status": "accepted_by_rider",
+                                "orderId": order.id,
+                                "estimated_time": "25 minutes",
                               });
                               _orderCycleTimer?.cancel();
                               Navigator.pop(context);

@@ -13,7 +13,7 @@ class RiderDelvieryRepo {
   ) async {
     try {
       final response = await services.patchAPI(
-        url: '/admin/order/$orderId',
+        url: '/rider/acceptOrder',
         map: body,
       );
       if (response.statusCode == 200) {
