@@ -271,13 +271,20 @@ class ItemId {
   String? name;
   int? price;
   List<Sizes>? sizes;
+  List<Customization>? customization;
 
-  ItemId({this.sId, this.name, this.price, this.sizes});
+  ItemId({this.sId, this.name, this.price, this.sizes, this.customization});
 
   ItemId.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     price = json['price'];
+    if (json['customization'] != null) {
+      customization = <Customization>[];
+      json['customization'].forEach((v) {
+        customization!.add(new Customization.fromJson(v));
+      });
+    }
     if (json['sizes'] != null) {
       sizes = <Sizes>[];
       json['sizes'].forEach((v) {
@@ -291,6 +298,10 @@ class ItemId {
     data['_id'] = this.sId;
     data['name'] = this.name;
     data['price'] = this.price;
+    if (this.customization != null) {
+      data['customization'] =
+          this.customization!.map((v) => v.toJson()).toList();
+    }
     if (this.sizes != null) {
       data['sizes'] = this.sizes!.map((v) => v.toJson()).toList();
     }
@@ -306,6 +317,28 @@ class Sizes {
   Sizes({this.name, this.price, this.sId});
 
   Sizes.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    price = json['price'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['price'] = this.price;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class Customization {
+  String? name;
+  int? price;
+  String? sId;
+
+  Customization({this.name, this.price, this.sId});
+
+  Customization.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     price = json['price'];
     sId = json['_id'];
