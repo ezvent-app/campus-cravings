@@ -36,7 +36,6 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _getCurrentLocation();
       final socketController = ref.read(socketControllerProvider);
       if (ref.read(socketStateProvider).status != SocketStatus.connected) {
         final token = StorageHelper().getAccessToken();
@@ -46,16 +45,22 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
       socketController.listenForStatusUpdates((Map<String, dynamic> data) {});
       socketController.emitJoinOrder(widget.id!);
     });
-    Future.delayed(Duration(seconds: 2), () {
+    _getCurrentLocation().then((_) {
       _setupMarkersAndPolyline();
     });
   }
 
   Future<void> _setupMarkersAndPolyline() async {
+    // Wait until _customerLocation is set
+    while (_customerLocation == null) {
+      await Future.delayed(Duration(milliseconds: 100));
+    }
+
     final bitmap = await CustomMapMarkerBuilder.fromWidget(
       context: context,
       marker: CustomMarkerWidget(),
     );
+
     setState(() {
       _markers = {
         Marker(
@@ -64,24 +69,13 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
           position: _ryderLocation,
           icon: bitmap,
         ),
-        // Marker(
-        //   markerId: const MarkerId('ryder'),
-        //   position: _ryderLocation,
-        //   infoWindow: const InfoWindow(title: 'Ryder Location'),
-        //   icon:
-        //       _ryderIcon ??
-        //       BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-        // ),
       };
 
       _polylines = {
         Polyline(
           polylineId: const PolylineId('line_between'),
           visible: true,
-          points: [
-            _ryderLocation,
-            LatLng(_customerLocation!.latitude, _customerLocation!.longitude),
-          ],
+          points: [_ryderLocation, _customerLocation!],
           color: AppColors.accent,
           width: 5,
         ),
