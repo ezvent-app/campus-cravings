@@ -128,6 +128,11 @@ class TicketNotifier extends StateNotifier<List<Ticket>> {
     }
   }
 
+  void addTicket(Map<String, dynamic> ticketData) {
+    final ticket = Ticket.fromJson(ticketData);
+    state = [...state, ticket];
+  }
+
   void addMessage(String ticketId, TicketMessage message) {
     state = [
       for (final ticket in state)
