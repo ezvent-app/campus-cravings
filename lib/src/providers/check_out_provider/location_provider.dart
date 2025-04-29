@@ -69,7 +69,7 @@ class LocationNotifier extends AsyncNotifier<LocationModel> {
         latLng.longitude,
       );
       final place = placemarks.first;
-      return "${place.street}, ${place.locality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}";
+      return "${place.street}, ${place.subAdministrativeArea}, ${place.country}";
     } catch (e) {
       return null;
     }
