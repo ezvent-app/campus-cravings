@@ -16,6 +16,16 @@ class DeliveringPage extends ConsumerStatefulWidget {
 
 class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   int step = 0;
+  final statuses = [
+    "pending",
+    "order_accepted",
+    "order_prepared",
+    "accepted_by_rider",
+    "order_dispatched",
+    "delivered",
+    "cancelled",
+    "completed",
+  ];
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -31,35 +41,80 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
 
+  // Add a flag to track if the component is mounted
+  bool _isMounted = true;
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final socketController = ref.read(socketControllerProvider);
-      if (ref.read(socketStateProvider).status != SocketStatus.connected) {
-        final token = StorageHelper().getAccessToken();
-        if (token == null) return;
-        socketController.connect(token);
-      }
-      socketController.listenForStatusUpdates((Map<String, dynamic> data) {});
-      socketController.emitJoinOrder(widget.id!);
+      _setupSocket();
     });
+
     _getCurrentLocation().then((_) {
-      _setupMarkersAndPolyline();
+      if (_isMounted) {
+        _setupMarkersAndPolyline();
+      }
     });
   }
+
+  // New method to setup socket properly
+  void _setupSocket() async {
+    if (!_isMounted) return;
+
+    final socketController = ref.read(socketControllerProvider);
+
+    // First, ensure socket is connected before setting up listeners
+    if (ref.read(socketStateProvider).status != SocketStatus.connected) {
+      final token = StorageHelper().getAccessToken();
+      if (token == null) return;
+      socketController.connect(token);
+    }
+
+    // Only after connection is established, set up listeners
+    if (_isMounted) {
+      socketController.listenForStatusUpdates((Map<String, dynamic> data) {
+        print(data['status']);
+        if (_isMounted) {
+          ref.read(deliveringProvider.notifier).state = {
+            'status': data['status'],
+          };
+        }
+      });
+
+      // Join order room only after connection is established
+      if (widget.id != null) {
+        socketController.emitJoinOrder(widget.id!);
+      }
+    }
+  }
+
+  // @override
+  // void dispose() {
+  //   // Mark as unmounted before disposing
+  //   _isMounted = false;
+
+  //   // Clean up socket listeners when disposing the widget
+  //   final socketController = ref.read(socketControllerProvider);
+  //   socketController.removeStatusUpdateListeners();
+
+  //   super.dispose();
+  // }
 
   Future<void> _setupMarkersAndPolyline() async {
     // Wait until _customerLocation is set
     while (_customerLocation == null) {
       await Future.delayed(Duration(milliseconds: 100));
+      if (!_isMounted) return; // Exit if widget is disposed during wait
     }
 
     final bitmap = await CustomMapMarkerBuilder.fromWidget(
       context: context,
       marker: CustomMarkerWidget(),
     );
+
+    if (!_isMounted) return; // Check if widget is still mounted
 
     setState(() {
       _markers = {
@@ -105,11 +160,17 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     }
 
     Position position = await Geolocator.getCurrentPosition();
+
+    if (!_isMounted) return; // Check if widget is still mounted
+
     setState(() {
       _customerLocation = LatLng(position.latitude, position.longitude);
     });
 
     final GoogleMapController controller = await _controller.future;
+
+    if (!_isMounted) return; // Check if widget is still mounted
+
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(target: _customerLocation!, zoom: 12),
@@ -153,22 +214,30 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: List.generate(5, (index) {
-                        return Expanded(
-                          child: Container(
-                            height: 4,
-                            margin: EdgeInsets.only(
-                              right: index == 4 ? 0 : 9,
-                              top: 12,
-                              bottom: 12,
-                            ),
-                            color: Color(
-                              index <= step ? 0xff0F984A : 0xffE5E1E5,
-                            ),
-                          ),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final status = ref.watch(deliveringProvider)['status'];
+                        print("Statusing: $status");
+                        return Row(
+                          children: List.generate(5, (index) {
+                            return Expanded(
+                              child: Container(
+                                height: 4,
+                                margin: EdgeInsets.only(
+                                  right: index == 4 ? 0 : 9,
+                                  top: 12,
+                                  bottom: 12,
+                                ),
+                                color: Color(
+                                  index <= statuses.indexOf(status ?? '')
+                                      ? 0xff0F984A
+                                      : 0xffE5E1E5,
+                                ),
+                              ),
+                            );
+                          }),
                         );
-                      }),
+                      },
                     ),
                   ],
                 ),
@@ -232,5 +301,18 @@ class CustomMarkerWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+final deliveringProvider = StateProvider<Map<String, dynamic>>(
+  (ref) => {'status': ''},
+);
+
+// Extension to the socket controller for cleanup
+extension SocketControllerExtension on dynamic {
+  void removeStatusUpdateListeners() {
+    // Implement the logic to remove listeners
+    // This is a placeholder - you'll need to implement this method
+    // in your actual socketController class
   }
 }

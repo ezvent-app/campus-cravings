@@ -56,6 +56,7 @@ class SocketController {
     void Function(Map<String, dynamic> data) onLocationUpdate,
   ) {
     _socketService.on(SocketEvents.orderStatusUpdated, (data) {
+      print('Received orderStatusUpdated event: $data');
       onLocationUpdate(data);
     });
   }
