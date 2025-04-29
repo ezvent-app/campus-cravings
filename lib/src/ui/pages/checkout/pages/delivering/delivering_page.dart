@@ -1,20 +1,21 @@
 import 'dart:async';
 
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:custom_marker_builder/custom_marker_builder.dart';
 import 'package:geolocator/geolocator.dart';
 
 @RoutePage()
-class DeliveringPage extends StatefulWidget {
+class DeliveringPage extends ConsumerStatefulWidget {
   final String? id;
   const DeliveringPage({super.key, this.id});
 
   @override
-  State<DeliveringPage> createState() => _DeliveringPageState();
+  ConsumerState<DeliveringPage> createState() => _DeliveringPageState();
 }
 
-class _DeliveringPageState extends State<DeliveringPage> {
-  int step = 1;
+class _DeliveringPageState extends ConsumerState<DeliveringPage> {
+  int step = 0;
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -33,8 +34,18 @@ class _DeliveringPageState extends State<DeliveringPage> {
   @override
   void initState() {
     super.initState();
-    print("Widget ID: ${widget.id}");
-    _getCurrentLocation();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getCurrentLocation();
+      final socketController = ref.read(socketControllerProvider);
+      if (ref.read(socketStateProvider).status != SocketStatus.connected) {
+        final token = StorageHelper().getAccessToken();
+        if (token == null) return;
+        socketController.connect(token);
+      }
+      socketController.listenForStatusUpdates((LatLng location) {});
+      socketController.emitJoinOrder(widget.id!);
+    });
     Future.delayed(Duration(seconds: 2), () {
       _setupMarkersAndPolyline();
     });

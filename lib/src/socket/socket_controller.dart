@@ -51,4 +51,24 @@ class SocketController {
     //   print('Received someEvent: $data');
     // });
   }
+
+  void listenForStatusUpdates(
+    void Function(Map<String, dynamic> data) onLocationUpdate,
+  ) {
+    _socketService.on(SocketEvents.orderStatusUpdated, (data) {
+      onLocationUpdate(data);
+    });
+  }
+
+  void stopListeningForRiderLocation() {
+    // _socketService.off(SocketEvents.locationUpdate);
+    // print('Stopped listening for locationUpdate');
+  }
+
+  void emitJoinOrder(String orderId) {
+    print('Emitting joinOrder event with orderId: $orderId');
+    _socketService.emitWithAck(SocketEvents.joinOrderRoom, {
+      'orderId': orderId,
+    });
+  }
 }

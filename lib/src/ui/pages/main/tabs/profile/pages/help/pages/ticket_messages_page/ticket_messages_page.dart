@@ -10,9 +10,11 @@ import 'package:intl/intl.dart';
 class TicketMessagesPage extends ConsumerStatefulWidget {
   final String ticketId;
   final Function? onDelete;
+  final Function(String ticketId, TicketMessage) onAdd;
   final List<TicketMessage> messages;
 
   const TicketMessagesPage({
+    required this.onAdd,
     super.key,
     required this.ticketId,
     this.onDelete,
@@ -37,7 +39,6 @@ class _TicketMessagesPageState extends ConsumerState<TicketMessagesPage> {
     final locale = AppLocalizations.of(context)!;
     final notifier = ref.read(ticketMessagesProvider(widget.ticketId).notifier);
     final state = ref.watch(ticketMessagesProvider(widget.ticketId));
-    print("Messages: ${widget.messages.length}");
 
     return Scaffold(
       appBar: AppBar(
@@ -263,9 +264,7 @@ class TicketMessagesNotifier extends StateNotifier<TicketMessagesState> {
       state = state.copyWith(image: null);
     } catch (e) {
       debugPrint('Error sending image: $e');
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Failed to send image')));
+      showToast(context: context, 'Failed to send image');
     } finally {
       state = state.copyWith(isLoading: false);
     }
@@ -283,9 +282,7 @@ class TicketMessagesNotifier extends StateNotifier<TicketMessagesState> {
       state = state.copyWith(message: '', image: null);
     } catch (e) {
       debugPrint('Error sending message: $e');
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Failed to send message')));
+      showToast(context: context, 'Failed to send message');
     } finally {
       state = state.copyWith(isLoading: false);
     }

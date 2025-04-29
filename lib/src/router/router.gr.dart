@@ -1339,6 +1339,7 @@ class StudentProfileDetailsRoute extends _i44.PageRouteInfo<void> {
 /// [_i43.TicketMessagesPage]
 class TicketMessagesRoute extends _i44.PageRouteInfo<TicketMessagesRouteArgs> {
   TicketMessagesRoute({
+    required dynamic Function(String, _i45.TicketMessage) onAdd,
     _i45.Key? key,
     required String ticketId,
     Function? onDelete,
@@ -1347,6 +1348,7 @@ class TicketMessagesRoute extends _i44.PageRouteInfo<TicketMessagesRouteArgs> {
   }) : super(
          TicketMessagesRoute.name,
          args: TicketMessagesRouteArgs(
+           onAdd: onAdd,
            key: key,
            ticketId: ticketId,
            onDelete: onDelete,
@@ -1362,6 +1364,7 @@ class TicketMessagesRoute extends _i44.PageRouteInfo<TicketMessagesRouteArgs> {
     builder: (data) {
       final args = data.argsAs<TicketMessagesRouteArgs>();
       return _i43.TicketMessagesPage(
+        onAdd: args.onAdd,
         key: args.key,
         ticketId: args.ticketId,
         onDelete: args.onDelete,
@@ -1373,11 +1376,14 @@ class TicketMessagesRoute extends _i44.PageRouteInfo<TicketMessagesRouteArgs> {
 
 class TicketMessagesRouteArgs {
   const TicketMessagesRouteArgs({
+    required this.onAdd,
     this.key,
     required this.ticketId,
     this.onDelete,
     required this.messages,
   });
+
+  final dynamic Function(String, _i45.TicketMessage) onAdd;
 
   final _i45.Key? key;
 
@@ -1389,6 +1395,6 @@ class TicketMessagesRouteArgs {
 
   @override
   String toString() {
-    return 'TicketMessagesRouteArgs{key: $key, ticketId: $ticketId, onDelete: $onDelete, messages: $messages}';
+    return 'TicketMessagesRouteArgs{onAdd: $onAdd, key: $key, ticketId: $ticketId, onDelete: $onDelete, messages: $messages}';
   }
 }

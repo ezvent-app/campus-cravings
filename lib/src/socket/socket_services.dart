@@ -35,6 +35,22 @@ class SocketService {
     _socket?.emit(event, data);
   }
 
+  void emitWithAck(String event, dynamic data) {
+    _socket?.emitWithAck(
+      event,
+      data,
+      ack: (response) {
+        // Handle the acknowledgment response
+        print("Acknowledgment received for event: $event");
+        if (response != null && response['success'] == true) {
+          print('Emit successful: ${response['message']}');
+        } else {
+          print('Emit failed: ${response['error'] ?? 'Unknown error'}');
+        }
+      },
+    );
+  }
+
   void on(String event, Function(dynamic) callback) {
     _socket?.on(event, callback);
   }

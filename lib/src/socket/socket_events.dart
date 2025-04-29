@@ -5,4 +5,6 @@ class SocketEvents {
   static const String eventOrderStatusUpdated = 'orderStatusUpdated';
   static const String eventDeliveryLocationUpdated = 'deliveryLocationUpdated';
   static const String eventNotification = 'notification';
+  static const String joinOrderRoom = 'join-order-room';
+  static const String orderStatusUpdated = 'order-status-updated';
 }
