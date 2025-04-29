@@ -47,44 +47,44 @@ class DeliveryOrder {
     // Call Google Distance Matrix API
     double distance = 1.2; // Default placeholder
     String deliveryTime = "Deliver by 2:38 PM"; // Default placeholder
-    // try {
-    //   const apiKey =
-    //       'AIzaSyCymvinSQuyFmmG-HrqlRiptGwrRSIp8aY'; // Replace with your Google API key
-    //   final url = Uri.parse(
-    //     'https://maps.googleapis.com/maps/api/distancematrix/json'
-    //     '?origins=$origin'
-    //     '&destinations=$destination'
-    //     '&units=imperial' // Use miles for distance
-    //     '&key=${apiKey}',
-    //   );
+    try {
+      const apiKey =
+          'AIzaSyCymvinSQuyFmmG-HrqlRiptGwrRSIp8aY'; // Replace with your Google API key
+      final url = Uri.parse(
+        'https://maps.googleapis.com/maps/api/distancematrix/json'
+        '?origins=$origin'
+        '&destinations=$destination'
+        '&units=imperial' // Use miles for distance
+        '&key=${apiKey}',
+      );
 
-    //   final response = await http.get(url);
-    //   if (response.statusCode == 200) {
-    //     final data = jsonDecode(response.body) as Map<String, dynamic>;
-    //     if (data['status'] == 'OK') {
-    //       final element = data['rows'][0]['elements'][0];
-    //       if (element['status'] == 'OK') {
-    //         // Extract distance in miles
-    //         distance =
-    //             (element['distance']['value'] /
-    //                 1609.34); // Convert meters to miles
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        if (data['status'] == 'OK') {
+          final element = data['rows'][0]['elements'][0];
+          if (element['status'] == 'OK') {
+            // Extract distance in miles
+            distance =
+                (element['distance']['value'] /
+                    1609.34); // Convert meters to miles
 
-    //         // Extract duration in seconds
-    //         final durationSeconds = element['duration']['value'] as int;
+            // Extract duration in seconds
+            final durationSeconds = element['duration']['value'] as int;
 
-    //         // Calculate delivery time (current time + duration)
-    //         final now = DateTime.now();
-    //         final deliveryDateTime = now.add(
-    //           Duration(seconds: durationSeconds),
-    //         );
-    //         deliveryTime = "Deliver by ${_formatTime(deliveryDateTime)}";
-    //       }
-    //     }
-    //   }
-    // } catch (e) {
-    //   print('Error calling Google Distance Matrix API: $e');
-    //   // Fallback to placeholders if the API call fails
-    // }
+            // Calculate delivery time (current time + duration)
+            final now = DateTime.now();
+            final deliveryDateTime = now.add(
+              Duration(seconds: durationSeconds),
+            );
+            deliveryTime = "Deliver by ${_formatTime(deliveryDateTime)}";
+          }
+        }
+      }
+    } catch (e) {
+      print('Error calling Google Distance Matrix API: $e');
+      // Fallback to placeholders if the API call fails
+    }
 
     // Use restaurant name as the pickup item
     String pickupItem = restaurantData['name'] as String;
