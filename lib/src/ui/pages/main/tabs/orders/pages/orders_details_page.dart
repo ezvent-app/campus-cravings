@@ -132,71 +132,65 @@ class OrdersDetailsPage extends StatelessWidget {
                                       ),
                                     ),
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0,
-                                          vertical: 8.0,
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start, // Align everything to start
-                                          children: [
-                                            // Customization heading
-                                            Text(
-                                              "Customization:",
-                                              style:
-                                                  Theme.of(
-                                                    context,
-                                                  ).textTheme.titleSmall,
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ), // Space between heading and items
-                                            // Customization items list
-                                            ...List.generate(
-                                              customzation!.length,
-                                              (index) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        vertical: 2.0,
-                                                      ),
-                                                  child: Text(
-                                                    customzation[index].name,
-                                                    style:
-                                                        Theme.of(
-                                                          context,
-                                                        ).textTheme.bodySmall,
-                                                  ),
-                                                );
-                                              },
-                                            ),
-
-                                            const SizedBox(
-                                              height: 12,
-                                            ), // Space before Size row
-                                            // Size row
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "Size: ",
-                                                  style:
-                                                      Theme.of(
-                                                        context,
-                                                      ).textTheme.titleSmall,
-                                                ),
-                                                Text(
-                                                  "${sizeNames![index]}",
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment
+                                                .start, // Align everything to start
+                                        children: [
+                                          // Customization heading
+                                          Text(
+                                            "Customization:",
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.titleSmall,
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ), // Space between heading and items
+                                          // Customization items list
+                                          ...List.generate(
+                                            customzation!.length,
+                                            (index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      vertical: 2.0,
+                                                    ),
+                                                child: Text(
+                                                  customzation[index].name,
                                                   style:
                                                       Theme.of(
                                                         context,
                                                       ).textTheme.bodySmall,
                                                 ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                              );
+                                            },
+                                          ),
+
+                                          const SizedBox(
+                                            height: 12,
+                                          ), // Space before Size row
+                                          // Size row
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Size: ",
+                                                style:
+                                                    Theme.of(
+                                                      context,
+                                                    ).textTheme.titleSmall,
+                                              ),
+                                              Text(
+                                                "${sizeNames![index]} ",
+                                                style:
+                                                    Theme.of(
+                                                      context,
+                                                    ).textTheme.bodySmall,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
