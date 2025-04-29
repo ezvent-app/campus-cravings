@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 @RoutePage()
