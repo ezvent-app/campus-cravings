@@ -181,7 +181,7 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                           icon: 'address',
                           label: locale.savedAddresses,
                           onPressed: () {
-                            context.pushRoute(const SavedAddressesRoute());
+                            context.pushRoute(SavedAddressesRoute());
                           },
                         ),
                       ],
@@ -199,7 +199,7 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                           icon: 'lock',
                           label: locale.changePassword,
                           onPressed: () {
-                            context.pushRoute(const ChangePasswordRoute());
+                            context.pushRoute(ChangePasswordRoute());
                           },
                         ),
                         ProfileOption(

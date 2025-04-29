@@ -5,3 +5,4 @@ export 'delivery_profile_model.dart';
 export 'faq_model.dart';
 export 'product/product.dart';
 export 'sort_by_model.dart';
+export 'ticket_model.dart';

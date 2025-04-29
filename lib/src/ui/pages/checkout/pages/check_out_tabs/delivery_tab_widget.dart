@@ -269,7 +269,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          '\$2',
+                          '\$10',
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -498,22 +498,21 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
           };
 
           log("CHECKOUT JSON $json");
-          repository.placeOrderMethod(json, context);
+          // repository.placeOrderMethod(json, context);
           // context.pushRoute(const CheckoutAddressRoute());
 
-          // await _repository.makePayment(
-          //   context: context,
-          //   purchaseName: "",
-          //   title: "Garden Service",
-          //   amountPaid: 500,
-          //   merchantDisplayName: "Default Merchant",
-          //   onSuccess: (transactionId) async {
-          //     print(
-          //       "Payment Successful with Transaction ID: $transactionId",
-          //     );
-          //     //  _repository.placeOrderMethod(json, context);
-          //   },
-          // );
+          await repository.makePayment(
+            context: context,
+            purchaseName: "Ali",
+            title: "Garden Service",
+            amountPaid: total.toDouble(),
+            merchantDisplayName: "Default Merchant",
+            onSuccess: (transactionId) async {
+              log("Payment Successful with Transaction ID: $transactionId");
+              repository.placeOrderMethod(json, context);
+              cartItems.clear();
+            },
+          );
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(

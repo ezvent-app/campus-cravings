@@ -47,6 +47,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
             children: [
               Expanded(
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     children: [
                       Stack(
@@ -60,6 +61,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               width: double.infinity,
                               height: 350,
                               child: PageView.builder(
+                                physics: BouncingScrollPhysics(),
                                 controller: _pageController,
                                 itemCount:
                                     controller
@@ -331,7 +333,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 25,
+                  horizontal: 20,
                   vertical: 16,
                 ),
                 decoration: const BoxDecoration(
@@ -351,7 +353,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           ),
                         ),
                         Text(
-                          '\$ ${controller.getTotalPrice().toStringAsFixed(2)}',
+                          '\$ ${controller.totalPrice.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 15,
@@ -362,9 +364,17 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     ),
                     const Spacer(),
                     SizedBox(
-                      height: 49,
+                      height: 50,
                       child: ElevatedButton.icon(
                         onPressed: () {
+                          if (cartItemsNotifier.selectedSizeId.isEmpty) {
+                            showToast(
+                              'Please select a size first',
+                              context: context,
+                            );
+                            return;
+                          }
+
                           ref
                               .read(cartItemsProvider.notifier)
                               .addItem(
@@ -385,14 +395,11 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   name:
                                       controller.productItemDetailModel?.name ??
                                       '',
-                                  price: double.parse(
-                                    controller.getTotalPrice().toStringAsFixed(
-                                      2,
-                                    ),
-                                  ),
+                                  price: controller.totalPrice,
                                   quantity: controller.productQuantity,
                                 ),
                               );
+                          showToast("Added to cart", context: context);
                         },
                         label: Text(locale.addToCart),
                         icon: SvgAssets("shopping-cart", width: 16, height: 16),
@@ -401,7 +408,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.background, // Splash color
+                          foregroundColor: AppColors.background,
                         ),
                       ),
                     ),

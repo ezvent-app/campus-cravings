@@ -1,6 +1,7 @@
 import 'package:campuscravings/src/di/dependency_injection.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+
 import 'src/constants/storageHelper.dart';
 
 late List<CameraDescription> cameras;
@@ -12,7 +13,7 @@ Future<void> main() async {
   cameras = await availableCameras();
   DependencyInjection.initialize();
   Stripe.publishableKey =
-      'pk_test_51MdYYoEO9c8tps039Vk4RHPQJxRx7i1OFLp0YRE49sZd0t3DrZOLtjysGYWOsMqHwUDhTzAhk1KLmyRhTiObHoqp00TM2S7rZ8';
+      'pk_test_51QrMKeKniJk5EBZPSfsTDIs4KX8BM5zOCVqH0qijocvmzk0C2N5UTZvRevsdnryUVAkGY0dZULjvZ7TCApAAy26R00AJ2DVGXS';
   runApp(App());
 }
 

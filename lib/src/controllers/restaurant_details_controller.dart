@@ -3,10 +3,10 @@ import 'package:campuscravings/src/repository/home_repository/restaurant_reposit
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+
 import '../models/restaurant_details_model.dart';
 
-class RestaurantDetailsController extends GetxController{
-
+class RestaurantDetailsController extends GetxController {
   final RestaurantRepository _restaurantRepository;
   RestaurantDetailsController(this._restaurantRepository);
   bool _isLoading = false;
@@ -16,33 +16,49 @@ class RestaurantDetailsController extends GetxController{
   RestaurantDetailsModel? get restaurantDetails => _restaurantDetailsModel;
   String get restaurantId => _restaurantId;
 
-
-  void setRestaurantId(String restaurantId){
+  void setRestaurantId(String restaurantId) {
     _restaurantId = restaurantId;
   }
-  Future<void> getRestaurantDetails() async{
-    try{
+
+  Future<void> getRestaurantDetails() async {
+    try {
       _isLoading = true;
       update();
       Logger().w(_restaurantId);
-      _restaurantDetailsModel = await _restaurantRepository.getRestaurantAllCategories(restaurantId: _restaurantId);
+      _restaurantDetailsModel = await _restaurantRepository
+          .getRestaurantAllCategories(restaurantId: _restaurantId);
       _isLoading = false;
       update();
       return;
-    }catch(e){
+    } catch (e) {
       _isLoading = false;
       update();
       return;
     }
   }
+
   double getDistanceInMiles() {
     final location = Get.find<LocationController>().locationData;
-    if(location == null || _restaurantDetailsModel == null) return 0.0;
-    return (Geolocator.distanceBetween(24.5113,67.6221, _restaurantDetailsModel!.restaurant.addresses.coordinates.coordinates[1], _restaurantDetailsModel!.restaurant.addresses.coordinates.coordinates[0])) / 1609.344;
+    if (location == null || _restaurantDetailsModel == null) return 0.0;
+    return (Geolocator.distanceBetween(
+          24.5113,
+          67.6221,
+          _restaurantDetailsModel!
+              .restaurant
+              .addresses
+              .coordinates
+              .coordinates[1],
+          _restaurantDetailsModel!
+              .restaurant
+              .addresses
+              .coordinates
+              .coordinates[0],
+        )) /
+        1609.344;
   }
 
   int getCategoriesLength() {
-    if(_restaurantDetailsModel == null) return 0;
+    if (_restaurantDetailsModel == null) return 0;
     return _restaurantDetailsModel!.categories.length;
   }
 
@@ -63,23 +79,77 @@ class RestaurantDetailsController extends GetxController{
     }
     return _restaurantDetailsModel!.restaurant.openingHours.sunday;
   }
+
   bool isRestaurantOpen() {
     final restaurantTime = getRestaurantTimingForToday();
+
+    // If the restaurant is closed
     if (restaurantTime == 'closed') return false;
+
     final parts = restaurantTime.split('-');
     if (parts.length != 2) return false;
 
     final now = DateTime.now();
-    final openParts = parts[0].split(':');
-    final closeParts = parts[1].split(':');
 
-    final openTime = DateTime(now.year, now.month, now.day,
-        int.parse(openParts[0]), int.parse(openParts[1]));
+    // Split the opening and closing time
+    final openTime = _convertTo24HourTime(
+      parts[0].trim(),
+    ); // Pass full time with period
+    final closeTime = _convertTo24HourTime(
+      parts[1].trim(),
+    ); // Pass full time with period
 
-    final closeTime = DateTime(now.year, now.month, now.day,
-        int.parse(closeParts[0]), int.parse(closeParts[1]));
+    // Parse open and close times into DateTime objects
+    final openDateTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      openTime.hour,
+      openTime.minute,
+    );
+    final closeDateTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      closeTime.hour,
+      closeTime.minute,
+    );
 
-    return now.isAfter(openTime) && now.isBefore(closeTime);
+    // Check if current time is between open and close time
+    return now.isAfter(openDateTime) && now.isBefore(closeDateTime);
   }
 
+  // Helper function to convert time from 12-hour (AM/PM) format to 24-hour format
+  DateTime _convertTo24HourTime(String timeWithPeriod) {
+    // Split the time by space to separate the time and period (AM/PM)
+    final timeParts = timeWithPeriod.split(' ');
+
+    if (timeParts.length != 2) {
+      throw FormatException("Invalid time format: $timeWithPeriod");
+    }
+
+    final time = timeParts[0]; // Hour:Minute
+    final period = timeParts[1].toUpperCase(); // AM/PM
+
+    final timeSplit = time.split(':');
+
+    if (timeSplit.length != 2) {
+      throw FormatException("Invalid time format: $time");
+    }
+
+    final hour = int.parse(timeSplit[0].trim());
+    final minute = int.parse(timeSplit[1].trim());
+
+    int h = hour;
+    int m = minute;
+
+    // Convert to 24-hour time
+    if (period == 'AM' && h == 12) {
+      h = 0; // Convert 12 AM to 00:00
+    } else if (period == 'PM' && h != 12) {
+      h += 12; // Convert PM hours to 24-hour format
+    }
+
+    return DateTime(0, 0, 0, h, m);
+  }
 }
