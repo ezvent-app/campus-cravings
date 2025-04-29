@@ -1,4 +1,9 @@
+import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+
+import '../controllers/resturant_controller.dart';
 
 class SortByModel {
   final String title;
@@ -10,44 +15,43 @@ class SortByModel {
 List<SortByModel> sortByList = [
   SortByModel(title: 'Relevance (default)', index: 0),
   SortByModel(title: 'Fast Delivery', index: 1),
-  SortByModel(title: 'Distance', index: 2),
 ];
 
 void showSortBottomSheet(BuildContext context) {
+  final controller = Get.find<FoodAndRestaurantSearchController>();
+
   showModalBottomSheet(
     context: context,
-    isScrollControlled: true, // Allows custom height
+    isScrollControlled: true,
     builder: (context) {
-      int selectedIndex = 0; // Default selection inside bottom sheet
-
-      return StatefulBuilder(
-        builder: (context, setState) {
+      return GetBuilder<FoodAndRestaurantSearchController>(
+        builder: (controller) {
           return SizedBox(
-            height: 300,
+            height: 200,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 height(20),
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Text(
                     "Sort by",
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
                 SizedBox(
-                  height: 200,
+                  height: 100,
                   child: ListView.builder(
                     itemCount: sortByList.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       final sort = sortByList[index];
-                      bool isSelected = selectedIndex == sort.index;
+                      final isSelected = controller.selectedIndex == sort.index;
+
                       return InkWellButtonWidget(
                         onTap: () {
-                          setState(() {
-                            selectedIndex = sort.index;
-                          });
+                          controller.setSelectedIndex(index: sort.index);
+                          controller.setSortByFastDelivery(value: sort.title == "Fast Delivery");
                         },
                         child: ListTile(
                           splashColor: Colors.transparent,
@@ -67,15 +71,15 @@ void showSortBottomSheet(BuildContext context) {
                             ),
                             child: isSelected
                                 ? Center(
-                                    child: Container(
-                                      width: 5,
-                                      height: 5,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  )
+                              child: Container(
+                                width: 5,
+                                height: 5,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            )
                                 : const SizedBox(),
                           ),
                         ),
@@ -91,3 +95,4 @@ void showSortBottomSheet(BuildContext context) {
     },
   );
 }
+
