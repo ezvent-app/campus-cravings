@@ -61,9 +61,9 @@ class SocketController {
     });
   }
 
-  void stopListeningForRiderLocation() {
-    // _socketService.off(SocketEvents.locationUpdate);
-    // print('Stopped listening for locationUpdate');
+  void stopListeningForStatusUpdates() {
+    _socketService.off(SocketEvents.orderStatusUpdated);
+    print('Stopped listening for locationUpdate');
   }
 
   void emitJoinOrder(String orderId) {

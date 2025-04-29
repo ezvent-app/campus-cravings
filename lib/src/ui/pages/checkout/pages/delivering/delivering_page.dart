@@ -66,6 +66,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     final socketController = ref.read(socketControllerProvider);
 
     // First, ensure socket is connected before setting up listeners
+    print("Socket status: ${ref.read(socketStateProvider).status}");
     if (ref.read(socketStateProvider).status != SocketStatus.connected) {
       final token = StorageHelper().getAccessToken();
       if (token == null) return;
@@ -90,17 +91,17 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     }
   }
 
-  // @override
-  // void dispose() {
-  //   // Mark as unmounted before disposing
-  //   _isMounted = false;
+  @override
+  void dispose() {
+    // Mark as unmounted before disposing
+    _isMounted = false;
 
-  //   // Clean up socket listeners when disposing the widget
-  //   final socketController = ref.read(socketControllerProvider);
-  //   socketController.removeStatusUpdateListeners();
+    // Clean up socket listeners when disposing the widget
+    final socketController = ref.read(socketControllerProvider);
+    socketController.stopListeningForStatusUpdates();
 
-  //   super.dispose();
-  // }
+    super.dispose();
+  }
 
   Future<void> _setupMarkersAndPolyline() async {
     // Wait until _customerLocation is set
@@ -307,12 +308,3 @@ class CustomMarkerWidget extends StatelessWidget {
 final deliveringProvider = StateProvider<Map<String, dynamic>>(
   (ref) => {'status': ''},
 );
-
-// Extension to the socket controller for cleanup
-extension SocketControllerExtension on dynamic {
-  void removeStatusUpdateListeners() {
-    // Implement the logic to remove listeners
-    // This is a placeholder - you'll need to implement this method
-    // in your actual socketController class
-  }
-}
