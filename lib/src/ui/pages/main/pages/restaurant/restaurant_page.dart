@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
-import 'package:campuscravings/src/controllers/resturant_controller.dart';
 import 'package:campuscravings/src/src.dart';
-import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -15,127 +13,141 @@ class RestaurantPage extends ConsumerWidget {
     Get.find<RestaurantDetailsController>().getRestaurantDetails();
     final locale = AppLocalizations.of(context)!;
     final isIOS = Platform.isIOS;
+    final cartItems = ref.watch(cartItemsProvider);
     return Scaffold(
       body: GetBuilder<RestaurantDetailsController>(
-          builder: (controller){
-            if(controller.isLoading) {
-              return _buildRestaurantDetailsShimmer(context);
-            } else if(controller.isLoading == false && controller.restaurantDetails == null) {
-              return const Center(
-                child: Text('Restaurant Details Not Found'),
-              );
-            }
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 30),
-                  width: double.infinity,
-                  height: 350,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider("${controller.restaurantDetails!.restaurant.restaurantImages.isEmpty ? '' : controller.restaurantDetails!.restaurant.restaurantImages[0]}"),
-                      fit: BoxFit.contain,
+        builder: (controller) {
+          if (controller.isLoading) {
+            return _buildRestaurantDetailsShimmer(context);
+          } else if (controller.isLoading == false &&
+              controller.restaurantDetails == null) {
+            return const Center(child: Text('Restaurant Details Not Found'));
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 30),
+                width: double.infinity,
+                height: 350,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      controller
+                              .restaurantDetails!
+                              .restaurant
+                              .restaurantImages
+                              .isEmpty
+                          ? ''
+                          : controller
+                              .restaurantDetails!
+                              .restaurant
+                              .restaurantImages[0],
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 20, top: 60),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: Icon(isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-                              color: AppColors.dividerColor),
-                        ),
-                        InkWellButtonWidget(
-                          onTap: () => context.pushRoute(CartTabRoute()),
-                          child: CartCounterWidget(
-                            count: 2,
-                            color: AppColors.dividerColor,
-                          ),
-                        ),
-                      ],
-                    ),
+                    fit: BoxFit.contain,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 20, top: 60),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "${controller.restaurantDetails!.restaurant.brandName}",
-                        style: Theme.of(context).textTheme.titleMedium,
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(
+                          isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+                          color: AppColors.dividerColor,
+                        ),
                       ),
-                      const Divider(color: AppColors.dividerColor, height: 32),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (kMockFeatured.distance != null)
-                            const Padding(
-                              padding: EdgeInsets.only(right: 10, top: 3),
-                              child: SvgAssets('redLoc', width: 24, height: 24),
-                            ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (kMockFeatured.distance != null)
-                                Text(
-                                  '${controller.getDistanceInMiles().toStringAsFixed(2)} ${kMockFeatured.distance == 1 ? locale.mile : locale.miles} ${locale.away}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium!
-                                      .copyWith(fontWeight: FontWeight.w500),
-                                ),
-                              height(3),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    controller.isRestaurantOpen() ? locale.deliveryAvailable : "Delivery Not Available",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.lightText,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                    ),
-                                    width: 2,
-                                    height: 20,
-                                    color: AppColors.lightText,
-                                  ),
-                                  const SvgAssets('bike', width: 24, height: 24),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    '\$${kMockFeatured.price.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.lightText,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                      InkWellButtonWidget(
+                        onTap: () => context.pushRoute(CartTabRoute()),
+                        child: CartCounterWidget(
+                          count: cartItems.length,
+                          color: AppColors.dividerColor,
+                        ),
                       ),
-                      const Divider(color: AppColors.dividerColor, height: 32),
                     ],
                   ),
                 ),
-                const CategoryTabs(products: mockProducts),
-              ],
-            );
-          }
-      )
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      controller.restaurantDetails!.restaurant.brandName,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const Divider(color: AppColors.dividerColor, height: 32),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (kMockFeatured.distance != null)
+                          const Padding(
+                            padding: EdgeInsets.only(right: 10, top: 3),
+                            child: SvgAssets('redLoc', width: 24, height: 24),
+                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (kMockFeatured.distance != null)
+                              Text(
+                                '${controller.getDistanceInMiles().toStringAsFixed(2)} ${kMockFeatured.distance == 1 ? locale.mile : locale.miles} ${locale.away}',
+                                style: Theme.of(context).textTheme.titleMedium!
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
+                            height(3),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  controller.isRestaurantOpen()
+                                      ? locale.deliveryAvailable
+                                      : "Delivery Not Available",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.lightText,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  width: 2,
+                                  height: 20,
+                                  color: AppColors.lightText,
+                                ),
+                                const SvgAssets('bike', width: 24, height: 24),
+                                const SizedBox(width: 10),
+                                Text(
+                                  '\$${kMockFeatured.price.toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.lightText,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const Divider(color: AppColors.dividerColor, height: 32),
+                  ],
+                ),
+              ),
+              const CategoryTabs(products: mockProducts),
+            ],
+          );
+        },
+      ),
     );
   }
+
   Widget _buildRestaurantDetailsShimmer(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -225,12 +237,8 @@ class RestaurantPage extends ConsumerWidget {
       child: Container(
         height: size,
         width: size,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
       ),
     );
   }
-
 }

@@ -6,7 +6,7 @@ class PlaceOrderRepository {
   final HttpAPIServices _services = HttpAPIServices();
 
   final String secretKey =
-      "sk_test_51MdYYoEO9c8tps038uOQo5cH2XwrYyJlSytOugOe8KJOTeXRZisfC4ahZOsZsGD4PcLWvoiEhjEqZNg5QNhxfgSI00nuydjjV2";
+      "sk_test_51QrMKeKniJk5EBZPPrhvq7ZnLj6TyDgrysoi49s7BSfVqEOktmM1RUP1hBgypnHywmKZj6JbHdozImaPwHsQcdRd00N7qNfnDY";
 
   Map<String, dynamic>? paymentIntent;
 
@@ -22,7 +22,7 @@ class PlaceOrderRepository {
       }
     } else {
       if (context.mounted) {
-        showToast(body['errors'].toString(), context: context);
+        showToast(body['message'].toString(), context: context);
       }
     }
   }
