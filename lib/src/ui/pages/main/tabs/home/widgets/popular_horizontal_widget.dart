@@ -54,105 +54,107 @@ class _PopularHorizontalWidgetState
               return SizedBox(
                 height: 227,
                 width: double.infinity,
-                child: ListView.separated(
+                child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                   scrollDirection: Axis.horizontal,
                   physics: BouncingScrollPhysics(),
                   itemCount: controller.listOfPopularItems.length,
-                  separatorBuilder: (BuildContext context, int index) => width(12),
                   itemBuilder: (BuildContext context, int index) {
                     final item = controller.listOfPopularItems[index];
-                    return InkWell(
-                      onTap: (){
-                        Get.find<RestaurantDetailsController>().setRestaurantId(item.itemDetails.restaurant);
-                        context.pushRoute(
-                          RestaurantRoute()
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 15,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: .08),
-                                  blurRadius: 15,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                CustomNetworkImage(
-                                  item.itemDetails.image[0],
-                                  width: 90,
-                                  height: 90,
-                                  fit: BoxFit.cover,
-                                ),
-                                //const PngAsset('mock_product_2', width: 90, height: 90),
-                                height(14),
-                                Text(
-                                  item.itemDetails.name,
-                                  style: const TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: InkWell(
+                        onTap: (){
+                          Get.find<RestaurantDetailsController>().setRestaurantId(item.itemDetails.restaurant);
+                          context.pushRoute(
+                            RestaurantRoute()
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 15,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: .08),
+                                    blurRadius: 15,
                                   ),
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const SvgAssets(
-                                      'linear_clock',
-                                      width: 10,
-                                      height: 10,
+                                ],
+                              ),
+                              child: Column(
+                                children: [
+                                  CustomNetworkImage(
+                                    item.itemDetails.image[0],
+                                    width: 90,
+                                    height: 90,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  //const PngAsset('mock_product_2', width: 90, height: 90),
+                                  height(14),
+                                  Text(
+                                    item.itemDetails.name,
+                                    style: const TextStyle(
+                                      color: AppColors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    width(3),
-                                    Text(
-                                      '${item.itemDetails.estimatedPreparationTime}min',
-                                      style: TextStyle(
-                                        color: AppColors.lightText,
-                                        fontSize: 10,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const SvgAssets(
+                                        'linear_clock',
+                                        width: 10,
+                                        height: 10,
                                       ),
-                                    ),
-                                    Container(
-                                      width: 4,
-                                      height: 4,
-                                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Color(0xFFD9D9D9),
+                                      width(3),
+                                      Text(
+                                        '${item.itemDetails.estimatedPreparationTime}min',
+                                        style: TextStyle(
+                                          color: AppColors.lightText,
+                                          fontSize: 10,
+                                        ),
                                       ),
-                                    ),
-                                    // const SvgAssets(
-                                    //   'linear_star',
-                                    //   width: 10,
-                                    //   height: 10,
-                                    // ),
-                                    // width(3),
-                                    // const Text(
-                                    //   '4.7',
-                                    //   style: TextStyle(
-                                    //     color: AppColors.lightText,
-                                    //     fontSize: 10,
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                                height(2),
-                                Text(
-                                  '\$${item.itemDetails.price}',
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                              ],
+                                      Container(
+                                        width: 4,
+                                        height: 4,
+                                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xFFD9D9D9),
+                                        ),
+                                      ),
+                                      // const SvgAssets(
+                                      //   'linear_star',
+                                      //   width: 10,
+                                      //   height: 10,
+                                      // ),
+                                      // width(3),
+                                      // const Text(
+                                      //   '4.7',
+                                      //   style: TextStyle(
+                                      //     color: AppColors.lightText,
+                                      //     fontSize: 10,
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
+                                  height(2),
+                                  Text(
+                                    '\$${item.itemDetails.price}',
+                                    style: Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },
