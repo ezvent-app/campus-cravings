@@ -124,7 +124,7 @@ class LoginPage extends ConsumerWidget {
                                       final data = jsonDecode(response.body);
                                       if (response.statusCode == 201) {
                                         if (context.mounted) {
-                                          context.pushRoute(MainRoute());
+                                          context.replaceRoute(MainRoute());
                                         }
                                         final token =
                                             data['user']['accessToken'];
