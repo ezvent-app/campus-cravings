@@ -353,7 +353,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           ),
                         ),
                         Text(
-                          '\$ ${controller.getTotalPrice().toStringAsFixed(2)}',
+                          '\$ ${controller.totalPrice.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 15,
@@ -395,18 +395,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   name:
                                       controller.productItemDetailModel?.name ??
                                       '',
-                                  price: double.parse(
-                                    controller
-                                        .getTotalPrice(
-                                          sizePrice:
-                                              cartItemsNotifier
-                                                  .selectedSizePrice,
-                                          customizations:
-                                              cartItemsNotifier
-                                                  .selectedCustomizations,
-                                        )
-                                        .toStringAsFixed(2),
-                                  ),
+                                  price: controller.totalPrice,
                                   quantity: controller.productQuantity,
                                 ),
                               );
