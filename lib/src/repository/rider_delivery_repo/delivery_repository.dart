@@ -13,7 +13,7 @@ class RiderDelvieryRepo {
   ) async {
     try {
       final response = await services.patchAPI(
-        url: '/rider/acceptOrder',
+        url: '/admin/order/$orderId',
         map: body,
       );
       if (response.statusCode == 200) {
@@ -23,11 +23,11 @@ class RiderDelvieryRepo {
         return RiderDeliveryModel.fromJson(data);
       } else {
         Logger().i("${response.statusCode} - ${response.body}");
-        throw Exception('Failed to accept order');
+        throw Exception('Failed');
       }
     } catch (e) {
-      Logger().e('Error accepting order: $e');
-      throw Exception('Error accepting order: $e');
+      Logger().e('Error:');
+      throw Exception('Error');
     }
   }
 
