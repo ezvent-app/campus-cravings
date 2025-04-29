@@ -43,7 +43,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
         if (token == null) return;
         socketController.connect(token);
       }
-      socketController.listenForStatusUpdates((LatLng location) {});
+      socketController.listenForStatusUpdates((Map<String, dynamic> data) {});
       socketController.emitJoinOrder(widget.id!);
     });
     Future.delayed(Duration(seconds: 2), () {
