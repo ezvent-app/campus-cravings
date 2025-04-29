@@ -83,7 +83,7 @@ class ImageConfirmationPage extends StatelessWidget {
                                       },
                                     );
                                     Navigator.pop(context);
-                                    context.replaceRoute(MainRoute());
+                                    context.replaceRoute(HomeTabRoute());
                                   },
                                 ),
                               ],
