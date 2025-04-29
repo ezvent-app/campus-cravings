@@ -51,13 +51,11 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
   String selectedSizeId = '';
   double selectedSizePrice = 0.00;
   void selectSize(int index, String sizeID, double sizePrice) {
-   
-      selectedSizeId = sizeID;
-      selectedSizePrice = sizePrice;
+    selectedSizeId = sizeID;
+    selectedSizePrice = sizePrice;
 
-      printThis("✅ Size updated to $sizeID at index $index price $sizePrice");
-      printThis("👉 Selected sizeId after tap: $selectedSizeId");
-   
+    printThis("✅ Size updated to $sizeID at index $index price $sizePrice");
+    printThis("👉 Selected sizeId after tap: $selectedSizeId");
   }
 
   List<CustomizationModel> selectedCustomizations = [];
