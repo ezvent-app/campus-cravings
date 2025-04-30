@@ -28,14 +28,14 @@ class ConversationNotifier
           .state = AsyncValue.data(details.messages);
 
       // Mark unread messages as read
-      for (final chat in details.messages) {
-        if (chat.status == 'sent' &&
-            chat.senderModel != (isCustomer ? 'User' : 'Rider')) {
-          ref
-              .read(chatNotifierProvider(details.conversationId).notifier)
-              .markAsRead(chat.id);
-        }
-      }
+      // for (final chat in details.messages) {
+      //   if (chat.status == 'sent' &&
+      //       chat.senderModel != (isCustomer ? 'User' : 'Rider')) {
+      //     // ref
+      //     //     .read(chatNotifierProvider(details.conversationId).notifier)
+      //     //     .markAsRead(chat.id);
+      //   }
+      // }
     } else {
       // Initialize with empty list if no messages
       ref
