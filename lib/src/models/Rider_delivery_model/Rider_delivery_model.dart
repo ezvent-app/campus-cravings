@@ -25,9 +25,9 @@ class Order {
   UserId? userId;
   String? orderNote;
   RestaurantId? restaurantId;
-  Null? assignedTo;
+  String? assignedTo;
   String? status;
-  int? totalPrice;
+  double? totalPrice;
   String? paymentMethod;
   int? tip;
   int? deliveryFee;
@@ -75,7 +75,7 @@ class Order {
         json['restaurant_id'] != null
             ? new RestaurantId.fromJson(json['restaurant_id'])
             : null;
-    assignedTo = json['assigned_to'];
+    assignedTo = "";
     status = json['status'];
     totalPrice = json['total_price'];
     paymentMethod = json['payment_method'];
@@ -317,7 +317,7 @@ class Sizes {
   Sizes({this.name, this.price, this.sId});
 
   Sizes.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
+    name = json['name'] ?? "Regular";
     price = json['price'];
     sId = json['_id'];
   }

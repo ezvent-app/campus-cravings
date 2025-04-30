@@ -219,14 +219,23 @@ class _RidersDeliveryDetailsWidgetState
                                                       context,
                                                     ).textTheme.titleSmall,
                                               ),
-                                              Text(
-                                                item?.itemId?.sizes?[0].name ??
-                                                    'Regular',
-                                                style:
-                                                    Theme.of(
-                                                      context,
-                                                    ).textTheme.bodySmall,
-                                              ),
+                                              if (item?.itemId?.sizes != null &&
+                                                  item
+                                                          ?.itemId
+                                                          ?.sizes
+                                                          ?.isNotEmpty ==
+                                                      true)
+                                                Text(
+                                                  item
+                                                          ?.itemId
+                                                          ?.sizes?[0]
+                                                          .name ??
+                                                      'Regular',
+                                                  style:
+                                                      Theme.of(
+                                                        context,
+                                                      ).textTheme.bodySmall,
+                                                ),
                                             ],
                                           ),
                                         ],
