@@ -117,9 +117,8 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                       Expanded(
                         child: InkWellButtonWidget(
                           borderRadius: BorderRadius.circular(12),
-                          onTap:
-                              () =>
-                                  context.pushRoute(const CheckOutChatRoute()),
+                          onTap: () {},
+                          // context.pushRoute(const CheckOutChatRoute()),
                           child: Container(
                             height: 36,
                             decoration: BoxDecoration(

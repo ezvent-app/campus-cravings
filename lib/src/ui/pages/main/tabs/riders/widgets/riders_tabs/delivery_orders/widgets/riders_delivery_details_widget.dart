@@ -219,14 +219,23 @@ class _RidersDeliveryDetailsWidgetState
                                                       context,
                                                     ).textTheme.titleSmall,
                                               ),
-                                              Text(
-                                                item?.itemId?.sizes?[0].name ??
-                                                    'Regular',
-                                                style:
-                                                    Theme.of(
-                                                      context,
-                                                    ).textTheme.bodySmall,
-                                              ),
+                                              if (item?.itemId?.sizes != null &&
+                                                  item
+                                                          ?.itemId
+                                                          ?.sizes
+                                                          ?.isNotEmpty ==
+                                                      true)
+                                                Text(
+                                                  item
+                                                          ?.itemId
+                                                          ?.sizes?[0]
+                                                          .name ??
+                                                      'Regular',
+                                                  style:
+                                                      Theme.of(
+                                                        context,
+                                                      ).textTheme.bodySmall,
+                                                ),
                                             ],
                                           ),
                                         ],
@@ -309,7 +318,10 @@ class _RidersDeliveryDetailsWidgetState
                                 borderRadius: BorderRadius.circular(100),
                                 onTap:
                                     () => context.pushRoute(
-                                      const CheckOutChatRoute(),
+                                      CheckOutChatRoute(
+                                        id: riderOrderId,
+                                        isCustomer: false,
+                                      ),
                                     ),
                                 child: SizedBox(
                                   width: 50,
@@ -382,7 +394,7 @@ class _RidersDeliveryDetailsWidgetState
                               StorageHelper().getRiderOrderId();
                           RiderDelvieryRepo repo = RiderDelvieryRepo();
                           repo.orderAcceptedByRider(riderOrderId!, {
-                            "status": "accepted_by_rider",
+                            "status": "order_dispatched",
                           });
                           setState(() {
                             isStarted = true;

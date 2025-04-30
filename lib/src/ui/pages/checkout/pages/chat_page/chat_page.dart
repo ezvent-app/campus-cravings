@@ -2,10 +2,17 @@ import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
 class CheckOutChatPage extends StatelessWidget {
-  const CheckOutChatPage({super.key});
+  final String id;
+  final bool isCustomer;
+  const CheckOutChatPage({
+    super.key,
+    required this.id,
+    required this.isCustomer,
+  });
 
   @override
   Widget build(BuildContext context) {
+    print("CheckOutChatPage: $id");
     final locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(

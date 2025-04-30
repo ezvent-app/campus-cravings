@@ -43,7 +43,7 @@ class _TicketMessagesPageState extends ConsumerState<TicketMessagesPage> {
             .watch(ticketProvider)
             .firstWhere((ticket) => ticket.id == widget.ticketId)
             .messages;
-    print("messages here: ${messages[0].sender}");
+    // print("messages here: ${messages[0].sender}");
 
     return Scaffold(
       appBar: AppBar(

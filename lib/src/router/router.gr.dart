@@ -256,18 +256,50 @@ class CheckOutAddNewAddressRouteArgs {
 
 /// generated route for
 /// [_i7.CheckOutChatPage]
-class CheckOutChatRoute extends _i44.PageRouteInfo<void> {
-  const CheckOutChatRoute({List<_i44.PageRouteInfo>? children})
-    : super(CheckOutChatRoute.name, initialChildren: children);
+class CheckOutChatRoute extends _i44.PageRouteInfo<CheckOutChatRouteArgs> {
+  CheckOutChatRoute({
+    _i45.Key? key,
+    required String id,
+    required bool isCustomer,
+    List<_i44.PageRouteInfo>? children,
+  }) : super(
+         CheckOutChatRoute.name,
+         args: CheckOutChatRouteArgs(key: key, id: id, isCustomer: isCustomer),
+         initialChildren: children,
+       );
 
   static const String name = 'CheckOutChatRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      return const _i7.CheckOutChatPage();
+      final args = data.argsAs<CheckOutChatRouteArgs>();
+      return _i7.CheckOutChatPage(
+        key: args.key,
+        id: args.id,
+        isCustomer: args.isCustomer,
+      );
     },
   );
+}
+
+class CheckOutChatRouteArgs {
+  const CheckOutChatRouteArgs({
+    this.key,
+    required this.id,
+    required this.isCustomer,
+  });
+
+  final _i45.Key? key;
+
+  final String id;
+
+  final bool isCustomer;
+
+  @override
+  String toString() {
+    return 'CheckOutChatRouteArgs{key: $key, id: $id, isCustomer: $isCustomer}';
+  }
 }
 
 /// generated route for
