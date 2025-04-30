@@ -392,6 +392,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                 "orderId": order.id,
                               });
                               _orderCycleTimer?.cancel();
+                              timer.cancel();
+                              _isMounted = false;
                               Navigator.pop(context);
                               setState(() {
                                 _remainingOrders.clear();
