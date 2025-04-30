@@ -26,14 +26,13 @@ class RidersHistoryTabWidget extends ConsumerWidget {
         final orders = history.orders;
         final filteredOrders =
             orders
-                ?.where(
+                .where(
                   (order) =>
                       order.status == 'delivered' ||
                       order.status == 'cancelled' ||
                       order.status == 'completed',
                 )
-                .toList() ??
-            [];
+                .toList();
         if (filteredOrders.isEmpty) {
           return Center(
             child: Padding(

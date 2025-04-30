@@ -32,7 +32,7 @@ class RiderDelvieryRepo {
   }
 
   //rider accepting order during socket time
-  Future<RiderDeliveryModel> acceptedByRider(Map<String, dynamic> body) async {
+  Future<RiderDeliveryModel?> acceptedByRider(Map<String, dynamic> body) async {
     try {
       final response = await services.putAPI(
         url: '/rider/acceptOrder',
@@ -49,7 +49,7 @@ class RiderDelvieryRepo {
       }
     } catch (e) {
       Logger().e('Error accepting order: $e');
-      throw Exception('Error accepting order: $e');
+      return null;
     }
   }
 }

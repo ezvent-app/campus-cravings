@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 
 @RoutePage()
 class ProductDetailsPage extends ConsumerStatefulWidget {
-  final Product product;
-  const ProductDetailsPage({super.key, required this.product});
+  final List<double> restCoordinates;
+  const ProductDetailsPage({super.key, required this.restCoordinates});
 
   @override
   ConsumerState createState() => _ProductDetailsPageState();
@@ -15,12 +15,6 @@ class ProductDetailsPage extends ConsumerStatefulWidget {
 
 PageController _pageController = PageController();
 int _selectedIndex = 0;
-
-final List<String> productImages = [
-  'mock_product_1',
-  'mock_product_2',
-  'mock_product_1',
-];
 
 class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
   @override
@@ -378,6 +372,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               .read(cartItemsProvider.notifier)
                               .addItem(
                                 CartItem(
+                                  restCoordinates: widget.restCoordinates,
                                   sizePrice:
                                       cartItemsNotifier.selectedSizePrice,
                                   size: cartItemsNotifier.selectedSizeId,

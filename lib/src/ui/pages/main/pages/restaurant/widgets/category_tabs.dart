@@ -6,7 +6,12 @@ import 'package:get/get.dart';
 
 class CategoryTabs extends ConsumerStatefulWidget {
   final List<Product> products;
-  const CategoryTabs({super.key, required this.products});
+  final List<double> coordinates;
+  const CategoryTabs({
+    super.key,
+    required this.products,
+    required this.coordinates,
+  });
 
   @override
   ConsumerState createState() => _CategoryTabsState();
@@ -143,12 +148,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                                             .setProductId(e.items[index].id);
                                         context.pushRoute(
                                           ProductDetailsRoute(
-                                            product: Product(
-                                              id: "id",
-                                              name: "name",
-                                              imageUrl: "imageUrl",
-                                              price: 12,
-                                            ),
+                                            restCoordinates: widget.coordinates,
                                           ),
                                         );
                                       },

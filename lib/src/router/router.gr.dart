@@ -1041,11 +1041,14 @@ class PlacingOrderRouteArgs {
 class ProductDetailsRoute extends _i44.PageRouteInfo<ProductDetailsRouteArgs> {
   ProductDetailsRoute({
     _i45.Key? key,
-    required _i45.Product product,
+    required List<double> restCoordinates,
     List<_i44.PageRouteInfo>? children,
   }) : super(
          ProductDetailsRoute.name,
-         args: ProductDetailsRouteArgs(key: key, product: product),
+         args: ProductDetailsRouteArgs(
+           key: key,
+           restCoordinates: restCoordinates,
+         ),
          initialChildren: children,
        );
 
@@ -1055,21 +1058,24 @@ class ProductDetailsRoute extends _i44.PageRouteInfo<ProductDetailsRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<ProductDetailsRouteArgs>();
-      return _i32.ProductDetailsPage(key: args.key, product: args.product);
+      return _i32.ProductDetailsPage(
+        key: args.key,
+        restCoordinates: args.restCoordinates,
+      );
     },
   );
 }
 
 class ProductDetailsRouteArgs {
-  const ProductDetailsRouteArgs({this.key, required this.product});
+  const ProductDetailsRouteArgs({this.key, required this.restCoordinates});
 
   final _i45.Key? key;
 
-  final _i45.Product product;
+  final List<double> restCoordinates;
 
   @override
   String toString() {
-    return 'ProductDetailsRouteArgs{key: $key, product: $product}';
+    return 'ProductDetailsRouteArgs{key: $key, restCoordinates: $restCoordinates}';
   }
 }
 

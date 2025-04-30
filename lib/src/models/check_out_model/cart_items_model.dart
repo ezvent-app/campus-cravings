@@ -9,8 +9,10 @@ class CartItem {
   final List<CustomizationModel> customization;
   final String size;
   final double sizePrice;
+  final List<double> restCoordinates;
 
   CartItem({
+    required this.restCoordinates,
     required this.sizePrice,
     required this.size,
     required this.image,
@@ -26,7 +28,9 @@ class CartItem {
     String? size,
     double? sizePrice,
     List<CustomizationModel>? customization,
+    List<double>? coordinates,
   }) => CartItem(
+    restCoordinates: coordinates ?? restCoordinates,
     sizePrice: sizePrice ?? this.sizePrice,
     size: size ?? this.size,
     customization: customization ?? this.customization,

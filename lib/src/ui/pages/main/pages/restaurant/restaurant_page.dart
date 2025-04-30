@@ -140,7 +140,16 @@ class RestaurantPage extends ConsumerWidget {
                   ],
                 ),
               ),
-              const CategoryTabs(products: mockProducts),
+              CategoryTabs(
+                products: mockProducts,
+                coordinates:
+                    controller
+                        .restaurantDetails!
+                        .restaurant
+                        .addresses
+                        .coordinates
+                        .coordinates,
+              ),
             ],
           );
         },

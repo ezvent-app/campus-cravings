@@ -16,6 +16,8 @@ class DeliveryTabWidget extends ConsumerWidget {
     final double demandMultiplier =
         await _repository.fetchDemandMultiplierOnly();
 
+    log(demandMultiplier.toString());
+
     double milesBeyondFirst = (distanceInMiles > 1) ? (distanceInMiles - 1) : 0;
 
     double totalFee =
@@ -34,6 +36,8 @@ class DeliveryTabWidget extends ConsumerWidget {
       to.latitude,
       to.longitude,
     );
+
+    log("DISTANCE ${(distanceInMeters / 1609.34).toStringAsFixed(2)}");
     return distanceInMeters / 1609.34;
   }
 
@@ -190,75 +194,75 @@ class DeliveryTabWidget extends ConsumerWidget {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 24),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: .08),
-                  blurRadius: 15,
-                ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWellButtonWidget(
-                onTap: () {
-                  context.pushRoute(PaymentMethodsRoute(fromCheckout: true));
-                },
-                borderRadius: BorderRadius.circular(24),
-                child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Row(
-                    children: [
-                      SvgAssets('redWallet', height: 24, width: 24),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(
-                            locale.paymentMethod,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Color(0xff212121),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 12),
-                          child: Text(
-                            'Villanova Vallet',
-                            textAlign: TextAlign.end,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodyMedium!.copyWith(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        color: AppColors.accent,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Container(
+          //   margin: const EdgeInsets.only(bottom: 24),
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(24),
+          //     color: Colors.white,
+          //     boxShadow: [
+          //       BoxShadow(
+          //         color: Colors.black.withValues(alpha: .08),
+          //         blurRadius: 15,
+          //       ),
+          //     ],
+          //   ),
+          //   child: Material(
+          //     color: Colors.transparent,
+          //     child: InkWellButtonWidget(
+          //       onTap: () {
+          //         context.pushRoute(PaymentMethodsRoute(fromCheckout: true));
+          //       },
+          //       borderRadius: BorderRadius.circular(24),
+          //       child: Padding(
+          //         padding: EdgeInsets.all(24),
+          //         child: Row(
+          //           children: [
+          //             SvgAssets('redWallet', height: 24, width: 24),
+          //             Expanded(
+          //               flex: 2,
+          //               child: Padding(
+          //                 padding: EdgeInsets.symmetric(horizontal: 12),
+          //                 child: Text(
+          //                   locale.paymentMethod,
+          //                   maxLines: 2,
+          //                   overflow: TextOverflow.ellipsis,
+          //                   style: TextStyle(
+          //                     color: Color(0xff212121),
+          //                     fontSize: 14,
+          //                     fontWeight: FontWeight.w500,
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             Expanded(
+          //               flex: 2,
+          //               child: Padding(
+          //                 padding: EdgeInsets.only(right: 12),
+          //                 child: Text(
+          //                   'Villanova Vallet',
+          //                   textAlign: TextAlign.end,
+          //                   maxLines: 2,
+          //                   overflow: TextOverflow.ellipsis,
+          //                   style: Theme.of(
+          //                     context,
+          //                   ).textTheme.bodyMedium!.copyWith(
+          //                     color: AppColors.black,
+          //                     fontWeight: FontWeight.w600,
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             Icon(
+          //               Icons.keyboard_arrow_right,
+          //               color: AppColors.accent,
+          //               size: 30,
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
@@ -330,16 +334,24 @@ class DeliveryTabWidget extends ConsumerWidget {
 
                 locationAsync.when(
                   data: (locationModel) {
-                    final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
+                    final LatLng? customerLatLng = getLatLngFromOrderAddress(
                       address.value?.addresses,
                     );
-                    if (restuatantLatLng == null) {
-                      return Text("Restaurant location is missing");
+
+                    if (customerLatLng == null) {
+                      return Text("Customer location is missing");
                     }
 
                     final distance = _calculateDistanceInMiles(
-                      locationModel.latLng,
-                      restuatantLatLng,
+                      customerLatLng,
+                      LatLng(
+                        cartItems.first.restCoordinates[0],
+                        cartItems.first.restCoordinates[1],
+                      ),
+                    );
+
+                    log(
+                      "CUSTOMER ${customerLatLng.toString()} RESTUARANT ${cartItems.first.restCoordinates}",
                     );
 
                     return FutureBuilder(

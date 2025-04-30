@@ -3,6 +3,7 @@ import 'package:campuscravings/src/src.dart';
 @RoutePage()
 class CheckOutTabPage extends StatelessWidget {
   const CheckOutTabPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
 import 'package:campuscravings/src/controllers/location_controller.dart';
 import 'package:campuscravings/src/models/near_by_restaurant_model.dart';
@@ -7,7 +6,6 @@ import 'package:campuscravings/src/repository/home_repository/restaurant_reposit
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-
 import '../constants/get_builder_id_constants.dart';
 
 class RestaurantController extends GetxController {
