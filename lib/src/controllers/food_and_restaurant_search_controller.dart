@@ -18,6 +18,10 @@ class FoodAndRestaurantSearchController extends GetxController{
   bool get searchFoodAndRestaurants => _searchFoodAndRestaurants;
   final _searchTextEditingController = TextEditingController();
   TextEditingController get searchTextEditingController => _searchTextEditingController;
+  bool _sortByFastDelivery = false;
+  int _selectedIndex = 0;
+  int get selectedIndex => _selectedIndex;
+  bool get sortByFastDelivery => _sortByFastDelivery;
 
   Future<void> getSearchResults(BuildContext context) async{
     try {
@@ -45,7 +49,14 @@ class FoodAndRestaurantSearchController extends GetxController{
       return;
     }
   }
-
+  void setSortByFastDelivery({required bool value}){
+    _sortByFastDelivery = value;
+    update();
+  }
+  void setSelectedIndex({required int index}){
+    _selectedIndex = index;
+    update();
+  }
   void setSearchFoodAndRestaurants({required bool value}){
     _searchFoodAndRestaurants = value;
     _searchModel = null;

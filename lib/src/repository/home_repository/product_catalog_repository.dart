@@ -18,7 +18,7 @@ class ProductRepository {
       final response = await _httpApiServices.getAPI(
         '/restaurants/getNearbyPopularFood?latitude=33.5678&longitude=73.1234',
       );
-      Logger().i('${response.statusCode} - ${response.body}');
+      Logger().i(jsonDecode(response.body));
 
       if (response.statusCode != 200) return null;
       return (jsonDecode(response.body)['items'] as List)

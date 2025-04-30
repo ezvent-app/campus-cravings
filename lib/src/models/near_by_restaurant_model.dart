@@ -10,7 +10,7 @@ class NearByRestaurantModel {
   final String status;
   final List<String> restaurantImages;
   final OpeningHours openingHours;
-  final Address address;
+  Address address;
   final Rating ratings;
   final int viewCount;
   final List<Category> categories;

@@ -2,6 +2,7 @@ import 'package:campuscravings/src/controllers/food_and_restaurant_search_contro
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import '../../../../../controllers/restaurant_details_controller.dart';
 import '../../../../../src.dart';
 import '../../../../widgets/custom_network_image.dart';
 
@@ -113,16 +114,18 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin{
         ),
       );
     }
-    return ListView.separated(
+    return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       physics: BouncingScrollPhysics(),
       itemCount: controller.searchModel?.listOfFoodItemModel.length ?? 0,
-      separatorBuilder: (BuildContext context, int index) => width(12),
       itemBuilder: (BuildContext context, int index) {
         final item = controller.searchModel?.listOfFoodItemModel[index];
         return InkWell(
           onTap: (){
-
+            Get.find<RestaurantDetailsController>().setRestaurantId(item!.restaurant);
+            context.pushRoute(
+                RestaurantRoute()
+            );
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -218,10 +221,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin{
           final item = controller.searchModel?.listOfNearByRestaurantModel[index];
           return InkWellButtonWidget(
             onTap: () {
-              // Get.find<RestaurantDetailsController>().setRestaurantId(
-              //   restaurant.id,
-              // );
-              // context.pushRoute(const RestaurantRoute());
+              Get.find<RestaurantDetailsController>().setRestaurantId(item.id);
+              context.pushRoute(
+                  RestaurantRoute()
+              );
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -238,37 +241,39 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin{
                     height: 110,
                   ),
                   const SizedBox(width: 25),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.sizeOf(context).width * 0.45,
-                        child: Text(
-                          "${item?.brandName}",
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * 0.45,
+                          child: Text(
+                            "${item?.brandName}",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff443A39),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          "${item?.cuisine}",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 14,
+                            color: Color(0xffB4B0B0),
+                          ),
+                        ),
+                        SizedBox(height: 7),
+                        Text(
+                          "${controller.getRestaurantTimingForToday(restaurant: item)} | ${controller.getDistanceInMiles(lat: item.addresses.coordinates.coordinates[1], lng: item.addresses.coordinates.coordinates[0]).toStringAsFixed(2)} mil away",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
                             color: Color(0xff443A39),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 3),
-                      Text(
-                        "${item?.cuisine}",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xffB4B0B0),
-                        ),
-                      ),
-                      SizedBox(height: 7),
-                      Text(
-                        "${controller.getRestaurantTimingForToday(restaurant: item)} | ${controller.getDistanceInMiles(lat: item.addresses.coordinates.coordinates[1], lng: item.addresses.coordinates.coordinates[0]).toStringAsFixed(2)} mil away",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff443A39),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

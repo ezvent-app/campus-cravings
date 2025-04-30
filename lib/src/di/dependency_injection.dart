@@ -25,7 +25,7 @@ class DependencyInjection {
     Get.put(RestaurantController(Get.find<RestaurantRepository>()),permanent: true);
     Get.lazyPut<RestaurantDetailsController>(() => RestaurantDetailsController(Get.find<RestaurantRepository>()), fenix: true);
     Get.lazyPut<ProductDetailsController>(() => ProductDetailsController(Get.find<ProductRepository>()), fenix: true);
-    Get.lazyPut<FoodAndRestaurantSearchController>(() => FoodAndRestaurantSearchController(Get.find<SearchRepository>()), fenix: true);
+    Get.put(FoodAndRestaurantSearchController(Get.find<SearchRepository>()), permanent: true);
   }
   // static final DependencyInjection _instance = DependencyInjection._internal();
   //
