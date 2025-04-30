@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.12.0"
+  animated_marker:
+    dependency: "direct main"
+    description:
+      name: animated_marker
+      sha256: db0d6513f838a5703bc97a4177438b9a24a2b552bcf8014cc7915dcc0071bfea
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   another_flushbar:
     dependency: "direct main"
     description:

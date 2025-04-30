@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:campuscravings/src/controllers/location_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
+import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class PickupTabWidget extends ConsumerWidget {
   PickupTabWidget({super.key});
@@ -485,32 +488,35 @@ class PickUpPlaceOrderButtonWidget extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 36),
       child: ElevatedButton(
         onPressed: () async {
-          List<Map<String, dynamic>> orderItemsJson =
-              cartItems.map((item) => item.toOrderItemJson()).toList();
-          final json = {
-            "payment_method": "card",
-            "tip": tip,
-            "delivery_fee": total,
-            "order_type": orderType,
-            "addresses": address.value?.addresses ?? "",
-            "items": orderItemsJson,
-          };
-          log("CHECKOUT JSON $json");
-          // repository.placeOrderMethod(json, context);
-          // context.pushRoute(const CheckoutAddressRoute());
-
-          await repository.makePayment(
-            context: context,
-            purchaseName: "Ali",
-            title: "Garden Service",
-            amountPaid: total.toDouble(),
-            merchantDisplayName: "Default Merchant",
-            onSuccess: (transactionId) async {
-              log("Payment Successful with Transaction ID: $transactionId");
-              repository.placeOrderMethod(json, context);
-              cartItems.clear();
-            },
-          );
+          Logger().w("680fa7939425b7cd2b7d3201");
+          //Logger().w("${Get.find<LocationController>().locationData?.latitude} - ${Get.find<LocationController>().locationData?.longitude}");
+          context.pushRoute(DeliveringRoute());
+          // List<Map<String, dynamic>> orderItemsJson =
+          //     cartItems.map((item) => item.toOrderItemJson()).toList();
+          // final json = {
+          //   "payment_method": "card",
+          //   "tip": tip,
+          //   "delivery_fee": total,
+          //   "order_type": orderType,
+          //   "addresses": address.value?.addresses ?? "",
+          //   "items": orderItemsJson,
+          // };
+          // log("CHECKOUT JSON $json");
+          // // repository.placeOrderMethod(json, context);
+          // // context.pushRoute(const CheckoutAddressRoute());
+          //
+          // await repository.makePayment(
+          //   context: context,
+          //   purchaseName: "Ali",
+          //   title: "Garden Service",
+          //   amountPaid: total.toDouble(),
+          //   merchantDisplayName: "Default Merchant",
+          //   onSuccess: (transactionId) async {
+          //     log("Payment Successful with Transaction ID: $transactionId");
+          //     repository.placeOrderMethod(json, context);
+          //     cartItems.clear();
+          //   },
+          // );
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
