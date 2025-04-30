@@ -128,12 +128,44 @@ class TicketNotifier extends StateNotifier<List<Ticket>> {
     }
   }
 
+  void addTicket(Map<String, dynamic> ticketData) {
+    final ticket = Ticket.fromJson(ticketData);
+    state = [...state, ticket];
+  }
+
+  void addMessage(String ticketId, TicketMessage message) {
+    state = [
+      for (final ticket in state)
+        ticket.id == ticketId
+            ? ticket.copyWith(messages: [...ticket.messages, message])
+            : ticket,
+    ];
+  }
+
   void setTickets(List<Ticket> tickets) {
     state = tickets;
   }
 
-  void deleteTicket(String ticketId) {
-    state = state.where((ticket) => ticket.id != ticketId).toList();
+  void deleteTicket(String ticketId, BuildContext context) async {
+    try {
+      final response = await services.patchAPI(
+        url: "/admin/tickets/$ticketId",
+        map: {"status": "resolved"},
+      );
+      if (response.statusCode == 200) {
+        state = [
+          for (final ticket in state)
+            ticket.id == ticketId
+                ? ticket.copyWith(status: " homenagem")
+                : ticket,
+        ];
+      } else {
+        showToast("Failed to delete ticket", context: context);
+      }
+    } catch (e) {
+      debugPrint('Error fetching tickets: $e');
+      // Note: SnackBar requires BuildContext, handled in UI
+    }
   }
 }
 

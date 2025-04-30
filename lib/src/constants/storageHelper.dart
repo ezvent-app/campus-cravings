@@ -2,6 +2,7 @@ import 'package:get_storage/get_storage.dart';
 
 class StorageHelper {
   static const String _userId = "_id";
+  static const String _riderOrderId = "item_id";
   static const String _accessToken = "accessToken";
   static const String _isProfileComple = "isProfileComplet";
   static const String _isRiderProfileComple = "isRiderProfileComple";
@@ -43,6 +44,14 @@ class StorageHelper {
 
   String? getUserId() {
     return _getPref(_userId);
+  }
+
+  void saveRiderOrderId(String? id) {
+    _savePref(_riderOrderId, id);
+  }
+
+  String? getRiderOrderId() {
+    return _getPref(_riderOrderId);
   }
 
   void saveAccessToken(String? id) {

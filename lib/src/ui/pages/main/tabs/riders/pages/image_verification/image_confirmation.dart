@@ -1,9 +1,16 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
+import 'package:campuscravings/src/repository/rider_delivery_repo/delivery_repository.dart';
 import 'package:campuscravings/src/src.dart';
 
 class ImageConfirmationPage extends StatelessWidget {
   final XFile image;
 
   const ImageConfirmationPage({super.key, required this.image});
+
+  Future<String> convertImageToBase64() async {
+    final bytes = await File(image.path).readAsBytes();
+    return base64Encode(bytes);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +46,10 @@ class ImageConfirmationPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    final outerContext = context; // Capture outer context
                     showDialog(
                       context: context,
-                      builder: (context) {
+                      builder: (dialogContext) {
                         return SimpleDialog(
                           contentPadding: EdgeInsets.all(30),
                           children: [
@@ -53,19 +61,47 @@ class ImageConfirmationPage extends StatelessWidget {
                                 Text(
                                   locale.deliveryComplete,
                                   style:
-                                      Theme.of(context).textTheme.titleMedium,
+                                      Theme.of(
+                                        dialogContext,
+                                      ).textTheme.titleMedium,
                                 ),
                                 height(10),
                                 Text(
                                   locale.thankYouDeliveringOrderGreatJob,
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style:
+                                      Theme.of(
+                                        dialogContext,
+                                      ).textTheme.bodyMedium,
                                 ),
                                 height(30),
                                 RoundedButtonWidget(
                                   btnTitle: locale.ok,
-                                  onTap:
-                                      () => context.replaceRoute(MainRoute()),
+                                  onTap: () async {
+                                    String? riderOrderId =
+                                        StorageHelper().getRiderOrderId();
+                                    String base64Image =
+                                        await convertImageToBase64();
+                                    RiderDelvieryRepo repo =
+                                        RiderDelvieryRepo();
+                                    await repo
+                                        .orderAcceptedByRider(riderOrderId!, {
+                                          "image_url": base64Image,
+                                          "status": "delivered",
+                                        });
+
+                                    Navigator.pop(
+                                      dialogContext,
+                                    ); // close dialog
+                                    Future.delayed(
+                                      Duration(milliseconds: 0),
+                                      () {
+                                        outerContext.pushRoute(
+                                          const MainRoute(),
+                                        );
+                                      },
+                                    );
+                                  },
                                 ),
                               ],
                             ),
@@ -74,6 +110,7 @@ class ImageConfirmationPage extends StatelessWidget {
                       },
                     );
                   },
+
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.white,
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),

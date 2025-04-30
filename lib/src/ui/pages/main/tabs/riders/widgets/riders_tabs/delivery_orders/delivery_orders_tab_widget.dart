@@ -1,6 +1,12 @@
 import 'dart:async';
 
+import 'package:campuscravings/src/constants/storageHelper.dart';
+import 'package:campuscravings/src/models/delivery_order_model.dart';
+import 'package:campuscravings/src/providers/delivery_order_provider.dart';
+import 'package:campuscravings/src/repository/rider_delivery_repo/rider_delivery_repo.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class DeliveryOrdersTabWidget extends ConsumerStatefulWidget {
   const DeliveryOrdersTabWidget({super.key});
@@ -13,21 +19,38 @@ class DeliveryOrdersTabWidget extends ConsumerStatefulWidget {
 class _ConsumerDeliveryOrdersTabWidgetState
     extends ConsumerState<DeliveryOrdersTabWidget> {
   late Timer timer;
+  Timer? _orderCycleTimer;
+  bool _isMounted = true;
+  int _currentOrderIndex = 0;
+  bool _hasShownBottomSheet = false;
+  List<DeliveryOrder> _remainingOrders = [];
+
   @override
-  initState() {
+  void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      confirmDeliveryBottomSheet();
+      _setupSocket();
     });
     startTimer();
-    // ref
-    //     .read(locationProvider.notifier)
-    //     .setupMarkersAndPolylines(
-    //       context: context,
-    //       ryderLocation: _ryderLocation,
-    //       markerWidget: CustomMarkerWidget(),
-    //     );
-
     super.initState();
+  }
+
+  void _setupSocket() async {
+    if (!_isMounted) return;
+
+    final socketController = ref.read(socketControllerProvider);
+
+    if (ref.read(socketStateProvider).status != SocketStatus.connected) {
+      final token = StorageHelper().getAccessToken();
+      if (token == null) return;
+      socketController.connect(token);
+    }
+
+    if (_isMounted) {
+      socketController.listenForOrders((dynamic data) {
+        print("Orders Data: $data");
+        ref.read(socketDeliveryControllerProvider).handleSocketData(data);
+      });
+    }
   }
 
   void startTimer() {
@@ -44,9 +67,71 @@ class _ConsumerDeliveryOrdersTabWidgetState
     });
   }
 
+  void _cycleOrders(List<DeliveryOrder> orders) {
+    if (!_isMounted || orders.isEmpty) {
+      _orderCycleTimer?.cancel();
+      return;
+    }
+
+    // Initialize remaining orders if not already set
+    if (_remainingOrders.isEmpty) {
+      _remainingOrders = List.from(orders);
+    }
+
+    if (_remainingOrders.isEmpty) {
+      _orderCycleTimer?.cancel();
+      return;
+    }
+
+    // Close any existing bottom sheet before showing the new one
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
+
+    // Reset countdown for the new order
+    ref.read(riderProvider.notifier).state = {
+      ...ref.read(riderProvider),
+      'countdown': 10,
+    };
+
+    // Restart the countdown timer
+    timer.cancel();
+    startTimer();
+
+    // Show the current order
+    confirmDeliveryBottomSheet(_remainingOrders[0]);
+
+    _orderCycleTimer?.cancel();
+    _orderCycleTimer = Timer(Duration(seconds: 10), () {
+      if (!_isMounted) {
+        return;
+      }
+
+      setState(() {
+        // Remove the displayed order from the list
+        if (_remainingOrders.isNotEmpty) _remainingOrders.removeAt(0);
+      });
+
+      // Continue cycling if there are more orders
+      if (_remainingOrders.isNotEmpty) {
+        _cycleOrders(_remainingOrders);
+      } else {
+        // Close the bottom sheet if no orders remain
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
+      }
+    });
+  }
+
   @override
   void dispose() {
     timer.cancel();
+    _orderCycleTimer?.cancel();
+    _isMounted = false;
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
     super.dispose();
   }
 
@@ -84,6 +169,24 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
     final locationState = ref.watch(locationProvider);
     final location = locationState.value;
+
+    // Listen to changes in orders
+    final orders = ref.watch(deliveryOrdersProvider);
+    ref.listen(deliveryOrdersProvider, (previous, next) {
+      if (next.isNotEmpty && !_hasShownBottomSheet) {
+        _hasShownBottomSheet = true;
+        _remainingOrders = List.from(next);
+        _cycleOrders(next);
+      } else if (next.isEmpty) {
+        _orderCycleTimer?.cancel();
+        _hasShownBottomSheet = false;
+        _remainingOrders.clear();
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
+      }
+    });
+
     return Builder(
       builder: (context) {
         return Consumer(
@@ -143,7 +246,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
     );
   }
 
-  confirmDeliveryBottomSheet() {
+  void confirmDeliveryBottomSheet(DeliveryOrder order) {
+    print("Order: ${order.id}");
+    StorageHelper().saveRiderOrderId(order.id);
     final size = MediaQuery.of(context).size;
 
     showModalBottomSheet(
@@ -164,12 +269,12 @@ class _ConsumerDeliveryOrdersTabWidgetState
                     Row(
                       children: [
                         Text(
-                          '\$5.00',
+                          '\$${order.price.toStringAsFixed(2)}',
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                         width(10),
                         Text(
-                          'Guaranteed',
+                          order.guaranteedLabel,
                           style: Theme.of(context).textTheme.bodyMedium!
                               .copyWith(color: AppColors.black),
                         ),
@@ -198,13 +303,13 @@ class _ConsumerDeliveryOrdersTabWidgetState
                   ],
                 ),
                 Text(
-                  '1.2 mi',
+                  '${order.distance} mi',
                   style: Theme.of(
                     context,
                   ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
                 ),
                 Text(
-                  'Deliver by 2:38 PM',
+                  order.deliveryTime,
                   style: Theme.of(
                     context,
                   ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
@@ -247,12 +352,12 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                     .copyWith(color: AppColors.black),
                               ),
                               Text(
-                                'Big Garden Salad',
+                                order.pickupItem,
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                               height(48),
                               Text(
-                                'Customer Dropoff',
+                                order.dropoffLabel,
                                 style: Theme.of(context).textTheme.bodyMedium!
                                     .copyWith(color: AppColors.black),
                               ),
@@ -280,7 +385,17 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                 ...isAccept,
                                 'isAccept': true,
                               };
+
+                              RiderDelvieryRepo repo = RiderDelvieryRepo();
+                              repo.acceptedByRider({
+                                "estimated_time": "25 minutes",
+                                "orderId": order.id,
+                              });
+                              _orderCycleTimer?.cancel();
                               Navigator.pop(context);
+                              setState(() {
+                                _remainingOrders.clear();
+                              });
                             },
                           );
                         },
@@ -297,6 +412,14 @@ class _ConsumerDeliveryOrdersTabWidgetState
                             'isAccept': false,
                           };
                           Navigator.pop(context);
+                          // Remove the current order from remaining orders
+                          setState(() {
+                            _remainingOrders.removeAt(0);
+                          });
+                          // Continue cycling if there are more orders
+                          if (_remainingOrders.isNotEmpty) {
+                            _cycleOrders(_remainingOrders);
+                          }
                         },
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(

@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
 import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
@@ -6,19 +7,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 @RoutePage()
-class HomeTabPage extends StatefulWidget {
+class HomeTabPage extends ConsumerStatefulWidget {
   const HomeTabPage({super.key});
 
   @override
-  State<HomeTabPage> createState() => _HomeTabPageState();
+  ConsumerState<HomeTabPage> createState() => _HomeTabPageState();
 }
 
-class _HomeTabPageState extends State<HomeTabPage> {
+class _HomeTabPageState extends ConsumerState<HomeTabPage> {
   @override
   void initState() {
     // TODO: implement
     UserInfoRepository info = UserInfoRepository();
     info.fetchUserProfile();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final token = StorageHelper().getAccessToken();
+      if (token != null) {
+        final socketController = ref.read(socketControllerProvider);
+        socketController.connect(token);
+      } else {
+        debugPrint("Token is null");
+      }
+    });
     super.initState();
   }
 
@@ -92,11 +102,12 @@ class _HomeTabPageState extends State<HomeTabPage> {
                 children: [
                   Expanded(
                     child: InkWellButtonWidget(
-                      onTap: (){
-                        Get.find<FoodAndRestaurantSearchController>().setSearchFoodAndRestaurants(value: true);
+                      onTap: () {
+                        Get.find<FoodAndRestaurantSearchController>()
+                            .setSearchFoodAndRestaurants(value: true);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SearchPage())
+                          MaterialPageRoute(builder: (context) => SearchPage()),
                         );
                       },
                       child: AbsorbPointer(

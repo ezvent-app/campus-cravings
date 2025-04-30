@@ -1,4 +1,9 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
+import 'package:campuscravings/src/models/Rider_delivery_model/Rider_delivery_model.dart';
+import 'package:campuscravings/src/repository/rider_delivery_repo/rider_delivery_repo.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RidersDeliveryDetailsWidget extends ConsumerStatefulWidget {
   final ScrollController scrollController;
@@ -21,150 +26,351 @@ class _RidersDeliveryDetailsWidgetState
 
   @override
   Widget build(BuildContext context) {
+    String? riderOrderId = StorageHelper().getRiderOrderId();
     final locale = AppLocalizations.of(context)!;
+    final riderDelivery = ref.watch(riderDeliveryProvider(riderOrderId!));
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Text(
-                  "Arriving Soon at Pickup Point",
-                  style: Theme.of(context).textTheme.titleSmall,
+    return riderDelivery.when(
+      data: (RiderDeliveryModel data) {
+        // Ensure the data is loaded correctly
+        String address =
+            data.order!.addresses!.address ?? 'No address available';
+        String orderId = data.order!.sId ?? 'No orderId available';
+        String storeName = data.order!.restaurantId!.storeName ?? 'Store name';
+        String brandName = data.order!.restaurantId!.brandName ?? 'Brand name';
+        final items = data.order!.items!;
+        String? userName = data.order!.userId?.firstName;
+        String? imageUrl = data.order!.userId?.imgUrl;
+        String? PhoneNumber = data.order!.userId?.phoneNumber;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    Text(
+                      "Arriving Soon at Pickup Point",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Text(
+                      "${storeName} - ${brandName}",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
+                    ),
+                    height(10),
+                  ],
                 ),
-                Text(
-                  "Coffee House - Near Corr Hall",
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
-                ),
-                height(10),
-              ],
+              ),
             ),
-          ),
-        ),
-        Container(
-          height: 10,
-          color: widget.isMinHeight ? Colors.white : const Color(0xFFF5F5F5),
-        ),
-        Expanded(
-          child: ListView(
-            controller: widget.scrollController,
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            physics: BouncingScrollPhysics(),
-            children: [
-              height(10),
-              Text(
-                locale.deliveryDetails,
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+            Container(
+              height: 10,
+              color:
+                  widget.isMinHeight ? Colors.white : const Color(0xFFF5F5F5),
+            ),
+            Expanded(
+              child: ListView(
+                controller: widget.scrollController,
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                physics: BouncingScrollPhysics(),
+                children: [
+                  height(10),
+                  Text(
+                    locale.deliveryDetails,
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       fontSize: 21,
                       fontWeight: FontWeight.w800,
                     ),
-              ),
-              height(20),
-              OrdersInfoWidget(
-                title: locale.address,
-                desc: 'Flat / Suite / Floor: 174',
-              ),
-              OrdersInfoWidget(title: locale.orderNumber, desc: '#162432'),
-              const Divider(color: Color(0xFFF5F5F5)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    locale.orderSummary,
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  ),
+                  height(20),
+                  OrdersInfoWidget(title: locale.address, desc: address),
+                  OrdersInfoWidget(
+                    title: locale.orderNumber,
+                    desc: "#${orderId.substring(0, 6)}",
+                  ),
+                  const Divider(color: Color(0xFFF5F5F5)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        locale.orderSummary,
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           fontSize: 21,
                           fontWeight: FontWeight.w800,
                         ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(height: 2),
-              Text(
-                'Cafe Shop',
-                style: TextStyle(
-                  color: Color(0xff656266),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(height: 20),
-              OrderSummaryWidget(locale: locale),
-              Container(
-                height: 10,
-                color:
-                    widget.isMinHeight ? Colors.white : const Color(0xFFF5F5F5),
-              ),
-              if (isStarted)
-                Column(
-                  children: [
-                    height(10),
-                    ListTile(
-                      leading: CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(
-                          "https://s3-alpha-sig.figma.com/img/b271/70bb/8a7db32d95e2d59f88efb80e8417336c?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=U1TCftYFII4pIsidEmBhOUs96q6udmiVQ0z1YPKHJJVIjeh~m7r1gTCdGf3S4BIjHAEc9kRQ8fQ52UfUzwENj2Z~m07wfWB3juP9uNTyWdc5vTwW~OAvhjiaQpv9P26dbXTOL1Y~0JoCtG79QCMIKIj7rxV5IiM8wZjAFLAZptmXyP4S1O-miNft6j5CutQKKm-dcR8laXfyjXqsXc0OuVmkHbRuxVSLSrkBTsfoGSEXz7u6TTi5kwNyAResPYpa7VGC3gPrvx2IilBNP7obPKzZ126OBlwNN~hwG3VY9AF1E4gHblmLskYdulaJGBCNMOvtMeGdrWMD3W3-y5ElCw__",
-                        ),
-                      ),
-                      title: Text(
-                        "Ryder",
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
-                      subtitle: Text(
-                        "Customer",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
+                  SizedBox(height: 2),
+                  Text(
+                    storeName,
+                    style: TextStyle(
+                      color: Color(0xff656266),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    children: List.generate(items!.length, (index) {
+                      final item = items?[index];
+                      final customzation = item?.itemId!.customization;
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Card(
-                              shape: const StadiumBorder(),
-                              color: AppColors.black,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: SvgAssets("Call", width: 30, height: 30),
+                          Container(
+                            color: const Color(0xffEFECF0),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 2,
+                              horizontal: 10,
+                            ),
+                            child: Text(
+                              '${index + 1}',
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleSmall!.copyWith(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
-                          width(10),
-                          InkWellButtonWidget(
-                            borderRadius: BorderRadius.circular(100),
-                            onTap: () => context.pushRoute(
-                              const CheckOutChatRoute(),
-                            ),
-                            child: SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Card(
-                                shape: StadiumBorder(
-                                  side: BorderSide(color: AppColors.black),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: SvgAssets(
-                                    "Chat",
-                                    width: 30,
-                                    height: 30,
+                          width(17),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item?.itemId?.name ?? 'Item name',
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleSmall!.copyWith(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                              ),
+                                Theme(
+                                  data: ThemeData(
+                                    dividerColor: Colors.transparent,
+                                  ),
+                                  child: ExpansionTile(
+                                    tilePadding: EdgeInsets.zero,
+                                    childrenPadding: EdgeInsets.zero,
+                                    expandedAlignment: Alignment.topLeft,
+                                    title: Text(
+                                      locale.showMore,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.titleSmall!.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Customization heading
+                                          Text(
+                                            "Customization:",
+                                            style:
+                                                Theme.of(
+                                                  context,
+                                                ).textTheme.titleSmall,
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ), // Space between heading and items
+                                          // Customization items list
+                                          ...List.generate(
+                                            customzation!.length,
+                                            (index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      vertical: 2.0,
+                                                    ),
+                                                child: Text(
+                                                  customzation[index].name ??
+                                                      'Customization name',
+                                                  style:
+                                                      Theme.of(
+                                                        context,
+                                                      ).textTheme.bodySmall,
+                                                ),
+                                              );
+                                            },
+                                          ),
+
+                                          const SizedBox(
+                                            height: 12,
+                                          ), // Space before Size row
+                                          // Size row
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Size: ",
+                                                style:
+                                                    Theme.of(
+                                                      context,
+                                                    ).textTheme.titleSmall,
+                                              ),
+                                              Text(
+                                                item?.itemId?.sizes?[0].name ??
+                                                    'Regular',
+                                                style:
+                                                    Theme.of(
+                                                      context,
+                                                    ).textTheme.bodySmall,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    height(40),
+                      );
+                    }),
+                  ),
+                  Container(
+                    height: 10,
+                    color:
+                        widget.isMinHeight
+                            ? Colors.white
+                            : const Color(0xFFF5F5F5),
+                  ),
+                  if (isStarted)
+                    Column(
+                      children: [
+                        height(10),
+                        ListTile(
+                          leading: CircleAvatar(
+                            radius: 25,
+                            backgroundImage: NetworkImage(
+                              imageUrl ??
+                                  'https://www.pngall.com/wp-content/uploads/5/Avatar-Profile-Vector-PNG.png',
+                            ),
+                          ),
+                          title: Text(
+                            userName ?? 'User name',
+                            style: Theme.of(context).textTheme.titleSmall!
+                                .copyWith(fontWeight: FontWeight.w600),
+                          ),
+                          subtitle: Text(
+                            "Customer",
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  final Uri dialUri = Uri(
+                                    scheme: 'tel',
+                                    path: PhoneNumber,
+                                  );
+
+                                  // Check if the URL can be launched
+                                  if (await canLaunchUrl(dialUri)) {
+                                    await launchUrl(dialUri);
+                                  } else {
+                                    throw 'Could not launch $dialUri';
+                                  }
+                                },
+
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Card(
+                                    shape: const StadiumBorder(),
+                                    color: AppColors.black,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: SvgAssets(
+                                        "Call",
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              width(10),
+                              InkWellButtonWidget(
+                                borderRadius: BorderRadius.circular(100),
+                                onTap:
+                                    () => context.pushRoute(
+                                      const CheckOutChatRoute(),
+                                    ),
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Card(
+                                    shape: StadiumBorder(
+                                      side: BorderSide(color: AppColors.black),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: SvgAssets(
+                                        "Chat",
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        height(40),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: SlideAction(
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff616161),
+                            ),
+                            onSubmit: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ImageCaptureScreen(),
+                                ),
+                              );
+                              return null;
+                            },
+                            outerColor: Colors.white,
+                            innerColor: AppColors.accent,
+                            animationDuration: Duration.zero,
+                            sliderButtonIcon: SvgAssets(
+                              Images.cart,
+                              color: AppColors.white,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Text(locale.slideToEndDelivery),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  else
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
                       child: SlideAction(
                         textStyle: const TextStyle(
                           fontSize: 16,
@@ -172,15 +378,15 @@ class _RidersDeliveryDetailsWidgetState
                           color: Color(0xff616161),
                         ),
                         onSubmit: () {
-                          // setState(() {
-                          //   isStarted = false;
-                          // });
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ImageCaptureScreen(),
-                            ),
-                          );
+                          String? riderOrderId =
+                              StorageHelper().getRiderOrderId();
+                          RiderDelvieryRepo repo = RiderDelvieryRepo();
+                          repo.orderAcceptedByRider(riderOrderId!, {
+                            "status": "accepted_by_rider",
+                          });
+                          setState(() {
+                            isStarted = true;
+                          });
                           return null;
                         },
                         outerColor: Colors.white,
@@ -192,48 +398,18 @@ class _RidersDeliveryDetailsWidgetState
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20),
-                          child: Text(locale.slideToEndDelivery),
+                          child: Text(locale.slideToStartDelivery),
                         ),
                       ),
                     ),
-                  ],
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10,
-                  ),
-                  child: SlideAction(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff616161),
-                    ),
-                    onSubmit: () {
-                      setState(() {
-                        isStarted = true;
-                      });
-                      return null;
-                    },
-                    outerColor: Colors.white,
-                    innerColor: AppColors.accent,
-                    animationDuration: Duration.zero,
-                    sliderButtonIcon: SvgAssets(
-                      Images.cart,
-                      color: AppColors.white,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Text(locale.slideToStartDelivery),
-                    ),
-                  ),
-                ),
-              height(20),
-            ],
-          ),
-        ),
-      ],
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+      loading: () => Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => Center(child: Text('Error: $error')),
     );
   }
 }

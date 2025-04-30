@@ -45,6 +45,34 @@ class Ticket {
     );
   }
 
+  Ticket copyWith({
+    String? id,
+    String? subject,
+    String? description,
+    String? userId,
+    String? status,
+    String? priority,
+    List<String>? imgUrl,
+    List<TicketMessage>? messages,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    bool? read,
+  }) {
+    return Ticket(
+      id: id ?? this.id,
+      subject: subject ?? this.subject,
+      description: description ?? this.description,
+      userId: userId ?? this.userId,
+      status: status ?? this.status,
+      priority: priority ?? this.priority,
+      imgUrl: imgUrl ?? this.imgUrl,
+      messages: messages ?? this.messages,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      read: read ?? this.read,
+    );
+  }
+
   // Helper to determine if the ticket is active
   bool get isActive =>
       status == 'pending' || status == 'open'; // Adjust based on your logic
