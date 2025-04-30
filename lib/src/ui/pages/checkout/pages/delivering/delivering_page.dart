@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:animated_marker/animated_marker.dart';
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:custom_marker_builder/custom_marker_builder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:logger/logger.dart';
 
 @RoutePage()
 class DeliveringPage extends ConsumerStatefulWidget {
@@ -178,7 +180,60 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
       ),
     );
   }
+  int currentIndex = 0;
+  Timer? timer;
+  GoogleMapController? mapController;
 
+  List<LatLng> points = [
+    LatLng(33.607309, 73.0174495),
+    LatLng(33.598409, 73.0174495),
+    LatLng(33.602859, 73.0228495),
+    LatLng(33.602859, 73.0120495),
+    LatLng(33.606084, 73.0201495),
+    LatLng(33.606084, 73.0147495),
+    LatLng(33.599634, 73.0201495),
+    LatLng(33.599634, 73.0147495),
+    LatLng(33.604859, 73.0174495),
+    LatLng(33.600859, 73.0174495),
+  ];
+  //setAnimatedMarker
+  final _staticMarker = {
+    Marker(
+      markerId: MarkerId('static'),
+      position: LatLng(33.602859,73.0174495),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+    ),
+  };
+  Set<Marker> _animatedMarker = {
+    Marker(
+      markerId: MarkerId('animated'),
+      position: LatLng(33.607309,73.0174495),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    ),
+  };
+  void startTraversal() {
+    timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (currentIndex >= points.length) {
+        currentIndex = 0;
+      }
+      moveToPoint(points[currentIndex]);
+      currentIndex++;
+    });
+  }
+
+  void moveToPoint(LatLng point) {
+    setState(() {
+      _animatedMarker = {
+        Marker(
+          markerId: MarkerId('animated'),
+          position: point,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        )
+      };
+    });
+    //mapController!.animateCamera(CameraUpdate.newLatLng(point));
+    Logger().i(point);
+  }
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
@@ -243,16 +298,16 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                   ],
                 ),
               ),
-              step == 0
-                  ? Container(
-                    width: double.infinity,
-                    height: 300,
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(color: Colors.grey.shade300),
-                    child: PngAsset("prepare", width: 237, height: 287),
-                  )
-                  : Expanded(
-                    child: GoogleMap(
+              Container(
+                height: 270,
+                child: AnimatedMarker(
+                  staticMarkers: _staticMarker,
+                  animatedMarkers: _animatedMarker,
+                  duration: const Duration(seconds: 6),
+                  fps: 30,
+                  curve: Curves.easeOut,
+                  builder: (context, animatedMarker) {
+                    return GoogleMap(
                       mapType: MapType.satellite,
                       myLocationEnabled: true,
                       indoorViewEnabled: true,
@@ -260,11 +315,38 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                       initialCameraPosition: _kGooglePlex,
                       onMapCreated: (GoogleMapController googleMapController) {
                         _controller.complete(googleMapController);
+                        mapController = googleMapController;
+                        startTraversal();
                       },
-                      markers: _markers,
+                      markers: animatedMarker,
                       polylines: _polylines,
-                    ),
-                  ),
+                    );
+                  },
+                )
+
+              ),
+              // step == 0
+              //     ? Container(
+              //       width: double.infinity,
+              //       height: 300,
+              //       padding: EdgeInsets.symmetric(vertical: 10),
+              //       decoration: BoxDecoration(color: Colors.grey.shade300),
+              //       child: PngAsset("prepare", width: 237, height: 287),
+              //     )
+              //     : Expanded(
+              //       child: GoogleMap(
+              //         mapType: MapType.satellite,
+              //         myLocationEnabled: true,
+              //         indoorViewEnabled: true,
+              //         trafficEnabled: true,
+              //         initialCameraPosition: _kGooglePlex,
+              //         onMapCreated: (GoogleMapController googleMapController) {
+              //           _controller.complete(googleMapController);
+              //         },
+              //         markers: _markers,
+              //         polylines: _polylines,
+              //       ),
+              //     ),
             ],
           ),
           AnimatedDeliveryDetailsWrapper(step: step),
