@@ -309,7 +309,10 @@ class _RidersDeliveryDetailsWidgetState
                                 borderRadius: BorderRadius.circular(100),
                                 onTap:
                                     () => context.pushRoute(
-                                      const CheckOutChatRoute(),
+                                      CheckOutChatRoute(
+                                        id: riderOrderId,
+                                        isCustomer: false,
+                                      ),
                                     ),
                                 child: SizedBox(
                                   width: 50,
@@ -382,7 +385,7 @@ class _RidersDeliveryDetailsWidgetState
                               StorageHelper().getRiderOrderId();
                           RiderDelvieryRepo repo = RiderDelvieryRepo();
                           repo.orderAcceptedByRider(riderOrderId!, {
-                            "status": "accepted_by_rider",
+                            "status": "order_dispatched",
                           });
                           setState(() {
                             isStarted = true;

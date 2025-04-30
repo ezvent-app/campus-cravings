@@ -23,83 +23,81 @@ class TicketTabWidget extends ConsumerWidget {
               : ticket.status != 'pending';
         }).toList();
 
+    void handleTicketRouting(Ticket ticket) => context.pushRoute(
+      TicketMessagesRoute(
+        messages: ticket.messages,
+        ticketId: ticket.id,
+        onAdd: (String ticketId, TicketMessage message) {
+          ref.read(ticketProvider.notifier).addMessage(ticketId, message);
+          print("Messages: ${ticket.messages}");
+        },
+        onDelete:
+            () => ref
+                .read(ticketProvider.notifier)
+                .deleteTicket(ticket.id, context),
+      ),
+    );
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       physics: const BouncingScrollPhysics(),
-      child: SizedBox(
-        // Ensure Stack has enough height to display Positioned widget
-        height: MediaQuery.of(context).size.height - kToolbarHeight - 150,
-        child: Stack(
-          children: [
-            Column(
-              spacing: 15,
-              children: List.generate(tickets.length, (index) {
-                final ticket = tickets[index];
-                return ProfileGroupButton(
-                  options: [
-                    HelpOption(
-                      label: "Ticket#${ticket.id}",
-                      onPressed: () {
-                        context.pushRoute(
-                          TicketMessagesRoute(
-                            messages: ticket.messages,
-                            ticketId: ticket.id,
-                            onAdd: (String ticketId, TicketMessage message) {
-                              ref
-                                  .read(ticketProvider.notifier)
-                                  .addMessage(ticketId, message);
-                              print("Messages: ${ticket.messages}");
-                            },
-                            onDelete:
-                                () => ref
-                                    .read(ticketProvider.notifier)
-                                    .deleteTicket(ticket.id, context),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                  topMargin: 0,
-                  isHelp: true,
-                );
-              }),
-            ),
-            if (type == TicketTabType.active)
-              Positioned(
-                right: 16,
-                bottom: 40,
+      child: Stack(
+        children: [
+          Column(
+            children: List.generate(tickets.length, (index) {
+              final ticket = tickets[index];
+              return ProfileGroupButton(
+                options: [
+                  HelpOption(
+                    label: "Ticket#${ticket.id}",
+                    onPressed: () => handleTicketRouting(ticket),
+                  ),
+                ],
+                topMargin: 0,
+                isHelp: true,
+              );
+            }),
+          ),
+          if (type == TicketTabType.active)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16, bottom: 40),
                 child: FloatingActionButton(
                   onPressed: () async {
                     try {
                       final response = await services.postAPI(
                         url: "/admin/tickets",
                         map: {
-                          "Subject": 'Pakistan Studies',
-                          "Description": 'Need help with my assignment',
+                          "subject": 'Pakistan Studies',
+                          "description": 'Need help with my assignment',
                           "imgUrl": [],
                         },
                       );
-                      if (response.statusCode == 200) {
-                        final body = response.body as Map<String, dynamic>;
+                      if (response.statusCode == 201) {
+                        final body =
+                            jsonDecode(response.body) as Map<String, dynamic>;
+                        final ticket = Ticket.fromJson(body['ticket']);
                         ref
                             .read(ticketProvider.notifier)
                             .addTicket(body['ticket']);
+                        handleTicketRouting(ticket);
                       }
                     } catch (e) {
                       print("Error: $e");
                       showToast("Failed to create ticket", context: context);
                     }
                   },
-                  backgroundColor: Colors.purple,
+                  backgroundColor: AppColors.primary,
                   child: Icon(
                     Icons.add_sharp,
-                    color: AppColors.primary,
+                    color: AppColors.white,
                     size: 30,
                   ),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

@@ -129,9 +129,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
     timer.cancel();
     _orderCycleTimer?.cancel();
     _isMounted = false;
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    }
+    // if (Navigator.canPop(context)) {
+    //   Navigator.pop(context);
+    // }
     super.dispose();
   }
 
@@ -392,7 +392,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                 "orderId": order.id,
                               });
                               _orderCycleTimer?.cancel();
-                              Navigator.pop(context);
+                              // Navigator.pop(context);
                               setState(() {
                                 _remainingOrders.clear();
                               });
