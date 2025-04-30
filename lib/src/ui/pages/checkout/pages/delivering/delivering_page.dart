@@ -99,8 +99,8 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     _isMounted = false;
 
     // Clean up socket listeners when disposing the widget
-    final socketController = ref.read(socketControllerProvider);
-    socketController.stopListeningForStatusUpdates();
+    // final socketController = ref.read(socketControllerProvider);
+    // socketController.stopListeningForStatusUpdates();
 
     super.dispose();
   }

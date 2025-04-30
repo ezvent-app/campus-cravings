@@ -29,7 +29,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        widget.step != 0
+        widget.step >= 0
             ? Column(
               children: [
                 Center(
@@ -117,8 +117,13 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                       Expanded(
                         child: InkWellButtonWidget(
                           borderRadius: BorderRadius.circular(12),
-                          onTap: () {},
-                          // context.pushRoute(const CheckOutChatRoute()),
+                          onTap:
+                              () => context.pushRoute(
+                                CheckOutChatRoute(
+                                  id: "68125da894c140e8255b7f56",
+                                  isCustomer: true,
+                                ),
+                              ),
                           child: Container(
                             height: 36,
                             decoration: BoxDecoration(
