@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:campuscravings/src/src.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +25,33 @@ class PlaceOrderRepository {
     } else {
       if (context.mounted) {
         showToast(body['message'].toString(), context: context);
+      }
+    }
+  }
+
+  Future<double> fetchDemandMultiplierOnly() async {
+    try {
+      final response = await _services.getAPI('/user/getDemandMultiple');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        print('Response: $data');
+
+        // Extract only getDemandMultiple
+        final double demandMultiplier =
+            data['data']['getDemandMultiple']?.toDouble() ?? 1.0;
+        return demandMultiplier;
+      } else {
+        return Future.error(
+          'Failed to load data. Status code: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      if (e is TimeoutException) {
+        return Future.error('Request timed out. Please try again.');
+      } else {
+        print(e.toString());
+        return Future.error('Something went wrong');
       }
     }
   }

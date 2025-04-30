@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 
 class PickupTabWidget extends ConsumerWidget {
   PickupTabWidget({super.key});
@@ -12,7 +13,6 @@ class PickupTabWidget extends ConsumerWidget {
     final locale = AppLocalizations.of(context)!;
     final cartItems = ref.watch(cartItemsProvider);
     final cartNotifier = ref.read(cartItemsProvider.notifier);
-    final address = ref.watch(locationProvider);
     final subtotal = cartItems
         .map((item) => item.price * item.quantity)
         .fold(0.0, (a, b) => a + b);
@@ -31,39 +31,6 @@ class PickupTabWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: .08),
-                  blurRadius: 15,
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.only(top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        locale.deliverTo,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      SizedBox(height: 20),
-                      Divider(height: 0, color: AppColors.dividerColor),
-                    ],
-                  ),
-                ),
-                HomeLocationWidget(title: locale.home, subTitle: ''),
-              ],
-            ),
-          ),
           Container(
             padding: const EdgeInsets.all(20),
             margin: const EdgeInsets.symmetric(vertical: 16),
@@ -98,12 +65,9 @@ class PickupTabWidget extends ConsumerWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              PngAsset(
+                              CustomNetworkImage(
                                 item.image,
-                                height: 80,
-                                width: 80,
-                                fit: BoxFit.cover,
-                                borderRadius: BorderRadius.circular(16),
+                                fit: BoxFit.fitWidth,
                               ),
                               Expanded(
                                 child: Padding(
@@ -266,7 +230,7 @@ class PickupTabWidget extends ConsumerWidget {
                 Row(
                   children: [
                     Text(
-                      "Platform fee",
+                      "Platform Fee",
                       style: TextStyle(
                         color: Color(0xff424242),
                         fontSize: 14,

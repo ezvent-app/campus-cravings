@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 import 'package:geolocator/geolocator.dart';
 
 class DeliveryTabWidget extends ConsumerWidget {
@@ -8,25 +9,22 @@ class DeliveryTabWidget extends ConsumerWidget {
 
   final PlaceOrderRepository _repository = PlaceOrderRepository();
 
-  double calculateDeliveryFee({
-    required double distanceInMiles,
-    required int ordersInCampus,
-    required int ridersInCampus,
-  }) {
+  Future<double> calculateDeliveryFee({required double distanceInMiles}) async {
     const double baseFee = 0.50;
     const double perMileFee = 0.70;
 
-    double demandMultiplier =
-        ridersInCampus > 0 ? ordersInCampus / ridersInCampus : 1;
+    final double demandMultiplier =
+        await _repository.fetchDemandMultiplierOnly();
 
     double milesBeyondFirst = (distanceInMiles > 1) ? (distanceInMiles - 1) : 0;
 
     double totalFee =
         baseFee + (perMileFee * milesBeyondFirst * demandMultiplier);
 
-    log("Delivery fee ${double.parse(totalFee.toStringAsFixed(2))}");
+    final feeRounded = double.parse(totalFee.toStringAsFixed(2));
+    log("Delivery fee: \$$feeRounded");
 
-    return double.parse(totalFee.toStringAsFixed(2));
+    return feeRounded;
   }
 
   double _calculateDistanceInMiles(LatLng from, LatLng to) {
@@ -141,12 +139,9 @@ class DeliveryTabWidget extends ConsumerWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              PngAsset(
+                              CustomNetworkImage(
                                 item.image,
-                                height: 80,
-                                width: 80,
-                                fit: BoxFit.cover,
-                                borderRadius: BorderRadius.circular(16),
+                                fit: BoxFit.fitWidth,
                               ),
                               Expanded(
                                 child: Padding(
@@ -309,7 +304,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                 Row(
                   children: [
                     Text(
-                      "Platform fee",
+                      "Platform Fee",
                       style: TextStyle(
                         color: Color(0xff424242),
                         fontSize: 14,
@@ -332,6 +327,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                     ),
                   ],
                 ),
+
                 locationAsync.when(
                   data: (locationModel) {
                     final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
@@ -346,143 +342,133 @@ class DeliveryTabWidget extends ConsumerWidget {
                       restuatantLatLng,
                     );
 
-                    final deliveryFee = calculateDeliveryFee(
-                      distanceInMiles: distance,
-                      ordersInCampus: 20,
-                      ridersInCampus: 5,
-                    );
+                    return FutureBuilder(
+                      future: calculateDeliveryFee(distanceInMiles: distance),
 
-                    return Row(
-                      children: [
-                        Text(
-                          locale.deliveryFee,
-                          style: TextStyle(
-                            color: Color(0xff424242),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 12),
-                            child: Text(
-                              "\$${deliveryFee.toStringAsFixed(2)}",
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                color: Color(0xff424242),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                  loading: () => CircularProgressIndicator(),
-                  error: (err, stack) => Text("Error: $err"),
-                ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return SizedBox();
+                        }
 
-                Row(
-                  children: [
-                    Text(
-                      "Tip",
-                      style: TextStyle(
-                        color: Color(0xff424242),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 12),
-                        child: Text(
-                          "\$${tip.toString()}",
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            color: Color(0xff424242),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                TextButton(
-                  onPressed: () async => await orderTipSheetMethod(context),
-                  child: Text(
-                    '+ ${locale.addTip}',
-                    style: TextStyle(
-                      color: AppColors.accent,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Divider(height: 40, color: AppColors.dividerColor),
-                locationAsync.when(
-                  data: (locationModel) {
-                    final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
-                      address.value?.addresses,
-                    );
-                    if (restuatantLatLng == null) {
-                      return Text("Restaurant location is missing");
-                    }
+                        // If error occurs
+                        if (snapshot.hasError) {
+                          return Text("Error: ${snapshot.error}");
+                        }
+                        final deliveryFee = snapshot.data!;
 
-                    final distance = _calculateDistanceInMiles(
-                      locationModel.latLng,
-                      restuatantLatLng,
-                    );
-
-                    final deliveryFee = calculateDeliveryFee(
-                      distanceInMiles: distance,
-                      ordersInCampus: 20,
-                      ridersInCampus: 5,
-                    );
-
-                    return Column(
-                      children: [
-                        Row(
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              locale.total,
-                              style: TextStyle(
-                                color: Color(0xff424242),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 12),
-                                child: Text(
-                                  "\$${(total + deliveryFee).toStringAsFixed(2)}",
-                                  textAlign: TextAlign.end,
+                            Row(
+                              children: [
+                                Text(
+                                  locale.deliveryFee,
                                   style: TextStyle(
                                     color: Color(0xff424242),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                   ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 12),
+                                    child: Text(
+                                      "\$${deliveryFee.toStringAsFixed(2)}",
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                        color: Color(0xff424242),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "Tip",
+                                  style: TextStyle(
+                                    color: Color(0xff424242),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 12),
+                                    child: Text(
+                                      "\$${tip.toString()}",
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                        color: Color(0xff424242),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            TextButton(
+                              onPressed:
+                                  () async =>
+                                      await orderTipSheetMethod(context),
+                              child: Text(
+                                '+ ${locale.addTip}',
+                                style: TextStyle(
+                                  color: AppColors.accent,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
+                            Divider(height: 40, color: AppColors.dividerColor),
+                            Row(
+                              children: [
+                                Text(
+                                  locale.total,
+                                  style: TextStyle(
+                                    color: Color(0xff424242),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 12),
+                                    child: Text(
+                                      "\$${(total + deliveryFee).toStringAsFixed(2)}",
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                        color: Color(0xff424242),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(
+                              height: 48,
+                              color: AppColors.dividerColor,
+                            ),
+                            CheckPlaceOrderButtonWidget(
+                              deliveryFee: deliveryFee,
+                              total: total + deliveryFee,
+                              repository: _repository,
+                              orderType: "delivery",
+                              cartItems: cartItems,
+                              tip: tip,
+                              locale: locale,
+                            ),
                           ],
-                        ),
-                        const Divider(
-                          height: 48,
-                          color: AppColors.dividerColor,
-                        ),
-                        CheckPlaceOrderButtonWidget(
-                          total: total + deliveryFee,
-                          repository: _repository,
-                          orderType: "delivery",
-                          cartItems: cartItems,
-                          tip: tip,
-                          locale: locale,
-                        ),
-                      ],
+                        );
+                      },
                     );
                   },
                   loading: () => CircularProgressIndicator(),
@@ -626,6 +612,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
     required this.locale,
     required this.orderType,
     required this.repository,
+    required this.deliveryFee,
   });
 
   final List<CartItem> cartItems;
@@ -634,6 +621,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
   final String orderType;
   final PlaceOrderRepository repository;
   final double total;
+  final double deliveryFee;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -654,6 +642,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
           final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
             address.value?.addresses,
           );
+
           locationAsync.whenData((locationModel) async {
             if (restuatantLatLng != null) {
               final distance = _calculateDistanceInMiles(
@@ -661,15 +650,12 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
                 restuatantLatLng,
               );
 
-              final double deliveryFee = calculateDeliveryFee(
-                distanceInMiles: distance,
-                ordersInCampus: 20,
-                ridersInCampus: 5,
-              );
               log(
                 "...............................................................",
               );
-              log("DISTANCE IN MILES $distance");
+              log("CUSTOMER ${locationModel.latLng}");
+              log("RESTAUNARANT $restuatantLatLng");
+              log("DISTANCE IN MILES ${distance.toStringAsFixed(2)}");
               log('Total Delivery Fee: \$$deliveryFee');
               log(
                 "...............................................................",

@@ -374,7 +374,6 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             );
                             return;
                           }
-
                           ref
                               .read(cartItemsProvider.notifier)
                               .addItem(
