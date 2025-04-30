@@ -94,10 +94,27 @@ class SocketController {
     });
   }
 
+  void emitMarkMessageAsRead(String messageId, bool isCustomer) {
+    print("Emitting markMessageAsRead event with messageId: $messageId");
+    _socketService.emitWithAck(SocketEvents.markMessageRead, {
+      'messageId': messageId,
+      'isCustomer': isCustomer,
+    });
+  }
+
   void listenForNewMessages(void Function(Map<String, dynamic>) onNewMessage) {
     _socketService.on(SocketEvents.receiveChatMessage, (data) {
       print('Received newMessage event: $data');
       onNewMessage(data);
+    });
+  }
+
+  void listenForReadMessages(
+    void Function(Map<String, dynamic>) onMessageRead,
+  ) {
+    _socketService.on(SocketEvents.messagesRead, (data) {
+      print('Received read Message event: $data');
+      onMessageRead(data);
     });
   }
 

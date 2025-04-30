@@ -47,7 +47,9 @@ class _CheckOutChatPageState extends ConsumerState<CheckOutChatPage> {
 
     // Watch conversation details to get conversationId
     final conversationAsync = ref.watch(
-      conversationNotifierProvider(widget.id),
+      conversationNotifierProvider(
+        ConversationParams(orderId: widget.id, isCustomer: widget.isCustomer),
+      ),
     );
   }
 
@@ -56,11 +58,12 @@ class _CheckOutChatPageState extends ConsumerState<CheckOutChatPage> {
     final socketController = ref.read(socketControllerProvider);
     final locale = AppLocalizations.of(context)!;
     final conversationAsync = ref.watch(
-      conversationNotifierProvider(widget.id),
+      conversationNotifierProvider(
+        ConversationParams(orderId: widget.id, isCustomer: widget.isCustomer),
+      ),
     );
 
     return ProviderScope(
-      overrides: [isCustomerProvider.overrideWithValue(widget.isCustomer)],
       child: Scaffold(
         appBar: AppBar(
           title: Text(

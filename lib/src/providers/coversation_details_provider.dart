@@ -10,9 +10,10 @@ class ConversationNotifier
     extends StateNotifier<AsyncValue<ConversationDetails?>> {
   final Ref ref;
   final String orderId;
+  final bool isCustomer;
   final HttpService _httpService = HttpService();
 
-  ConversationNotifier(this.ref, this.orderId)
+  ConversationNotifier(this.ref, this.orderId, this.isCustomer)
     : super(const AsyncValue.loading()) {
     _fetchConversationDetails();
   }
@@ -29,8 +30,7 @@ class ConversationNotifier
       // Mark unread messages as read
       for (final chat in details.messages) {
         if (chat.status == 'sent' &&
-            chat.senderModel !=
-                (ref.read(isCustomerProvider) ? 'User' : 'Rider')) {
+            chat.senderModel != (isCustomer ? 'User' : 'Rider')) {
           ref
               .read(chatNotifierProvider(details.conversationId).notifier)
               .markAsRead(chat.id);
@@ -53,12 +53,15 @@ class ConversationNotifier
             .addMessage(newMessage);
 
         // Mark the message as read if it's not from the current user
-        if (newMessage.senderModel !=
-            (ref.read(isCustomerProvider) ? 'User' : 'Rider')) {
-          ref
-              .read(chatNotifierProvider(details.conversationId).notifier)
-              .markAsRead(newMessage.id);
+        if (newMessage.senderModel != (isCustomer ? 'User' : 'Rider')) {
+          // ref
+          //     .read(chatNotifierProvider(details.conversationId).notifier)
+          //     .markAsRead(newMessage.id);
+          socketController.emitMarkMessageAsRead(newMessage.id, isCustomer);
         }
+      });
+      socketController.listenForReadMessages((Map<String, dynamic> data) {
+        print("Read message event: $data");
       });
       socketController.emitJoinConversation(details.conversationId);
       debugPrint('Joined conversation room: ${details.conversationId}');
@@ -71,8 +74,6 @@ class ConversationNotifier
     try {
       state = const AsyncValue.loading();
 
-      // Construct the API endpoint
-      final isCustomer = ref.read(isCustomerProvider);
       final endpoint =
           '/conversation/getConversationDetails?orderId=$orderId&isCustomer=$isCustomer';
 
@@ -119,14 +120,29 @@ class ConversationNotifier
   }
 }
 
+class ConversationParams {
+  final String orderId;
+  final bool isCustomer;
+
+  ConversationParams({required this.orderId, required this.isCustomer});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ConversationParams &&
+          runtimeType == other.runtimeType &&
+          orderId == other.orderId &&
+          isCustomer == other.isCustomer;
+
+  @override
+  int get hashCode => orderId.hashCode ^ isCustomer.hashCode;
+}
+
 // Providers
 final conversationNotifierProvider = StateNotifierProvider.family<
   ConversationNotifier,
   AsyncValue<ConversationDetails?>,
-  String
->((ref, orderId) => ConversationNotifier(ref, orderId));
-
-// Provider for isCustomer (to access in notifier)
-final isCustomerProvider = Provider<bool>(
-  (ref) => false,
-); // Will be overridden in widget
+  ConversationParams
+>(
+  (ref, params) => ConversationNotifier(ref, params.orderId, params.isCustomer),
+);
