@@ -1,15 +1,26 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/pages/checkout/pages/delivering/widgets/rider_details_widget.dart';
 
 class DeliveryDetailsWidget extends ConsumerStatefulWidget {
   final int step;
+  final String orderId;
+  final String? address;
+  final List<dynamic>? items;
+  final String? price;
+  final String? storeName;
 
   final ScrollController scrollController;
   final bool isMinHeight;
   const DeliveryDetailsWidget({
     super.key,
     required this.step,
+    required this.orderId,
     required this.scrollController,
     required this.isMinHeight,
+    this.address,
+    this.storeName,
+    this.items,
+    this.price,
   });
 
   @override
@@ -22,141 +33,42 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
   List emojis = ['😣', '☹️', '😶', '😃', '🤩'];
 
   int selectedIndex = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    // Show delivery note sheet automatically when step > 5
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.step >= 5) {
+        orderReviewSheetMethod(context);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locale = AppLocalizations.of(context)!;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        widget.step >= 0
-            ? Column(
-              children: [
-                Center(
-                  child: Container(
-                    height: 80,
-                    width: 80,
-                    margin: const EdgeInsets.only(bottom: 9),
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        alignment: Alignment.center,
-                        image: NetworkImage(
-                          "https://s3-alpha-sig.figma.com/img/b271/70bb/8a7db32d95e2d59f88efb80e8417336c?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=U1TCftYFII4pIsidEmBhOUs96q6udmiVQ0z1YPKHJJVIjeh~m7r1gTCdGf3S4BIjHAEc9kRQ8fQ52UfUzwENj2Z~m07wfWB3juP9uNTyWdc5vTwW~OAvhjiaQpv9P26dbXTOL1Y~0JoCtG79QCMIKIj7rxV5IiM8wZjAFLAZptmXyP4S1O-miNft6j5CutQKKm-dcR8laXfyjXqsXc0OuVmkHbRuxVSLSrkBTsfoGSEXz7u6TTi5kwNyAResPYpa7VGC3gPrvx2IilBNP7obPKzZ126OBlwNN~hwG3VY9AF1E4gHblmLskYdulaJGBCNMOvtMeGdrWMD3W3-y5ElCw__",
-                        ),
-                      ),
-                      shape: BoxShape.circle,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => context.pushRoute(DeliveryManProfileRoute()),
-                  child: Center(
-                    child: Text(
-                      locale.viewProfile,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: AppColors.black,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 45),
-                  child: Text(
-                    locale.yourOrderGoodHandsFellowComputerScienceStudent,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
-                  ),
-                ),
-                height(10),
-                InkWellButtonWidget(
-                  onTap: () => orderReviewSheetMethod(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      stars.length,
-                      (i) => Padding(
-                        padding: const EdgeInsets.only(right: 5),
-                        child: SvgAssets(
-                          'star',
-                          width: 20,
-                          height: 20,
-                          color:
-                              i == 4
-                                  ? AppColors.dividerColor
-                                  : AppColors.yellow,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                height(15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 36,
-                        height: 36,
-                        padding: const EdgeInsets.all(9),
-                        margin: const EdgeInsets.only(right: 18),
-                        decoration: const BoxDecoration(
-                          color: Color(0xffF5F5F5),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const SvgAssets(
-                          'call_icon',
-                          height: 37,
-                          width: 37,
-                        ),
-                      ),
-                      Expanded(
-                        child: InkWellButtonWidget(
-                          borderRadius: BorderRadius.circular(12),
-                          onTap:
-                              () => context.pushRoute(
-                                CheckOutChatRoute(
-                                  id: "68125da894c140e8255b7f56",
-                                  isCustomer: true,
-                                ),
-                              ),
-                          child: Container(
-                            height: 36,
-                            decoration: BoxDecoration(
-                              color: const Color(0xffF5F5F5),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 17,
-                              vertical: 8,
-                            ),
-                            child: Text(
-                              locale.sendMessage,
-                              style: Theme.of(context).textTheme.bodyMedium!
-                                  .copyWith(color: AppColors.black),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
-            : SizedBox(),
-        Container(
-          margin: const EdgeInsets.only(top: 19),
-          height: 10,
-          color: widget.isMinHeight ? Colors.white : const Color(0xFFF5F5F5),
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            controller: widget.scrollController,
-            child: Column(
+    return Expanded(
+      child: SingleChildScrollView(
+        controller: widget.scrollController,
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            widget.step >= 3
+                ? RiderInformationWidget(
+                  orderId: widget.orderId,
+                  orderReviewSheetMethod: () => orderReviewSheetMethod(context),
+                )
+                : SizedBox(),
+            Container(
+              margin: const EdgeInsets.only(top: 19),
+              height: 10,
+              color:
+                  widget.isMinHeight ? Colors.white : const Color(0xFFF5F5F5),
+            ),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
@@ -167,7 +79,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      widget.step != 0
+                      widget.step >= 5
                           ? Container(
                             height: size.height * .26,
                             padding: EdgeInsets.all(
@@ -231,7 +143,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Flat / Suite / Floor: 174',
+                        widget.address ?? 'Flat / Suite / Floor: 174',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: AppColors.black,
                         ),
@@ -246,8 +158,8 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                         ),
                       ),
                       const SizedBox(height: 2),
-                      const Text(
-                        'Cafe Shop',
+                      Text(
+                        widget.storeName ?? 'Cafe Shop',
                         style: TextStyle(
                           color: Color(0xff656266),
                           fontSize: 15,
@@ -255,7 +167,34 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      OrderSummaryWidget(locale: locale),
+                      if (widget.items != null)
+                        ...List.generate(
+                          widget.items!.length,
+                          (index) => OrderSummaryWidget(
+                            number: index + 1,
+                            title: widget.items![index]["item_id"]["name"],
+                            size:
+                                widget.items![index]["item_id"]["sizes"] !=
+                                            null &&
+                                        widget
+                                                .items![index]["item_id"]["sizes"]
+                                                .length >
+                                            0
+                                    ? widget
+                                        .items![index]["item_id"]["sizes"][0]["name"]
+                                    : null,
+                            customizations:
+                                widget.items![index]["item_id"]["customization"] !=
+                                            null &&
+                                        widget
+                                                .items![index]["item_id"]["customization"]
+                                                .length >
+                                            0
+                                    ? widget
+                                        .items![index]["item_id"]["customization"]
+                                    : [],
+                          ),
+                        ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 20),
                         child: Row(
@@ -271,7 +210,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                               ),
                             ),
                             Text(
-                              '\$15.81',
+                              '\$${widget.price ?? '0.00'}',
                               style: Theme.of(
                                 context,
                               ).textTheme.titleSmall!.copyWith(
@@ -312,9 +251,9 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                 ),
               ],
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -451,7 +390,8 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                       height(30),
                       RoundedButtonWidget(
                         btnTitle: locale.continueNext,
-                        onTap: () => context.replaceRoute(HomeTabRoute()),
+                        onTap:
+                            () => context.router.replaceAll([HomeTabRoute()]),
                       ),
                     ],
                   ),
@@ -512,7 +452,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
                 Spacer(),
                 RoundedButtonWidget(
                   btnTitle: locale.continueNext,
-                  onTap: () => context.replaceRoute(HomeTabRoute()),
+                  onTap: () {},
                 ),
                 height(20),
               ],

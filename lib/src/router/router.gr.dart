@@ -412,10 +412,21 @@ class DeliveringRoute extends _i44.PageRouteInfo<DeliveringRouteArgs> {
   DeliveringRoute({
     _i45.Key? key,
     String? id,
+    String? storeName,
+    String? address,
+    List<dynamic>? items,
+    String? price,
     List<_i44.PageRouteInfo>? children,
   }) : super(
          DeliveringRoute.name,
-         args: DeliveringRouteArgs(key: key, id: id),
+         args: DeliveringRouteArgs(
+           key: key,
+           id: id,
+           storeName: storeName,
+           address: address,
+           items: items,
+           price: price,
+         ),
          initialChildren: children,
        );
 
@@ -427,21 +438,43 @@ class DeliveringRoute extends _i44.PageRouteInfo<DeliveringRouteArgs> {
       final args = data.argsAs<DeliveringRouteArgs>(
         orElse: () => const DeliveringRouteArgs(),
       );
-      return _i12.DeliveringPage(key: args.key, id: args.id);
+      return _i12.DeliveringPage(
+        key: args.key,
+        id: args.id,
+        storeName: args.storeName,
+        address: args.address,
+        items: args.items,
+        price: args.price,
+      );
     },
   );
 }
 
 class DeliveringRouteArgs {
-  const DeliveringRouteArgs({this.key, this.id});
+  const DeliveringRouteArgs({
+    this.key,
+    this.id,
+    this.storeName,
+    this.address,
+    this.items,
+    this.price,
+  });
 
   final _i45.Key? key;
 
   final String? id;
 
+  final String? storeName;
+
+  final String? address;
+
+  final List<dynamic>? items;
+
+  final String? price;
+
   @override
   String toString() {
-    return 'DeliveringRouteArgs{key: $key, id: $id}';
+    return 'DeliveringRouteArgs{key: $key, id: $id, storeName: $storeName, address: $address, items: $items, price: $price}';
   }
 }
 
