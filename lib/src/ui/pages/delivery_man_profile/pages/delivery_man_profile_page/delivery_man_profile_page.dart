@@ -1,8 +1,10 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/pages/checkout/pages/delivering/widgets/rider_details_widget.dart';
 
 @RoutePage()
 class DeliveryManProfilePage extends StatefulWidget {
-  const DeliveryManProfilePage({super.key});
+  final RiderDetails riderDetails;
+  const DeliveryManProfilePage({super.key, required this.riderDetails});
 
   @override
   State<DeliveryManProfilePage> createState() => _DeliveryManProfilePageState();
@@ -33,12 +35,16 @@ class _DeliveryManProfilePageState extends State<DeliveryManProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProfileAndAchievmentsWidget(size: size),
+            ProfileAndAchievmentsWidget(
+              size: size,
+              riderDetails: widget.riderDetails,
+            ),
             ProfileDetailsWidget(
               stars: stars,
-              majors: majors,
-              minors: minors,
-              sports: sports,
+              majors: widget.riderDetails.majors,
+              minors: widget.riderDetails.minors,
+              sports: widget.riderDetails.clubs,
+              bio: widget.riderDetails.bio,
             ),
           ],
         ),

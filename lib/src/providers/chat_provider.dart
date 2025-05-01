@@ -60,6 +60,27 @@ class ChatNotifier extends StateNotifier<AsyncValue<List<Chat>>> {
     final chats = state.value ?? [];
     state = AsyncValue.data([...chats, newMessage]);
   }
+
+  void markMessagesAsRead(List<String> messageIds) {
+    final chats = state.value ?? [];
+    state = AsyncValue.data(
+      chats.map((chat) {
+        if (messageIds.contains(chat.id)) {
+          return Chat(
+            id: chat.id,
+            conversation: chat.conversation,
+            sender: chat.sender,
+            senderModel: chat.senderModel,
+            text: chat.text,
+            status: 'read',
+            createdAt: chat.createdAt,
+            updatedAt: chat.updatedAt,
+          );
+        }
+        return chat;
+      }).toList(),
+    );
+  }
 }
 
 // Providers

@@ -38,6 +38,16 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     "Your order has been cancelled",
     "Your order has been completed",
   ];
+  final subMessages = [
+    "Waiting for restaturatnt to accept the order",
+    "Estimated Preparation Time: ",
+    "Waiting for rider to pick up the order",
+    "Estimated Delivery Time: ",
+    "Estimated Delivery Time: ",
+    "You order has arrived! Enjoy your meal",
+    "Your order has been cancelled",
+    "Your order has been completed",
+  ];
   final statuses = [
     "pending",
     "order_accepted",
@@ -102,6 +112,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
         if (_isMounted) {
           ref.read(deliveringProvider.notifier).state = {
             'status': data['status'],
+            'estimated_time': data['estimated_time'],
           };
         }
       });
@@ -293,7 +304,13 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                     Row(
                       children: [
                         Text(
-                          "Prep usually starts within 2-3 minutes.",
+                          subMessages[step] +
+                              ((step == 1 || step == 3)
+                                  ? ref.watch(
+                                        deliveringProvider,
+                                      )['estimated_time'] +
+                                      " minutes"
+                                  : ""),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
@@ -431,5 +448,5 @@ class CustomerMarkerWidget extends StatelessWidget {
 }
 
 final deliveringProvider = StateProvider<Map<String, dynamic>>(
-  (ref) => {'status': ''},
+  (ref) => {'status': '', 'estimated_time': ''},
 );

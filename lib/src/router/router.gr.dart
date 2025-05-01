@@ -11,7 +11,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i44;
 import 'package:campuscravings/src/models/Rider_History_Model/rider_history.dart'
-    as _i46;
+    as _i47;
 import 'package:campuscravings/src/src.dart' as _i45;
 import 'package:campuscravings/src/ui/pages/address_form/address_form_page.dart'
     as _i2;
@@ -36,6 +36,8 @@ import 'package:campuscravings/src/ui/pages/checkout/pages/check_out_address_pag
     as _i10;
 import 'package:campuscravings/src/ui/pages/checkout/pages/delivering/delivering_page.dart'
     as _i12;
+import 'package:campuscravings/src/ui/pages/checkout/pages/delivering/widgets/rider_details_widget.dart'
+    as _i46;
 import 'package:campuscravings/src/ui/pages/checkout/pages/map_order_tracking_page.dart'
     as _i8;
 import 'package:campuscravings/src/ui/pages/delivery_man_profile/pages/add_payout_page.dart'
@@ -480,18 +482,46 @@ class DeliveringRouteArgs {
 
 /// generated route for
 /// [_i13.DeliveryManProfilePage]
-class DeliveryManProfileRoute extends _i44.PageRouteInfo<void> {
-  const DeliveryManProfileRoute({List<_i44.PageRouteInfo>? children})
-    : super(DeliveryManProfileRoute.name, initialChildren: children);
+class DeliveryManProfileRoute
+    extends _i44.PageRouteInfo<DeliveryManProfileRouteArgs> {
+  DeliveryManProfileRoute({
+    _i45.Key? key,
+    required _i46.RiderDetails riderDetails,
+    List<_i44.PageRouteInfo>? children,
+  }) : super(
+         DeliveryManProfileRoute.name,
+         args: DeliveryManProfileRouteArgs(
+           key: key,
+           riderDetails: riderDetails,
+         ),
+         initialChildren: children,
+       );
 
   static const String name = 'DeliveryManProfileRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      return const _i13.DeliveryManProfilePage();
+      final args = data.argsAs<DeliveryManProfileRouteArgs>();
+      return _i13.DeliveryManProfilePage(
+        key: args.key,
+        riderDetails: args.riderDetails,
+      );
     },
   );
+}
+
+class DeliveryManProfileRouteArgs {
+  const DeliveryManProfileRouteArgs({this.key, required this.riderDetails});
+
+  final _i45.Key? key;
+
+  final _i46.RiderDetails riderDetails;
+
+  @override
+  String toString() {
+    return 'DeliveryManProfileRouteArgs{key: $key, riderDetails: $riderDetails}';
+  }
 }
 
 /// generated route for
@@ -879,12 +909,12 @@ class OrdersDetailsRoute extends _i44.PageRouteInfo<OrdersDetailsRouteArgs> {
     String? storeName,
     String? deliveryAddress,
     String? orderNumber,
-    List<_i46.Customization>? customizationList,
+    List<_i47.Customization>? customizationList,
     List<String>? name,
     int? quantity,
     String? totalPrice,
     List<String?>? sizeNames,
-    List<_i46.Item>? items,
+    List<_i47.Item>? items,
     List<_i44.PageRouteInfo>? children,
   }) : super(
          OrdersDetailsRoute.name,
@@ -949,7 +979,7 @@ class OrdersDetailsRouteArgs {
 
   final String? orderNumber;
 
-  final List<_i46.Customization>? customizationList;
+  final List<_i47.Customization>? customizationList;
 
   final List<String>? name;
 
@@ -959,7 +989,7 @@ class OrdersDetailsRouteArgs {
 
   final List<String?>? sizeNames;
 
-  final List<_i46.Item>? items;
+  final List<_i47.Item>? items;
 
   @override
   String toString() {

@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Mock API service for fetching rider details
 class RiderApiService {
@@ -23,11 +24,25 @@ class RiderDetails {
   final String name;
   final String profileImageUrl;
   final String rating;
+  final String hours;
+  final String miles;
+  final String bio;
+  final List majors;
+  final List minors;
+  final List clubs;
+  final String phoneNumber;
 
   RiderDetails({
     required this.name,
     required this.profileImageUrl,
     required this.rating,
+    required this.hours,
+    required this.miles,
+    required this.bio,
+    required this.majors,
+    required this.minors,
+    required this.clubs,
+    required this.phoneNumber,
   });
 
   factory RiderDetails.fromJson(Map<String, dynamic> json) {
@@ -35,6 +50,13 @@ class RiderDetails {
       name: json['user']['fullName'] as String,
       profileImageUrl: json['user']['imgUrl'] as String,
       rating: (json['rating']['average']).toString(),
+      hours: json['totalHours'].toString(),
+      miles: json['totalDistance'].toString(),
+      bio: json['bio'] as String,
+      majors: json['majors'] as List,
+      minors: json['monirs'] as List,
+      clubs: json['club_organizations'] as List,
+      phoneNumber: json['user']['phoneNumber'] as String,
     );
   }
 }
@@ -111,7 +133,10 @@ class _RiderInformationWidgetState
               ),
             ),
             TextButton(
-              onPressed: () => context.pushRoute(DeliveryManProfileRoute()),
+              onPressed:
+                  () => context.pushRoute(
+                    DeliveryManProfileRoute(riderDetails: riderDetails),
+                  ),
               child: Center(
                 child: Text(
                   locale.viewProfile,
@@ -159,16 +184,29 @@ class _RiderInformationWidgetState
               padding: const EdgeInsets.symmetric(horizontal: 18),
               child: Row(
                 children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    padding: const EdgeInsets.all(9),
-                    margin: const EdgeInsets.only(right: 18),
-                    decoration: const BoxDecoration(
-                      color: Color(0xffF5F5F5),
-                      shape: BoxShape.circle,
+                  InkWell(
+                    onTap: () async {
+                      final Uri dialUri = Uri(
+                        scheme: 'tel',
+                        path: riderDetails.phoneNumber,
+                      );
+
+                      // Check if the URL can be launched
+                      if (await canLaunchUrl(dialUri)) {
+                        await launchUrl(dialUri);
+                      } else {
+                        throw 'Could not launch $dialUri';
+                      }
+                    },
+
+                    child: SizedBox(
+                      width: 55,
+                      height: 55,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: SvgAssets("call_icon", width: 100, height: 100),
+                      ),
                     ),
-                    child: const SvgAssets('call_icon', height: 37, width: 37),
                   ),
                   Expanded(
                     child: InkWellButtonWidget(
