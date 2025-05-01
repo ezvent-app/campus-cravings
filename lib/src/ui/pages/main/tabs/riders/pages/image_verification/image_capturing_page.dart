@@ -12,28 +12,50 @@ class ImageCaptureScreen extends StatefulWidget {
 class _ImageCaptureScreenState extends State<ImageCaptureScreen> {
   late CameraController controller;
   late XFile _image;
+  late bool _isFlashOn;
 
   @override
   void initState() {
     super.initState();
+    _isFlashOn = false;
     controller = CameraController(cameras[0], ResolutionPreset.max);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
+    controller
+        .initialize()
+        .then((_) {
+          if (!mounted) {
+            return;
+          }
+          setState(() {});
+        })
+        .catchError((Object e) {
+          if (e is CameraException) {
+            switch (e.code) {
+              case 'CameraAccessDenied':
+                // Handle access errors here.
+                break;
+              default:
+                // Handle other errors here.
+                break;
+            }
+          }
+        });
+  }
+
+  Future<void> _toggleFlash() async {
+    try {
+      if (_isFlashOn) {
+        await controller.setFlashMode(FlashMode.off);
+      } else {
+        await controller.setFlashMode(
+          FlashMode.torch,
+        ); // You can also try FlashMode.always
       }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            // Handle access errors here.
-            break;
-          default:
-            // Handle other errors here.
-            break;
-        }
-      }
-    });
+      setState(() {
+        _isFlashOn = !_isFlashOn;
+      });
+    } catch (e) {
+      print("Error toggling flash: $e");
+    }
   }
 
   @override
@@ -49,6 +71,12 @@ class _ImageCaptureScreenState extends State<ImageCaptureScreen> {
       setState(() {
         _image = image;
       });
+      if (_isFlashOn) {
+        await controller.setFlashMode(FlashMode.off);
+        setState(() {
+          _isFlashOn = false;
+        });
+      }
 
       Navigator.push(
         context,
@@ -96,7 +124,16 @@ class _ImageCaptureScreenState extends State<ImageCaptureScreen> {
                     child: SvgAssets("Shutter", width: 72, height: 72),
                   ),
                   width(100),
-                  SvgAssets("Flash", width: 48, height: 48),
+                  InkWellButtonWidget(
+                    borderRadius: BorderRadius.circular(100),
+                    onTap: _toggleFlash,
+                    child: SvgAssets(
+                      _isFlashOn ? "Flash" : "Flash",
+                      width: 48,
+                      height: 48,
+                    ),
+                  ),
+
                   width(20),
                 ],
               ),
