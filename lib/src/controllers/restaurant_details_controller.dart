@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/controllers/location_controller.dart';
 import 'package:campuscravings/src/repository/home_repository/restaurant_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -8,12 +9,17 @@ import '../models/restaurant_details_model.dart';
 
 class RestaurantDetailsController extends GetxController {
   final RestaurantRepository _restaurantRepository;
+
   RestaurantDetailsController(this._restaurantRepository);
+
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
   String _restaurantId = '';
   RestaurantDetailsModel? _restaurantDetailsModel;
+
   RestaurantDetailsModel? get restaurantDetails => _restaurantDetailsModel;
+
   String get restaurantId => _restaurantId;
 
   void setRestaurantId(String restaurantId) {
@@ -38,22 +44,24 @@ class RestaurantDetailsController extends GetxController {
   }
 
   double getDistanceInMiles() {
-    final location = Get.find<LocationController>().locationData;
+    final location = Get
+        .find<LocationController>()
+        .locationData;
     if (location == null || _restaurantDetailsModel == null) return 0.0;
     return (Geolocator.distanceBetween(
-          24.5113,
-          67.6221,
-          _restaurantDetailsModel!
-              .restaurant
-              .addresses
-              .coordinates
-              .coordinates[1],
-          _restaurantDetailsModel!
-              .restaurant
-              .addresses
-              .coordinates
-              .coordinates[0],
-        )) /
+      location.latitude,
+      location.longitude,
+      _restaurantDetailsModel!
+          .restaurant
+          .addresses
+          .coordinates
+          .coordinates[1],
+      _restaurantDetailsModel!
+          .restaurant
+          .addresses
+          .coordinates
+          .coordinates[0],
+    )) /
         1609.344;
   }
 
@@ -82,24 +90,17 @@ class RestaurantDetailsController extends GetxController {
 
   bool isRestaurantOpen() {
     final restaurantTime = getRestaurantTimingForToday();
-
-    // If the restaurant is closed
-    if (restaurantTime == 'closed') return false;
+    Logger().w(restaurantTime);
+    if (restaurantTime.toLowerCase() == 'closed') return false;
 
     final parts = restaurantTime.split('-');
     if (parts.length != 2) return false;
 
     final now = DateTime.now();
 
-    // Split the opening and closing time
-    final openTime = _convertTo24HourTime(
-      parts[0].trim(),
-    ); // Pass full time with period
-    final closeTime = _convertTo24HourTime(
-      parts[1].trim(),
-    ); // Pass full time with period
+    final openTime = _convertTo24HourTime(parts[0].trim());
+    final closeTime = _convertTo24HourTime(parts[1].trim());
 
-    // Parse open and close times into DateTime objects
     final openDateTime = DateTime(
       now.year,
       now.month,
@@ -107,7 +108,8 @@ class RestaurantDetailsController extends GetxController {
       openTime.hour,
       openTime.minute,
     );
-    final closeDateTime = DateTime(
+
+    var closeDateTime = DateTime(
       now.year,
       now.month,
       now.day,
@@ -115,41 +117,29 @@ class RestaurantDetailsController extends GetxController {
       closeTime.minute,
     );
 
-    // Check if current time is between open and close time
+    // Handle overnight closing (e.g. 8:00 PM - 2:00 AM)
+    if (closeDateTime.isBefore(openDateTime)) {
+      closeDateTime = closeDateTime.add(const Duration(days: 1));
+    }
+
     return now.isAfter(openDateTime) && now.isBefore(closeDateTime);
   }
 
-  // Helper function to convert time from 12-hour (AM/PM) format to 24-hour format
-  DateTime _convertTo24HourTime(String timeWithPeriod) {
-    // Split the time by space to separate the time and period (AM/PM)
-    final timeParts = timeWithPeriod.split(' ');
+  TimeOfDay _convertTo24HourTime(String time) {
+    final parts = time.split(' '); // ['9:00', 'AM']
+    final timeParts = parts[0].split(':'); // ['9', '00']
 
-    if (timeParts.length != 2) {
-      throw FormatException("Invalid time format: $timeWithPeriod");
+    int hour = int.parse(timeParts[0]);
+    int minute = int.parse(timeParts[1]);
+    final period = parts[1].toUpperCase();
+
+    if (period == 'PM' && hour != 12) {
+      hour += 12;
+    } else if (period == 'AM' && hour == 12) {
+      hour = 0;
     }
 
-    final time = timeParts[0]; // Hour:Minute
-    final period = timeParts[1].toUpperCase(); // AM/PM
-
-    final timeSplit = time.split(':');
-
-    if (timeSplit.length != 2) {
-      throw FormatException("Invalid time format: $time");
-    }
-
-    final hour = int.parse(timeSplit[0].trim());
-    final minute = int.parse(timeSplit[1].trim());
-
-    int h = hour;
-    int m = minute;
-
-    // Convert to 24-hour time
-    if (period == 'AM' && h == 12) {
-      h = 0; // Convert 12 AM to 00:00
-    } else if (period == 'PM' && h != 12) {
-      h += 12; // Convert PM hours to 24-hour format
-    }
-
-    return DateTime(0, 0, 0, h, m);
+    return TimeOfDay(hour: hour, minute: minute);
   }
+
 }

@@ -4,7 +4,7 @@ const Product kMockFeatured = Product(
   id: "0",
   name: 'Big Garden Salad',
   imageUrl: 'mock_product_1',
-  price: 2.0,
+  price: 10.0,
   distance: 1.0,
 );
 

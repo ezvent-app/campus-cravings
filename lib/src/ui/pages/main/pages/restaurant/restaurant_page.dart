@@ -10,12 +10,14 @@ class RestaurantPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Get.find<RestaurantDetailsController>().getRestaurantDetails();
     final locale = AppLocalizations.of(context)!;
     final isIOS = Platform.isIOS;
     final cartItems = ref.watch(cartItemsProvider);
     return Scaffold(
       body: GetBuilder<RestaurantDetailsController>(
+        initState: (state){
+          Get.find<RestaurantDetailsController>().getRestaurantDetails();
+        },
         builder: (controller) {
           if (controller.isLoading) {
             return _buildRestaurantDetailsShimmer(context);
@@ -112,24 +114,24 @@ class RestaurantPage extends ConsumerWidget {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  width: 2,
-                                  height: 20,
-                                  color: AppColors.lightText,
-                                ),
-                                const SvgAssets('bike', width: 24, height: 24),
-                                const SizedBox(width: 10),
-                                Text(
-                                  '\$${kMockFeatured.price.toStringAsFixed(2)}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: AppColors.lightText,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
+                                // Container(
+                                //   margin: const EdgeInsets.symmetric(
+                                //     horizontal: 10,
+                                //   ),
+                                //   width: 2,
+                                //   height: 20,
+                                //   color: AppColors.lightText,
+                                // ),
+                                // const SvgAssets('bike', width: 24, height: 24),
+                                // const SizedBox(width: 10),
+                                // Text(
+                                //   '\$2.00',
+                                //   style: const TextStyle(
+                                //     fontSize: 16,
+                                //     color: AppColors.lightText,
+                                //     fontWeight: FontWeight.w500,
+                                //   ),
+                                // ),
                               ],
                             ),
                           ],
