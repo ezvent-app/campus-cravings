@@ -30,6 +30,7 @@ class FoodAndRestaurantSearchController extends GetxController{
         return;
       }
      _isOperationInProgress = true;
+      update();
      while(Get.find<LocationController>().isOperationInProgress) {
        await Future.delayed(const Duration(milliseconds: 100));
      }

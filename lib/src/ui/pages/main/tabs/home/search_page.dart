@@ -2,6 +2,7 @@ import 'package:campuscravings/src/controllers/food_and_restaurant_search_contro
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/restaurant_details_controller.dart';
 import '../../../../../src.dart';
 import '../../../../widgets/custom_network_image.dart';
@@ -79,9 +80,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin{
               height(10),
               GetBuilder<FoodAndRestaurantSearchController>(
                   initState: (state){
-                    if(Get.find<FoodAndRestaurantSearchController>().searchFoodAndRestaurants == false){
-                      Get.find<FoodAndRestaurantSearchController>().getSearchResults(context);
-                    }
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if(Get.find<FoodAndRestaurantSearchController>().searchFoodAndRestaurants == false){
+                        Get.find<FoodAndRestaurantSearchController>().getSearchResults(context);
+                      }
+                    });
                     //Logger().i("state");
                   },
                   builder: (controller){
@@ -94,6 +97,23 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin{
                             _buildRestaurantsTabs(context,controller),
                           ],
                         ),
+                      );
+                    }else if(controller.isOperationInProgress == true){
+                      return Expanded(
+                        child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              for(int i=0;i<2;i++)
+                              ListView.builder(
+                                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                                physics: BouncingScrollPhysics(),
+                                itemCount: 4,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return _searchItemShimmer();
+                                },
+                              ),
+                            ],
+                        )
                       );
                     }
                     return Container();
@@ -110,7 +130,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin{
   Widget _buildFoodsTabs(BuildContext context,FoodAndRestaurantSearchController controller){
     if(controller.searchModel!.listOfFoodItemModel.isEmpty) {
       return Center(
-         child: Text("No Food Items Found"
+         child: Text("No Food Items Found for ${controller.searchTextEditingController.text}"
         ),
       );
     }
@@ -209,7 +229,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin{
   Widget _buildRestaurantsTabs(BuildContext context, FoodAndRestaurantSearchController controller){
     if(controller.searchModel!.listOfNearByRestaurantModel.isEmpty) {
       return Center(
-        child: Text("No Restaurants Found"
+        child: Text("No Restaurants Found relating to ${controller.searchTextEditingController.text}"
         ),
       );
     }
@@ -282,6 +302,73 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin{
         }
     );
   }
+
+  Widget _searchItemShimmer() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 15,
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: Container(
+              width: 90,
+              height: 90,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          width(15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _shimmerBox(width: 120, height: 15),
+                height(8),
+                Row(
+                  children: [
+                    _shimmerBox(width: 60, height: 10),
+                    width(5),
+                    _shimmerBox(width: 30, height: 10),
+                  ],
+                ),
+                height(8),
+                _shimmerBox(width: 50, height: 12),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _shimmerBox({double width = double.infinity, double height = 10}) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ),
+    );
+  }
+
 }
 
 

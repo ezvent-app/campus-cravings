@@ -31,22 +31,21 @@ class RestaurantController extends GetxController {
         update([nearByRestaurantBuilderId]);
         return;
       }
-      _listOfNearByRestaurants =
-          (await _restaurantRepository.getNearByRestaurants(
+      _listOfNearByRestaurants = (await _restaurantRepository.getNearByRestaurants(
             lat: _locationData!.latitude,
             lng: _locationData!.longitude,
           )) ??
           [];
-      for (var element in _listOfNearByRestaurants) {
-        element.address = Address(
-          address: "ss",
-          coordinates: Coordinates(
-            type: "type",
-            coordinates:
-                saddarCoordinates[Random().nextInt(saddarCoordinates.length)],
-          ),
-        );
-      }
+      // for (var element in _listOfNearByRestaurants) {
+      //   element.address = Address(
+      //     address: "ss",
+      //     coordinates: Coordinates(
+      //       type: "type",
+      //       coordinates:
+      //           saddarCoordinates[Random().nextInt(saddarCoordinates.length)],
+      //     ),
+      //   );
+      // }
       _isLoading = false;
       update([nearByRestaurantBuilderId]);
       return;
@@ -92,18 +91,18 @@ class RestaurantController extends GetxController {
     }
   }
 
-  List<List<double>> saddarCoordinates = [
-    [73.0479, 33.5973], // Saddar Bazaar
-    [73.0551, 33.6005], // Committee Chowk
-    [73.0515, 33.5990], // Bank Road
-    [73.0467, 33.5945], // Murree Road
-    [73.0423, 33.5951], // Saddar Main Bazar
-    [73.0500, 33.5967], // Adamjee Road
-    [73.0492, 33.5982], // Raja Bazaar
-    [73.0570, 33.6020], // Peshawar Road
-    [73.0526, 33.6033], // Liaquat Road
-    [73.0604, 33.6013], // Mall Road
-  ];
+  // List<List<double>> saddarCoordinates = [
+  //   [73.0479, 33.5973], // Saddar Bazaar
+  //   [73.0551, 33.6005], // Committee Chowk
+  //   [73.0515, 33.5990], // Bank Road
+  //   [73.0467, 33.5945], // Murree Road
+  //   [73.0423, 33.5951], // Saddar Main Bazar
+  //   [73.0500, 33.5967], // Adamjee Road
+  //   [73.0492, 33.5982], // Raja Bazaar
+  //   [73.0570, 33.6020], // Peshawar Road
+  //   [73.0526, 33.6033], // Liaquat Road
+  //   [73.0604, 33.6013], // Mall Road
+  // ];
 
   List<NearByRestaurantModel> getFilteredRestaurants() {
     if (Get.find<FoodAndRestaurantSearchController>().sortByFastDelivery ==
