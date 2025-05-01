@@ -2,16 +2,18 @@ import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/repository/rider_delivery_repo/delivery_repository.dart';
 import 'package:campuscravings/src/src.dart';
 
-class ImageConfirmationPage extends StatefulWidget {
+class ImageConfirmationPage extends ConsumerStatefulWidget {
   final XFile image;
 
   const ImageConfirmationPage({super.key, required this.image});
 
   @override
-  State<ImageConfirmationPage> createState() => _ImageConfirmationPageState();
+  ConsumerState<ImageConfirmationPage> createState() =>
+      _ConsumerImageConfirmationPageState();
 }
 
-class _ImageConfirmationPageState extends State<ImageConfirmationPage> {
+class _ConsumerImageConfirmationPageState
+    extends ConsumerState<ImageConfirmationPage> {
   bool _isLoading = false;
 
   Future<String> convertImageToBase64() async {
@@ -114,6 +116,15 @@ class _ImageConfirmationPageState extends State<ImageConfirmationPage> {
 
                                         if (response.message ==
                                             'Order updated successfully') {
+                                          final isAccept = ref.read(
+                                            riderProvider,
+                                          );
+                                          ref
+                                              .read(riderProvider.notifier)
+                                              .state = {
+                                            ...isAccept,
+                                            'isAccept': false,
+                                          };
                                           Navigator.pop(dialogContext);
                                           StorageHelper().saveRiderOrderId(
                                             null,
