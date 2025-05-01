@@ -1,7 +1,14 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/pages/checkout/pages/delivering/widgets/rider_details_widget.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 
 class ProfileAndAchievmentsWidget extends StatelessWidget {
-  const ProfileAndAchievmentsWidget({super.key, required this.size});
+  final RiderDetails riderDetails;
+  const ProfileAndAchievmentsWidget({
+    super.key,
+    required this.size,
+    required this.riderDetails,
+  });
 
   final Size size;
 
@@ -51,16 +58,26 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
                       children: [
                         height(20),
                         Center(
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundImage: NetworkImage(
-                              "https://s3-alpha-sig.figma.com/img/b271/70bb/8a7db32d95e2d59f88efb80e8417336c?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=U1TCftYFII4pIsidEmBhOUs96q6udmiVQ0z1YPKHJJVIjeh~m7r1gTCdGf3S4BIjHAEc9kRQ8fQ52UfUzwENj2Z~m07wfWB3juP9uNTyWdc5vTwW~OAvhjiaQpv9P26dbXTOL1Y~0JoCtG79QCMIKIj7rxV5IiM8wZjAFLAZptmXyP4S1O-miNft6j5CutQKKm-dcR8laXfyjXqsXc0OuVmkHbRuxVSLSrkBTsfoGSEXz7u6TTi5kwNyAResPYpa7VGC3gPrvx2IilBNP7obPKzZ126OBlwNN~hwG3VY9AF1E4gHblmLskYdulaJGBCNMOvtMeGdrWMD3W3-y5ElCw__",
+                          child: Container(
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(9999),
+                            ),
+                            width: 80,
+                            margin: const EdgeInsets.only(bottom: 9),
+                            child: CustomNetworkImage(
+                              height: 80,
+                              width: 80,
+                              fit: BoxFit.cover,
+                              borderRadius: BorderRadius.circular(9999),
+                              riderDetails.profileImageUrl,
                             ),
                           ),
                         ),
                         height(10),
                         Text(
-                          "Robert Fox",
+                          riderDetails.name,
                           style: Theme.of(context).textTheme.titleSmall!
                               .copyWith(color: AppColors.white),
                         ),
@@ -116,7 +133,7 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
                           AchievmentsRowWidget(
                             image: "runner",
                             title: locale.miles,
-                            value: "1032",
+                            value: riderDetails.miles,
                           ),
                           SizedBox(
                             height: 40,
@@ -125,7 +142,7 @@ class ProfileAndAchievmentsWidget extends StatelessWidget {
                           AchievmentsRowWidget(
                             image: "stopwatch",
                             title: locale.hours,
-                            value: "169",
+                            value: riderDetails.hours,
                           ),
                         ],
                       ),

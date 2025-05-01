@@ -35,7 +35,7 @@ class OrderSummaryWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Mixed Vegetable Salad',
+                title,
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
@@ -55,39 +55,39 @@ class OrderSummaryWidget extends StatelessWidget {
                     ),
                   ),
                   children: [
-                    Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start, // Align everything to start
-                      children: [
-                        // Customization heading
-                        if (customizations != null &&
-                            customizations!.isNotEmpty)
-                          Column(
-                            children: [
-                              Text(
-                                "Customization:",
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ), // Space between heading and items
-                              // Customization items list
-                              ...List.generate(customizations!.length, (index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 2.0,
-                                  ),
-                                  child: Text(
-                                    customizations![index].name,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                );
-                              }),
-                            ],
-                          ),
-                      ],
-                    ),
+                    // Column(
+                    //   crossAxisAlignment:
+                    //       CrossAxisAlignment.start, // Align everything to start
+                    //   children: [
+                    //     // Customization heading
+                    //     if (customizations != null &&
+                    //         customizations!.isNotEmpty)
+                    //       Column(
+                    //         children: [
+                    //           Text(
+                    //             "Customization:",
+                    //             style: Theme.of(context).textTheme.titleSmall,
+                    //           ),
+                    //           const SizedBox(
+                    //             height: 8,
+                    //           ), // Space between heading and items
+                    //           // Customization items list
+                    //           ...List.generate(customizations!.length, (index) {
+                    //             return Padding(
+                    //               padding: const EdgeInsets.symmetric(
+                    //                 vertical: 2.0,
+                    //               ),
+                    //               child: Text(
+                    //                 customizations![index].name,
+                    //                 style:
+                    //                     Theme.of(context).textTheme.bodySmall,
+                    //               ),
+                    //             );
+                    //           }),
+                    //         ],
+                    //       ),
+                    //   ],
+                    // ),
                     Text(
                       "1x ${size ?? ''}",
                       style: Theme.of(context).textTheme.bodySmall,

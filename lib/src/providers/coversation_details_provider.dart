@@ -61,7 +61,10 @@ class ConversationNotifier
         }
       });
       socketController.listenForReadMessages((Map<String, dynamic> data) {
-        print("Read message event: $data");
+        final ids = data["messageIds"] as List<String>;
+        ref
+            .read(chatNotifierProvider(details.conversationId).notifier)
+            .markMessagesAsRead(ids);
       });
       socketController.emitJoinConversation(details.conversationId);
       debugPrint('Joined conversation room: ${details.conversationId}');

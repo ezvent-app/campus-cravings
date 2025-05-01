@@ -40,7 +40,8 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
     // Show delivery note sheet automatically when step > 5
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.step >= 5) {
-        orderReviewSheetMethod(context);
+        showToast("You order is delivered", context: context);
+        context.router.replaceAll([HomeTabRoute()]);
       }
     });
   }
@@ -59,7 +60,7 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
             widget.step >= 3
                 ? RiderInformationWidget(
                   orderId: widget.orderId,
-                  orderReviewSheetMethod: () => orderReviewSheetMethod(context),
+                  orderReviewSheetMethod: () {},
                 )
                 : SizedBox(),
             Container(
@@ -257,152 +258,152 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
     );
   }
 
-  Future<dynamic> orderReviewSheetMethod(BuildContext context) {
-    final locale = AppLocalizations.of(context)!;
-    return showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height * .8,
-              child: Card(
-                margin: EdgeInsets.all(10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            locale.howWasYourOrder,
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                          width(50),
-                          IconButton(
-                            onPressed:
-                                () => context.replaceRoute(HomeTabRoute()),
-                            icon: Icon(Icons.clear, color: AppColors.email),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        locale.reviewAboutService,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      height(20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          emojis.length,
-                          (i) => InkWellButtonWidget(
-                            onTap: () {},
-                            child: Container(
-                              width: 50,
-                              height: 50,
-                              margin: EdgeInsets.symmetric(horizontal: 5),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.grey.shade100,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  emojis[i].toString(),
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      height(20),
-                      Text(
-                        "${locale.wantToLeaveTipFor} Robert",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: AppColors.lightText,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Wrap(
-                        children: List.generate(
-                          tipsList.length,
-                          (i) => InkWellButtonWidget(
-                            borderRadius: BorderRadius.circular(15),
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = i;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Container(
-                                width: 140,
-                                height: 70,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color:
-                                        selectedIndex == i
-                                            ? AppColors.black
-                                            : Colors.grey,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Text(
-                                      "\$${tipsList[i]}",
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodyLarge!.copyWith(
-                                        color:
-                                            selectedIndex == i
-                                                ? AppColors.black
-                                                : Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      height(20),
-                      Text(
-                        locale.comment,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: AppColors.lightText,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      height(5),
-                      CustomTextField(maxLines: 3),
-                      height(30),
-                      RoundedButtonWidget(
-                        btnTitle: locale.continueNext,
-                        onTap:
-                            () => context.router.replaceAll([HomeTabRoute()]),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
+  // Future<dynamic> orderReviewSheetMethod(BuildContext context) {
+  //   final locale = AppLocalizations.of(context)!;
+  //   return showModalBottomSheet(
+  //     context: context,
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  //     backgroundColor: Colors.transparent,
+  //     isScrollControlled: true,
+  //     builder: (context) {
+  //       return StatefulBuilder(
+  //         builder: (context, setState) {
+  //           return SizedBox(
+  //             height: MediaQuery.of(context).size.height * .8,
+  //             child: Card(
+  //               margin: EdgeInsets.all(10),
+  //               shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.circular(15),
+  //               ),
+  //               child: Padding(
+  //                 padding: const EdgeInsets.all(20),
+  //                 child: Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.end,
+  //                       children: [
+  //                         Text(
+  //                           locale.howWasYourOrder,
+  //                           style: Theme.of(context).textTheme.titleSmall,
+  //                         ),
+  //                         width(50),
+  //                         IconButton(
+  //                           onPressed:
+  //                               () => context.replaceRoute(HomeTabRoute()),
+  //                           icon: Icon(Icons.clear, color: AppColors.email),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     Text(
+  //                       locale.reviewAboutService,
+  //                       textAlign: TextAlign.center,
+  //                       style: Theme.of(context).textTheme.bodySmall,
+  //                     ),
+  //                     height(20),
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.center,
+  //                       children: List.generate(
+  //                         emojis.length,
+  //                         (i) => InkWellButtonWidget(
+  //                           onTap: () {},
+  //                           child: Container(
+  //                             width: 50,
+  //                             height: 50,
+  //                             margin: EdgeInsets.symmetric(horizontal: 5),
+  //                             decoration: BoxDecoration(
+  //                               shape: BoxShape.circle,
+  //                               color: Colors.grey.shade100,
+  //                             ),
+  //                             child: Center(
+  //                               child: Text(
+  //                                 emojis[i].toString(),
+  //                                 style: Theme.of(context).textTheme.titleSmall,
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     height(20),
+  //                     Text(
+  //                       "${locale.wantToLeaveTipFor} Robert",
+  //                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+  //                         color: AppColors.lightText,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                     Wrap(
+  //                       children: List.generate(
+  //                         tipsList.length,
+  //                         (i) => InkWellButtonWidget(
+  //                           borderRadius: BorderRadius.circular(15),
+  //                           onTap: () {
+  //                             setState(() {
+  //                               selectedIndex = i;
+  //                             });
+  //                           },
+  //                           child: Padding(
+  //                             padding: const EdgeInsets.all(5),
+  //                             child: Container(
+  //                               width: 140,
+  //                               height: 70,
+  //                               decoration: BoxDecoration(
+  //                                 borderRadius: BorderRadius.circular(10),
+  //                                 border: Border.all(
+  //                                   color:
+  //                                       selectedIndex == i
+  //                                           ? AppColors.black
+  //                                           : Colors.grey,
+  //                                 ),
+  //                               ),
+  //                               child: Center(
+  //                                 child: Padding(
+  //                                   padding: EdgeInsets.all(5),
+  //                                   child: Text(
+  //                                     "\$${tipsList[i]}",
+  //                                     style: Theme.of(
+  //                                       context,
+  //                                     ).textTheme.bodyLarge!.copyWith(
+  //                                       color:
+  //                                           selectedIndex == i
+  //                                               ? AppColors.black
+  //                                               : Colors.grey,
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     height(20),
+  //                     Text(
+  //                       locale.comment,
+  //                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+  //                         color: AppColors.lightText,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                     height(5),
+  //                     CustomTextField(maxLines: 3),
+  //                     height(30),
+  //                     RoundedButtonWidget(
+  //                       btnTitle: locale.continueNext,
+  //                       onTap:
+  //                           () => context.router.replaceAll([HomeTabRoute()]),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
   Future<dynamic> deliveryNoteSheetMethod(BuildContext context) {
     final locale = AppLocalizations.of(context)!;

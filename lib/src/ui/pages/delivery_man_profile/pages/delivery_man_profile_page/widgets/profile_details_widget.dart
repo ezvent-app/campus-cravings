@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/pages/checkout/pages/delivering/widgets/rider_details_widget.dart';
 
 class ProfileDetailsWidget extends StatelessWidget {
   const ProfileDetailsWidget({
@@ -7,8 +8,9 @@ class ProfileDetailsWidget extends StatelessWidget {
     required this.majors,
     required this.minors,
     required this.sports,
+    required this.bio,
   });
-
+  final String bio;
   final List stars;
   final List majors;
   final List minors;
@@ -43,7 +45,7 @@ class ProfileDetailsWidget extends StatelessWidget {
           ),
           ServiceRowWidget(image: 'user', title: locale.about),
           Text(
-            "Hi! I’m passionate about coding and love participating in hackathons. When I’m not coding, you’ll find me playing chess or exploring new coffee spots!",
+            bio,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
               color: AppColors.black,
               fontWeight: FontWeight.w500,
