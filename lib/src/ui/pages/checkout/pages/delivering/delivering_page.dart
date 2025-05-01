@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:animated_marker/animated_marker.dart';
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:custom_marker_builder/custom_marker_builder.dart';
@@ -114,7 +113,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
 
     final bitmap = await CustomMapMarkerBuilder.fromWidget(
       context: context,
-      marker: CustomMarkerWidget(),
+      marker: RiderMarkerWidget(),
     );
 
     if (!_isMounted) return; // Check if widget is still mounted
@@ -180,6 +179,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
       ),
     );
   }
+
   int currentIndex = 0;
   Timer? timer;
   GoogleMapController? mapController;
@@ -200,14 +200,14 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   final _staticMarker = {
     Marker(
       markerId: MarkerId('static'),
-      position: LatLng(33.602859,73.0174495),
+      position: LatLng(33.602859, 73.0174495),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
     ),
   };
   Set<Marker> _animatedMarker = {
     Marker(
       markerId: MarkerId('animated'),
-      position: LatLng(33.607309,73.0174495),
+      position: LatLng(33.607309, 73.0174495),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
     ),
   };
@@ -228,12 +228,13 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
           markerId: MarkerId('animated'),
           position: point,
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-        )
+        ),
       };
     });
     //mapController!.animateCamera(CameraUpdate.newLatLng(point));
     Logger().i(point);
   }
+
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
@@ -298,32 +299,21 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 270,
-                child: AnimatedMarker(
-                  staticMarkers: _staticMarker,
-                  animatedMarkers: _animatedMarker,
-                  duration: const Duration(seconds: 6),
-                  fps: 30,
-                  curve: Curves.easeOut,
-                  builder: (context, animatedMarker) {
-                    return GoogleMap(
-                      mapType: MapType.satellite,
-                      myLocationEnabled: true,
-                      indoorViewEnabled: true,
-                      trafficEnabled: true,
-                      initialCameraPosition: _kGooglePlex,
-                      onMapCreated: (GoogleMapController googleMapController) {
-                        _controller.complete(googleMapController);
-                        mapController = googleMapController;
-                        startTraversal();
-                      },
-                      markers: animatedMarker,
-                      polylines: _polylines,
-                    );
+                child: GoogleMap(
+                  mapType: MapType.satellite,
+                  indoorViewEnabled: true,
+                  trafficEnabled: true,
+                  initialCameraPosition: _kGooglePlex,
+                  onMapCreated: (GoogleMapController googleMapController) {
+                    _controller.complete(googleMapController);
+                    mapController = googleMapController;
+                    startTraversal();
                   },
-                )
-
+                  markers: _markers,
+                  polylines: _polylines,
+                ),
               ),
               // step == 0
               //     ? Container(
@@ -356,8 +346,8 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   }
 }
 
-class CustomMarkerWidget extends StatelessWidget {
-  const CustomMarkerWidget({super.key});
+class RiderMarkerWidget extends StatelessWidget {
+  const RiderMarkerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -382,6 +372,29 @@ class CustomMarkerWidget extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CustomerMarkerWidget extends StatelessWidget {
+  const CustomerMarkerWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40,
+      height: 40,
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        boxShadow: [BoxShadow(blurRadius: 4, color: Colors.black26)],
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+        child: Container(decoration: BoxDecoration(shape: BoxShape.circle)),
       ),
     );
   }

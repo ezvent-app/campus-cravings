@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:campuscravings/src/constants/storageHelper.dart';
+import 'package:campuscravings/src/models/Rider_delivery_model/Rider_delivery_model.dart';
 import 'package:campuscravings/src/models/delivery_order_model.dart';
 import 'package:campuscravings/src/providers/delivery_order_provider.dart';
 import 'package:campuscravings/src/repository/rider_delivery_repo/rider_delivery_repo.dart';
 import 'package:campuscravings/src/src.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:custom_marker_builder/custom_marker_builder.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:logger/logger.dart';
 
 class DeliveryOrdersTabWidget extends ConsumerStatefulWidget {
   const DeliveryOrdersTabWidget({super.key});
@@ -21,17 +23,17 @@ class _ConsumerDeliveryOrdersTabWidgetState
   late Timer timer;
   Timer? _orderCycleTimer;
   bool _isMounted = true;
-  int _currentOrderIndex = 0;
   bool _hasShownBottomSheet = false;
   List<DeliveryOrder> _remainingOrders = [];
 
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _setupSocket();
     });
     startTimer();
-    super.initState();
+    startSendingLocation();
   }
 
   void _setupSocket() async {
@@ -124,31 +126,156 @@ class _ConsumerDeliveryOrdersTabWidgetState
     });
   }
 
-  @override
-  void dispose() {
-    timer.cancel();
-    _orderCycleTimer?.cancel();
-    _isMounted = false;
-    // if (Navigator.canPop(context)) {
-    //   Navigator.pop(context);
-    // }
-    super.dispose();
-  }
-
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14,
+    zoom: 10,
   );
-
-  final LatLng _ryderLocation = const LatLng(33.642631, 72.961899);
 
   Future<void> animateToUserLocation(LatLng latLng) async {
     final controller = await _controller.future;
     controller.animateCamera(
-      CameraUpdate.newCameraPosition(CameraPosition(target: latLng, zoom: 16)),
+      CameraUpdate.newCameraPosition(CameraPosition(target: latLng, zoom: 10)),
     );
+  }
+
+  Timer? _locationUpdateTimer;
+  final RiderLocationRepo _riderLocationRepo = RiderLocationRepo();
+
+  LatLng riderLatLng = LatLng(33.602859, 73.0174495);
+
+  void startSendingLocation() {
+    _locationUpdateTimer = Timer.periodic(Duration(seconds: 15), (timer) async {
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
+      );
+
+      LatLng latLng = LatLng(position.latitude, position.longitude);
+
+      await sendLocationToBackend(latLng);
+
+      animateToUserLocation(latLng);
+    });
+  }
+
+  Future<void> sendLocationToBackend(LatLng latLng) async {
+    try {
+      await _riderLocationRepo.sendLocation({
+        'latitude': latLng.latitude,
+        'longitude': latLng.longitude,
+      });
+      debugPrint('Location sent to server');
+    } catch (e) {
+      debugPrint('Failed to send location: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    _orderCycleTimer?.cancel();
+    _locationUpdateTimer?.cancel();
+    _isMounted = false;
+    super.dispose();
+  }
+
+  int currentIndex = 0;
+
+  GoogleMapController? mapController;
+
+  Set<Marker> _markers = {};
+  Set<Polyline> _polylines = {};
+  final LatLng _ryderLocation = const LatLng(33.642631, 72.961899);
+
+  Future<void> _setupMarkersAndPolyline() async {
+    final bitmap = await CustomMapMarkerBuilder.fromWidget(
+      context: context,
+      marker: RiderMarkerWidget(),
+    );
+
+    if (!_isMounted) return; // Check if widget is still mounted
+
+    setState(() {
+      _markers = {
+        Marker(
+          markerId: MarkerId('ryder'),
+          infoWindow: const InfoWindow(title: 'Ryder Location'),
+          position: riderLatLng,
+          icon: bitmap,
+        ),
+      };
+
+      _polylines = {
+        Polyline(
+          polylineId: const PolylineId('line_between'),
+          visible: true,
+          points: [riderLatLng, _ryderLocation],
+          color: AppColors.accent,
+          width: 5,
+        ),
+      };
+    });
+  }
+
+  void startTraversal() {
+    timer = Timer.periodic(Duration(seconds: 15), (timer) async {
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
+      );
+      riderLatLng = LatLng(position.latitude, position.longitude);
+
+      moveToPoint(riderLatLng);
+    });
+  }
+
+  LatLng restaurantLatLng = LatLng(31.7292, 72.9822);
+  double lat = 31.7292;
+  double longi = 72.9822;
+
+  Set<Marker> _animatedMarkers = {};
+
+  void moveToPoint(LatLng riderPoint) async {
+    final riderBitmap = await CustomMapMarkerBuilder.fromWidget(
+      context: context,
+      marker: RiderMarkerWidget(),
+    );
+
+    final customerBitmap = await CustomMapMarkerBuilder.fromWidget(
+      context: context,
+      marker: CustomerMarkerWidget(),
+    );
+
+    setState(() {
+      final resCoords = StorageHelper().getResturantCoords();
+      _animatedMarkers = {
+        Marker(
+          markerId: MarkerId('customer'),
+          position: LatLng(resCoords?[0] ?? lat, resCoords?[1] ?? longi),
+          icon: customerBitmap,
+        ),
+        Marker(
+          markerId: MarkerId('rider'),
+          position: riderPoint,
+          icon: riderBitmap,
+        ),
+      };
+      _polylines = {
+        Polyline(
+          polylineId: PolylineId('route'),
+          visible: true,
+          points: [
+            riderPoint,
+            LatLng(resCoords?[0] ?? lat, resCoords?[1] ?? longi),
+          ],
+          color: Colors.redAccent,
+          width: 5,
+        ),
+      };
+    });
+
+    mapController?.animateCamera(CameraUpdate.newLatLng(riderPoint));
+    Logger().i("Rider moved to: $riderPoint");
   }
 
   @override
@@ -167,11 +294,6 @@ class _ConsumerDeliveryOrdersTabWidgetState
       animateToUserLocation(locationModel.latLng);
     });
 
-    final locationState = ref.watch(locationProvider);
-    final location = locationState.value;
-
-    // Listen to changes in orders
-    final orders = ref.watch(deliveryOrdersProvider);
     ref.listen(deliveryOrdersProvider, (previous, next) {
       if (next.isNotEmpty && !_hasShownBottomSheet) {
         _hasShownBottomSheet = true;
@@ -187,6 +309,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
       }
     });
 
+    final riderDeliveryPro = ref.watch(riderDeliveryProvider);
+
     return Builder(
       builder: (context) {
         return Consumer(
@@ -197,17 +321,21 @@ class _ConsumerDeliveryOrdersTabWidgetState
                 Positioned.fill(
                   child: GoogleMap(
                     mapType: MapType.satellite,
-                    myLocationEnabled: true,
+                    myLocationButtonEnabled: false,
                     indoorViewEnabled: true,
                     trafficEnabled: true,
+                    zoomControlsEnabled: false,
                     initialCameraPosition: _kGooglePlex,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
+                    onMapCreated: (GoogleMapController googleMapController) {
+                      _controller.complete(googleMapController);
+                      mapController = googleMapController;
+                      startTraversal();
                     },
-                    markers: location?.markers ?? {},
-                    polylines: location?.polylines ?? {},
+                    markers: _animatedMarkers,
+                    polylines: _polylines,
                   ),
                 ),
+
                 isAccept["isAccept"]
                     ? Positioned(
                       top: topPosition,
@@ -236,7 +364,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                     )
                     : SizedBox(),
                 isAccept["isAccept"]
-                    ? AnimatedRidersDeliveryDetailsWrapper()
+                    ? AnimatedRidersDeliveryDetailsWrapper(riderDelivery: riderDeliveryPro,)
                     : SizedBox(),
               ],
             );
@@ -379,23 +507,54 @@ class _ConsumerDeliveryOrdersTabWidgetState
                         builder: (context, ref, child) {
                           return RoundedButtonWidget(
                             btnTitle: "Accept",
-                            onTap: () {
+                            onTap: () async {
+                              // Update rider state
                               final isAccept = ref.read(riderProvider);
                               ref.read(riderProvider.notifier).state = {
                                 ...isAccept,
                                 'isAccept': true,
                               };
 
-                              RiderDelvieryRepo repo = RiderDelvieryRepo();
-                              repo.acceptedByRider({
+                              final body = {
                                 "estimated_time": "25 minutes",
                                 "orderId": order.id,
-                              });
-                              _orderCycleTimer?.cancel();
-                              Navigator.pop(context);
-                              setState(() {
-                                _remainingOrders.clear();
-                              });
+                              };
+
+                              // Trigger the provider and handle the response
+                              final riderDeliveryResponse = await ref.read(
+                                acceptedByRiderProvider(body).future,
+                              );
+
+                              if (riderDeliveryResponse != null) {
+                                // Handle success response
+                                Logger().i(
+                                  "Order Accepted: ${riderDeliveryResponse.order?.sId}",
+                                );
+                                final restaurantCoords =
+                                    riderDeliveryResponse
+                                        .order
+                                        ?.addresses
+                                        ?.coordinates
+                                        ?.coordinates ??
+                                    [];
+                                StorageHelper().saveResturantCoords(
+                                  restaurantCoords,
+                                );
+
+                                ref.read(riderDeliveryProvider.notifier).state =
+                                    riderDeliveryResponse;
+
+                                _orderCycleTimer?.cancel();
+
+                                Navigator.pop(context);
+                                setState(() {
+                                  _remainingOrders.clear();
+                                });
+                              } else {
+                                // Handle error if response is null
+                                Logger().e("Failed to accept the order.");
+                                // You can show a snackbar, toast, or any error UI here
+                              }
                             },
                           );
                         },
@@ -470,3 +629,5 @@ class _ConsumerDeliveryOrdersTabWidgetState
 final riderProvider = StateProvider<Map<String, dynamic>>(
   (ref) => {'isAccept': false, 'countdown': 10},
 );
+
+final riderDeliveryProvider = StateProvider<RiderDeliveryModel?>((ref) => null);
