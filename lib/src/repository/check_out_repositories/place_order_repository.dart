@@ -21,7 +21,15 @@ class PlaceOrderRepository {
     if (res.statusCode == 200 || res.statusCode == 201) {
       printThis("Order created ${res.body}");
       if (context.mounted) {
-        context.pushRoute(DeliveringRoute(id: body['order']['_id']));
+        context.pushRoute(
+          DeliveringRoute(
+            id: body['order']['_id'],
+            address: body['order']['addresses']['address'],
+            items: body['order']['items'],
+            price: body['order']['total_price'].toString(),
+            storeName: body['order']['restaurant_id']['storeName'],
+          ),
+        );
       }
     } else {
       if (context.mounted) {

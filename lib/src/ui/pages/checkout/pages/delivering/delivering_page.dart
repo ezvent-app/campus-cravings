@@ -9,7 +9,18 @@ import 'package:logger/logger.dart';
 @RoutePage()
 class DeliveringPage extends ConsumerStatefulWidget {
   final String? id;
-  const DeliveringPage({super.key, this.id});
+  final String? address;
+  final List<dynamic>? items;
+  final String? price;
+  final String? storeName;
+  const DeliveringPage({
+    super.key,
+    this.id,
+    this.storeName,
+    this.address,
+    this.items,
+    this.price,
+  });
 
   @override
   ConsumerState<DeliveringPage> createState() => _DeliveringPageState();
@@ -17,6 +28,16 @@ class DeliveringPage extends ConsumerStatefulWidget {
 
 class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   int step = 0;
+  final messages = [
+    "Your order has been placed",
+    "Preparing your order",
+    "Your order is prepared",
+    "Your order is accepted by rider",
+    "Your order is on the way",
+    "Your order has been delivered",
+    "Your order has been cancelled",
+    "Your order has been completed",
+  ];
   final statuses = [
     "pending",
     "order_accepted",
@@ -238,6 +259,12 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final status =
+        ref.watch(deliveringProvider)['status'].isEmpty
+            ? statuses[0]
+            : ref.watch(deliveringProvider)['status'];
+    final step = statuses.indexOf(status);
+    print("Step: $step");
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -259,7 +286,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Your order has been placed",
+                      messages[step],
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     height(5),
@@ -273,8 +300,6 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                     ),
                     Consumer(
                       builder: (context, ref, child) {
-                        final status = ref.watch(deliveringProvider)['status'];
-                        print("Statusing: $status");
                         return Row(
                           children: List.generate(5, (index) {
                             return Expanded(
@@ -286,9 +311,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                                   bottom: 12,
                                 ),
                                 color: Color(
-                                  index <= statuses.indexOf(status ?? '')
-                                      ? 0xff0F984A
-                                      : 0xffE5E1E5,
+                                  index < step ? 0xff0F984A : 0xffE5E1E5,
                                 ),
                               ),
                             );
@@ -299,47 +322,54 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 270,
-                child: GoogleMap(
-                  mapType: MapType.satellite,
-                  indoorViewEnabled: true,
-                  trafficEnabled: true,
-                  initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController googleMapController) {
-                    _controller.complete(googleMapController);
-                    mapController = googleMapController;
-                    startTraversal();
-                  },
-                  markers: _animatedMarker,
-                  polylines: _polylines,
-                ),
-              ),
-              // step == 0
-              //     ? Container(
-              //       width: double.infinity,
-              //       height: 300,
-              //       padding: EdgeInsets.symmetric(vertical: 10),
-              //       decoration: BoxDecoration(color: Colors.grey.shade300),
-              //       child: PngAsset("prepare", width: 237, height: 287),
-              //     )
-              //     : Expanded(
-              //       child: GoogleMap(
-              //         mapType: MapType.satellite,
-              //         myLocationEnabled: true,
-              //         indoorViewEnabled: true,
-              //         trafficEnabled: true,
-              //         initialCameraPosition: _kGooglePlex,
-              //         onMapCreated: (GoogleMapController googleMapController) {
-              //           _controller.complete(googleMapController);
-              //         },
-              //         markers: _markers,
-              //         polylines: _polylines,
-              //       ),
-              //     ),
+              // SizedBox(
+              //   height: 270,
+              //   child: GoogleMap(
+              //     mapType: MapType.satellite,
+              //     indoorViewEnabled: true,
+              //     trafficEnabled: true,
+              //     initialCameraPosition: _kGooglePlex,
+              //     onMapCreated: (GoogleMapController googleMapController) {
+              //       _controller.complete(googleMapController);
+              //       mapController = googleMapController;
+              //       startTraversal();
+              //     },
+              //     markers: _markers,
+              //     polylines: _polylines,
+              //   ),
+              // ),
+              step == 0
+                  ? Container(
+                    width: double.infinity,
+                    height: 300,
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(color: Colors.grey.shade300),
+                    child: PngAsset("prepare", width: 237, height: 287),
+                  )
+                  : Expanded(
+                    child: GoogleMap(
+                      mapType: MapType.satellite,
+                      myLocationEnabled: true,
+                      indoorViewEnabled: true,
+                      trafficEnabled: true,
+                      initialCameraPosition: _kGooglePlex,
+                      // onMapCreated: (GoogleMapController googleMapController) {
+                      //   _controller.complete(googleMapController);
+                      // },
+                      // markers: _markers,
+                      // polylines: _polylines,
+                    ),
+                  ),
             ],
           ),
-          AnimatedDeliveryDetailsWrapper(step: step),
+          AnimatedDeliveryDetailsWrapper(
+            step: step,
+            orderId: widget.id!,
+            address: widget.address,
+            items: widget.items,
+            price: widget.price,
+            storeName: widget.storeName,
+          ),
         ],
       ),
     );

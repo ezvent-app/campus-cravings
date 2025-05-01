@@ -1,8 +1,21 @@
 import 'package:campuscravings/src/src.dart';
 
 class AnimatedDeliveryDetailsWrapper extends ConsumerStatefulWidget {
-  const AnimatedDeliveryDetailsWrapper({super.key, required this.step});
+  const AnimatedDeliveryDetailsWrapper({
+    super.key,
+    required this.step,
+    required this.orderId,
+    this.address,
+    this.items,
+    this.price,
+    this.storeName,
+  });
   final int step;
+  final String orderId;
+  final String? address;
+  final List<dynamic>? items;
+  final String? price;
+  final String? storeName;
 
   @override
   ConsumerState createState() => _AnimatedDeliveryDetailsWrapperState();
@@ -37,6 +50,7 @@ class _AnimatedDeliveryDetailsWrapperState
 
   @override
   Widget build(BuildContext context) {
+    print("Step here: ${widget.step} ${widget.step != 0}");
     if (_height == _minHeight && _scrollController.positions.isNotEmpty) {
       _scrollController.animateTo(
         0,
@@ -49,7 +63,7 @@ class _AnimatedDeliveryDetailsWrapperState
     return Material(
       type: MaterialType.transparency,
       child:
-          widget.step != 0
+          widget.step < 3
               ? Stack(
                 children: [
                   if (_height != _minHeight)
@@ -152,6 +166,11 @@ class _AnimatedDeliveryDetailsWrapperState
                           ),
                           Expanded(
                             child: DeliveryDetailsWidget(
+                              storeName: widget.storeName,
+                              address: widget.address,
+                              items: widget.items,
+                              price: widget.price,
+                              orderId: widget.orderId,
                               step: widget.step,
                               scrollController: _scrollController,
                               isMinHeight: _height == _minHeight,
@@ -182,6 +201,10 @@ class _AnimatedDeliveryDetailsWrapperState
                       ),
                       child: Expanded(
                         child: DeliveryDetailsWidget(
+                          address: widget.address,
+                          items: widget.items,
+                          price: widget.price,
+                          orderId: widget.orderId,
                           step: widget.step,
                           scrollController: _scrollController,
                           isMinHeight: _height == _minHeight,

@@ -682,18 +682,20 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
                 "items": orderItemsJson,
               };
               log("CHECKOUT JSON $json");
-              await repository.makePayment(
-                context: context,
-                purchaseName: "Ali",
-                title: "Garden Service",
-                amountPaid: total.toDouble(),
-                merchantDisplayName: "Default Merchant",
-                onSuccess: (transactionId) async {
-                  log("Payment Successful with Transaction ID: $transactionId");
-                  repository.placeOrderMethod(json, context);
-                  cartItems.clear();
-                },
-              );
+              // await repository.makePayment(
+              //   context: context,
+              //   purchaseName: "Ali",
+              //   title: "Garden Service",
+              //   amountPaid: total.toDouble(),
+              //   merchantDisplayName: "Default Merchant",
+              //   onSuccess: (transactionId) async {
+              //     log("Payment Successful with Transaction ID: $transactionId");
+              //     repository.placeOrderMethod(json, context);
+              //     cartItems.clear();
+              //   },
+              // );
+
+              repository.placeOrderMethod(json, context);
             } else {
               log("Customer location is not available.");
             }
