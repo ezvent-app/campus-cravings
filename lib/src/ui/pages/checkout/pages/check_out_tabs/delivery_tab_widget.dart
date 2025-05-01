@@ -649,7 +649,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
               cartItems.map((item) => item.toOrderItemJson()).toList();
 
           // repository.placeOrderMethod(json, context);
-          // context.pushRoute(const CheckoutAddressRoute());
+          // context.pushRoute( DeliveringRoute());
 
           final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
             address.value?.addresses,
@@ -682,18 +682,18 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
                 "items": orderItemsJson,
               };
               log("CHECKOUT JSON $json");
-              // await repository.makePayment(
-              //   context: context,
-              //   purchaseName: "Ali",
-              //   title: "Garden Service",
-              //   amountPaid: total.toDouble(),
-              //   merchantDisplayName: "Default Merchant",
-              //   onSuccess: (transactionId) async {
-              //     log("Payment Successful with Transaction ID: $transactionId");
-              //     repository.placeOrderMethod(json, context);
-              //     cartItems.clear();
-              //   },
-              // );
+              await repository.makePayment(
+                context: context,
+                purchaseName: "Ali",
+                title: "Garden Service",
+                amountPaid: total.toDouble(),
+                merchantDisplayName: "Default Merchant",
+                onSuccess: (transactionId) async {
+                  log("Payment Successful with Transaction ID: $transactionId");
+                  repository.placeOrderMethod(json, context);
+                  cartItems.clear();
+                },
+              );
 
               repository.placeOrderMethod(json, context);
             } else {

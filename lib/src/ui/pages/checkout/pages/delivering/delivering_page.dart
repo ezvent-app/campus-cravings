@@ -1,5 +1,7 @@
 import 'dart:async';
-
+import 'dart:developer';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:http/http.dart'as http;
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:custom_marker_builder/custom_marker_builder.dart';
@@ -56,12 +58,6 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     zoom: 12,
   );
 
-  LatLng? _customerLocation;
-
-  final LatLng _ryderLocation = const LatLng(33.642631, 72.961899);
-
-  Set<Marker> _markers = {};
-  Set<Polyline> _polylines = {};
 
   // Add a flag to track if the component is mounted
   bool _isMounted = true;
@@ -74,11 +70,6 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
       _setupSocket();
     });
 
-    _getCurrentLocation().then((_) {
-      if (_isMounted) {
-        _setupMarkersAndPolyline();
-      }
-    });
   }
 
   // New method to setup socket properly
@@ -125,135 +116,120 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     super.dispose();
   }
 
-  Future<void> _setupMarkersAndPolyline() async {
-    // Wait until _customerLocation is set
-    while (_customerLocation == null) {
-      await Future.delayed(Duration(milliseconds: 100));
-      if (!_isMounted) return; // Exit if widget is disposed during wait
-    }
 
-    final bitmap = await CustomMapMarkerBuilder.fromWidget(
-      context: context,
-      marker: RiderMarkerWidget(),
-    );
+  late GoogleMapController mapController;
+  Set<Marker> markers = {};
+  Set<Polyline> polylines = {};
 
-    if (!_isMounted) return; // Check if widget is still mounted
+  // Hardcoded locations for demo
+  final LatLng riderLocation = const LatLng(33.6844, 72.9843); // G-15 Islamabad
+  final LatLng customerLocation = const LatLng(33.6984, 73.0367); // F-8 Islamabad
 
-    setState(() {
-      _markers = {
-        Marker(
-          markerId: MarkerId('ryder'),
-          infoWindow: const InfoWindow(title: 'Ryder Location'),
-          position: _ryderLocation,
-          icon: bitmap,
+
+  Future<void> _initializeMap() async {
+    try {
+
+      if (riderLocation == null || customerLocation == null) {
+        throw Exception('Missing location data');
+      }
+
+      final riderIcon = await CustomMapMarkerBuilder.fromWidget(
+        context: context,
+        marker: RiderMarkerWidget(),
+      );
+
+
+      final customerIcon = await CustomMapMarkerBuilder.fromWidget(
+        context: context,
+        marker: CustomerMarkerWidget(),
+      );
+
+      // Add markers
+      setState(() {
+        markers.add(Marker(
+          markerId: MarkerId('rider'),
+          position: riderLocation,
+          icon: riderIcon,
+          infoWindow: InfoWindow(title: 'Rider'),
+        ));
+
+        markers.add(Marker(
+          markerId: MarkerId('customer'),
+          position: customerLocation,
+          icon: customerIcon,
+          infoWindow: InfoWindow(title: 'Customer'),
+        ));
+      });
+
+      // Get route between points
+      await _getRouteBetweenPoints();
+
+      // Zoom to fit both locations
+      final bounds = LatLngBounds(
+        southwest: LatLng(
+          riderLocation.latitude < customerLocation.latitude
+              ? riderLocation.latitude
+              : customerLocation.latitude,
+          riderLocation.longitude < customerLocation.longitude
+              ? riderLocation.longitude
+              : customerLocation.longitude,
         ),
-      };
+        northeast: LatLng(
+          riderLocation.latitude > customerLocation.latitude
+              ? riderLocation.latitude
+              : customerLocation.latitude,
+          riderLocation.longitude > customerLocation.longitude
+              ? riderLocation.longitude
+              : customerLocation.longitude,
+        ),
+      );
 
-      _polylines = {
-        Polyline(
-          polylineId: const PolylineId('line_between'),
-          visible: true,
-          points: [_ryderLocation, _customerLocation!],
-          color: AppColors.accent,
+      mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
+    } catch (e) {
+      print('Error initializing map: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
+  Future<void> _getRouteBetweenPoints() async {
+    try {
+      PolylinePoints polylinePoints = PolylinePoints();
+
+      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        googleApiKey: apiKey,
+        request: PolylineRequest(
+          origin: PointLatLng(riderLocation.latitude,riderLocation.longitude),
+          destination: PointLatLng(customerLocation.latitude,customerLocation.longitude),
+          mode: TravelMode.driving,
+        ),
+      );
+
+      if (result.points.isEmpty) {
+        throw Exception('No route points returned: ${result.errorMessage}');
+      }
+
+      List<LatLng> polylineCoordinates = result.points
+          .map((point) => LatLng(point.latitude, point.longitude))
+          .toList();
+
+      setState(() {
+        polylines.add(Polyline(
+          polylineId: PolylineId('route'),
+          points: polylineCoordinates,
+          color: Colors.red,
           width: 5,
-        ),
-      };
-    });
-  }
-
-  Future<void> _getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
+          startCap: Cap.roundCap,
+          endCap: Cap.roundCap,
+        ));
+      });
+    } catch (e) {
+      print('Error getting route: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not load route: $e')),
+      );
     }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error('Location permissions are permanently denied.');
-    }
-
-    Position position = await Geolocator.getCurrentPosition();
-
-    if (!_isMounted) return; // Check if widget is still mounted
-
-    setState(() {
-      _customerLocation = LatLng(position.latitude, position.longitude);
-    });
-
-    final GoogleMapController controller = await _controller.future;
-
-    if (!_isMounted) return; // Check if widget is still mounted
-
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: _customerLocation!, zoom: 12),
-      ),
-    );
-  }
-
-  int currentIndex = 0;
-  Timer? timer;
-  GoogleMapController? mapController;
-
-  List<LatLng> points = [
-    LatLng(33.607309, 73.0174495),
-    LatLng(33.598409, 73.0174495),
-    LatLng(33.602859, 73.0228495),
-    LatLng(33.602859, 73.0120495),
-    LatLng(33.606084, 73.0201495),
-    LatLng(33.606084, 73.0147495),
-    LatLng(33.599634, 73.0201495),
-    LatLng(33.599634, 73.0147495),
-    LatLng(33.604859, 73.0174495),
-    LatLng(33.600859, 73.0174495),
-  ];
-  //setAnimatedMarker
-  final _staticMarker = {
-    Marker(
-      markerId: MarkerId('static'),
-      position: LatLng(33.602859, 73.0174495),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-    ),
-  };
-  Set<Marker> _animatedMarker = {
-    Marker(
-      markerId: MarkerId('animated'),
-      position: LatLng(33.607309, 73.0174495),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    ),
-  };
-  void startTraversal() {
-    timer = Timer.periodic(Duration(seconds: 3), (timer) {
-      if (currentIndex >= points.length) {
-        currentIndex = 0;
-      }
-      moveToPoint(points[currentIndex]);
-      currentIndex++;
-    });
-  }
-
-  void moveToPoint(LatLng point) {
-    setState(() {
-      _animatedMarker = {
-        Marker(
-          markerId: MarkerId('animated'),
-          position: point,
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-        ),
-      };
-    });
-    //mapController!.animateCamera(CameraUpdate.newLatLng(point));
-    Logger().i(point);
   }
 
   @override
@@ -322,22 +298,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                   ],
                 ),
               ),
-              // SizedBox(
-              //   height: 270,
-              //   child: GoogleMap(
-              //     mapType: MapType.satellite,
-              //     indoorViewEnabled: true,
-              //     trafficEnabled: true,
-              //     initialCameraPosition: _kGooglePlex,
-              //     onMapCreated: (GoogleMapController googleMapController) {
-              //       _controller.complete(googleMapController);
-              //       mapController = googleMapController;
-              //       startTraversal();
-              //     },
-              //     markers: _markers,
-              //     polylines: _polylines,
-              //   ),
-              // ),
+
               step == 0
                   ? Container(
                     width: double.infinity,
@@ -348,16 +309,23 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                   )
                   : Expanded(
                     child: GoogleMap(
-                      mapType: MapType.satellite,
-                      myLocationEnabled: true,
+                      initialCameraPosition: CameraPosition(
+                        target: riderLocation,
+                        zoom: 12.0,
+                      ),
+
                       indoorViewEnabled: true,
                       trafficEnabled: true,
-                      initialCameraPosition: _kGooglePlex,
-                      // onMapCreated: (GoogleMapController googleMapController) {
-                      //   _controller.complete(googleMapController);
-                      // },
-                      // markers: _markers,
-                      // polylines: _polylines,
+                      markers: markers,
+                      polylines: polylines,
+                      onMapCreated: (controller) {
+                        setState(() {
+                          mapController = controller;
+                        });
+                        _initializeMap();
+                      },
+                      myLocationEnabled: false,
+                      zoomControlsEnabled: true,
                     ),
                   ),
             ],
