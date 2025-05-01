@@ -6,14 +6,14 @@ class RiderDeliveryModel {
 
   RiderDeliveryModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
-    order = json['order'] != null ? Order.fromJson(json['order']) : null;
+    order = json['data'] != null ? Order.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['message'] = message;
     if (order != null) {
-      data['order'] = order!.toJson();
+      data['data'] = order!.toJson();
     }
     return data;
   }

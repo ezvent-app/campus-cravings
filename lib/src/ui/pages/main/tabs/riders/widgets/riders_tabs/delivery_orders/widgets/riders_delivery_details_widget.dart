@@ -37,8 +37,8 @@ class _RidersDeliveryDetailsWidgetState
     String brandName = data?.order!.restaurantId!.brandName ?? 'Brand name';
     final items = data?.order!.items!;
     String? userName = data?.order!.userId?.firstName;
-    String? imageUrl = data?.order!.userId?.imgUrl;
-    String? phoneNumber = data?.order!.userId?.phoneNumber;
+    String? imageUrl = data?.order!.userId?.imgUrl ?? '';
+    String? phoneNumber = data?.order!.userId?.phoneNumber ?? '1234567';
     List<double>? restuarantCoords =
         data?.order?.addresses?.coordinates?.coordinates ?? [];
 
@@ -117,7 +117,7 @@ class _RidersDeliveryDetailsWidgetState
               Column(
                 children: List.generate(items!.length, (index) {
                   final item = items[index];
-                  final customzation = item.itemId!.customization;
+                  final customzation = item.itemId!.customization ?? [];
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
