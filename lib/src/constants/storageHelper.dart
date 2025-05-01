@@ -2,6 +2,7 @@ import 'package:get_storage/get_storage.dart';
 
 class StorageHelper {
   static const String _userId = "_id";
+  static const String resCords = "coords";
   static const String _riderOrderId = "item_id";
   static const String _accessToken = "accessToken";
   static const String _isProfileComple = "isProfileComplet";
@@ -40,6 +41,14 @@ class StorageHelper {
   //create a methods to save the data below
   void saveUserId(String? id) {
     _savePref(_userId, id);
+  }
+
+  void saveResturantCoords(List<double> coords) {
+    _savePref(resCords, coords);
+  }
+
+  List<double>? getResturantCoords() {
+    return _getPref(resCords);
   }
 
   String? getUserId() {

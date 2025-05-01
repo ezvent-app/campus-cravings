@@ -8,9 +8,18 @@ final riderDeliveryRepoProvider = Provider<RiderDelvieryRepo>((ref) {
 });
 
 // Fetch orders (no userId needed)
-final riderDeliveryProvider = FutureProvider.family<RiderDeliveryModel, String>(
-  (ref, orderId) async {
-    final repo = ref.watch(riderDeliveryRepoProvider);
-    return repo.orderAcceptedByRider(orderId, {"status": "order_dispatched"});
-  },
-);
+// final riderDeliveryProvider = FutureProvider.family<RiderDeliveryModel, String>(
+//   (ref, orderId) async {
+//     final repo = ref.watch(riderDeliveryRepoProvider);
+//     return repo.orderAcceptedByRider(orderId, {"status": "order_dispatched"});
+//   },
+// );
+
+final acceptedByRiderProvider =
+    FutureProvider.family<RiderDeliveryModel?, Map<String, dynamic>>((
+      ref,
+      body,
+    ) async {
+      final repo = ref.watch(riderDeliveryRepoProvider);
+      return repo.acceptedByRider(body);
+    });

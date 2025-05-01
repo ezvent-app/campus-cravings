@@ -1,7 +1,13 @@
+import 'package:campuscravings/src/models/Rider_delivery_model/Rider_delivery_model.dart';
 import 'package:campuscravings/src/src.dart';
 
 class AnimatedRidersDeliveryDetailsWrapper extends ConsumerStatefulWidget {
-  const AnimatedRidersDeliveryDetailsWrapper({super.key});
+  const AnimatedRidersDeliveryDetailsWrapper({
+    super.key,
+    required this.riderDelivery,
+  });
+
+  final RiderDeliveryModel? riderDelivery;
 
   @override
   ConsumerState createState() => _AnimatedRidersDeliveryDetailsWrapperState();
@@ -141,6 +147,7 @@ class _AnimatedRidersDeliveryDetailsWrapperState
                   ),
                   Expanded(
                     child: RidersDeliveryDetailsWidget(
+                      riderDeliveryModel: widget.riderDelivery,
                       scrollController: _scrollController,
                       isMinHeight: _height == _minHeight,
                       // orderId: '680fdf337c362f1bc43f631e',
