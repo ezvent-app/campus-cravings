@@ -73,6 +73,56 @@ class SocketController {
     print('Stopped listening for locationUpdate');
   }
 
+  void emitJoinConversation(String conversationId) {
+    _socketService.emitWithAck(SocketEvents.joinConversation, {
+      'conversationId': conversationId,
+    });
+  }
+
+  void emitSendChatMessage(
+    String conversationId,
+    String text,
+    bool isCustomer,
+  ) {
+    print(
+      "Emitting sendChatMessage event with conversationId: $conversationId",
+    );
+    _socketService.emitWithAck(SocketEvents.sendChatMessage, {
+      'conversationId': conversationId,
+      'isCustomer': isCustomer,
+      'text': text,
+    });
+  }
+
+  void emitMarkMessageAsRead(String messageId, bool isCustomer) {
+    print("Emitting markMessageAsRead event with messageId: $messageId");
+    _socketService.emitWithAck(SocketEvents.markMessageRead, {
+      'messageId': messageId,
+      'isCustomer': isCustomer,
+    });
+  }
+
+  void listenForNewMessages(void Function(Map<String, dynamic>) onNewMessage) {
+    _socketService.on(SocketEvents.receiveChatMessage, (data) {
+      print('Received newMessage event: $data');
+      onNewMessage(data);
+    });
+  }
+
+  void listenForReadMessages(
+    void Function(Map<String, dynamic>) onMessageRead,
+  ) {
+    _socketService.on(SocketEvents.messagesRead, (data) {
+      print('Received read Message event: $data');
+      onMessageRead(data);
+    });
+  }
+
+  void stopListeningForNewMessages() {
+    _socketService.off(SocketEvents.sendChatMessage);
+    print('Stopped listening for newMessage');
+  }
+
   void emitJoinOrder(String orderId) {
     print('Emitting joinOrder event with orderId: $orderId');
     _socketService.emitWithAck(SocketEvents.joinOrderRoom, {

@@ -364,7 +364,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
                     )
                     : SizedBox(),
                 isAccept["isAccept"]
-                    ? AnimatedRidersDeliveryDetailsWrapper(riderDelivery: riderDeliveryPro,)
+                    ? AnimatedRidersDeliveryDetailsWrapper(
+                      riderDelivery: riderDeliveryPro,
+                    )
                     : SizedBox(),
               ],
             );
@@ -543,7 +545,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
                                 ref.read(riderDeliveryProvider.notifier).state =
                                     riderDeliveryResponse;
-
+                                timer.cancel();
+                                _isMounted = false;
                                 _orderCycleTimer?.cancel();
 
                                 Navigator.pop(context);
