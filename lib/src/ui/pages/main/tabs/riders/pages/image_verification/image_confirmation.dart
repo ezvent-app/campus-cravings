@@ -2,13 +2,22 @@ import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/repository/rider_delivery_repo/delivery_repository.dart';
 import 'package:campuscravings/src/src.dart';
 
-class ImageConfirmationPage extends StatelessWidget {
+class ImageConfirmationPage extends ConsumerStatefulWidget {
   final XFile image;
 
   const ImageConfirmationPage({super.key, required this.image});
 
+  @override
+  ConsumerState<ImageConfirmationPage> createState() =>
+      _ConsumerImageConfirmationPageState();
+}
+
+class _ConsumerImageConfirmationPageState
+    extends ConsumerState<ImageConfirmationPage> {
+  bool _isLoading = false;
+
   Future<String> convertImageToBase64() async {
-    final bytes = await File(image.path).readAsBytes();
+    final bytes = await File(widget.image.path).readAsBytes();
     return base64Encode(bytes);
   }
 
@@ -16,6 +25,7 @@ class ImageConfirmationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -32,7 +42,7 @@ class ImageConfirmationPage extends StatelessWidget {
         children: [
           Center(
             child: Image.file(
-              File(image.path),
+              File(widget.image.path),
               width: double.infinity,
               height: size.height * 0.7,
               fit: BoxFit.cover,
@@ -50,76 +60,102 @@ class ImageConfirmationPage extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (dialogContext) {
-                        return SimpleDialog(
-                          contentPadding: EdgeInsets.all(30),
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                        return StatefulBuilder(
+                          builder: (context, setStateDialog) {
+                            return SimpleDialog(
+                              contentPadding: EdgeInsets.all(30),
                               children: [
-                                PngAsset("happy", width: 160, height: 160),
-                                Text(
-                                  locale.deliveryComplete,
-                                  style:
-                                      Theme.of(
-                                        dialogContext,
-                                      ).textTheme.titleMedium,
-                                ),
-                                height(10),
-                                Text(
-                                  locale.thankYouDeliveringOrderGreatJob,
-                                  textAlign: TextAlign.center,
-                                  style:
-                                      Theme.of(
-                                        dialogContext,
-                                      ).textTheme.bodyMedium,
-                                ),
-                                height(30),
-                                RoundedButtonWidget(
-                                  btnTitle: locale.ok,
-                                  onTap: () async {
-                                    String? riderOrderId =
-                                        StorageHelper().getRiderOrderId();
-                                    String base64Image =
-                                        await convertImageToBase64();
-                                    RiderDelvieryRepo repo =
-                                        RiderDelvieryRepo();
-                                    await repo
-                                        .orderAcceptedByRider(riderOrderId!, {
-                                          "image_url": base64Image,
-                                          "status": "delivered",
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    PngAsset("happy", width: 160, height: 160),
+                                    Text(
+                                      locale.deliveryComplete,
+                                      style:
+                                          Theme.of(
+                                            dialogContext,
+                                          ).textTheme.titleMedium,
+                                    ),
+                                    height(10),
+                                    Text(
+                                      locale.thankYouDeliveringOrderGreatJob,
+                                      textAlign: TextAlign.center,
+                                      style:
+                                          Theme.of(
+                                            dialogContext,
+                                          ).textTheme.bodyMedium,
+                                    ),
+                                    height(30),
+                                    RoundedButtonWidget(
+                                      btnTitle: locale.ok,
+                                      isLoading: _isLoading,
+                                      onTap: () async {
+                                        setStateDialog(() {
+                                          _isLoading = true;
                                         });
 
-                                    Navigator.pop(
-                                      dialogContext,
-                                    ); // close dialog
-                                    Future.delayed(
-                                      Duration(milliseconds: 0),
-                                      () {
-                                        outerContext.pushRoute(
-                                          const MainRoute(),
-                                        );
+                                        String? riderOrderId =
+                                            StorageHelper().getRiderOrderId();
+                                        String base64Image =
+                                            await convertImageToBase64();
+                                        RiderDelvieryRepo repo =
+                                            RiderDelvieryRepo();
+                                        final response = await repo
+                                            .orderAcceptedByRider(
+                                              riderOrderId!,
+                                              {
+                                                "image_url": base64Image,
+                                                "status": "delivered",
+                                              },
+                                            );
+
+                                        setStateDialog(() {
+                                          _isLoading = false;
+                                        });
+
+                                        if (response.message ==
+                                            'Order updated successfully') {
+                                          final isAccept = ref.read(
+                                            riderProvider,
+                                          );
+                                          ref
+                                              .read(riderProvider.notifier)
+                                              .state = {
+                                            ...isAccept,
+                                            'isAccept': false,
+                                          };
+                                          Navigator.pop(dialogContext);
+                                          StorageHelper().saveRiderOrderId(
+                                            null,
+                                          );
+                                          outerContext.router.pushAndPopUntil(
+                                            const MainRoute(),
+                                            predicate: (_) => false,
+                                          );
+                                        } else {
+                                          print("Failed to deliver order.");
+                                        }
                                       },
-                                    );
-                                  },
+                                    ),
+                                  ],
                                 ),
                               ],
-                            ),
-                          ],
+                            );
+                          },
                         );
                       },
                     );
                   },
-
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.white,
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                   ),
                   child: Text(
                     locale.submit,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Colors.black,
-                    ), // Text color
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleSmall?.copyWith(color: Colors.black),
                   ),
                 ),
                 width(10),
@@ -136,9 +172,9 @@ class ImageConfirmationPage extends StatelessWidget {
                   ),
                   child: Text(
                     locale.retry,
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      color: Colors.white,
-                    ), // Text color
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleSmall!.copyWith(color: Colors.white),
                   ),
                 ),
               ],
