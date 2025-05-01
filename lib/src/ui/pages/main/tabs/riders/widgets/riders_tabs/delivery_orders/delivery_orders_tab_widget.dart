@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/models/Rider_delivery_model/Rider_delivery_model.dart';
@@ -7,7 +8,9 @@ import 'package:campuscravings/src/providers/delivery_order_provider.dart';
 import 'package:campuscravings/src/repository/rider_delivery_repo/rider_delivery_repo.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:custom_marker_builder/custom_marker_builder.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
 class DeliveryOrdersTabWidget extends ConsumerStatefulWidget {
@@ -130,13 +133,13 @@ class _ConsumerDeliveryOrdersTabWidgetState
       Completer<GoogleMapController>();
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 10,
+    zoom: 9,
   );
 
   Future<void> animateToUserLocation(LatLng latLng) async {
     final controller = await _controller.future;
     controller.animateCamera(
-      CameraUpdate.newCameraPosition(CameraPosition(target: latLng, zoom: 10)),
+      CameraUpdate.newCameraPosition(CameraPosition(target: latLng, zoom: 9)),
     );
   }
 
@@ -188,54 +191,63 @@ class _ConsumerDeliveryOrdersTabWidgetState
   Set<Polyline> _polylines = {};
   final LatLng _ryderLocation = const LatLng(33.642631, 72.961899);
 
-  Future<void> _setupMarkersAndPolyline() async {
-    final bitmap = await CustomMapMarkerBuilder.fromWidget(
-      context: context,
-      marker: RiderMarkerWidget(),
-    );
-
-    if (!_isMounted) return; // Check if widget is still mounted
-
-    setState(() {
-      _markers = {
-        Marker(
-          markerId: MarkerId('ryder'),
-          infoWindow: const InfoWindow(title: 'Ryder Location'),
-          position: riderLatLng,
-          icon: bitmap,
-        ),
-      };
-
-      _polylines = {
-        Polyline(
-          polylineId: const PolylineId('line_between'),
-          visible: true,
-          points: [riderLatLng, _ryderLocation],
-          color: AppColors.accent,
-          width: 5,
-        ),
-      };
-    });
-  }
-
-  void startTraversal() {
-    timer = Timer.periodic(Duration(seconds: 15), (timer) async {
-      Position position = await Geolocator.getCurrentPosition(
-        locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
-      );
-      riderLatLng = LatLng(position.latitude, position.longitude);
-
-      moveToPoint(riderLatLng);
-    });
-  }
-
   LatLng restaurantLatLng = LatLng(31.7292, 72.9822);
   double lat = 31.7292;
   double longi = 72.9822;
 
-  Set<Marker> _animatedMarkers = {};
+  Future<List<LatLng>> getRouteCoordinates(
+    LatLng origin,
+    LatLng destination,
+  ) async {
+    final url =
+        'https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=$apiKey';
 
-  void moveToPoint(LatLng riderPoint) async {
+    final response = await http.get(Uri.parse(url));
+
+    log("Directions API URL: $url");
+    log("Response Status Code: ${response.statusCode}");
+    log("API Response: ${response.body}");
+
+    final json = jsonDecode(response.body);
+
+    if (json['status'] != 'OK') {
+      throw Exception(
+        'Directions API error: ${json['status']} - ${json['error_message'] ?? 'No additional message'}',
+      );
+    }
+
+    final points = json['routes'][0]['overview_polyline']['points'];
+
+    return PolylinePoints()
+        .decodePolyline(points)
+        .map((e) => LatLng(e.latitude, e.longitude))
+        .toList();
+  }
+
+  LatLng chiniot = LatLng(33.6995, 73.0363);
+
+  void updateRoute(LatLng currentPosition, LatLng destination) async {
+    List<LatLng> polylinePoints = await getRouteCoordinates(
+      currentPosition,
+      chiniot,
+    );
+
+    setState(() {
+      _polylines = {
+        Polyline(
+          polylineId: PolylineId("realTimeRoute"),
+          points: polylinePoints,
+          color: Colors.red,
+          width: 6,
+        ),
+      };
+    });
+  }
+
+  Future<void> _setupMarkersAndPolyline({
+    required LatLng riderPosition,
+    required LatLng customerPosition,
+  }) async {
     final riderBitmap = await CustomMapMarkerBuilder.fromWidget(
       context: context,
       marker: RiderMarkerWidget(),
@@ -246,36 +258,57 @@ class _ConsumerDeliveryOrdersTabWidgetState
       marker: CustomerMarkerWidget(),
     );
 
+    if (!_isMounted) return;
+
     setState(() {
-      final resCoords = StorageHelper().getResturantCoords();
-      _animatedMarkers = {
+      _markers = {
         Marker(
-          markerId: MarkerId('customer'),
-          position: LatLng(resCoords?[0] ?? lat, resCoords?[1] ?? longi),
-          icon: customerBitmap,
+          markerId: const MarkerId('rider'),
+          position: riderPosition,
+          icon: riderBitmap,
+          infoWindow: const InfoWindow(title: 'Rider'),
         ),
         Marker(
-          markerId: MarkerId('rider'),
-          position: riderPoint,
-          icon: riderBitmap,
+          markerId: const MarkerId('customer'),
+          position: customerPosition,
+          icon: customerBitmap,
+          infoWindow: const InfoWindow(title: 'Customer'),
         ),
       };
+
       _polylines = {
         Polyline(
-          polylineId: PolylineId('route'),
-          visible: true,
-          points: [
-            riderPoint,
-            LatLng(resCoords?[0] ?? lat, resCoords?[1] ?? longi),
-          ],
-          color: Colors.redAccent,
+          polylineId: const PolylineId('route'),
+          points: [riderPosition, customerPosition],
+          color: AppColors.accent,
           width: 5,
+          visible: true,
         ),
       };
     });
 
-    mapController?.animateCamera(CameraUpdate.newLatLng(riderPoint));
-    Logger().i("Rider moved to: $riderPoint");
+    mapController?.animateCamera(CameraUpdate.newLatLng(riderPosition));
+  }
+
+  DateTime lastUpdated = DateTime.now();
+
+  void startTrackingRider(LatLng destination) {
+    Geolocator.getPositionStream().listen((Position position) async {
+      final currentRiderLocation = LatLng(
+        position.latitude,
+        position.longitude,
+      );
+
+      _setupMarkersAndPolyline(
+        riderPosition: currentRiderLocation,
+        customerPosition: LatLng(31.7200, 72.9789),
+      );
+
+      if (DateTime.now().difference(lastUpdated).inSeconds > 10) {
+        lastUpdated = DateTime.now();
+        updateRoute(currentRiderLocation, destination);
+      }
+    });
   }
 
   @override
@@ -326,48 +359,52 @@ class _ConsumerDeliveryOrdersTabWidgetState
                     trafficEnabled: true,
                     zoomControlsEnabled: false,
                     initialCameraPosition: _kGooglePlex,
-                    onMapCreated: (GoogleMapController googleMapController) {
+                    onMapCreated: (
+                      GoogleMapController googleMapController,
+                    ) async {
                       _controller.complete(googleMapController);
                       mapController = googleMapController;
-                      startTraversal();
+
+                      startTrackingRider(LatLng(31.7200, 72.9789));
                     },
-                    markers: _animatedMarkers,
+
+                    markers: _markers,
                     polylines: _polylines,
                   ),
                 ),
 
-                isAccept["isAccept"]
-                    ? Positioned(
-                      top: topPosition,
-                      left: leftPosition - buttonWidth / 2,
-                      child: Card(
-                        color: AppColors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        margin: EdgeInsets.all(10),
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Row(
-                            children: [
-                              SvgAssets("rider_dir", width: 28, height: 28),
-                              width(10),
-                              Text(
-                                "Navigation",
-                                style: Theme.of(context).textTheme.titleSmall!
-                                    .copyWith(color: AppColors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                    : SizedBox(),
-                isAccept["isAccept"]
-                    ? AnimatedRidersDeliveryDetailsWrapper(
-                      riderDelivery: riderDeliveryPro,
-                    )
-                    : SizedBox(),
+                // isAccept["isAccept"]
+                //     ? Positioned(
+                //       top: topPosition,
+                //       left: leftPosition - buttonWidth / 2,
+                //       child: Card(
+                //         color: AppColors.black,
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(12),
+                //         ),
+                //         margin: EdgeInsets.all(10),
+                //         child: Padding(
+                //           padding: EdgeInsets.all(20),
+                //           child: Row(
+                //             children: [
+                //               SvgAssets("rider_dir", width: 28, height: 28),
+                //               width(10),
+                //               Text(
+                //                 "Navigation",
+                //                 style: Theme.of(context).textTheme.titleSmall!
+                //                     .copyWith(color: AppColors.white),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //     )
+                //     : SizedBox(),
+                // isAccept["isAccept"]
+                //     ? AnimatedRidersDeliveryDetailsWrapper(
+                //       riderDelivery: riderDeliveryPro,
+                //     )
+                //     : SizedBox(),
               ],
             );
           },

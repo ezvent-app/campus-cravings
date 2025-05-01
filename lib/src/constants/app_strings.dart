@@ -1,4 +1,7 @@
 class AppStrings {
+
+
+  
   // ONBOARDING TITLES
   static const onboardingTitle1 = 'Your Campus. Your Cravings. Delivered.';
   static const onboardingTitle2 = 'Building Connections Beyond the Plate';

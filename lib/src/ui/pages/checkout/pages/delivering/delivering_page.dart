@@ -311,7 +311,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                     mapController = googleMapController;
                     startTraversal();
                   },
-                  markers: _markers,
+                  markers: _animatedMarker,
                   polylines: _polylines,
                 ),
               ),

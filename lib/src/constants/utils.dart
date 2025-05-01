@@ -34,3 +34,5 @@ showToast(String message, {BuildContext? context, Color? bgColor}) {
 }
 
 printThis(String message) => debugPrint(message);
+
+String apiKey = "AIzaSyCymvinSQuyFmmG-HrqlRiptGwrRSIp8aY";

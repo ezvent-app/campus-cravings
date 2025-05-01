@@ -53,7 +53,7 @@ class CheckoutNavBarWidget extends StatelessWidget {
               ),
             ],
           ),
-          onPressed: () => context.pushRoute(CheckOutTabRoute()),
+          onPressed: () => context.pushRoute(DeliveringRoute()),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
