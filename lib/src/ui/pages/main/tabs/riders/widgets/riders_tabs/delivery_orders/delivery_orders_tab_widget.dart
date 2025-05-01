@@ -518,7 +518,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
                               };
 
                               final body = {
-                                "estimated_time": "25 minutes",
+                                "estimated_time":
+                                    order.deliveryDurationInMinutes,
                                 "orderId": order.id,
                               };
 

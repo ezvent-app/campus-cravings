@@ -6,9 +6,12 @@ class DeliveryOrder {
   final double price;
   final String guaranteedLabel;
   final double distance;
-  final String deliveryTime;
+  final String deliveryTime; // Display string
   final String pickupItem;
   final String dropoffLabel;
+
+  // ✅ New field for API usage (duration in minutes)
+  final int deliveryDurationInMinutes;
 
   DeliveryOrder({
     required this.id,
@@ -18,44 +21,42 @@ class DeliveryOrder {
     required this.deliveryTime,
     required this.pickupItem,
     required this.dropoffLabel,
+    required this.deliveryDurationInMinutes,
   });
 
-  // Factory to parse socket data and calculate distance/delivery time
   static Future<DeliveryOrder> fromSocketData(
     Map<String, dynamic> orderData,
     Map<String, dynamic> restaurantData,
   ) async {
     String id = orderData['_id'] as String;
 
-    // Convert total_price from cents to dollars
     double price =
         (orderData['total_price'] is int
             ? orderData['total_price'].toDouble()
             : orderData['total_price']) /
         100;
 
-    // Extract restaurant and customer coordinates
     final restaurantCoords =
         restaurantData['restaurantCoords'] as List<dynamic>;
     final customerCoords =
         orderData['addresses']['coordinates']['coordinates'] as List<dynamic>;
 
-    // Coordinates for the API request
-    final origin = '${restaurantCoords[1]},${restaurantCoords[0]}'; // lat,lng
-    final destination = '${customerCoords[1]},${customerCoords[0]}'; // lat,lng
+    final origin = '${restaurantCoords[1]},${restaurantCoords[0]}';
+    final destination = '${customerCoords[1]},${customerCoords[0]}';
 
-    // Call Google Distance Matrix API
-    double distance = 1.2; // Default placeholder
-    String deliveryTime = "Deliver by 2:38 PM"; // Default placeholder
+    double distance = 1.2;
+    String deliveryTime = "Deliver by 2:38 PM";
+    int deliveryDurationInMinutes = 30;
+
     try {
       const apiKey =
-          'AIzaSyCymvinSQuyFmmG-HrqlRiptGwrRSIp8aY'; // Replace with your Google API key
+          'AIzaSyCymvinSQuyFmmG-HrqlRiptGwrRSIp8aY'; // Replace with your API key
       final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/distancematrix/json'
         '?origins=$origin'
         '&destinations=$destination'
-        '&units=imperial' // Use miles for distance
-        '&key=${apiKey}',
+        '&units=imperial'
+        '&key=$apiKey',
       );
 
       final response = await http.get(url);
@@ -64,15 +65,12 @@ class DeliveryOrder {
         if (data['status'] == 'OK') {
           final element = data['rows'][0]['elements'][0];
           if (element['status'] == 'OK') {
-            // Extract distance in miles
-            distance =
-                (element['distance']['value'] /
-                    1609.34); // Convert meters to miles
+            distance = element['distance']['value'] / 1609.34;
 
-            // Extract duration in seconds
             final durationSeconds = element['duration']['value'] as int;
 
-            // Calculate delivery time (current time + duration)
+            deliveryDurationInMinutes = (durationSeconds / 60).round();
+
             final now = DateTime.now();
             final deliveryDateTime = now.add(
               Duration(seconds: durationSeconds),
@@ -83,10 +81,8 @@ class DeliveryOrder {
       }
     } catch (e) {
       print('Error calling Google Distance Matrix API: $e');
-      // Fallback to placeholders if the API call fails
     }
 
-    // Use restaurant name as the pickup item
     String pickupItem = restaurantData['name'] as String;
 
     return DeliveryOrder(
@@ -97,10 +93,10 @@ class DeliveryOrder {
       deliveryTime: deliveryTime,
       pickupItem: pickupItem,
       dropoffLabel: "Customer Dropoff",
+      deliveryDurationInMinutes: deliveryDurationInMinutes,
     );
   }
 
-  // Helper to format time as "H:MM AM/PM"
   static String _formatTime(DateTime dateTime) {
     final hour = dateTime.hour % 12 == 0 ? 12 : dateTime.hour % 12;
     final minute = dateTime.minute.toString().padLeft(2, '0');
