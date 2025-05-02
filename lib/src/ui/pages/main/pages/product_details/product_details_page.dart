@@ -368,6 +368,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             );
                             return;
                           }
+
                           ref
                               .read(cartItemsProvider.notifier)
                               .addItem(
@@ -376,8 +377,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   sizePrice:
                                       cartItemsNotifier.selectedSizePrice,
                                   size: cartItemsNotifier.selectedSizeId,
-                                  customization:
-                                      cartItemsNotifier.selectedCustomizations,
+                                  customization: List.from(
+                                    controller.selectedCustomizations,
+                                  ),
                                   image:
                                       controller
                                           .productItemDetailModel!
