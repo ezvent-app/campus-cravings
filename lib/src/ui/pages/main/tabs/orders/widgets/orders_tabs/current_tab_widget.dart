@@ -106,7 +106,7 @@ class _CurrentOrdersTabWidgetState
                             width: 80,
                             fit: BoxFit.cover,
                             borderRadius: BorderRadius.circular(10),
-                            order.user.image,
+                            order.restaurant.image[0],
                           ),
                           Expanded(
                             child: Padding(

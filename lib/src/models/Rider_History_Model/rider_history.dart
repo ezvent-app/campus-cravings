@@ -112,11 +112,16 @@ class User {
 class Restaurant {
   final String name;
   final String phone;
+  final List<String> image;
 
-  Restaurant({required this.name, required this.phone});
+  Restaurant({required this.name, required this.phone, required this.image});
 
   factory Restaurant.fromJson(Map<String, dynamic> json) {
-    return Restaurant(name: json['name'], phone: json['phone']);
+    return Restaurant(
+      name: json['name'],
+      phone: json['phone'],
+      image: List<String>.from(json['image'] ?? []),
+    );
   }
 }
 
