@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:campuscravings/src/controllers/product_details_controller.dart';
 import 'package:campuscravings/src/models/product_item_detail_model.dart';
 import 'package:campuscravings/src/repository/home_repository/product_catalog_repository.dart';
@@ -69,6 +71,7 @@ class _ConsumerCustomizationCheckboxWidgetState
                 );
 
                 controller.selectedCustomizations = _selectedCustomizations;
+                log("CUSTOMIZATION ${controller.selectedCustomizations}");
                 controller.getTotalPrice();
               });
             },

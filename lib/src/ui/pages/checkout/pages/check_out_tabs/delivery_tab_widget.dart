@@ -648,9 +648,6 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
           List<Map<String, dynamic>> orderItemsJson =
               cartItems.map((item) => item.toOrderItemJson()).toList();
 
-          // repository.placeOrderMethod(json, context);
-          // context.pushRoute( DeliveringRoute());
-
           final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
             address.value?.addresses,
           );
@@ -694,8 +691,6 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
                   cartItems.clear();
                 },
               );
-
-              repository.placeOrderMethod(json, context);
             } else {
               log("Customer location is not available.");
             }
