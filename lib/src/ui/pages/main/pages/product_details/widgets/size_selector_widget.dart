@@ -10,7 +10,7 @@ class SizeSelectorWidget extends ConsumerStatefulWidget {
 }
 
 class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
-  int _selectedSize = 0;
+  int _selectedSize = -1;
   final List<ProductSize> sizes = const [
     ProductSize(label: 'Size M', value: 0),
     ProductSize(label: 'Size L', value: 4),
@@ -57,7 +57,6 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                       _selectedSize = index;
                       cartNotifier.selectSize(index, size.id, size.price);
                       controller.selectedSizePrice = size.price;
-
                       controller.getTotalPrice();
                     });
                   },

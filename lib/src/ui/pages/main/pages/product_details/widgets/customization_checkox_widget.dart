@@ -71,7 +71,9 @@ class _ConsumerCustomizationCheckboxWidgetState
                 );
 
                 controller.selectedCustomizations = _selectedCustomizations;
-                log("CUSTOMIZATION ${controller.selectedCustomizations}");
+                log(
+                  "CUSTOMIZATION ${controller.selectedCustomizations.map((i) => i.price)}",
+                );
                 controller.getTotalPrice();
               });
             },

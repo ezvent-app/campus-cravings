@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:campuscravings/src/models/User%20Model/user_info_model.dart';
 import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
@@ -61,18 +63,22 @@ class HomeLocationWidget extends ConsumerWidget {
                                       locationProvider,
                                     );
                                     return InkWellButtonWidget(
-                                      onTap:
-                                          () => ref
-                                              .read(locationProvider.notifier)
-                                              .selectedAddress(
-                                                context,
-                                                OrderAddress(
-                                                  address: address.address,
-                                                  coordinates:
-                                                      address.coordinates,
-                                                ),
-                                                index,
+                                      onTap: () {
+                                        ref
+                                            .read(locationProvider.notifier)
+                                            .selectedAddress(
+                                              context,
+                                              OrderAddress(
+                                                address: address.address,
+                                                coordinates:
+                                                    address.coordinates,
                                               ),
+                                              index,
+                                            );
+                                        log(
+                                          "Selected User address ${address.coordinates!.coordinates}",
+                                        );
+                                      },
                                       child: Card(
                                         shape: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(

@@ -638,7 +638,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final address = ref.watch(locationProvider);
-    final locationAsync = ref.watch(locationProvider);
+
     return Container(
       width: double.infinity,
       height: 48,
@@ -648,53 +648,54 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
           List<Map<String, dynamic>> orderItemsJson =
               cartItems.map((item) => item.toOrderItemJson()).toList();
 
-          final LatLng? restuatantLatLng = getLatLngFromOrderAddress(
+          final LatLng? customerLatLng = getLatLngFromOrderAddress(
             address.value?.addresses,
           );
+          final LatLng restuarantLatLng = LatLng(
+            cartItems.first.restCoordinates[0],
+            cartItems.first.restCoordinates[1],
+          );
+          if (customerLatLng != null) {
+            final distance = _calculateDistanceInMiles(
+              restuarantLatLng,
+              customerLatLng,
+            );
 
-          locationAsync.whenData((locationModel) async {
-            if (restuatantLatLng != null) {
-              final distance = _calculateDistanceInMiles(
-                locationModel.latLng,
-                restuatantLatLng,
-              );
+            log(
+              "...............................................................",
+            );
+            log("CUSTOMER $customerLatLng");
+            log("RESTAUNARANT  ${cartItems.first.restCoordinates}");
+            log("DISTANCE IN MILES ${distance.toStringAsFixed(2)}");
+            log('Total Delivery Fee: \$$deliveryFee');
+            log(
+              "...............................................................",
+            );
 
-              log(
-                "...............................................................",
-              );
-              log("CUSTOMER ${locationModel.latLng}");
-              log("RESTAUNARANT $restuatantLatLng");
-              log("DISTANCE IN MILES ${distance.toStringAsFixed(2)}");
-              log('Total Delivery Fee: \$$deliveryFee');
-              log(
-                "...............................................................",
-              );
-
-              final json = {
-                "payment_method": "card",
-                "tip": tip,
-                "delivery_fee": deliveryFee,
-                "order_type": orderType,
-                "addresses": address.value?.addresses ?? "",
-                "items": orderItemsJson,
-              };
-              log("CHECKOUT JSON $json");
-              await repository.makePayment(
-                context: context,
-                purchaseName: "Ali",
-                title: "Garden Service",
-                amountPaid: total.toDouble(),
-                merchantDisplayName: "Default Merchant",
-                onSuccess: (transactionId) async {
-                  log("Payment Successful with Transaction ID: $transactionId");
-                  repository.placeOrderMethod(json, context);
-                  cartItems.clear();
-                },
-              );
-            } else {
-              log("Customer location is not available.");
-            }
-          });
+            final json = {
+              "payment_method": "card",
+              "tip": tip,
+              "delivery_fee": deliveryFee,
+              "order_type": orderType,
+              "addresses": address.value?.addresses ?? "",
+              "items": orderItemsJson,
+            };
+            log("CHECKOUT JSON $json");
+            await repository.makePayment(
+              context: context,
+              purchaseName: "Ali",
+              title: "Garden Service",
+              amountPaid: total.toDouble(),
+              merchantDisplayName: "Default Merchant",
+              onSuccess: (transactionId) async {
+                log("Payment Successful with Transaction ID: $transactionId");
+                repository.placeOrderMethod(json, context);
+                cartItems.clear();
+              },
+            );
+          } else {
+            log("Customer location is not available.");
+          }
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
