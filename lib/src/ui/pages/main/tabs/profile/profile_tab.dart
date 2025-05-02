@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/constants/storageHelper.dart'
     show StorageHelper;
+import 'package:campuscravings/src/controllers/user_controller.dart';
 import 'package:campuscravings/src/models/User%20Model/user_info_model.dart';
 import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
@@ -16,44 +17,13 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadUserProfile();
-    });
-  }
-
-  Future<void> _loadUserProfile() async {
-    // Set isLoading to true before fetching data
-    ref.read(profileTabProvider.notifier).state = {
-      ...ref.read(profileTabProvider),
-      'isLoading': true,
-    };
-
-    try {
-      UserInfoRepository info = UserInfoRepository();
-      UserModel data = await info.fetchUserProfile();
-      ref.read(profileTabProvider.notifier).state = {
-        ...ref.read(profileTabProvider),
-        'firstName': data.userInfo!.firstName,
-        'lastName': data.userInfo!.lastName,
-        'phoneNumber': data.userInfo!.phoneNumber,
-        'networkImage': data.userInfo!.imgUrl,
-        'isLoading': false, // Set isLoading to false after fetching
-      };
-    } catch (e) {
-      // Handle error and set isLoading to false
-      ref.read(profileTabProvider.notifier).state = {
-        ...ref.read(profileTabProvider),
-        'isLoading': false,
-      };
-      // Optionally show an error message
-      showToast("Failed to load profile", context: context);
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
-    final profileData = ref.watch(profileTabProvider);
+    final user = ref.watch(userControllerProvider)?.userInfo;
+    print("user.imgUrl: ${user?.imgUrl}");
     return Scaffold(
       backgroundColor: const Color(0xFFFBFBFA),
       body: Stack(
@@ -77,13 +47,13 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child:
-                                    profileData['networkImage'].isNotEmpty
+                                    user?.imgUrl != null && user?.imgUrl != ''
                                         ? ClipRRect(
                                           borderRadius: BorderRadius.circular(
                                             20,
                                           ),
                                           child: Image.network(
-                                            profileData['networkImage'],
+                                            user!.imgUrl!,
                                             fit: BoxFit.cover,
                                             errorBuilder:
                                                 (context, error, stackTrace) =>
@@ -110,7 +80,7 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "${profileData['firstName']} ${profileData['lastName']}",
+                                      "${user?.firstName} ${user?.lastName}",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style:
@@ -250,30 +220,8 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
               ),
             ),
           ),
-          if (profileData['isLoading'])
-            Container(
-              color: Colors.black.withOpacity(
-                0.3,
-              ), // Semi-transparent background
-              child: const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                ),
-              ),
-            ),
         ],
       ),
     );
   }
 }
-
-final profileTabProvider = StateProvider<Map<String, dynamic>>(
-  (ref) => {
-    'firstName': '',
-    'lastName': '',
-    'phoneNumber': '',
-    'isLoading': false,
-    'imgBase64': '',
-    'networkImage': '',
-  },
-);

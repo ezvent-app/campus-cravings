@@ -1,23 +1,17 @@
 import 'package:campuscravings/src/src.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Enum for ticket tab types
 enum TicketTabType { active, history }
 
-// ConsumerWidget for displaying tickets
 class TicketTabWidget extends ConsumerWidget {
   final TicketTabType type;
   const TicketTabWidget({super.key, required this.type});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locale = AppLocalizations.of(context)!;
     final services = HttpAPIServices();
-    print("TicketTabType: $type");
-    // Watch the ticket list from the provider, filter based on type
     final tickets =
         ref.watch(ticketProvider).where((ticket) {
-          print("Status: ${ticket.status}");
           return type == TicketTabType.active
               ? ticket.status == 'pending'
               : ticket.status != 'pending';
@@ -29,7 +23,6 @@ class TicketTabWidget extends ConsumerWidget {
         ticketId: ticket.id,
         onAdd: (String ticketId, TicketMessage message) {
           ref.read(ticketProvider.notifier).addMessage(ticketId, message);
-          print("Messages: ${ticket.messages}");
         },
         onDelete:
             () => ref
@@ -38,12 +31,15 @@ class TicketTabWidget extends ConsumerWidget {
       ),
     );
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      physics: const BouncingScrollPhysics(),
-      child: Stack(
-        children: [
-          Column(
+    return Stack(
+      // Ensure Stack takes full available height
+      children: [
+        // Ticket list content
+        SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            spacing: 8,
             children: List.generate(tickets.length, (index) {
               final ticket = tickets[index];
               return ProfileGroupButton(
@@ -58,47 +54,38 @@ class TicketTabWidget extends ConsumerWidget {
               );
             }),
           ),
-          if (type == TicketTabType.active)
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16, bottom: 40),
-                child: FloatingActionButton(
-                  onPressed: () async {
-                    try {
-                      final response = await services.postAPI(
-                        url: "/admin/tickets",
-                        map: {
-                          "subject": 'Pakistan Studies',
-                          "description": 'Need help with my assignment',
-                          "imgUrl": [],
-                        },
-                      );
-                      if (response.statusCode == 201) {
-                        final body =
-                            jsonDecode(response.body) as Map<String, dynamic>;
-                        final ticket = Ticket.fromJson(body['ticket']);
-                        ref
-                            .read(ticketProvider.notifier)
-                            .addTicket(body['ticket']);
-                        handleTicketRouting(ticket);
-                      }
-                    } catch (e) {
-                      print("Error: $e");
-                      showToast("Failed to create ticket", context: context);
-                    }
-                  },
-                  backgroundColor: AppColors.primary,
-                  child: Icon(
-                    Icons.add_sharp,
-                    color: AppColors.white,
-                    size: 30,
-                  ),
-                ),
-              ),
+        ),
+
+        // Floating Action Button anchored to bottom-right
+        if (type == TicketTabType.active)
+          Positioned(
+            bottom: 24, // Adjust based on your UI needs
+            right: 24,
+            child: FloatingActionButton(
+              onPressed: () async {
+                try {
+                  final response = await services.postAPI(
+                    url: "/admin/tickets",
+                    map: {
+                      "subject": 'Pakistan Studies',
+                      "description": 'Need help with my assignment',
+                      "imgUrl": [],
+                    },
+                  );
+                  if (response.statusCode == 201) {
+                    final body = jsonDecode(response.body);
+                    ref.read(ticketProvider.notifier).addTicket(body['ticket']);
+                    handleTicketRouting(Ticket.fromJson(body['ticket']));
+                  }
+                } catch (e) {
+                  showToast("Failed to create ticket", context: context);
+                }
+              },
+              backgroundColor: AppColors.primary,
+              child: const Icon(Icons.add, color: AppColors.white),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }

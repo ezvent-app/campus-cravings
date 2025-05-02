@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -26,9 +27,39 @@ class TicketMessagesPage extends ConsumerStatefulWidget {
 
 class _TicketMessagesPageState extends ConsumerState<TicketMessagesPage> {
   final TextEditingController _controller = TextEditingController();
+  // Add these members
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    // Scroll to bottom after initial build
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+  }
+
+  @override
+  void didUpdateWidget(covariant TicketMessagesPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Scroll when new messages are added
+    if (oldWidget.messages.length < widget.messages.length) {
+      _scrollToBottom();
+    }
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -67,12 +98,16 @@ class _TicketMessagesPageState extends ConsumerState<TicketMessagesPage> {
           children: [
             Expanded(
               child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
+                controller: _scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: messages.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   final message = messages[index];
                   final isUser = message.sender == 'user';
+                  if (message.imageUrl.isNotEmpty) {
+                    print("Message image URL: ${message.imageUrl[0]}");
+                  }
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
@@ -117,14 +152,19 @@ class _TicketMessagesPageState extends ConsumerState<TicketMessagesPage> {
                                   ),
                                 if (message.imageUrl.isNotEmpty) ...[
                                   const SizedBox(height: 10),
-                                  Image.network(
+                                  CustomNetworkImage(
                                     message.imageUrl[0],
                                     height: 100,
                                     fit: BoxFit.cover,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            const Text('Error loading image'),
                                   ),
+                                  // Image.network(
+                                  //   message.imageUrl[0],
+                                  //   height: 100,
+                                  //   fit: BoxFit.cover,
+                                  //   errorBuilder:
+                                  //       (context, error, stackTrace) =>
+                                  //           const Text('Error loading image'),
+                                  // ),
                                 ],
                               ],
                             ),
@@ -142,13 +182,12 @@ class _TicketMessagesPageState extends ConsumerState<TicketMessagesPage> {
                 },
               ),
             ),
-            const SizedBox(height: 40),
             Row(
               children: [
                 IconButton(
                   icon: const Icon(Icons.attach_file),
                   onPressed: () async {
-                    await notifier.pickImage(context);
+                    await notifier.pickImage(context, widget.onAdd);
                   },
                 ),
                 Expanded(
@@ -221,7 +260,10 @@ class TicketMessagesNotifier extends StateNotifier<TicketMessagesState> {
     state = state.copyWith(message: message);
   }
 
-  Future<void> pickImage(BuildContext context) async {
+  Future<void> pickImage(
+    BuildContext context,
+    Function(String ticketId, TicketMessage message) onAdd,
+  ) async {
     try {
       state = state.copyWith(isLoading: true);
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -239,7 +281,7 @@ class TicketMessagesNotifier extends StateNotifier<TicketMessagesState> {
           String base64 =
               'data:image/${result.files.single.extension};base64,$base64Image';
 
-          await _sendImage(base64, context);
+          await _sendImage(base64, context, onAdd);
         }
       }
     } catch (e) {
@@ -256,16 +298,40 @@ class TicketMessagesNotifier extends StateNotifier<TicketMessagesState> {
     state = state.copyWith(image: null);
   }
 
-  Future<void> _sendImage(String image, BuildContext context) async {
+  Future<void> _sendImage(
+    String image,
+    BuildContext context,
+    Function(String ticketId, TicketMessage message) onAdd,
+  ) async {
     try {
       state = state.copyWith(isLoading: true);
-      await services.patchAPI(
+      final response = await services.patchAPI(
         url: '/admin/tickets/reply/$ticketId',
         map: {
           'text': '',
           'imageUrl': [image],
         },
       );
+      final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+
+      // Extract the latest message from the response
+      final ticket = responseData['ticket'] as Map<String, dynamic>;
+      final messages = ticket['messages'] as List<dynamic>;
+      final latestMessage = messages.last as Map<String, dynamic>;
+
+      // Create a TicketMessage object from the latest message
+      final message = TicketMessage(
+        sender: latestMessage['sender'] as String,
+        text: latestMessage['text'] as String,
+        imageUrl: (latestMessage['imageUrl'] as List<dynamic>).cast<String>(),
+        id: latestMessage['_id'] as String,
+        time: DateTime.parse(latestMessage['time'] as String),
+      );
+
+      // Call the onAdd callback with the ticketId and the new message
+      onAdd(ticketId, message);
+
+      // Reset the state
       state = state.copyWith(image: null);
     } catch (e) {
       debugPrint('Error sending image: $e');

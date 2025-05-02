@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/controllers/user_controller.dart';
 import 'package:campuscravings/src/models/User%20Model/user_info_model.dart';
 import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
@@ -48,14 +49,13 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
       'isLoading': true,
     };
     try {
-      UserInfoRepository info = UserInfoRepository();
-      UserModel data = await info.fetchUserProfile();
+      final user = ref.watch(userControllerProvider)?.userInfo;
       ref.read(signUpProvider.notifier).state = {
         ...ref.read(signUpProvider),
-        'firstName': data.userInfo!.firstName,
-        'lastName': data.userInfo!.lastName,
-        'phoneNumber': data.userInfo!.phoneNumber,
-        'networkImage': data.userInfo!.imgUrl,
+        'firstName': user?.firstName,
+        'lastName': user?.lastName,
+        'phoneNumber': user?.phoneNumber,
+        'networkImage': user?.imgUrl,
         'isLoading': false, // Reset isLoading
       };
     } catch (e) {
@@ -497,21 +497,36 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                               "lastName":
                                                   signUpNotifer['lastName'],
                                               "imgUrl":
-                                                  signUpNotifer['imgBase64'] ??
-                                                  signUpNotifer['networkImage'],
+                                                  !signUpNotifer['imgBase64']
+                                                          .isEmpty
+                                                      ? signUpNotifer['imgBase64']
+                                                      : signUpNotifer['networkImage'],
                                             },
                                           );
                                           final data = jsonDecode(
                                             response.body,
                                           );
-                                          if (response.statusCode == 201) {
-                                            if (context.mounted) {
-                                              context.maybePop();
-                                            }
+                                          if (response.statusCode == 200) {
                                             showToast(
                                               "Profile updated successfully",
                                               context: context,
                                             );
+
+                                            ref
+                                                .read(
+                                                  userControllerProvider
+                                                      .notifier,
+                                                )
+                                                .updateBasicInfo(
+                                                  firstName:
+                                                      signUpNotifer['firstName'],
+                                                  lastName:
+                                                      signUpNotifer['lastName'],
+                                                  phoneNumber:
+                                                      signUpNotifer['phoneNumber'],
+                                                  imgUrl:
+                                                      data["userInfo"]["imgUrl"],
+                                                );
                                           } else {
                                             showToast(
                                               data['message'] ??

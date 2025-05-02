@@ -48,7 +48,4 @@ class UserInfoRepository {
       return null;
     }
   }
-
-
-  
 }
