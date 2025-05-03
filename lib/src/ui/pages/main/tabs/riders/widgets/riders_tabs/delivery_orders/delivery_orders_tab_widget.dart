@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:campuscravings/src/constants/storageHelper.dart';
@@ -36,7 +37,6 @@ class _ConsumerDeliveryOrdersTabWidgetState
     });
     startTimer();
     _startLocationStream();
-    // startSendingLocation();
   }
 
   void _setupSocket() async {
@@ -144,10 +144,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
   Set<Polyline> polylines = {};
 
-  final LatLng customerLocation = const LatLng(
-    33.6984,
-    73.0367,
-  ); // F-8 Islamabad
+  LatLng customerLocation = const LatLng(33.6984, 73.0367);
 
   LatLng riderLocation = LatLng(33.602859, 73.0174495);
 
@@ -155,6 +152,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
   final RiderLocationRepo _riderLocationRepo = RiderLocationRepo();
 
   StreamSubscription<Position>? _positionStreamSubscription;
+
+  final customerLatLng = StorageHelper().getCustomerCoords();
 
   void _startLocationStream() {
     final locationSettings = LocationSettings(
@@ -230,6 +229,10 @@ class _ConsumerDeliveryOrdersTabWidgetState
   }
 
   Future<void> _initializeMap() async {
+    if (!ref.watch(isDeliveryStartedProvider)) return;
+    dev.log(
+      "IS DELIVERY STARTED $customerLatLng ${ref.watch(isDeliveryStartedProvider)}",
+    );
     try {
       final riderIcon = await CustomMapMarkerBuilder.fromWidget(
         context: context,
@@ -584,16 +587,13 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                 Logger().i(
                                   "Order Accepted: ${riderDeliveryResponse.order?.sId}",
                                 );
-                                final restaurantCoords =
+                                final customerCoords =
                                     riderDeliveryResponse
                                         .order
                                         ?.addresses
                                         ?.coordinates
                                         ?.coordinates ??
                                     [];
-                                StorageHelper().saveResturantCoords(
-                                  restaurantCoords,
-                                );
 
                                 ref.read(riderDeliveryProvider.notifier).state =
                                     riderDeliveryResponse;
@@ -604,6 +604,10 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                 Navigator.pop(context);
                                 setState(() {
                                   _remainingOrders.clear();
+                                  customerLocation = LatLng(
+                                    customerCoords[0],
+                                    customerCoords[1],
+                                  );
                                 });
                               } else {
                                 // Handle error if response is null
@@ -686,3 +690,5 @@ final riderProvider = StateProvider<Map<String, dynamic>>(
 );
 
 final riderDeliveryProvider = StateProvider<RiderDeliveryModel?>((ref) => null);
+
+final isDeliveryStartedProvider = StateProvider<bool>((ref) => false);

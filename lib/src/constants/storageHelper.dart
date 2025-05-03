@@ -43,11 +43,11 @@ class StorageHelper {
     _savePref(_userId, id);
   }
 
-  void saveResturantCoords(List<double> coords) {
+  void saveCustomerCoords(List<double> coords) {
     _savePref(resCords, coords);
   }
 
-  List<double>? getResturantCoords() {
+  List<double>? getCustomerCoords() {
     return _getPref(resCords);
   }
 

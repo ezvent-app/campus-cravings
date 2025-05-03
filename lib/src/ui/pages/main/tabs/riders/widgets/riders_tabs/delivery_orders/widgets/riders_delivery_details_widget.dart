@@ -39,10 +39,10 @@ class _RidersDeliveryDetailsWidgetState
     String? userName = data?.order!.userId?.firstName;
     String? imageUrl = data?.order!.userId?.imgUrl ?? '';
     String? phoneNumber = data?.order!.userId?.phoneNumber ?? '1234567';
-    List<double>? restuarantCoords =
+    List<double>? customerCoords =
         data?.order?.addresses?.coordinates?.coordinates ?? [];
 
-    StorageHelper().saveResturantCoords(restuarantCoords);
+    StorageHelper().saveCustomerCoords(customerCoords);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,7 +184,7 @@ class _RidersDeliveryDetailsWidgetState
                                         height: 8,
                                       ), // Space between heading and items
                                       // Customization items list
-                                      ...List.generate(customzation!.length, (
+                                      ...List.generate(customzation.length, (
                                         index,
                                       ) {
                                         return Padding(
@@ -252,10 +252,7 @@ class _RidersDeliveryDetailsWidgetState
                     ListTile(
                       leading: CircleAvatar(
                         radius: 25,
-                        backgroundImage: NetworkImage(
-                          imageUrl ??
-                              'https://www.pngall.com/wp-content/uploads/5/Avatar-Profile-Vector-PNG.png',
-                        ),
+                        backgroundImage: NetworkImage(imageUrl),
                       ),
                       title: Text(
                         userName ?? 'User name',
@@ -349,6 +346,8 @@ class _RidersDeliveryDetailsWidgetState
                               builder: (context) => ImageCaptureScreen(),
                             ),
                           );
+                          ref.read(isDeliveryStartedProvider.notifier).state =
+                              false;
                           return null;
                         },
                         outerColor: Colors.white,
@@ -387,6 +386,7 @@ class _RidersDeliveryDetailsWidgetState
                       setState(() {
                         isStarted = true;
                       });
+                      ref.read(isDeliveryStartedProvider.notifier).state = true;
                       return null;
                     },
                     outerColor: Colors.white,
