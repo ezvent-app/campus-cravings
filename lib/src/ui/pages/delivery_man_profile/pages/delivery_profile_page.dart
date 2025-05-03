@@ -194,6 +194,12 @@ class DeliverySetupPage extends ConsumerWidget {
                                 "location": {"lat": 37.7749, "lng": -122.4194},
                               },
                             );
+                            final data = jsonDecode(response.body);
+
+                            final riderId = data['data']['user'];
+                            StorageHelper().saveRiderId(riderId);
+                            RiderPayoutRepo repo = RiderPayoutRepo();
+                            repo.generateOnboardingLink(riderId!);
                             if (response.statusCode == 201) {
                               context.router.replaceAll([
                                 const AddPayoutRoute(),

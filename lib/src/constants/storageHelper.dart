@@ -2,6 +2,8 @@ import 'package:get_storage/get_storage.dart';
 
 class StorageHelper {
   static const String _userId = "_id";
+  static const String _riderId = "_riderId";
+  static const String _paymentUrl = "_url";
   static const String resCords = "coords";
   static const String _riderOrderId = "item_id";
   static const String _accessToken = "accessToken";
@@ -53,6 +55,22 @@ class StorageHelper {
 
   String? getUserId() {
     return _getPref(_userId);
+  }
+
+  String? getRiderId() {
+    return _getPref(_riderId);
+  }
+
+  void saveRiderId(String? id) {
+    _savePref(_riderId, id);
+  }
+
+  String? getPyemntGenUrl() {
+    return _getPref(_paymentUrl);
+  }
+
+  void savePaymentGenUrl(String? url) {
+    _savePref(_paymentUrl, url);
   }
 
   void saveRiderOrderId(String? id) {
