@@ -136,15 +136,45 @@ class StudentProfileDetailsPage extends ConsumerWidget {
                     final minors = ref.read(minorsProvider);
                     final clubs = ref.read(clubsProvider);
 
-                    if (aboutYou.isEmpty ||
-                        batchYear.isEmpty ||
-                        majors.isEmpty ||
-                        minors.isEmpty ||
-                        clubs.isEmpty) {
+                    // if (aboutYou.isEmpty ||
+                    //     batchYear.isEmpty ||
+                    //     majors.isEmpty ||
+                    //     minors.isEmpty ||
+                    //     clubs.isEmpty) {
+                    // showToast(
+                    //   "Please Enter Proper Information and press done",
+                    //   context: context,
+                    // );
+                    //   return;
+                    // }
+
+                    if (batchYear.isEmpty) {
+                      showToast("Please Enter Batch Year.", context: context);
+                      return;
+                    }
+                    if (majors.isEmpty) {
                       showToast(
-                        "Please Enter Proper Information",
+                        "Please Enter Major and press done to save.",
                         context: context,
                       );
+                      return;
+                    }
+                    if (minors.isEmpty) {
+                      showToast(
+                        "Please Enter minor and press done to save.",
+                        context: context,
+                      );
+                      return;
+                    }
+                    if (clubs.isEmpty) {
+                      showToast(
+                        "Please Enter clubs or Organization and press done to save.",
+                        context: context,
+                      );
+                      return;
+                    }
+                    if (aboutYou.isEmpty) {
+                      showToast("Please Enter bio.", context: context);
                       return;
                     }
                     context.pushRoute(
