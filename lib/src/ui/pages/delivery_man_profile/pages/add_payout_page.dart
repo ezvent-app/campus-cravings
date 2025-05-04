@@ -1,4 +1,7 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:campuscravings/src/ui/widgets/web_view_striper.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 @RoutePage()
 class AddPayoutPage extends ConsumerStatefulWidget {
@@ -9,13 +12,9 @@ class AddPayoutPage extends ConsumerStatefulWidget {
 }
 
 class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
-  final paymentMethods = ['wallet', 'pp', 'apple'];
-  final List<String> _banks = ['Bank of America'];
-  late String _selectedBank;
-
+  bool _isLoading = false;
   @override
   void initState() {
-    _selectedBank = _banks.first;
     super.initState();
   }
 
@@ -40,121 +39,59 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
           spacing: 16,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 67,
-              width: double.infinity,
-              child: Consumer(
-                builder: (context, ref, child) {
-                  final selectedIndex = ref.watch(paymentSetupProvider);
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: paymentMethods.length,
-                    separatorBuilder:
-                        (BuildContext context, int index) => width(13),
-                    itemBuilder: (BuildContext context, int index) {
-                      final category = paymentMethods[index];
-                      return InkWellButtonWidget(
-                        borderRadius: BorderRadius.circular(
-                          Dimensions.radiusDefault,
-                        ),
-                        onTap: () {
-                          final fullName = ref.read(paymentSetupProvider);
-                          ref.read(paymentSetupProvider.notifier).state = {
-                            ...fullName,
-                            'paymentMethod': category,
-                            'selectedIndex': index,
-                          };
-                        },
-                        child: Container(
-                          width: 80,
-                          height: 67,
-                          padding: const EdgeInsets.all(
-                            Dimensions.paddingSizeDefault,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.radiusDefault,
-                            ),
-                            border: Border.all(
-                              color:
-                                  index == selectedIndex["selectedIndex"]
-                                      ? Colors.black
-                                      : AppColors.textFieldBorder,
-                            ),
-                          ),
-                          child: SvgAssets(category),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  child: SvgPicture.asset(
+                    'assets/images/svg/cclogo.svg',
+                    width: 40,
+                    height: 40,
+                  ),
+                ),
+                width(8),
+                Text(
+                  locale.campusCravings,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 3),
-              child: Text(
-                locale.selectBank,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+            Text(
+              locale.paymentMethod,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
-            DropDownWidget(
-              universitiesList: _banks,
-              onChange: (value) {
-                setState(() {
-                  _selectedBank = value!;
-                });
 
-                final bank = ref.read(paymentSetupProvider);
-                ref.read(paymentSetupProvider.notifier).state = {
-                  ...bank,
-                  'bank': value,
-                };
-              },
-              hintText: locale.selectBank,
+            Text(
+              locale.connectToStripe,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
-            CustomTextField(
-              label: locale.fullName,
-              textInputAction: TextInputAction.next,
-              onChanged: (value) {
-                final fullName = ref.read(paymentSetupProvider);
-                ref.read(paymentSetupProvider.notifier).state = {
-                  ...fullName,
-                  'name': value,
-                };
-              },
-            ),
-            CustomTextField(
-              label: locale.accountNumber,
-              onChanged: (value) {
-                final accountNumber = ref.read(paymentSetupProvider);
-                ref.read(paymentSetupProvider.notifier).state = {
-                  ...accountNumber,
-                  'number': value,
-                };
-              },
-            ),
-            height(MediaQuery.of(context).size.height * .3),
+
             Consumer(
               builder: (context, ref, child) {
                 final payout = ref.watch(paymentSetupProvider);
                 return RoundedButtonWidget(
-                  btnTitle: locale.save,
-                  onTap:
-                      payout['paymentMethod']!.isNotEmpty &&
-                              payout['bank']!.isNotEmpty &&
-                              payout['name']!.isNotEmpty &&
-                              payout['number']!.isNotEmpty
-                          ? () {
-                            context.router.replaceAll([const MainRoute()]);
-                            ref.read(paymentSetupProvider.notifier).state = {
-                              'paymentMethod': '',
-                              'bank': '',
-                              'name': '',
-                              'number': '',
-                            };
-                          }
-                          : null,
+                  isLoading: _isLoading,
+                  btnTitle: locale.stripe,
+                  onTap: () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+
+                    final String? paymentLink =
+                        StorageHelper().getPyemntGenUrl();
+                    if (paymentLink != null) {
+                      openStripeView(context);
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    } else {
+                      // context.router.replaceAll([LoginRoute()]);
+                    }
+                    // context.router.replaceAll([LoginRoute()]);
+
+                    ref.read(paymentSetupProvider.notifier).state = {};
+                  },
                 );
               },
             ),
@@ -166,12 +103,26 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
   }
 }
 
-final paymentSetupProvider = StateProvider<Map<String, dynamic>>(
-  (ref) => {
-    'paymentMethod': '',
-    'bank': '',
-    'name': '',
-    'number': '',
-    'selectedIndex': 0,
-  },
-);
+final paymentSetupProvider = StateProvider<Map<String, dynamic>>((ref) => {});
+
+void openStripeView(BuildContext context) async {
+  final link = StorageHelper().getPyemntGenUrl();
+  String buildUrl() {
+    String baseUrl = link!;
+    final Uri uri = Uri.parse(baseUrl);
+    return uri.toString();
+  }
+
+  String url = buildUrl();
+  print("URL: $url");
+  String? result = await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => StripeWebView(url)),
+  );
+
+  if (result != null) {
+    print("Success! Callback URL: $result");
+  } else {
+    print("WebView closed without callback.");
+  }
+}
