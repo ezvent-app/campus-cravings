@@ -506,7 +506,15 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                           final data = jsonDecode(
                                             response.body,
                                           );
-                                          if (response.statusCode == 200) {
+                                          if (response.statusCode == 201 ||
+                                              response.statusCode == 200) {
+                                            // if (context.mounted) {
+                                            //   context.maybePop();
+                                            // }
+                                            context.router.pushAndPopUntil(
+                                              const MainRoute(),
+                                              predicate: (_) => false,
+                                            );
                                             showToast(
                                               "Profile updated successfully",
                                               context: context,
@@ -564,8 +572,8 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
             ),
           ),
           // Show loader when isLoading is true
-          if (signUpState['isLoading'] == true)
-            const Center(child: CircularProgressIndicator()),
+          // if (signUpState['isLoading'] == true)
+          //   const Center(child: CircularProgressIndicator()),
         ],
       ),
     );
