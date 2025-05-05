@@ -35,7 +35,7 @@ class _RidersDeliveryDetailsWidgetState
     String orderId = data?.order!.sId ?? 'No orderId available';
     String storeName = data?.order!.restaurantId!.storeName ?? 'Store name';
     String brandName = data?.order!.restaurantId!.brandName ?? 'Brand name';
-    final items = data?.order!.items!;
+    final items = data?.order!.items!??[];
     String? userName = data?.order!.userId?.firstName;
     String? imageUrl = data?.order!.userId?.imgUrl ?? '';
     String? phoneNumber = data?.order!.userId?.phoneNumber ?? '1234567';
@@ -115,7 +115,7 @@ class _RidersDeliveryDetailsWidgetState
               ),
               SizedBox(height: 20),
               Column(
-                children: List.generate(items!.length, (index) {
+                children: List.generate(items.length, (index) {
                   final item = items[index];
                   final customzation = item.itemId!.customization ?? [];
                   return Row(

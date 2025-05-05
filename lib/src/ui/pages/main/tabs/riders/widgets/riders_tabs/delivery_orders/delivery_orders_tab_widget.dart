@@ -153,7 +153,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
   StreamSubscription<Position>? _positionStreamSubscription;
 
-  final customerLatLng = StorageHelper().getCustomerCoords();
+  // final customerLatLng = StorageHelper().getCustomerCoords();
 
   void _startLocationStream() {
     final locationSettings = LocationSettings(
@@ -229,22 +229,14 @@ class _ConsumerDeliveryOrdersTabWidgetState
   }
 
   Future<void> _initializeMap() async {
-    if (!ref.watch(isDeliveryStartedProvider)) return;
-    dev.log(
-      "IS DELIVERY STARTED $customerLatLng ${ref.watch(isDeliveryStartedProvider)}",
-    );
+    dev.log("IS DELIVERY STARTED: ${ref.watch(isDeliveryStartedProvider)}");
+
     try {
       final riderIcon = await CustomMapMarkerBuilder.fromWidget(
         context: context,
         marker: RiderMarkerWidget(),
       );
 
-      final customerIcon = await CustomMapMarkerBuilder.fromWidget(
-        context: context,
-        marker: CustomerMarkerWidget(),
-      );
-
-      // Add markers
       setState(() {
         markers['rider'] = Marker(
           markerId: MarkerId('rider'),
@@ -252,44 +244,47 @@ class _ConsumerDeliveryOrdersTabWidgetState
           icon: riderIcon,
           infoWindow: InfoWindow(title: 'Rider'),
         );
-
-        markers['customer'] = Marker(
-          markerId: MarkerId('customer'),
-          position: customerLocation,
-          icon: customerIcon,
-          infoWindow: InfoWindow(title: 'Customer'),
-        );
       });
 
-      // Get route between points
-      await _getRouteBetweenPoints();
+      if (ref.watch(isDeliveryStartedProvider)) {
+        final customerIcon = await CustomMapMarkerBuilder.fromWidget(
+          context: context,
+          marker: CustomerMarkerWidget(),
+        );
 
-      // Zoom to fit both locations
-      final bounds = LatLngBounds(
-        southwest: LatLng(
-          riderLocation.latitude < customerLocation.latitude
-              ? riderLocation.latitude
-              : customerLocation.latitude,
-          riderLocation.longitude < customerLocation.longitude
-              ? riderLocation.longitude
-              : customerLocation.longitude,
-        ),
-        northeast: LatLng(
-          riderLocation.latitude > customerLocation.latitude
-              ? riderLocation.latitude
-              : customerLocation.latitude,
-          riderLocation.longitude > customerLocation.longitude
-              ? riderLocation.longitude
-              : customerLocation.longitude,
-        ),
-      );
+        setState(() {
+          markers['customer'] = Marker(
+            markerId: MarkerId('customer'),
+            position: customerLocation,
+            icon: customerIcon,
+            infoWindow: InfoWindow(title: 'Customer'),
+          );
+        });
+      }
 
-      mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
+      if (ref.watch(isDeliveryStartedProvider)) {
+        await _getRouteBetweenPoints();
+      }
+
+      if (ref.watch(isDeliveryStartedProvider)) {
+        final bounds = LatLngBounds(
+          southwest: LatLng(
+            min(riderLocation.latitude, customerLocation.latitude),
+            min(riderLocation.longitude, customerLocation.longitude),
+          ),
+          northeast: LatLng(
+            max(riderLocation.latitude, customerLocation.latitude),
+            max(riderLocation.longitude, customerLocation.longitude),
+          ),
+        );
+        mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
+      } else {
+        mapController.animateCamera(
+          CameraUpdate.newLatLngZoom(riderLocation, 10),
+        );
+      }
     } catch (e) {
-      print('....Error initializing map: $e');
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      print('Error initializing map: $e');
     }
   }
 
@@ -564,7 +559,6 @@ class _ConsumerDeliveryOrdersTabWidgetState
                           return RoundedButtonWidget(
                             btnTitle: "Accept",
                             onTap: () async {
-                              // Update rider state
                               final isAccept = ref.read(riderProvider);
                               ref.read(riderProvider.notifier).state = {
                                 ...isAccept,
@@ -577,42 +571,57 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                 "orderId": order.id,
                               };
 
-                              // Trigger the provider and handle the response
-                              final riderDeliveryResponse = await ref.read(
-                                acceptedByRiderProvider(body).future,
-                              );
+                              try {
+                                final riderDeliveryResponse = await ref.read(
+                                  acceptedByRiderProvider(body).future,
+                                );
 
-                              if (riderDeliveryResponse != null) {
-                                // Handle success response
+                                if (riderDeliveryResponse == null) {
+                                  Logger().e("Failed to accept the order.");
+                                  return;
+                                }
+
                                 Logger().i(
                                   "Order Accepted: ${riderDeliveryResponse.order?.sId}",
                                 );
+
                                 final customerCoords =
                                     riderDeliveryResponse
                                         .order
                                         ?.addresses
                                         ?.coordinates
-                                        ?.coordinates ??
-                                    [];
+                                        ?.coordinates;
+
+                                if (customerCoords == null ||
+                                    customerCoords.length < 2) {
+                                  Logger().e("Invalid customer coordinates");
+                                  return;
+                                }
 
                                 ref.read(riderDeliveryProvider.notifier).state =
                                     riderDeliveryResponse;
                                 timer.cancel();
-                                _isMounted = false;
                                 _orderCycleTimer?.cancel();
 
+                                if (mounted) {
+                                  setState(() {
+                                    _remainingOrders.clear();
+                                    customerLocation = LatLng(
+                                      customerCoords[0],
+                                      customerCoords[1],
+                                    );
+                                  });
+
+                                  WidgetsBinding.instance.addPostFrameCallback((
+                                    _,
+                                  ) async {
+                                    await _initializeMap();
+                                  });
+                                }
+
                                 Navigator.pop(context);
-                                setState(() {
-                                  _remainingOrders.clear();
-                                  customerLocation = LatLng(
-                                    customerCoords[0],
-                                    customerCoords[1],
-                                  );
-                                });
-                              } else {
-                                // Handle error if response is null
-                                Logger().e("Failed to accept the order.");
-                                // You can show a snackbar, toast, or any error UI here
+                              } catch (e) {
+                                Logger().e("Error accepting order: $e");
                               }
                             },
                           );

@@ -31,7 +31,6 @@ class StorageHelper {
 
   T _getPref<T>(String key) {
     return prefs.read(key) as T;
-    //return GetStorage().read(key) as T;
   }
 
   void clear() {

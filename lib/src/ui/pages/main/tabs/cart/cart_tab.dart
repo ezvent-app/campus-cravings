@@ -18,6 +18,10 @@ class CartTabPage extends ConsumerWidget {
         automaticallyImplyLeading: isFromNavBar ? false : true,
         title: Text("Cart", style: Theme.of(context).textTheme.titleMedium),
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: CheckoutNavBarWidget(cartItems: cartItems),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         physics: BouncingScrollPhysics(),
@@ -89,7 +93,6 @@ class CartTabPage extends ConsumerWidget {
               }),
             ),
             height(40),
-            CheckoutNavBarWidget(cartItems: cartItems),
           ],
         ),
       ),
