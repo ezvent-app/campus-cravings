@@ -13,19 +13,22 @@ class RestaurantPage extends ConsumerWidget {
     final locale = AppLocalizations.of(context)!;
     final isIOS = Platform.isIOS;
     final cartItems = ref.watch(cartItemsProvider);
-    return Scaffold(
-      body: GetBuilder<RestaurantDetailsController>(
-        initState: (state){
-          Get.find<RestaurantDetailsController>().getRestaurantDetails();
-        },
-        builder: (controller) {
-          if (controller.isLoading) {
-            return _buildRestaurantDetailsShimmer(context);
-          } else if (controller.isLoading == false &&
-              controller.restaurantDetails == null) {
-            return const Center(child: Text('Restaurant Details Not Found'));
-          }
-          return Column(
+    return GetBuilder<RestaurantDetailsController>(
+      initState: (state) {
+        Get.find<RestaurantDetailsController>().getRestaurantDetails();
+      },
+      builder: (controller) {
+        if (controller.isLoading) {
+          return _buildRestaurantDetailsShimmer(context);
+        } else if (controller.isLoading == false &&
+            controller.restaurantDetails == null) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Center(child: Text('Restaurant Details Not Found')),
+          );
+        }
+        return Scaffold(
+          body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
@@ -153,9 +156,9 @@ class RestaurantPage extends ConsumerWidget {
                         .coordinates,
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
