@@ -68,11 +68,15 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
 
             Consumer(
               builder: (context, ref, child) {
+                // String? riderId = StorageHelper().getRiderId();
                 final payout = ref.watch(paymentSetupProvider);
                 return RoundedButtonWidget(
                   isLoading: _isLoading,
                   btnTitle: locale.stripe,
                   onTap: () async {
+                    // RiderPayoutRepo repo = RiderPayoutRepo();
+                    // repo.generateOnboardingLink(riderId!);
+
                     setState(() {
                       _isLoading = true;
                     });
@@ -81,13 +85,12 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
                         StorageHelper().getPyemntGenUrl();
                     if (paymentLink != null) {
                       openStripeView(context);
+
                       setState(() {
                         _isLoading = false;
                       });
-                    } else {
-                      // context.router.replaceAll([LoginRoute()]);
-                    }
-                    // context.router.replaceAll([LoginRoute()]);
+                      // context.router.replaceAll([MainRoute()]);
+                    } else {}
 
                     ref.read(paymentSetupProvider.notifier).state = {};
                   },

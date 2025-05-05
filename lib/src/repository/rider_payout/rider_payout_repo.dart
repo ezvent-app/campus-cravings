@@ -28,4 +28,24 @@ class RiderPayoutRepo {
       return null;
     }
   }
+
+  Future<dynamic> changeUserStatus(String id) async {
+    try {
+      final response = await services.getAPI(
+        '/restaurants/changeRestaurantStatus/$id',
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        _logger.i("Status Changed Successfully!");
+        final data = jsonDecode(response.body);
+        return data;
+      } else {
+        _logger.i("${response.statusCode} - ${response.body}");
+        throw Exception('Failed to Changed status');
+      }
+    } catch (e) {
+      _logger.e('Error while changin status: $e');
+      return null;
+    }
+  }
 }

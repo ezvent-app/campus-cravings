@@ -221,11 +221,12 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                               StorageHelper().saveRiderId(riderId);
                               RiderPayoutRepo repo = RiderPayoutRepo();
                               repo.generateOnboardingLink(riderId!);
-                              if (response.statusCode == 201) {
+                              if (response.statusCode == 201 ||
+                                  response.statusCode == 200) {
                                 setState(() {
                                   _isLoading = false;
                                 });
-                                context.router.replaceAll([
+                                await context.router.replaceAll([
                                   const AddPayoutRoute(),
                                 ]);
                                 StorageHelper().saveRiderProfileComplete(true);

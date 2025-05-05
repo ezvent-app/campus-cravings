@@ -1,3 +1,5 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
+import 'package:campuscravings/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -30,7 +32,10 @@ class StripeWebViewState extends State<StripeWebView> {
     );
     await clearCookies();
     controller
-      ..setUserAgent('random')
+      ..setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+        '(KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+      )
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(Colors.white)
       ..setNavigationDelegate(
@@ -42,14 +47,30 @@ class StripeWebViewState extends State<StripeWebView> {
             print('Web resource error: $error');
           },
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://example.com/callback')) {
-              print('Redirect URL: ${request.url}');
-              Navigator.pop(context, request.url);
+            RiderPayoutRepo repo = RiderPayoutRepo();
+            String? userId = StorageHelper().getRiderId();
+
+            if (request.url.startsWith(
+              'http://restaurantmanager.campuscravings.co/$userId?verified=true',
+            )) {
+              // Call API
+              repo
+                  .changeUserStatus(userId!)
+                  .then((_) {
+                    context.router.replaceAll([MainRoute()]);
+                  })
+                  .catchError((e) {
+                    print('Failed to change user status: $e');
+                  });
+
+              return NavigationDecision.prevent;
             }
+
             return NavigationDecision.navigate;
           },
         ),
       );
+
     controller
         .loadRequest(
           Uri.parse(widget.url!),
