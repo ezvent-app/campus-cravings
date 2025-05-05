@@ -1,6 +1,7 @@
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/repository/rider_delivery_repo/delivery_repository.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class ImageConfirmationPage extends ConsumerStatefulWidget {
   final XFile image;
@@ -17,8 +18,16 @@ class _ConsumerImageConfirmationPageState
   bool _isLoading = false;
 
   Future<String> convertImageToBase64() async {
-    final bytes = await File(widget.image.path).readAsBytes();
-    return base64Encode(bytes);
+    final compressedBytes = await FlutterImageCompress.compressWithFile(
+      widget.image.path,
+      quality: 50, // reduce to 50% quality
+      minWidth: 1080, // or adjust based on your needs
+      minHeight: 1080,
+    );
+
+    final extension = widget.image.path.split('.').last.toLowerCase();
+    final base64Image = base64Encode(compressedBytes!);
+    return 'data:image/$extension;base64,$base64Image';
   }
 
   @override

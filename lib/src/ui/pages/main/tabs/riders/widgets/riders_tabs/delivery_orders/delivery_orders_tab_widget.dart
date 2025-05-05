@@ -635,6 +635,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                       child: OutlinedButton(
                         onPressed: () {
                           final isAccept = ref.read(riderProvider);
+
                           ref.read(riderProvider.notifier).state = {
                             ...isAccept,
                             'isAccept': false,
