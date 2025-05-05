@@ -23,7 +23,10 @@ class RestaurantPage extends ConsumerWidget {
         } else if (controller.isLoading == false &&
             controller.restaurantDetails == null) {
           return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              title: Text('Restaurant Details'),
+              centerTitle: true,
+            ),
             body: Center(child: Text('Restaurant Details Not Found')),
           );
         }
