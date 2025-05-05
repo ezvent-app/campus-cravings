@@ -144,9 +144,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
   Set<Polyline> polylines = {};
 
-  LatLng customerLocation = const LatLng(33.6984, 73.0367);
-
-  LatLng riderLocation = LatLng(33.602859, 73.0174495);
+  LatLng customerLocation = const LatLng(40.7128, -74.0060);
+  LatLng riderLocation = LatLng(40.730610, -73.935242);
 
   Timer? _locationUpdateTimer;
   final RiderLocationRepo _riderLocationRepo = RiderLocationRepo();
@@ -602,7 +601,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                     riderDeliveryResponse;
                                 timer.cancel();
                                 _orderCycleTimer?.cancel();
-
+                                ref
+                                    .read(isDeliveryStartedProvider.notifier)
+                                    .state = true;
                                 if (mounted) {
                                   setState(() {
                                     _remainingOrders.clear();
