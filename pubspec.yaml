@@ -50,6 +50,7 @@ dependencies:
     animated_marker: ^0.1.4
     flutter_polyline_points: ^2.1.0
     webview_flutter: ^4.11.0
+    flutter_image_compress: ^2.1.0
 
 dev_dependencies:
     flutter_test:
