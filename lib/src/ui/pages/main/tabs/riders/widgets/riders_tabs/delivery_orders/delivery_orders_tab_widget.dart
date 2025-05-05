@@ -144,7 +144,6 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
   Set<Polyline> polylines = {};
 
-  LatLng customerLocation = const LatLng(40.7128, -74.0060);
   LatLng riderLocation = LatLng(40.730610, -73.935242);
 
   Timer? _locationUpdateTimer;
@@ -206,7 +205,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
     final oldLatLng =
         id == 'rider'
             ? _lastRiderLocation ?? riderLocation
-            : _lastCustomerLocation ?? customerLocation;
+            : _lastCustomerLocation;
     if (id == 'rider') _lastRiderLocation = newLatLng;
     if (id == 'customer') _lastCustomerLocation = newLatLng;
 
@@ -215,7 +214,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
     final updatedMarker = marker.copyWith(
       positionParam: newLatLng,
-      rotationParam: _getBearingBetweenTwoPoints(oldLatLng, newLatLng),
+      rotationParam: _getBearingBetweenTwoPoints(oldLatLng!, newLatLng),
     );
 
     setState(() {
@@ -227,10 +226,13 @@ class _ConsumerDeliveryOrdersTabWidgetState
     }
   }
 
-  Future<void> _initializeMap() async {
-    dev.log("IS DELIVERY STARTED: ${ref.watch(isDeliveryStartedProvider)}");
-
+  Future<void> _initializeMap(LatLng? customerLocation) async {
     try {
+      setState(() {
+        markers.clear();
+        polylines.clear();
+      });
+
       final riderIcon = await CustomMapMarkerBuilder.fromWidget(
         context: context,
         marker: RiderMarkerWidget(),
@@ -245,7 +247,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
         );
       });
 
-      if (ref.watch(isDeliveryStartedProvider)) {
+      if (customerLocation != null) {
         final customerIcon = await CustomMapMarkerBuilder.fromWidget(
           context: context,
           marker: CustomerMarkerWidget(),
@@ -259,13 +261,10 @@ class _ConsumerDeliveryOrdersTabWidgetState
             infoWindow: InfoWindow(title: 'Customer'),
           );
         });
-      }
 
-      if (ref.watch(isDeliveryStartedProvider)) {
-        await _getRouteBetweenPoints();
-      }
+        await _getRouteBetweenPoints(customerLocation);
 
-      if (ref.watch(isDeliveryStartedProvider)) {
+        // Zoom to fit both locations
         final bounds = LatLngBounds(
           southwest: LatLng(
             min(riderLocation.latitude, customerLocation.latitude),
@@ -284,10 +283,13 @@ class _ConsumerDeliveryOrdersTabWidgetState
       }
     } catch (e) {
       print('Error initializing map: $e');
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Map error: ${e.toString()}')));
     }
   }
 
-  Future<void> _getRouteBetweenPoints() async {
+  Future<void> _getRouteBetweenPoints(LatLng customerLocation) async {
     try {
       PolylinePoints polylinePoints = PolylinePoints();
 
@@ -325,7 +327,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
         );
       });
     } catch (e) {
-      print('Error getting route: $e');
+      dev.log('Error getting route: $e');
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Could not load route: $e')));
@@ -378,7 +380,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                   mapController = controller;
                   WidgetsBinding.instance.addPostFrameCallback((_) async {
                     await Future.delayed(Duration(seconds: 1));
-                    await _initializeMap();
+                    await _initializeMap(null);
                   });
                 },
                 myLocationEnabled: false,
@@ -597,28 +599,23 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                   return;
                                 }
 
+                                setState(() {
+                                  _remainingOrders.clear();
+                                });
+
+                                final newCustomerLocation = LatLng(
+                                  customerCoords[1],
+                                  customerCoords[0],
+                                );
+                                dev.log(
+                                  "CUSTOMER LOCATION $newCustomerLocation",
+                                );
+                                await _initializeMap(newCustomerLocation);
+
                                 ref.read(riderDeliveryProvider.notifier).state =
                                     riderDeliveryResponse;
                                 timer.cancel();
                                 _orderCycleTimer?.cancel();
-                                ref
-                                    .read(isDeliveryStartedProvider.notifier)
-                                    .state = true;
-                                if (mounted) {
-                                  setState(() {
-                                    _remainingOrders.clear();
-                                    customerLocation = LatLng(
-                                      customerCoords[0],
-                                      customerCoords[1],
-                                    );
-                                  });
-
-                                  WidgetsBinding.instance.addPostFrameCallback((
-                                    _,
-                                  ) async {
-                                    await _initializeMap();
-                                  });
-                                }
 
                                 Navigator.pop(context);
                               } catch (e) {

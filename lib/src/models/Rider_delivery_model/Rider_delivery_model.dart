@@ -1,16 +1,16 @@
 class RiderDeliveryModel {
   String? message;
   Order? order;
-
+ 
   RiderDeliveryModel({this.message, this.order});
-
+ 
   RiderDeliveryModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     order = json['data'] != null ? Order.fromJson(json['data']) : null;
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     data['message'] = message;
     if (order != null) {
       data['data'] = order!.toJson();
@@ -18,7 +18,7 @@ class RiderDeliveryModel {
     return data;
   }
 }
-
+ 
 class Order {
   Addresses? addresses;
   String? sId;
@@ -29,8 +29,8 @@ class Order {
   String? status;
   double? totalPrice;
   String? paymentMethod;
-  int? tip;
-  int? deliveryFee;
+  double? tip;
+  double? deliveryFee;
   String? estimatedTime;
   String? imageUrl;
   String? orderType;
@@ -38,8 +38,8 @@ class Order {
   List<Progress>? progress;
   String? createdAt;
   String? updatedAt;
-  int? iV;
-
+  double? iV;
+ 
   Order({
     this.addresses,
     this.sId,
@@ -61,7 +61,7 @@ class Order {
     this.updatedAt,
     this.iV,
   });
-
+ 
   Order.fromJson(Map<String, dynamic> json) {
     addresses =
         json['addresses'] != null
@@ -74,12 +74,12 @@ class Order {
         json['restaurant_id'] != null
             ? RestaurantId.fromJson(json['restaurant_id'])
             : null;
-    assignedTo = "";
+    assignedTo = json['assigned_to'] ?? "";
     status = json['status'];
-    totalPrice = json['total_price'];
+    totalPrice = (json['total_price'] as num?)?.toDouble();
     paymentMethod = json['payment_method'];
-    tip = json['tip'];
-    deliveryFee = json['delivery_fee'];
+    tip = (json['tip'] as num?)?.toDouble();
+    deliveryFee = (json['delivery_fee'] as num?)?.toDouble();
     estimatedTime = json['estimated_time'];
     imageUrl = json['image_url'];
     orderType = json['order_type'];
@@ -97,11 +97,11 @@ class Order {
     }
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    iV = json['__v'];
+    iV = (json['__v'] as num?)?.toDouble();
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     if (addresses != null) {
       data['addresses'] = addresses!.toJson();
     }
@@ -134,13 +134,13 @@ class Order {
     return data;
   }
 }
-
+ 
 class Addresses {
   Coordinates? coordinates;
   String? address;
-
+ 
   Addresses({this.coordinates, this.address});
-
+ 
   Addresses.fromJson(Map<String, dynamic> json) {
     coordinates =
         json['coordinates'] != null
@@ -148,9 +148,9 @@ class Addresses {
             : null;
     address = json['address'];
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     if (coordinates != null) {
       data['coordinates'] = coordinates!.toJson();
     }
@@ -158,33 +158,36 @@ class Addresses {
     return data;
   }
 }
-
+ 
 class Coordinates {
   String? type;
   List<double>? coordinates;
-
+ 
   Coordinates({this.type, this.coordinates});
-
+ 
   Coordinates.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
+    coordinates =
+        (json['coordinates'] as List)
+            .map((e) => (e as num).toDouble())
+            .toList();
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     data['type'] = type;
     data['coordinates'] = coordinates;
     return data;
   }
 }
-
+ 
 class UserId {
   String? sId;
   String? firstName;
   String? lastName;
   String? imgUrl;
   String? phoneNumber;
-
+ 
   UserId({
     this.sId,
     this.firstName,
@@ -192,7 +195,7 @@ class UserId {
     this.imgUrl,
     this.phoneNumber,
   });
-
+ 
   UserId.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     firstName = json['firstName'];
@@ -200,9 +203,9 @@ class UserId {
     imgUrl = json['imgUrl'];
     phoneNumber = json['phoneNumber'];
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     data['_id'] = sId;
     data['firstName'] = firstName;
     data['lastName'] = lastName;
@@ -211,24 +214,24 @@ class UserId {
     return data;
   }
 }
-
+ 
 class RestaurantId {
   String? sId;
   String? storeName;
   String? brandName;
   String? phoneNumber;
-
+ 
   RestaurantId({this.sId, this.storeName, this.brandName, this.phoneNumber});
-
+ 
   RestaurantId.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     storeName = json['storeName'];
     brandName = json['brandName'];
     phoneNumber = json['phoneNumber'];
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     data['_id'] = sId;
     data['storeName'] = storeName;
     data['brandName'] = brandName;
@@ -236,24 +239,27 @@ class RestaurantId {
     return data;
   }
 }
-
+ 
 class Items {
   ItemId? itemId;
-  int? quantity;
+  double? quantity;
   List<String>? customizations;
   String? size;
-
+ 
   Items({this.itemId, this.quantity, this.customizations, this.size});
-
+ 
   Items.fromJson(Map<String, dynamic> json) {
     itemId = json['item_id'] != null ? ItemId.fromJson(json['item_id']) : null;
-    quantity = json['quantity'];
-    customizations = json['customizations'].cast<String>();
+    quantity = (json['quantity'] as num?)?.toDouble();
+    customizations =
+        json['customizations'] != null
+            ? List<String>.from(json['customizations'])
+            : [];
     size = json['size'];
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     if (itemId != null) {
       data['item_id'] = itemId!.toJson();
     }
@@ -263,20 +269,20 @@ class Items {
     return data;
   }
 }
-
+ 
 class ItemId {
   String? sId;
   String? name;
-  int? price;
+  double? price;
   List<Sizes>? sizes;
   List<Customization>? customization;
-
+ 
   ItemId({this.sId, this.name, this.price, this.sizes, this.customization});
-
+ 
   ItemId.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
-    price = json['price'];
+    price = (json['price'] as num?)?.toDouble();
     if (json['customization'] != null) {
       customization = <Customization>[];
       json['customization'].forEach((v) {
@@ -290,9 +296,9 @@ class ItemId {
       });
     }
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     data['_id'] = sId;
     data['name'] = name;
     data['price'] = price;
@@ -305,66 +311,68 @@ class ItemId {
     return data;
   }
 }
-
+ 
 class Sizes {
   String? name;
-  int? price;
+  double? price;
   String? sId;
-
+ 
   Sizes({this.name, this.price, this.sId});
-
+ 
   Sizes.fromJson(Map<String, dynamic> json) {
     name = json['name'] ?? "Regular";
-    price = json['price'];
+    price = (json['price'] as num?)?.toDouble();
     sId = json['_id'];
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     data['name'] = name;
     data['price'] = price;
     data['_id'] = sId;
     return data;
   }
 }
-
+ 
 class Customization {
   String? name;
-  int? price;
+  double? price;
   String? sId;
-
+ 
   Customization({this.name, this.price, this.sId});
-
+ 
   Customization.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    price = json['price'];
+    price = (json['price'] as num?)?.toDouble();
     sId = json['_id'];
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     data['name'] = name;
     data['price'] = price;
     data['_id'] = sId;
     return data;
   }
 }
-
+ 
 class Progress {
   String? status;
   String? updatedAt;
-
+ 
   Progress({this.status, this.updatedAt});
-
+ 
   Progress.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     updatedAt = json['updated_at'];
   }
-
+ 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     data['status'] = status;
     data['updated_at'] = updatedAt;
     return data;
   }
 }
+ 
+ 

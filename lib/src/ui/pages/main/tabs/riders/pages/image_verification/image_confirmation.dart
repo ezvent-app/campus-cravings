@@ -68,6 +68,7 @@ class _ConsumerImageConfirmationPageState
                     final outerContext = context; // Capture outer context
                     showDialog(
                       context: context,
+                      barrierDismissible: false,
                       builder: (dialogContext) {
                         return StatefulBuilder(
                           builder: (context, setStateDialog) {
