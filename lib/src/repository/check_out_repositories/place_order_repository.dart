@@ -65,6 +65,40 @@ class PlaceOrderRepository {
     }
   }
 
+  Future<List<double>> fetchRiderLocation(String orderId) async {
+    try {
+      final response = await _services.getAPI(
+        '/rider/riderLocation/$orderId',
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        print('Response: $data');
+
+        final coordinates = data['data']['coordinates'];
+
+        if (coordinates is List && coordinates.length == 2) {
+          final latitude = coordinates[0].toDouble();
+          final longitude = coordinates[1].toDouble();
+          return [latitude, longitude];
+        } else {
+          return Future.error('Invalid coordinates format');
+        }
+      } else {
+        return Future.error(
+          'Failed to load data. Status code: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      if (e is TimeoutException) {
+        return Future.error('Request timed out. Please try again.');
+      } else {
+        print(e.toString());
+        return Future.error('Something went wrong');
+      }
+    }
+  }
+
   // Function to handle Stripe payment
   Future<void> makePayment({
     required String purchaseName,

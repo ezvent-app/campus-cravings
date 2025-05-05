@@ -616,7 +616,7 @@ class DeliveryTabWidget extends ConsumerWidget {
 }
 
 class CheckPlaceOrderButtonWidget extends ConsumerWidget {
-  const CheckPlaceOrderButtonWidget({
+   CheckPlaceOrderButtonWidget({
     super.key,
     required this.cartItems,
     required this.total,
@@ -634,7 +634,6 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
   final PlaceOrderRepository repository;
   final double total;
   final double deliveryFee;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final address = ref.watch(locationProvider);

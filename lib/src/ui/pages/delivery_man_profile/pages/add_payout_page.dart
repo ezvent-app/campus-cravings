@@ -1,7 +1,6 @@
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/web_view_striper.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 @RoutePage()
 class AddPayoutPage extends ConsumerStatefulWidget {

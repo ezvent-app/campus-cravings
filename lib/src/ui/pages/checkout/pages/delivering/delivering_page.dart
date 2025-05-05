@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:developer';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:http/http.dart'as http;
+import 'dart:math';
+
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:custom_marker_builder/custom_marker_builder.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:logger/logger.dart';
 
 @RoutePage()
 class DeliveringPage extends ConsumerStatefulWidget {
@@ -60,14 +59,6 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     "cancelled",
     "completed",
   ];
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 12,
-  );
-
 
   // Add a flag to track if the component is mounted
   bool _isMounted = true;
@@ -79,7 +70,8 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _setupSocket();
     });
-
+    startRiderLocationUpdates();
+    getCustomerCurrentLocation();
   }
 
   // New method to setup socket properly
@@ -115,11 +107,29 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     }
   }
 
+  final PlaceOrderRepository _repository = PlaceOrderRepository();
+
+  Timer? _riderLocationTimer;
+
+  void startRiderLocationUpdates() {
+    _riderLocationTimer = Timer.periodic(Duration(seconds: 15), (timer) async {
+      try {
+        final newLatLng = await _repository.fetchRiderLocation(widget.id ?? '');
+        final riderLatLng = LatLng(newLatLng[0], newLatLng[1]);
+        setState(() {
+          riderLocation = riderLatLng;
+        });
+        updateMarkerPosition('rider', riderLatLng);
+      } catch (e) {
+        debugPrint('Error fetching rider location: $e');
+      }
+    });
+  }
+
   @override
   void dispose() {
-    // Mark as unmounted before disposing
     _isMounted = false;
-
+    _riderLocationTimer!.cancel();
     // Clean up socket listeners when disposing the widget
     // final socketController = ref.read(socketControllerProvider);
     // socketController.stopListeningForStatusUpdates();
@@ -127,28 +137,69 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     super.dispose();
   }
 
-
   late GoogleMapController mapController;
-  Set<Marker> markers = {};
+  Map<String, Marker> markers = {};
   Set<Polyline> polylines = {};
 
-  // Hardcoded locations for demo
-  final LatLng riderLocation = const LatLng(33.6844, 72.9843); // G-15 Islamabad
-  final LatLng customerLocation = const LatLng(33.6984, 73.0367); // F-8 Islamabad
+  LatLng riderLocation = const LatLng(40.7685, 74.9822); // Man Hattan
+  LatLng customerLocation = const LatLng(40.7128, 74.0060); // New York
 
+  getCustomerCurrentLocation() async {
+    final Position position = await Geolocator.getCurrentPosition();
+    setState(() {
+      customerLocation = LatLng(position.latitude, position.longitude);
+    });
+  }
+
+  double _getBearingBetweenTwoPoints(LatLng start, LatLng end) {
+    double lat1 = start.latitude * pi / 180;
+    double lon1 = start.longitude * pi / 180;
+    double lat2 = end.latitude * pi / 180;
+    double lon2 = end.longitude * pi / 180;
+
+    double dLon = lon2 - lon1;
+    double y = sin(dLon) * cos(lat2);
+    double x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+    double bearing = atan2(y, x);
+    return (bearing * 180 / pi + 360) % 360;
+  }
+
+  LatLng? _lastRiderLocation;
+  LatLng? _lastCustomerLocation;
+
+  void updateMarkerPosition(String id, LatLng newLatLng) {
+    final oldLatLng =
+        id == 'rider'
+            ? _lastRiderLocation ?? riderLocation
+            : _lastCustomerLocation ?? customerLocation;
+    if (id == 'rider') _lastRiderLocation = newLatLng;
+    if (id == 'customer') _lastCustomerLocation = newLatLng;
+
+    final marker = markers[id];
+    if (marker == null) return;
+
+    final updatedMarker = marker.copyWith(
+      positionParam: newLatLng,
+      rotationParam: _getBearingBetweenTwoPoints(oldLatLng, newLatLng),
+    );
+
+    setState(() {
+      markers[id] = updatedMarker;
+    });
+
+    if (id == 'rider') {
+      mapController.animateCamera(CameraUpdate.newLatLng(newLatLng));
+    }
+  }
 
   Future<void> _initializeMap() async {
+    if (step != 3) return;
+
     try {
-
-      if (riderLocation == null || customerLocation == null) {
-        throw Exception('Missing location data');
-      }
-
       final riderIcon = await CustomMapMarkerBuilder.fromWidget(
         context: context,
         marker: RiderMarkerWidget(),
       );
-
 
       final customerIcon = await CustomMapMarkerBuilder.fromWidget(
         context: context,
@@ -157,19 +208,19 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
 
       // Add markers
       setState(() {
-        markers.add(Marker(
+        markers['rider'] = Marker(
           markerId: MarkerId('rider'),
           position: riderLocation,
           icon: riderIcon,
           infoWindow: InfoWindow(title: 'Rider'),
-        ));
+        );
 
-        markers.add(Marker(
+        markers['customer'] = Marker(
           markerId: MarkerId('customer'),
           position: customerLocation,
           icon: customerIcon,
           infoWindow: InfoWindow(title: 'Customer'),
-        ));
+        );
       });
 
       // Get route between points
@@ -197,10 +248,10 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
 
       mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
     } catch (e) {
-      print('Error initializing map: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      print('....Error initializing map: $e');
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
     }
   }
 
@@ -211,8 +262,11 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         googleApiKey: apiKey,
         request: PolylineRequest(
-          origin: PointLatLng(riderLocation.latitude,riderLocation.longitude),
-          destination: PointLatLng(customerLocation.latitude,customerLocation.longitude),
+          origin: PointLatLng(riderLocation.latitude, riderLocation.longitude),
+          destination: PointLatLng(
+            customerLocation.latitude,
+            customerLocation.longitude,
+          ),
           mode: TravelMode.driving,
         ),
       );
@@ -221,25 +275,28 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
         throw Exception('No route points returned: ${result.errorMessage}');
       }
 
-      List<LatLng> polylineCoordinates = result.points
-          .map((point) => LatLng(point.latitude, point.longitude))
-          .toList();
+      List<LatLng> polylineCoordinates =
+          result.points
+              .map((point) => LatLng(point.latitude, point.longitude))
+              .toList();
 
       setState(() {
-        polylines.add(Polyline(
-          polylineId: PolylineId('route'),
-          points: polylineCoordinates,
-          color: Colors.red,
-          width: 5,
-          startCap: Cap.roundCap,
-          endCap: Cap.roundCap,
-        ));
+        polylines.add(
+          Polyline(
+            polylineId: PolylineId('route'),
+            points: polylineCoordinates,
+            color: Colors.red,
+            width: 5,
+            startCap: Cap.roundCap,
+            endCap: Cap.roundCap,
+          ),
+        );
       });
     } catch (e) {
       print('Error getting route: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not load route: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not load route: $e')));
     }
   }
 
@@ -333,7 +390,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
 
                       indoorViewEnabled: true,
                       trafficEnabled: true,
-                      markers: markers,
+                      markers: markers.values.toSet(),
                       polylines: polylines,
                       onMapCreated: (controller) {
                         setState(() {
