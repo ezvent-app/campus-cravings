@@ -115,7 +115,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     _riderLocationTimer = Timer.periodic(Duration(seconds: 15), (timer) async {
       try {
         final newLatLng = await _repository.fetchRiderLocation(widget.id ?? '');
-        final riderLatLng = LatLng(newLatLng[0], newLatLng[1]);
+        final riderLatLng = LatLng(newLatLng[1], newLatLng[0]);
         setState(() {
           riderLocation = riderLatLng;
         });
