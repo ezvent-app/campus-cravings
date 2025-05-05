@@ -89,9 +89,13 @@ class CartTabPage extends ConsumerWidget {
               }),
             ),
             height(40),
-            CheckoutNavBarWidget(cartItems: cartItems),
+            // aCheckoutNavBarWidget(cartItems: cartItems),
           ],
         ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: CheckoutNavBarWidget(cartItems: cartItems),
       ),
     );
   }
