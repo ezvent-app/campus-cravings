@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
@@ -220,15 +218,12 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                               final riderId = data['data']['user'];
                               StorageHelper().saveRiderId(riderId);
                               RiderPayoutRepo repo = RiderPayoutRepo();
-                              repo.generateOnboardingLink(riderId!);
+                              repo.generateOnboardingLink(riderId!, context);
                               if (response.statusCode == 201 ||
                                   response.statusCode == 200) {
                                 setState(() {
                                   _isLoading = false;
                                 });
-                                await context.router.replaceAll([
-                                  const AddPayoutRoute(),
-                                ]);
                                 StorageHelper().saveRiderProfileComplete(true);
                               } else if (response.statusCode == 400) {
                                 setState(() {

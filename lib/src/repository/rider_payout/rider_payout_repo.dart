@@ -1,14 +1,15 @@
-import 'dart:convert';
-
 import 'package:campuscravings/src/constants/storageHelper.dart';
-import 'package:campuscravings/src/services/services.dart';
+import 'package:campuscravings/src/src.dart';
 import 'package:logger/logger.dart';
 
 class RiderPayoutRepo {
   final HttpAPIServices services = HttpAPIServices();
   final Logger _logger = Logger();
 
-  Future<dynamic> generateOnboardingLink(String id) async {
+  Future<dynamic> generateOnboardingLink(
+    String id,
+    BuildContext context,
+  ) async {
     try {
       final response = await services.getAPI('/payments/onboard/$id');
 
@@ -16,6 +17,7 @@ class RiderPayoutRepo {
         _logger.i("Link Generated Successfully!");
         final data = jsonDecode(response.body);
         final link = data['data']['url'];
+        await context.router.replaceAll([AddPayoutRoute(url: link)]);
         _logger.i("Here is your Link: $link");
         StorageHelper().savePaymentGenUrl(link);
         return data;

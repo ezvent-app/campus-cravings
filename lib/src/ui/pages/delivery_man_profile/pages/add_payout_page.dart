@@ -1,10 +1,10 @@
-import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/web_view_striper.dart';
 
 @RoutePage()
 class AddPayoutPage extends ConsumerStatefulWidget {
-  const AddPayoutPage({super.key});
+  final String url;
+  const AddPayoutPage({super.key, required this.url});
 
   @override
   ConsumerState createState() => _AddPayoutPageState();
@@ -81,10 +81,8 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
                       _isLoading = true;
                     });
 
-                    final String? paymentLink =
-                        StorageHelper().getPyemntGenUrl();
-                    if (paymentLink != null) {
-                      openStripeView(context);
+                    if (widget.url.isNotEmpty) {
+                      openStripeView(context, widget.url);
 
                       setState(() {
                         _isLoading = false;
@@ -107,10 +105,9 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
 
 final paymentSetupProvider = StateProvider<Map<String, dynamic>>((ref) => {});
 
-void openStripeView(BuildContext context) async {
-  final link = StorageHelper().getPyemntGenUrl();
+void openStripeView(BuildContext context, String link) async {
   String buildUrl() {
-    String baseUrl = link!;
+    String baseUrl = link;
     final Uri uri = Uri.parse(baseUrl);
     return uri.toString();
   }

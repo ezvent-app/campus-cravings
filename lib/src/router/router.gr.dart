@@ -100,18 +100,39 @@ import 'package:campuscravings/src/ui/pages/onboarding/onboarding_page.dart'
 
 /// generated route for
 /// [_i1.AddPayoutPage]
-class AddPayoutRoute extends _i44.PageRouteInfo<void> {
-  const AddPayoutRoute({List<_i44.PageRouteInfo>? children})
-    : super(AddPayoutRoute.name, initialChildren: children);
+class AddPayoutRoute extends _i44.PageRouteInfo<AddPayoutRouteArgs> {
+  AddPayoutRoute({
+    _i45.Key? key,
+    required String url,
+    List<_i44.PageRouteInfo>? children,
+  }) : super(
+         AddPayoutRoute.name,
+         args: AddPayoutRouteArgs(key: key, url: url),
+         initialChildren: children,
+       );
 
   static const String name = 'AddPayoutRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      return const _i1.AddPayoutPage();
+      final args = data.argsAs<AddPayoutRouteArgs>();
+      return _i1.AddPayoutPage(key: args.key, url: args.url);
     },
   );
+}
+
+class AddPayoutRouteArgs {
+  const AddPayoutRouteArgs({this.key, required this.url});
+
+  final _i45.Key? key;
+
+  final String url;
+
+  @override
+  String toString() {
+    return 'AddPayoutRouteArgs{key: $key, url: $url}';
+  }
 }
 
 /// generated route for
