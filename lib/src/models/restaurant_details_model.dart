@@ -4,10 +4,7 @@ class RestaurantDetailsModel {
   final Restaurant restaurant;
   final List<Category> categories;
 
-  RestaurantDetailsModel({
-    required this.restaurant,
-    required this.categories,
-  });
+  RestaurantDetailsModel({required this.restaurant, required this.categories});
 
   factory RestaurantDetailsModel.fromJson(Map<String, dynamic> json) {
     return RestaurantDetailsModel(
@@ -62,8 +59,8 @@ class Restaurant {
       id: json['_id'],
       storeName: json['storeName'],
       brandName: json['brandName'],
-      floor: json['floor'],
-      phoneNumber: json['phoneNumber'],
+      floor: json['floor'].toString(),
+      phoneNumber: json['phoneNumber'].toString(),
       cuisine: json['cuisine'],
       status: json['status'],
       deliveryMethods: List<String>.from(json['deliveryMethods']),
@@ -98,10 +95,7 @@ class Address {
   final String address;
   final Coordinates coordinates;
 
-  Address({
-    required this.address,
-    required this.coordinates,
-  });
+  Address({required this.address, required this.coordinates});
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
@@ -120,32 +114,25 @@ class Coordinates {
   final String type;
   final List<double> coordinates;
 
-  Coordinates({
-    required this.type,
-    required this.coordinates,
-  });
+  Coordinates({required this.type, required this.coordinates});
 
   factory Coordinates.fromJson(Map<String, dynamic> json) {
     return Coordinates(
       type: json['type'],
-      coordinates: List<double>.from(json['coordinates'].map((x) => x.toDouble())),
+      coordinates: List<double>.from(
+        json['coordinates'].map((x) => x.toDouble()),
+      ),
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'type': type,
-    'coordinates': coordinates,
-  };
+  Map<String, dynamic> toJson() => {'type': type, 'coordinates': coordinates};
 }
 
 class Ratings {
   final double averageRating;
   final int totalRatings;
 
-  Ratings({
-    required this.averageRating,
-    required this.totalRatings,
-  });
+  Ratings({required this.averageRating, required this.totalRatings});
 
   factory Ratings.fromJson(Map<String, dynamic> json) {
     return Ratings(
@@ -277,12 +264,14 @@ class Item {
       name: json['name'],
       price: (json['price'] as num).toDouble(),
       description: json['description'],
-      estimatedPreparationTime: json['estimated_preparation_time'],
+      estimatedPreparationTime: int.parse(
+        json['estimated_preparation_time'].toString(),
+      ),
       customization: List<Customization>.from(
-          json['customization'].map((x) => Customization.fromJson(x))),
-      sizes:
-      List<Size>.from(json['sizes'].map((x) => Size.fromJson(x))),
-      calories: json['calories'],
+        json['customization'].map((x) => Customization.fromJson(x)),
+      ),
+      sizes: List<Size>.from(json['sizes'].map((x) => Size.fromJson(x))),
+      calories: json['calories'] ?? 0,
       image: List<String>.from(json['image']),
       category: json['category'],
       restaurant: json['restaurant'],
@@ -313,11 +302,7 @@ class Customization {
   final double price;
   final String id;
 
-  Customization({
-    required this.name,
-    required this.price,
-    required this.id,
-  });
+  Customization({required this.name, required this.price, required this.id});
 
   factory Customization.fromJson(Map<String, dynamic> json) {
     return Customization(
@@ -327,11 +312,7 @@ class Customization {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'price': price,
-    '_id': id,
-  };
+  Map<String, dynamic> toJson() => {'name': name, 'price': price, '_id': id};
 }
 
 class Size {
@@ -339,11 +320,7 @@ class Size {
   final double price;
   final String id;
 
-  Size({
-    required this.name,
-    required this.price,
-    required this.id,
-  });
+  Size({required this.name, required this.price, required this.id});
 
   factory Size.fromJson(Map<String, dynamic> json) {
     return Size(
@@ -353,9 +330,5 @@ class Size {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'price': price,
-    '_id': id,
-  };
+  Map<String, dynamic> toJson() => {'name': name, 'price': price, '_id': id};
 }
