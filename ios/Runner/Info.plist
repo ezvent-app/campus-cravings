@@ -49,5 +49,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We use your location to show nearby restaurants and track deliveries.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We use your location to track deliveries even when the app is in the background.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We require access to your photo library to upload profile pictures and delivery proofs.</string>
 </dict>
 </plist>
