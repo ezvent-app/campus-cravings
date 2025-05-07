@@ -143,15 +143,15 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                     ),
                     ProfileGroupButton(
                       options: [
-                        ProfileOption(
-                          icon: 'paymentMethod',
-                          label: locale.paymentMethods,
-                          onPressed: () {
-                            context.pushRoute(
-                              PaymentMethodsRoute(fromCheckout: false),
-                            );
-                          },
-                        ),
+                        // ProfileOption(
+                        //   icon: 'paymentMethod',
+                        //   label: locale.paymentMethods,
+                        //   onPressed: () {
+                        //     context.pushRoute(
+                        //       PaymentMethodsRoute(fromCheckout: false),
+                        //     );
+                        //   },
+                        // ),
                         ProfileOption(
                           icon: 'address',
                           label: locale.savedAddresses,
