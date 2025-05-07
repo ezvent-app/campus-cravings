@@ -79,7 +79,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                         ],
                       ),
                       Text(
-                        "6 orders are ready for you to pick up! Start earning with Campus Cravings today.",
+                        "Orders are ready for you to pick up! Start earning with Campus Cravings today.",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
