@@ -102,7 +102,12 @@ class _StudentProfileDetailsPageState
             CustomTextField(
               textInputAction: TextInputAction.next,
               textInputType: TextInputType.number,
-              label: locale.batchYear,
+              maxLength: 4,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(4),
+              ],
+              label: "Batch Year*",
               onChanged: (value) {
                 if (value.isNotEmpty) {
                   ref.read(studentProfileProvider.notifier).state["batchYear"] =
@@ -115,7 +120,7 @@ class _StudentProfileDetailsPageState
               controller: _majorController,
               focusNode: _majorFocusNode,
               hintText: locale.search,
-              label: locale.yourMajors,
+              label: "Your Major(s)*",
             ),
             height(5),
             ChipWrapWidget(
@@ -130,7 +135,7 @@ class _StudentProfileDetailsPageState
               controller: _minorController,
               focusNode: _minorFocusNode,
               hintText: locale.search,
-              label: locale.yourMinors,
+              label: "Your Mainor(s)*",
             ),
             height(5),
             ChipWrapWidget(
@@ -145,7 +150,7 @@ class _StudentProfileDetailsPageState
               controller: _clubController,
               focusNode: _clubFocusNode,
               hintText: locale.search,
-              label: locale.clubOrganizations,
+              label: "Clubs or organizations*",
             ),
             height(5),
             ChipWrapWidget(
@@ -158,7 +163,7 @@ class _StudentProfileDetailsPageState
             height(16),
             CustomTextField(
               hintText: locale.whatDoYouWantKnowAboutYou,
-              label: locale.aboutYou,
+              label: "About You (Bio)*",
               maxLines: 2,
               onChanged: (value) {
                 if (value.isNotEmpty) {
@@ -178,9 +183,24 @@ class _StudentProfileDetailsPageState
                 final clubs = ref.read(clubsProvider);
 
                 if (batchYear.isEmpty) {
-                  showToast("Please Enter Batch Year.", context: context);
+                  showToast("Please enter batch year.", context: context);
                   return;
                 }
+
+                final parsedYear = int.tryParse(batchYear);
+                final currentYear = DateTime.now().year;
+
+                if (parsedYear == null ||
+                    batchYear.length != 4 ||
+                    parsedYear < 1950 ||
+                    parsedYear > currentYear) {
+                  showToast(
+                    "Please enter a valid batch year (1950–$currentYear).",
+                    context: context,
+                  );
+                  return;
+                }
+
                 if (majors.isEmpty) {
                   showToast(
                     "Please Enter Major and press done to save.",
