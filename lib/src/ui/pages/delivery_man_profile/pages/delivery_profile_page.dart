@@ -252,19 +252,14 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                             final imgBase64 =
                                 ref.read(deliverySetupProvider)["imgBase64"];
 
-                            // ❗ Individual validation
                             if (securityNumber.isEmpty) {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                              setState(() => _isLoading = false);
                               showToast(context: context, "Please enter SSN.");
                               return;
                             }
 
                             if (securityNumber.length != 9) {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                              setState(() => _isLoading = false);
                               showToast(
                                 context: context,
                                 "SSN must be exactly 9 digits.",
@@ -273,9 +268,7 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                             }
 
                             if (imgBase64.isEmpty) {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                              setState(() => _isLoading = false);
                               showToast(
                                 context: context,
                                 "Please upload your National ID or proof of work permission.",
@@ -293,34 +286,41 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                                 "majors": widget.majors,
                                 "monirs": widget.minors,
                                 "club_organizations": widget.clubs,
-                                "location": {"lat": 37.7749, "lng": -122.4194},
+                                "location": {
+                                  "lat": 37.7749,
+                                  "lng": -122.4194,
+                                }, // Replace with actual GPS
                               },
                             );
 
                             final data = jsonDecode(response.body);
                             final riderId = data['data']['user'];
-                            StorageHelper().saveRiderId(riderId);
-                            RiderPayoutRepo repo = RiderPayoutRepo();
-                            repo.generateOnboardingLink(riderId!, context);
 
                             if (response.statusCode == 201 ||
                                 response.statusCode == 200) {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                              StorageHelper().saveRiderId(riderId);
                               StorageHelper().saveRiderProfileComplete(true);
+
+                              // Show loader before hitting onboarding API
+                              setState(() => _isLoading = true);
+
+                              RiderPayoutRepo repo = RiderPayoutRepo();
+                              await repo.generateOnboardingLink(
+                                riderId,
+                                context,
+                              );
+
+                              setState(
+                                () => _isLoading = false,
+                              ); // Stop loader after onboarding API
                             } else if (response.statusCode == 400) {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                              setState(() => _isLoading = false);
                               showToast(
                                 context: context,
                                 "You are already registered as a rider!",
                               );
                             } else {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                              setState(() => _isLoading = false);
                               showToast(
                                 context: context,
                                 "Something went wrong",
