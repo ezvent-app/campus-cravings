@@ -122,8 +122,13 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                           child: Material(
                             color: Colors.transparent,
                             child: InkWellButtonWidget(
+                              onTap: () {
+                                context.pushRoute(
+                                  ProfileFormRoute(newUser: false),
+                                );
+                              },
                               borderRadius: BorderRadius.circular(8),
-                              onTap: () {},
+
                               child: const Center(
                                 child: Icon(
                                   Icons.keyboard_arrow_right,
@@ -138,15 +143,15 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                     ),
                     ProfileGroupButton(
                       options: [
-                        ProfileOption(
-                          icon: 'paymentMethod',
-                          label: locale.paymentMethods,
-                          onPressed: () {
-                            context.pushRoute(
-                              PaymentMethodsRoute(fromCheckout: false),
-                            );
-                          },
-                        ),
+                        // ProfileOption(
+                        //   icon: 'paymentMethod',
+                        //   label: locale.paymentMethods,
+                        //   onPressed: () {
+                        //     context.pushRoute(
+                        //       PaymentMethodsRoute(fromCheckout: false),
+                        //     );
+                        //   },
+                        // ),
                         ProfileOption(
                           icon: 'address',
                           label: locale.savedAddresses,

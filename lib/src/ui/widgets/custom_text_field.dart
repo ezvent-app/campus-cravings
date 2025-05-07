@@ -10,6 +10,8 @@ class CustomTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final int maxLines;
+  final int? maxLength;
+  final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
   final EdgeInsets? contentPadding;
   final TextInputType? textInputType;
@@ -36,8 +38,10 @@ class CustomTextField extends StatefulWidget {
     this.suffixIcon,
     this.prefixIcon,
     this.maxLines = 1,
+    this.maxLength,
+    this.inputFormatters,
     this.contentPadding,
-    this.focusNode
+    this.focusNode,
   });
 
   @override
@@ -93,6 +97,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
           obscureText: widget.obscureText,
           keyboardType: widget.textInputType,
           textInputAction: widget.textInputAction,
+          maxLength: widget.maxLength,
+          inputFormatters: widget.inputFormatters,
           onTapOutside: (event) {
             if (widget.dismissOnTapOutside) {
               FocusScope.of(context).unfocus();
@@ -113,7 +119,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   context,
                 ).textTheme.bodySmall!.copyWith(color: AppColors.hintColor),
             suffixIcon: widget.suffixIcon,
-            contentPadding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+            contentPadding: widget.contentPadding ?? const EdgeInsets.all(12.0),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
             ),

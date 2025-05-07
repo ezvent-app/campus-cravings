@@ -222,7 +222,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                           textInputAction: TextInputAction.next,
                           label:
                               widget.newUser
-                                  ? locale.enterFirstName
+                                  ? 'Enter First Name*'
                                   : locale.firstName,
                           initialValue: signUpState['firstName'],
                           onChanged: (value) {
@@ -237,7 +237,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                           textInputAction: TextInputAction.next,
                           label:
                               widget.newUser
-                                  ? locale.enterLastName
+                                  ? "Enter Last Name*"
                                   : locale.lastName,
                           initialValue: signUpState['lastName'],
                           onChanged: (value) {
@@ -253,7 +253,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                           textInputType: TextInputType.number,
                           label:
                               widget.newUser
-                                  ? locale.enterPhoneNumber
+                                  ? "Enter Phone Number*"
                                   : locale.phoneNumber,
                           initialValue: signUpState['phoneNumber'],
                           onChanged: (value) {

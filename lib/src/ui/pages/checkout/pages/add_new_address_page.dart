@@ -3,13 +3,20 @@ import 'dart:async';
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class CheckOutAddNewAddressPage extends ConsumerWidget {
-  CheckOutAddNewAddressPage({super.key});
+class CheckOutAddNewAddressPage extends ConsumerStatefulWidget {
+  const CheckOutAddNewAddressPage({super.key});
 
+  @override
+  ConsumerState<CheckOutAddNewAddressPage> createState() =>
+      _CheckOutAddNewAddressPageState();
+}
+
+class _CheckOutAddNewAddressPageState
+    extends ConsumerState<CheckOutAddNewAddressPage> {
   // Text field controllers
-  TextEditingController buildingController = TextEditingController();
-  TextEditingController floorController = TextEditingController();
-  TextEditingController roomController = TextEditingController();
+  final TextEditingController buildingController = TextEditingController();
+  final TextEditingController floorController = TextEditingController();
+  final TextEditingController roomController = TextEditingController();
 
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
@@ -26,7 +33,7 @@ class CheckOutAddNewAddressPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     final size = MediaQuery.of(context).size;
     final wdth = size.width;
@@ -157,39 +164,16 @@ class CheckOutAddNewAddressPage extends ConsumerWidget {
                               ],
                             ),
                             height(20),
-                            CustomTextField(
-                              label: locale.saveAs,
-                              hintText: locale.home,
-                              controller: loc.saveAsController,
-                            ),
                             height(10),
-                            Row(
-                              children: [
-                                Switch(
-                                  value: loc.isDefault,
-                                  onChanged:
-                                      (value) => locationMethod
-                                          .defaultAddressMethod(value),
-                                  activeColor: Colors.white,
-                                  inactiveThumbColor: Colors.grey,
-                                  inactiveTrackColor: Colors.grey.shade400,
-                                ),
-
-                                width(10),
-                                Text(
-                                  locale.setDefault,
-                                  style: Theme.of(context).textTheme.bodyMedium!
-                                      .copyWith(color: AppColors.black),
-                                ),
-                              ],
-                            ),
-                            height(40),
+                            height(20),
                             RoundedButtonWidget(
+                              isLoading: ref.watch(addressSavingProvider),
                               btnTitle: locale.save,
-                              onTap:
-                                  () async => await ref
-                                      .read(locationProvider.notifier)
-                                      .saveAddress(context),
+                              onTap: () async {
+                                await ref
+                                    .read(locationProvider.notifier)
+                                    .saveAddress(context);
+                              },
                             ),
                             height(20),
                           ],
@@ -206,5 +190,13 @@ class CheckOutAddNewAddressPage extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    buildingController.dispose();
+    floorController.dispose();
+    roomController.dispose();
+    super.dispose();
   }
 }

@@ -25,12 +25,14 @@ class DeliverySetupPage extends ConsumerStatefulWidget {
 
 class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
   bool _isLoading = false;
+  bool _isImageUploaded = false;
 
   @override
   Widget build(BuildContext context) {
     HttpAPIServices services = HttpAPIServices();
     print("args: ${widget.aboutYou}");
     final locale = AppLocalizations.of(context)!;
+
     return BaseWrapper(
       label: locale.deliveryProfile,
       child: SingleChildScrollView(
@@ -38,9 +40,15 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomTextField(
+              hintText: locale.ssn,
               label: locale.socialSecurityNumber,
               textInputAction: TextInputAction.next,
               textInputType: TextInputType.number,
+              maxLength: 9,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(9),
+              ],
               onChanged:
                   (value) =>
                       ref.read(deliverySetupProvider.notifier).state = {
@@ -56,49 +64,104 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
-            OutlinedButton(
-              onPressed: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.image,
-                );
+            _isImageUploaded
+                ? OutlinedButton(
+                  onPressed: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(type: FileType.image);
 
-                if (result != null) {
-                  Uint8List? fileBytes = result.files.single.bytes;
-                  String? path = result.files.single.path;
+                    if (result != null) {
+                      Uint8List? fileBytes = result.files.single.bytes;
+                      String? path = result.files.single.path;
 
-                  if (kIsWeb) {
-                    if (fileBytes != null) {
-                      String base64Image = base64Encode(fileBytes);
-                      ref.read(deliverySetupProvider.notifier).state = {
-                        ...ref.read(deliverySetupProvider),
-                        'imgBase64': base64Image,
-                      };
+                      if (kIsWeb) {
+                        if (fileBytes != null) {
+                          String base64Image = base64Encode(fileBytes);
+                          ref.read(deliverySetupProvider.notifier).state = {
+                            ...ref.read(deliverySetupProvider),
+                            'imgBase64': base64Image,
+                          };
+                          setState(() {
+                            _isImageUploaded = true;
+                          });
+                        }
+                      } else {
+                        if (path != null) {
+                          File file = File(path);
+                          final bytes = await file.readAsBytes();
+                          String base64Image = base64Encode(bytes);
+                          ref.read(deliverySetupProvider.notifier).state = {
+                            ...ref.read(deliverySetupProvider),
+                            'imgBase64':
+                                'data:image/${result.files.single.extension};base64,$base64Image',
+                          };
+                          setState(() {
+                            _isImageUploaded = true;
+                          });
+                        }
+                      }
+                    } else {
+                      showToast(context: context, "Image not selected");
                     }
-                  } else {
-                    if (path != null) {
-                      File file = File(path);
+                  }, // optional: disable after upload or keep the same logic
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    side: const BorderSide(color: Colors.red),
+                    foregroundColor: Colors.red,
+                  ),
+                  child: const Text("Image Uploaded ✅"),
+                )
+                : OutlinedButton(
+                  onPressed: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(type: FileType.image);
 
-                      final bytes = await file.readAsBytes();
-                      String base64Image = base64Encode(bytes);
-                      ref.read(deliverySetupProvider.notifier).state = {
-                        ...ref.read(deliverySetupProvider),
-                        'imgBase64':
-                            'data:image/${result.files.single.extension};base64,$base64Image',
-                      };
+                    if (result != null) {
+                      Uint8List? fileBytes = result.files.single.bytes;
+                      String? path = result.files.single.path;
+
+                      if (kIsWeb) {
+                        if (fileBytes != null) {
+                          String base64Image = base64Encode(fileBytes);
+                          ref.read(deliverySetupProvider.notifier).state = {
+                            ...ref.read(deliverySetupProvider),
+                            'imgBase64': base64Image,
+                          };
+                          setState(() {
+                            _isImageUploaded = true;
+                          });
+                        }
+                      } else {
+                        if (path != null) {
+                          File file = File(path);
+                          final bytes = await file.readAsBytes();
+                          String base64Image = base64Encode(bytes);
+                          ref.read(deliverySetupProvider.notifier).state = {
+                            ...ref.read(deliverySetupProvider),
+                            'imgBase64':
+                                'data:image/${result.files.single.extension};base64,$base64Image',
+                          };
+                          setState(() {
+                            _isImageUploaded = true;
+                          });
+                        }
+                      }
+                    } else {
+                      showToast(context: context, "Image not selected");
                     }
-                  }
-                } else {
-                  showToast(context: context, "Image not selected");
-                }
-              },
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  },
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    foregroundColor: const Color(0xff525252),
+                    side: const BorderSide(color: Color(0xff525252)),
+                  ),
+                  child: Text(locale.uploadCaptureImage),
                 ),
-                foregroundColor: const Color(0xff525252),
-              ),
-              child: Text(locale.uploadCaptureImage),
-            ),
+
             Row(
               children: [
                 Consumer(
@@ -181,6 +244,7 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                             setState(() {
                               _isLoading = true;
                             });
+
                             final securityNumber =
                                 ref.read(
                                   deliverySetupProvider,
@@ -188,60 +252,79 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                             final imgBase64 =
                                 ref.read(deliverySetupProvider)["imgBase64"];
 
-                            if (securityNumber.isEmpty || imgBase64.isEmpty) {
-                              setState(() {
-                                _isLoading = false;
-                              });
+                            if (securityNumber.isEmpty) {
+                              setState(() => _isLoading = false);
+                              showToast(context: context, "Please enter SSN.");
+                              return;
+                            }
+
+                            if (securityNumber.length != 9) {
+                              setState(() => _isLoading = false);
                               showToast(
                                 context: context,
-                                "Please fill all the fields",
+                                "SSN must be exactly 9 digits.",
+                              );
+                              return;
+                            }
+
+                            if (imgBase64.isEmpty) {
+                              setState(() => _isLoading = false);
+                              showToast(
+                                context: context,
+                                "Please upload your National ID or proof of work permission.",
+                              );
+                              return;
+                            }
+
+                            final response = await services.postAPI(
+                              url: '/rider/riderRegistration',
+                              map: {
+                                "SSN": securityNumber,
+                                "national_id_image_url": imgBase64,
+                                "bio": widget.aboutYou,
+                                "batch_year": widget.batchYear,
+                                "majors": widget.majors,
+                                "monirs": widget.minors,
+                                "club_organizations": widget.clubs,
+                                "location": {
+                                  "lat": 37.7749,
+                                  "lng": -122.4194,
+                                }, // Replace with actual GPS
+                              },
+                            );
+
+                            final data = jsonDecode(response.body);
+                            final riderId = data['data']['user'];
+
+                            if (response.statusCode == 201 ||
+                                response.statusCode == 200) {
+                              StorageHelper().saveRiderId(riderId);
+                              StorageHelper().saveRiderProfileComplete(true);
+
+                              // Show loader before hitting onboarding API
+                              setState(() => _isLoading = true);
+
+                              RiderPayoutRepo repo = RiderPayoutRepo();
+                              await repo.generateOnboardingLink(
+                                riderId,
+                                context,
+                              );
+
+                              setState(
+                                () => _isLoading = false,
+                              ); // Stop loader after onboarding API
+                            } else if (response.statusCode == 400) {
+                              setState(() => _isLoading = false);
+                              showToast(
+                                context: context,
+                                "You are already registered as a rider!",
                               );
                             } else {
-                              final response = await services.postAPI(
-                                url: '/rider/riderRegistration',
-                                map: {
-                                  "SSN": securityNumber,
-                                  "national_id_image_url": imgBase64,
-                                  "bio": widget.aboutYou,
-                                  "batch_year": widget.batchYear,
-                                  "majors": widget.majors,
-                                  "monirs": widget.minors,
-                                  "club_organizations": widget.clubs,
-                                  "location": {
-                                    "lat": 37.7749,
-                                    "lng": -122.4194,
-                                  },
-                                },
+                              setState(() => _isLoading = false);
+                              showToast(
+                                context: context,
+                                "Something went wrong",
                               );
-                              final data = jsonDecode(response.body);
-
-                              final riderId = data['data']['user'];
-                              StorageHelper().saveRiderId(riderId);
-                              RiderPayoutRepo repo = RiderPayoutRepo();
-                              repo.generateOnboardingLink(riderId!, context);
-                              if (response.statusCode == 201 ||
-                                  response.statusCode == 200) {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                StorageHelper().saveRiderProfileComplete(true);
-                              } else if (response.statusCode == 400) {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                showToast(
-                                  context: context,
-                                  "You are already registered as a rider!",
-                                );
-                              } else {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                showToast(
-                                  context: context,
-                                  "Something went wrong",
-                                );
-                              }
                             }
                           }
                           : null,

@@ -178,7 +178,7 @@ class SignUpPage extends ConsumerWidget {
                     AccountInfoRowWidget(
                       title: locale.alreadyhaveAccount,
                       btnTitle: locale.logIn,
-                      onTap: () => context.back(),
+                      onTap: () => context.replaceRoute(LoginRoute()),
                     ),
                   ],
                 ),

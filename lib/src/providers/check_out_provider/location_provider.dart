@@ -9,6 +9,7 @@ import 'package:geolocator/geolocator.dart';
 final locationProvider = AsyncNotifierProvider<LocationNotifier, LocationModel>(
   () => LocationNotifier(),
 );
+final addressSavingProvider = StateProvider<bool>((ref) => false);
 
 class LocationNotifier extends AsyncNotifier<LocationModel> {
   final HttpAPIServices services = HttpAPIServices();
@@ -82,29 +83,30 @@ class LocationNotifier extends AsyncNotifier<LocationModel> {
     }
   }
 
-  saveAddress(BuildContext context) async {
+  Future<void> saveAddress(BuildContext context) async {
     try {
+      final loading = ref.read(addressSavingProvider.notifier);
+      loading.state = true;
+
       final current = state.value!;
       final address = {
-        'address':
-            "${current.locationController.text}, ${current.floorController.text}, ${current.roomNoController.text}",
+        'address': current.locationController.text,
         "coordinates": {
           "type": "Point",
           "coordinates": [current.latLng.latitude, current.latLng.longitude],
         },
-        // 'saveAs': current.saveAsController.text,
-        // 'isDefault': current.isDefault,
       };
 
       final res = await services.patchAPI(
         map: address,
         url: "/user/addAddress/",
       );
+
       final body = jsonDecode(res.body);
       if (res.statusCode == 200) {
         if (context.mounted) {
           showToast(body['message'], context: context);
-          context.maybePop();
+          context.replaceRoute(SavedAddressesRoute());
         }
       } else {
         if (context.mounted) {
@@ -115,6 +117,8 @@ class LocationNotifier extends AsyncNotifier<LocationModel> {
       printThis('Saved JSON: $address');
     } catch (e) {
       printThis(e.toString());
+    } finally {
+      ref.read(addressSavingProvider.notifier).state = false;
     }
   }
 

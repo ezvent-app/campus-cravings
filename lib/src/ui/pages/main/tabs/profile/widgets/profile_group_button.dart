@@ -42,21 +42,20 @@ class ProfileGroupButton extends ConsumerWidget {
                         isHelp
                             ? SizedBox()
                             : SvgAssets(option.icon, height: 30, width: 30),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 5, left: 10),
-                            child: Text(
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              option.label,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff443A39),
-                              ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5, left: 10),
+                          child: Text(
+                            option.label,
+                            // maxLines: 1,
+                            // overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff443A39),
                             ),
                           ),
                         ),
+
                         const Spacer(),
                         const Icon(
                           Icons.keyboard_arrow_right,
