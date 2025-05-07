@@ -122,8 +122,13 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                           child: Material(
                             color: Colors.transparent,
                             child: InkWellButtonWidget(
+                              onTap: () {
+                                context.pushRoute(
+                                  ProfileFormRoute(newUser: false),
+                                );
+                              },
                               borderRadius: BorderRadius.circular(8),
-                              onTap: () {},
+
                               child: const Center(
                                 child: Icon(
                                   Icons.keyboard_arrow_right,
