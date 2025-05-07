@@ -1,12 +1,86 @@
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class StudentProfileDetailsPage extends ConsumerWidget {
+class StudentProfileDetailsPage extends ConsumerStatefulWidget {
   const StudentProfileDetailsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<StudentProfileDetailsPage> createState() =>
+      _StudentProfileDetailsPageState();
+}
+
+class _StudentProfileDetailsPageState
+    extends ConsumerState<StudentProfileDetailsPage> {
+  late final TextEditingController _majorController;
+  late final FocusNode _majorFocusNode;
+
+  late final TextEditingController _minorController;
+  late final FocusNode _minorFocusNode;
+
+  late final TextEditingController _clubController;
+  late final FocusNode _clubFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _majorController = TextEditingController();
+    _majorFocusNode = FocusNode();
+    _majorFocusNode.addListener(() {
+      if (!_majorFocusNode.hasFocus) {
+        final value = _majorController.text.trim();
+        final majors = ref.read(majorsProvider);
+        if (value.isNotEmpty && !majors.contains(value)) {
+          ref.read(majorsProvider.notifier).state = [...majors, value];
+          _majorController.clear();
+        }
+      }
+    });
+
+    _minorController = TextEditingController();
+    _minorFocusNode = FocusNode();
+    _minorFocusNode.addListener(() {
+      if (!_minorFocusNode.hasFocus) {
+        final value = _minorController.text.trim();
+        final minors = ref.read(minorsProvider);
+        if (value.isNotEmpty && !minors.contains(value)) {
+          ref.read(minorsProvider.notifier).state = [...minors, value];
+          _minorController.clear();
+        }
+      }
+    });
+
+    _clubController = TextEditingController();
+    _clubFocusNode = FocusNode();
+    _clubFocusNode.addListener(() {
+      if (!_clubFocusNode.hasFocus) {
+        final value = _clubController.text.trim();
+        final clubs = ref.read(clubsProvider);
+        if (value.isNotEmpty && !clubs.contains(value)) {
+          ref.read(clubsProvider.notifier).state = [...clubs, value];
+          _clubController.clear();
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _majorController.dispose();
+    _majorFocusNode.dispose();
+    _minorController.dispose();
+    _minorFocusNode.dispose();
+    _clubController.dispose();
+    _clubFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    final majors = ref.watch(majorsProvider);
+    final minors = ref.watch(minorsProvider);
+    final clubs = ref.watch(clubsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -20,7 +94,7 @@ class StudentProfileDetailsPage extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(
           horizontal: Dimensions.paddingSizeExtraLarge,
         ),
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -38,78 +112,49 @@ class StudentProfileDetailsPage extends ConsumerWidget {
             ),
             height(16),
             CustomTextField(
+              controller: _majorController,
+              focusNode: _majorFocusNode,
               hintText: locale.search,
               label: locale.yourMajors,
-              onSubmitted: (value) {
-                if (value.isNotEmpty) {
-                  final majors = ref.read(majorsProvider);
-                  ref.read(majorsProvider.notifier).state = [...majors, value];
-                }
-              },
             ),
             height(5),
-            Consumer(
-              builder: (context, ref, child) {
-                final majors = ref.watch(majorsProvider);
-                return ChipWrapWidget(
-                  items: majors,
-                  onRemove: (item) {
-                    ref.read(majorsProvider.notifier).state =
-                        majors.where((i) => i != item).toList();
-                  },
-                );
+            ChipWrapWidget(
+              items: majors,
+              onRemove: (item) {
+                ref.read(majorsProvider.notifier).state =
+                    majors.where((i) => i != item).toList();
               },
             ),
             height(16),
             CustomTextField(
+              controller: _minorController,
+              focusNode: _minorFocusNode,
               hintText: locale.search,
               label: locale.yourMinors,
-              onSubmitted: (value) {
-                if (value.isNotEmpty) {
-                  final minors = ref.watch(minorsProvider);
-
-                  ref.read(minorsProvider.notifier).state = [...minors, value];
-                }
-              },
             ),
             height(5),
-            Consumer(
-              builder: (context, ref, child) {
-                final minors = ref.watch(minorsProvider);
-                return ChipWrapWidget(
-                  items: minors,
-                  onRemove: (item) {
-                    ref.read(minorsProvider.notifier).state =
-                        minors.where((i) => i != item).toList();
-                  },
-                );
+            ChipWrapWidget(
+              items: minors,
+              onRemove: (item) {
+                ref.read(minorsProvider.notifier).state =
+                    minors.where((i) => i != item).toList();
               },
             ),
             height(16),
             CustomTextField(
+              controller: _clubController,
+              focusNode: _clubFocusNode,
               hintText: locale.search,
-              label: locale.clubsOrganizations,
-              onSubmitted: (value) {
-                if (value.isNotEmpty) {
-                  final clubs = ref.watch(clubsProvider);
-                  ref.read(clubsProvider.notifier).state = [...clubs, value];
-                }
-              },
+              label: locale.clubOrganizations,
             ),
             height(5),
-            Consumer(
-              builder: (context, ref, child) {
-                final clubs = ref.watch(clubsProvider);
-                return ChipWrapWidget(
-                  items: clubs,
-                  onRemove: (item) {
-                    ref.read(clubsProvider.notifier).state =
-                        clubs.where((i) => i != item).toList();
-                  },
-                );
+            ChipWrapWidget(
+              items: clubs,
+              onRemove: (item) {
+                ref.read(clubsProvider.notifier).state =
+                    clubs.where((i) => i != item).toList();
               },
             ),
-
             height(16),
             CustomTextField(
               hintText: locale.whatDoYouWantKnowAboutYou,
@@ -123,70 +168,53 @@ class StudentProfileDetailsPage extends ConsumerWidget {
               },
             ),
             height(18),
-            Consumer(
-              builder: (context, ref, child) {
-                return RoundedButtonWidget(
-                  btnTitle: locale.next,
-                  onTap: () {
-                    final aboutYou =
-                        ref.read(studentProfileProvider)["aboutYou"];
-                    final batchYear =
-                        ref.read(studentProfileProvider)["batchYear"];
-                    final majors = ref.read(majorsProvider);
-                    final minors = ref.read(minorsProvider);
-                    final clubs = ref.read(clubsProvider);
+            RoundedButtonWidget(
+              btnTitle: locale.next,
+              onTap: () {
+                final aboutYou = ref.read(studentProfileProvider)["aboutYou"];
+                final batchYear = ref.read(studentProfileProvider)["batchYear"];
+                final majors = ref.read(majorsProvider);
+                final minors = ref.read(minorsProvider);
+                final clubs = ref.read(clubsProvider);
 
-                    // if (aboutYou.isEmpty ||
-                    //     batchYear.isEmpty ||
-                    //     majors.isEmpty ||
-                    //     minors.isEmpty ||
-                    //     clubs.isEmpty) {
-                    // showToast(
-                    //   "Please Enter Proper Information and press done",
-                    //   context: context,
-                    // );
-                    //   return;
-                    // }
+                if (batchYear.isEmpty) {
+                  showToast("Please Enter Batch Year.", context: context);
+                  return;
+                }
+                if (majors.isEmpty) {
+                  showToast(
+                    "Please Enter Major and press done to save.",
+                    context: context,
+                  );
+                  return;
+                }
+                if (minors.isEmpty) {
+                  showToast(
+                    "Please Enter minor and press done to save.",
+                    context: context,
+                  );
+                  return;
+                }
+                if (clubs.isEmpty) {
+                  showToast(
+                    "Please Enter clubs or Organization and press done to save.",
+                    context: context,
+                  );
+                  return;
+                }
+                if (aboutYou.isEmpty) {
+                  showToast("Please Enter bio.", context: context);
+                  return;
+                }
 
-                    if (batchYear.isEmpty) {
-                      showToast("Please Enter Batch Year.", context: context);
-                      return;
-                    }
-                    if (majors.isEmpty) {
-                      showToast(
-                        "Please Enter Major and press done to save.",
-                        context: context,
-                      );
-                      return;
-                    }
-                    if (minors.isEmpty) {
-                      showToast(
-                        "Please Enter minor and press done to save.",
-                        context: context,
-                      );
-                      return;
-                    }
-                    if (clubs.isEmpty) {
-                      showToast(
-                        "Please Enter clubs or Organization and press done to save.",
-                        context: context,
-                      );
-                      return;
-                    }
-                    if (aboutYou.isEmpty) {
-                      showToast("Please Enter bio.", context: context);
-                      return;
-                    }
-                    context.pushRoute(
-                      DeliverySetupRoute(
-                        aboutYou: aboutYou,
-                        batchYear: batchYear,
-                        majors: majors,
-                        minors: minors,
-                        clubs: clubs,
-                      ),
-                    );
-                  },
+                context.pushRoute(
+                  DeliverySetupRoute(
+                    aboutYou: aboutYou,
+                    batchYear: batchYear,
+                    majors: majors,
+                    minors: minors,
+                    clubs: clubs,
+                  ),
                 );
               },
             ),
