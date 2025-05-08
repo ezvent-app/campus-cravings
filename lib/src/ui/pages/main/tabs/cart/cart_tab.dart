@@ -13,87 +13,91 @@ class CartTabPage extends ConsumerWidget {
     final cartItems = ref.watch(cartItemsProvider);
     final cartNotifier = ref.read(cartItemsProvider.notifier);
 
+    // Filter out any null items
+    final filteredCartItems = cartItems.where((item) => item != null).toList();
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: isFromNavBar ? false : true,
         title: Text("Cart", style: Theme.of(context).textTheme.titleMedium),
       ),
-      // bottomNavigationBar: Padding(
-      //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      //   child: CheckoutNavBarWidget(cartItems: cartItems),
-      // ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: List.generate(cartItems.length, (index) {
-                final item = cartItems[index];
-                return SizedBox(
-                  height: size.height * .17,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // item.image.isEmpty
-                      //     ?
-                      // PngAsset(
-                      //   'mock_product_1',
-                      //   height: size.height * .13,
-                      //   width: size.width * .3,
-                      //   fit: BoxFit.cover,
-                      //   borderRadius: BorderRadius.circular(16),
-                      // ),
-                      // : Image.network(item.image),
-                      CustomNetworkImage(item.image, fit: BoxFit.fitWidth),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item.name,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            height(10),
-                            QuantitySelectorWidget(
-                              price:
-                                  item.price +
-                                  item.sizePrice +
-                                  item.customization.fold(
-                                    0.0,
-                                    (sum, customItem) => sum + customItem.price,
-                                  ),
 
-                              quantity: item.quantity,
-                              onQuantityDecrementChanged:
-                                  item.quantity <= 1
-                                      ? null
-                                      : () =>
-                                          cartNotifier.decrementQuantity(index),
-                              onQuantityIncrementChanged:
-                                  item.quantity >= 10
-                                      ? null
-                                      : () =>
-                                          cartNotifier.incrementQuantity(index),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+          children: [
+            if (filteredCartItems.isEmpty)
+              SizedBox(
+                height: size.height * 0.6,
+                child: Center(
+                  child: Text(
+                    'Your cart is empty',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                );
-              }),
-            ),
+                ),
+              )
+            else
+              Column(
+                children: List.generate(filteredCartItems.length, (index) {
+                  final item = filteredCartItems[index];
+                  return SizedBox(
+                    height: size.height * .17,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomNetworkImage(item.image, fit: BoxFit.fitWidth),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, top: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.name,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.black,
+                                ),
+                              ),
+                              height(10),
+                              QuantitySelectorWidget(
+                                price:
+                                    item.price +
+                                    item.sizePrice +
+                                    item.customization.fold(
+                                      0.0,
+                                      (sum, customItem) =>
+                                          sum + customItem.price,
+                                    ),
+                                quantity: item.quantity,
+                                onQuantityDecrementChanged:
+                                    item.quantity <= 1
+                                        ? null
+                                        : () => cartNotifier.decrementQuantity(
+                                          index,
+                                        ),
+                                onQuantityIncrementChanged:
+                                    item.quantity >= 10
+                                        ? null
+                                        : () => cartNotifier.incrementQuantity(
+                                          index,
+                                        ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ),
             height(40),
-            CheckoutNavBarWidget(cartItems: cartItems),
+            if (filteredCartItems.isNotEmpty)
+              CheckoutNavBarWidget(cartItems: filteredCartItems),
           ],
         ),
       ),

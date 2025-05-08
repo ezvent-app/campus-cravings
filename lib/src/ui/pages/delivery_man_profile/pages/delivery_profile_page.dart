@@ -296,6 +296,11 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                             final data = jsonDecode(response.body);
                             final riderId = data['data']['user'];
 
+                            String successUrl =
+                                'http://restaurantmanager.campuscravings.co/$riderId?verified=true';
+                            String failureUrl =
+                                'http://restaurantmanager.campuscravings.co/login';
+
                             if (response.statusCode == 201 ||
                                 response.statusCode == 200) {
                               StorageHelper().saveRiderId(riderId);
@@ -307,6 +312,8 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                               RiderPayoutRepo repo = RiderPayoutRepo();
                               await repo.generateOnboardingLink(
                                 riderId,
+                                successUrl,
+                                failureUrl,
                                 context,
                               );
 

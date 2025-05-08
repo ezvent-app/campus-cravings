@@ -8,10 +8,15 @@ class RiderPayoutRepo {
 
   Future<dynamic> generateOnboardingLink(
     String id,
+    String successUrl,
+    String failureUrl,
+
     BuildContext context,
   ) async {
     try {
-      final response = await services.getAPI('/payments/onboard/$id');
+      final response = await services.getAPI(
+        '/payments/onboard/$id?successUrl=$successUrl&failureUrl=$failureUrl',
+      );
 
       if (response.statusCode == 200) {
         _logger.i("Link Generated Successfully!");

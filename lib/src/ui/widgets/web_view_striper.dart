@@ -65,6 +65,17 @@ class StripeWebViewState extends State<StripeWebView> {
 
               return NavigationDecision.prevent;
             }
+            // Failure Case
+            if (request.url ==
+                'http://restaurantmanager.campuscravings.co/login') {
+              print('Stripe onboarding failed or cancelled.');
+              Navigator.of(context).pop(); // Close the WebView
+              showToast(
+                context: context,
+                "Stripe onboarding failed or cancelled.",
+              );
+              return NavigationDecision.prevent;
+            }
 
             return NavigationDecision.navigate;
           },
