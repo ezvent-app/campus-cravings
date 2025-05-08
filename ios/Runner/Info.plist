@@ -55,5 +55,12 @@
 	<string>We use your location to track deliveries even when the app is in the background.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We require access to your photo library to upload profile pictures and delivery proofs.</string>
+	<key>NSCameraUsageDescription</key>
+    <string>This app needs access to the camera to take photos.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs access to your photo library to select images.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>This app needs permission to save photos to your photo library.</string>
+
 </dict>
 </plist>

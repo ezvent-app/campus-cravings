@@ -35,6 +35,7 @@ class RestaurantRepository {
       final response = await _httpApiServices.getAPI(
         '/restaurants/getrestaurantAllCategory/$restaurantId',
       );
+      print("lolo popo 123 $restaurantId");
       Logger().i("${response.statusCode} - ${response.body}");
       if (response.statusCode != 200) return null;
       return RestaurantDetailsModel.fromJson(

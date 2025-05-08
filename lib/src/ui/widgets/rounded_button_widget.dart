@@ -26,14 +26,22 @@ class RoundedButtonWidget extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 color: AppColors.primary,
                 borderRadius: BorderRadius.circular(10),
-                child: Text(
-                  btnTitle,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: AppColors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                child:
+                    isLoading
+                        ? const CircularProgressIndicator(
+                          color: AppColors.white,
+                          strokeWidth: 1,
+                        )
+                        : Text(
+                          btnTitle,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium!.copyWith(
+                            color: AppColors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
               )
               : ElevatedButton(
                 onPressed: onTap,
