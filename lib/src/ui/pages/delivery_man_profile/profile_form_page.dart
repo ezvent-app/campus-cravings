@@ -1,11 +1,17 @@
+import 'dart:developer' as dev;
+import 'dart:developer';
+
 import 'package:campuscravings/src/controllers/user_controller.dart';
-import 'package:campuscravings/src/models/User%20Model/user_info_model.dart';
-import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 
 import '../../../constants/storageHelper.dart';
+import '../../../controllers/location_controller.dart';
 
 @RoutePage()
 class ProfileFormPage extends ConsumerStatefulWidget {
@@ -30,16 +36,25 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
   late String _selectedRole;
   HttpAPIServices services = HttpAPIServices();
   File? image;
+  Position? _locationData;
 
   @override
   void initState() {
     super.initState();
+    getLocation();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _selectedRole = _roles.first;
       if (!widget.newUser) {
         _loadUserProfile();
       }
     });
+  }
+
+  getLocation() async {
+    _locationData = await Get.find<LocationController>().getCurrentLocation();
+    dev.log(
+      ".............user current Lat ${_locationData!.latitude.toString()} long ${_locationData!.latitude.toString()}",
+    );
   }
 
   Future<void> _loadUserProfile() async {
@@ -159,13 +174,65 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                       image = file;
                                     });
 
-                                    final bytes = await file.readAsBytes();
-                                    String base64Image = base64Encode(bytes);
-                                    ref.read(signUpProvider.notifier).state = {
-                                      ...ref.read(signUpProvider),
-                                      'imgBase64':
-                                          'data:image/${result.files.single.extension};base64,$base64Image',
-                                    };
+                                    final base64Image =
+                                        await compressImageToBase64(file);
+
+                                    if (base64Image != null) {
+                                      ref
+                                          .read(signUpProvider.notifier)
+                                          .state = {
+                                        ...ref.read(signUpProvider),
+                                        'imgBase64':
+                                            'data:image/${result.files.single.extension};base64,$base64Image',
+                                      };
+
+                                      log(
+                                        "Base64 Length: ${base64Image.length}",
+                                      );
+                                    } else {
+                                      log("Image compression failed.");
+                                    }
+
+                                    final originalBytes =
+                                        await file.readAsBytes();
+                                    final originalSize =
+                                        originalBytes.length; // in bytes
+                                    const targetSize = 102400; // 100KB in bytes
+
+                                    int estimatedQuality =
+                                        (targetSize / originalSize * 100)
+                                            .clamp(10, 95)
+                                            .toInt();
+
+                                    final compressResult =
+                                        await FlutterImageCompress.compressWithFile(
+                                          file.absolute.path,
+                                          quality: estimatedQuality,
+                                          rotate: 90,
+                                        );
+
+                                    log("Original size: $originalSize");
+                                    log(
+                                      "Compressed size: ${compressResult?.length ?? 0}",
+                                    );
+
+                                    if (compressResult != null) {
+                                      final base64Image = base64Encode(
+                                        compressResult,
+                                      );
+                                      ref
+                                          .read(signUpProvider.notifier)
+                                          .state = {
+                                        ...ref.read(signUpProvider),
+                                        'imgBase64':
+                                            'data:image/${result.files.single.extension};base64,$base64Image',
+                                      };
+                                      log(
+                                        "Base64 Length: ${base64Image.length}",
+                                      );
+                                    } else {
+                                      log("Compression failed.");
+                                    }
                                   }
                                 }
                               } else {
@@ -385,6 +452,13 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                             );
                                             return;
                                           }
+
+                                          List<Placemark> placemarks =
+                                              await placemarkFromCoordinates(
+                                                _locationData!.latitude,
+                                                _locationData!.longitude,
+                                              );
+
                                           final response = await services.postAPI(
                                             url: '/auth/register/email',
                                             map: {
@@ -407,6 +481,20 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                                   Platform.isAndroid
                                                       ? "android"
                                                       : "ios",
+                                              "addresses": [
+                                                {
+                                                  "address":
+                                                      "${placemarks.first.locality.toString()}, ${placemarks.first.country.toString()}",
+                                                  "coordinates": {
+                                                    "type": "Point",
+                                                    "coordinates": [
+                                                      _locationData!.latitude,
+                                                      _locationData!.longitude,
+                                                    ],
+                                                  },
+                                                },
+                                              ],
+
                                               "deviceId":
                                                   "dACC68I_SsOeP95zx5KyRc:APA91bGSili2JR9h6TnbhNUPoKeN1QsxDqpjOwNfJy_sCMgjhC-whoow8sOmXb-KlYbYZ_Qp8gl7c-EWTf1zK87rG8aWPHFmI7WuQ78qppVc_J9HJ7kagsnvDQg-5bFCtO0UJs2JZHHq",
                                             },
@@ -415,6 +503,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                           final data = jsonDecode(
                                             response.body,
                                           );
+                                          log("JSON $data");
                                           if (response.statusCode == 201) {
                                             if (context.mounted) {
                                               context.pushRoute(

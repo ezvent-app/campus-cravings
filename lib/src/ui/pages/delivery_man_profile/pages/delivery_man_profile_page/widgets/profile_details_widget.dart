@@ -1,5 +1,4 @@
 import 'package:campuscravings/src/src.dart';
-import 'package:campuscravings/src/ui/pages/checkout/pages/delivering/widgets/rider_details_widget.dart';
 
 class ProfileDetailsWidget extends StatelessWidget {
   const ProfileDetailsWidget({

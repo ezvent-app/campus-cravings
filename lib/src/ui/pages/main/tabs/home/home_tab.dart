@@ -1,7 +1,6 @@
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
 import 'package:campuscravings/src/controllers/user_controller.dart';
-import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/pages/main/tabs/home/search_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +17,6 @@ class HomeTabPage extends ConsumerStatefulWidget {
 class _HomeTabPageState extends ConsumerState<HomeTabPage> {
   @override
   void initState() {
-    // TODO: implement
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final token = StorageHelper().getAccessToken();
       if (token != null) {

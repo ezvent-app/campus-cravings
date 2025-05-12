@@ -29,9 +29,11 @@ class LocationService {
 
   Future<geo.Position?> getCurrentLocation() async {
     if (await checkIfPermissionGranted() == false) return null;
-    return await geo.Geolocator.getCurrentPosition(locationSettings: geo.LocationSettings(
-      accuracy: geo.LocationAccuracy.best,
-      timeLimit: Duration(seconds: 5),
-    ));
+    return await geo.Geolocator.getCurrentPosition(
+      locationSettings: geo.LocationSettings(
+        accuracy: geo.LocationAccuracy.high,
+        timeLimit: Duration(seconds: 5),
+      ),
+    );
   }
 }

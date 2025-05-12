@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:developer' as dev;
+
 import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
 import 'package:campuscravings/src/controllers/location_controller.dart';
 import 'package:campuscravings/src/models/near_by_restaurant_model.dart';
@@ -6,6 +7,7 @@ import 'package:campuscravings/src/repository/home_repository/restaurant_reposit
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+
 import '../constants/get_builder_id_constants.dart';
 
 class RestaurantController extends GetxController {
@@ -26,12 +28,16 @@ class RestaurantController extends GetxController {
         await Future.delayed(Duration(milliseconds: 1500));
       }
       _locationData = await Get.find<LocationController>().getCurrentLocation();
+      dev.log(
+        ".............user current Lat ${_locationData!.latitude.toString()} long ${_locationData!.latitude.toString()}",
+      );
       if (_locationData == null) {
         _isLoading = false;
         update([nearByRestaurantBuilderId]);
         return;
       }
-      _listOfNearByRestaurants = (await _restaurantRepository.getNearByRestaurants(
+      _listOfNearByRestaurants =
+          (await _restaurantRepository.getNearByRestaurants(
             lat: _locationData!.latitude,
             lng: _locationData!.longitude,
           )) ??

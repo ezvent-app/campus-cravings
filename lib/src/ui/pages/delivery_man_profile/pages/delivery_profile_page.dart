@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
@@ -88,13 +90,19 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                       } else {
                         if (path != null) {
                           File file = File(path);
-                          final bytes = await file.readAsBytes();
-                          String base64Image = base64Encode(bytes);
-                          ref.read(deliverySetupProvider.notifier).state = {
-                            ...ref.read(deliverySetupProvider),
-                            'imgBase64':
-                                'data:image/${result.files.single.extension};base64,$base64Image',
-                          };
+                          final base64Image = await compressImageToBase64(file);
+
+                          if (base64Image != null) {
+                            ref.read(deliverySetupProvider.notifier).state = {
+                              ...ref.read(deliverySetupProvider),
+                              'imgBase64':
+                                  'data:image/${result.files.single.extension};base64,$base64Image',
+                            };
+                            log("Base64 Length: ${base64Image.length}");
+                          } else {
+                            log("Image compression failed.");
+                          }
+
                           setState(() {
                             _isImageUploaded = true;
                           });
@@ -136,13 +144,19 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                       } else {
                         if (path != null) {
                           File file = File(path);
-                          final bytes = await file.readAsBytes();
-                          String base64Image = base64Encode(bytes);
-                          ref.read(deliverySetupProvider.notifier).state = {
-                            ...ref.read(deliverySetupProvider),
-                            'imgBase64':
-                                'data:image/${result.files.single.extension};base64,$base64Image',
-                          };
+                          final base64Image = await compressImageToBase64(file);
+
+                          if (base64Image != null) {
+                            ref.read(deliverySetupProvider.notifier).state = {
+                              ...ref.read(deliverySetupProvider),
+                              'imgBase64':
+                                  'data:image/${result.files.single.extension};base64,$base64Image',
+                            };
+                            log("Base64 Length: ${base64Image.length}");
+                          } else {
+                            log("Image compression failed.");
+                          }
+
                           setState(() {
                             _isImageUploaded = true;
                           });

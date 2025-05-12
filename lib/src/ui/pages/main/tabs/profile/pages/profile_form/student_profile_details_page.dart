@@ -98,7 +98,7 @@ class _StudentProfileDetailsPageState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            height(50),
+            height(10),
             CustomTextField(
               textInputAction: TextInputAction.next,
               textInputType: TextInputType.number,
@@ -135,7 +135,7 @@ class _StudentProfileDetailsPageState
               controller: _minorController,
               focusNode: _minorFocusNode,
               hintText: locale.search,
-              label: "Your Mainor(s)*",
+              label: "Your Minor(s)*",
             ),
             height(5),
             ChipWrapWidget(
@@ -172,7 +172,7 @@ class _StudentProfileDetailsPageState
                 }
               },
             ),
-            height(18),
+            height(25),
             RoundedButtonWidget(
               btnTitle: locale.next,
               onTap: () {
@@ -238,6 +238,7 @@ class _StudentProfileDetailsPageState
                 );
               },
             ),
+            height(30),
           ],
         ),
       ),

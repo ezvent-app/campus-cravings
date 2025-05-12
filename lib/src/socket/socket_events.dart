@@ -1,5 +1,6 @@
 class SocketEvents {
-  static const String socketUrl = 'https://campuscravings.co';
+  // static const String socketUrl = 'https://campuscravings.co';
+  static const String socketUrl = 'http://192.168.18.26:5000';
   static const String eventOrderPlaced = 'orderPlaced';
   static const String eventOrderStatusUpdated = 'orderStatusUpdated';
   static const String eventDeliveryLocationUpdated = 'deliveryLocationUpdated';
