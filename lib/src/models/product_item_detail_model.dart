@@ -38,13 +38,13 @@ class ProductItemDetailModel {
       price: (json['price'] as num).toDouble(),
       description: json['description'],
       estimatedPreparationTime: json['estimated_preparation_time'],
-      customization: (json['customization'] as List)
-          .map((e) => CustomizationModel.fromJson(e))
-          .toList(),
-      sizes: (json['sizes'] as List)
-          .map((e) => SizeOption.fromJson(e))
-          .toList(),
-      calories: json['calories'],
+      customization:
+          (json['customization'] as List)
+              .map((e) => CustomizationModel.fromJson(e))
+              .toList(),
+      sizes:
+          (json['sizes'] as List).map((e) => SizeOption.fromJson(e)).toList(),
+      calories: json['calories'] ?? 0,
       images: List<String>.from(json['image']),
       category: Category.fromJson(json['category']),
       restaurant: json['restaurant'],
@@ -80,11 +80,7 @@ class SizeOption {
   final String name;
   final double price;
 
-  SizeOption({
-    required this.id,
-    required this.name,
-    required this.price,
-  });
+  SizeOption({required this.id, required this.name, required this.price});
 
   factory SizeOption.fromJson(Map<String, dynamic> json) {
     return SizeOption(
@@ -99,15 +95,9 @@ class Category {
   final String id;
   final String name;
 
-  Category({
-    required this.id,
-    required this.name,
-  });
+  Category({required this.id, required this.name});
 
   factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(
-      id: json['_id'],
-      name: json['name'],
-    );
+    return Category(id: json['_id'], name: json['name']);
   }
 }

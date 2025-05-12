@@ -59,7 +59,7 @@ class ProductDetailsController extends GetxController {
         selectedCustomizations.isNotEmpty
             ? selectedCustomizations
                 .map((i) => i.price)
-                .fold(0.0, (a, b) => a + b)
+                .fold(0.0, (a, b) => a + b!)
             : 0.0;
 
     double totalSingleItemPrice =

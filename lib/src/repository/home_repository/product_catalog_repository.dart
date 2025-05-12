@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:campuscravings/src/models/product_item_detail_model.dart';
 import 'package:campuscravings/src/models/product_item_model.dart';
@@ -34,6 +35,7 @@ class ProductRepository {
     required String itemId,
   }) async {
     try {
+      log("ITEM ID $itemId");
       final response = await _httpApiServices.getAPI(
         '/categories/getitem/$itemId',
       );
