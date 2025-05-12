@@ -47,7 +47,19 @@ class CartTabPage extends ConsumerWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomNetworkImage(item.image, fit: BoxFit.fitWidth),
+                        SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: Card(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: CustomNetworkImage(
+                                item.image,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10, top: 15),
                           child: Column(

@@ -143,9 +143,18 @@ class DeliveryTabWidget extends ConsumerWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomNetworkImage(
-                                item.image,
-                                fit: BoxFit.fitWidth,
+                              SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Card(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: CustomNetworkImage(
+                                      item.image,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 child: Padding(
@@ -616,7 +625,7 @@ class DeliveryTabWidget extends ConsumerWidget {
 }
 
 class CheckPlaceOrderButtonWidget extends ConsumerWidget {
-   CheckPlaceOrderButtonWidget({
+  const CheckPlaceOrderButtonWidget({
     super.key,
     required this.cartItems,
     required this.total,
