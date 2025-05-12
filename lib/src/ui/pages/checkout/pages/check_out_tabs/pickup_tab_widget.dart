@@ -1,9 +1,5 @@
-import 'dart:developer';
-
-import 'package:campuscravings/src/controllers/location_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
-import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 class PickupTabWidget extends ConsumerWidget {
@@ -68,9 +64,18 @@ class PickupTabWidget extends ConsumerWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomNetworkImage(
-                                item.image,
-                                fit: BoxFit.fitWidth,
+                              SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Card(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: CustomNetworkImage(
+                                      item.image,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                               ),
                               Expanded(
                                 child: Padding(
