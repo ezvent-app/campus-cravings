@@ -14,12 +14,6 @@ class ProductDetailsController extends GetxController {
   int _productQuantity = 1;
   int get productQuantity => _productQuantity;
 
-  @override
-  void onInit() {
-    super.onInit();
-    getTotalPrice();
-  }
-
   void setProductId(String productId) {
     _productId = productId;
     _productQuantity = 1;
