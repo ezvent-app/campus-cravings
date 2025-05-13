@@ -369,13 +369,13 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       height: 50,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          if (cartItemsNotifier.selectedSizeId.isEmpty) {
-                            showToast(
-                              'Please select a size first',
-                              context: context,
-                            );
-                            return;
-                          }
+                          // if (cartItemsNotifier.selectedSizeId.isEmpty) {
+                          //   showToast(
+                          //     'Please select a size first',
+                          //     context: context,
+                          //   );
+                          //   return;
+                          // }
 
                           ref
                               .read(cartItemsProvider.notifier)
