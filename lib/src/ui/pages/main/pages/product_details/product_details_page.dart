@@ -25,19 +25,27 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
     final cartItems = ref.watch(cartItemsProvider);
     final cartItemsNotifier = ref.read(cartItemsProvider.notifier);
 
-    return Scaffold(
-      body: GetBuilder<ProductDetailsController>(
-        initState: (state) {
-          Get.find<ProductDetailsController>().getProductDetails();
-        },
-        builder: (controller) {
-          if (controller.isLoading) {
-            return Center(child: CircularProgressIndicator.adaptive());
-          } else if (controller.isLoading == false &&
-              controller.productItemDetailModel == null) {
-            return const Center(child: Text('Product Details Not Found'));
-          }
-          return Column(
+    return GetBuilder<ProductDetailsController>(
+      initState: (state) {
+        Get.find<ProductDetailsController>().getProductDetails();
+      },
+      builder: (controller) {
+        if (controller.isLoading) {
+          return Scaffold(
+            body: SafeArea(
+              child: Center(child: CircularProgressIndicator.adaptive()),
+            ),
+          );
+        } else if (controller.isLoading == false &&
+            controller.productItemDetailModel == null) {
+          return Scaffold(
+            appBar: AppBar(title: Text("Product Details"), centerTitle: true),
+            body: Center(child: Text('Product Details Not Found')),
+          );
+        }
+        controller.getTotalPrice();
+        return Scaffold(
+          body: Column(
             children: [
               Expanded(
                 child: SingleChildScrollView(
@@ -361,13 +369,13 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       height: 50,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          if (cartItemsNotifier.selectedSizeId.isEmpty) {
-                            showToast(
-                              'Please select a size first',
-                              context: context,
-                            );
-                            return;
-                          }
+                          // if (cartItemsNotifier.selectedSizeId.isEmpty) {
+                          //   showToast(
+                          //     'Please select a size first',
+                          //     context: context,
+                          //   );
+                          //   return;
+                          // }
 
                           ref
                               .read(cartItemsProvider.notifier)
@@ -412,9 +420,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 ),
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

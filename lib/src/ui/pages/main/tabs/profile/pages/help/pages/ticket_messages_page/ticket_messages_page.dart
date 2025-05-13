@@ -1,9 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
+import 'dart:developer';
+
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 @RoutePage()
@@ -271,17 +270,21 @@ class TicketMessagesNotifier extends StateNotifier<TicketMessagesState> {
       );
 
       if (result != null) {
-        Uint8List? fileBytes = result.files.single.bytes;
         String? path = result.files.single.path;
         if (path != null) {
           File file = File(path);
 
-          final bytes = await file.readAsBytes();
-          String base64Image = base64Encode(bytes);
-          String base64 =
-              'data:image/${result.files.single.extension};base64,$base64Image';
+          final base64Image = await compressImageToBase64(file);
 
-          await _sendImage(base64, context, onAdd);
+          if (base64Image != null) {
+            String base64 =
+                'data:image/${result.files.single.extension};base64,$base64Image';
+
+            await _sendImage(base64, context, onAdd);
+            log("Base64 Length: ${base64Image.length}");
+          } else {
+            log("Image compression failed.");
+          }
         }
       }
     } catch (e) {

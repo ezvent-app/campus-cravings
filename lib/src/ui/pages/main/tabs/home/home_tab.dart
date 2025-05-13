@@ -56,7 +56,14 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
               ),
               margin: EdgeInsets.symmetric(horizontal: 25),
               child: TextButton(
-                onPressed: () => context.pushRoute(RidersTabRoute()),
+                onPressed: () {
+                  StorageHelper().getRiderProfilefileComplete() == true
+                      ? context.pushRoute(RidersTabRoute())
+                      : showToast(
+                        context: context,
+                        "Please register as a rider first to access this feature.",
+                      );
+                },
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),

@@ -1,11 +1,13 @@
 import 'package:campuscravings/src/src.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum TicketTabType { active, history }
 
 class TicketTabWidget extends ConsumerWidget {
   final TicketTabType type;
-  const TicketTabWidget({super.key, required this.type});
+  TicketTabWidget({super.key, required this.type});
+
+  TextEditingController subjectController = TextEditingController();
+  TextEditingController descController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,13 +41,13 @@ class TicketTabWidget extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
           physics: const BouncingScrollPhysics(),
           child: Column(
-            spacing: 8,
+            spacing: 15,
             children: List.generate(tickets.length, (index) {
               final ticket = tickets[index];
               return ProfileGroupButton(
                 options: [
                   HelpOption(
-                    label: "Ticket#${ticket.id}",
+                    label: "Ticket\n${ticket.id}",
                     onPressed: () => handleTicketRouting(ticket),
                   ),
                 ],
@@ -63,29 +65,83 @@ class TicketTabWidget extends ConsumerWidget {
             right: 24,
             child: FloatingActionButton(
               onPressed: () async {
-                try {
-                  final response = await services.postAPI(
-                    url: "/admin/tickets",
-                    map: {
-                      "subject": 'Pakistan Studies',
-                      "description": 'Need help with my assignment',
-                      "imgUrl": [],
-                    },
-                  );
-                  if (response.statusCode == 201) {
-                    final body = jsonDecode(response.body);
-                    ref.read(ticketProvider.notifier).addTicket(body['ticket']);
-                    handleTicketRouting(Ticket.fromJson(body['ticket']));
-                  }
-                } catch (e) {
-                  showToast("Failed to create ticket", context: context);
-                }
+                generateTicketDialogMethod(
+                  context,
+                  services,
+                  ref,
+                  handleTicketRouting,
+                );
               },
               backgroundColor: AppColors.primary,
               child: const Icon(Icons.add, color: AppColors.white),
             ),
           ),
       ],
+    );
+  }
+
+  Future<dynamic> generateTicketDialogMethod(
+    BuildContext context,
+    HttpAPIServices services,
+    WidgetRef ref,
+    void Function(Ticket ticket) handleTicketRouting,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Center(child: Text("Generate Ticket")),
+          titleTextStyle: Theme.of(context).textTheme.titleSmall,
+          contentPadding: EdgeInsets.all(20),
+          alignment: Alignment.center,
+          children: [
+            height(20),
+            CustomTextField(
+              controller: subjectController,
+              hintText: "Enter subject",
+            ),
+            height(20),
+            CustomTextField(
+              controller: descController,
+              hintText: "Enter description",
+            ),
+            height(20),
+            RoundedButtonWidget(
+              btnTitle: "Submit",
+              onTap: () async {
+                if (subjectController.text.isNotEmpty &&
+                    descController.text.isNotEmpty) {
+                  try {
+                    final response = await services.postAPI(
+                      url: "/admin/tickets",
+                      map: {
+                        "subject": subjectController.text,
+                        "description": descController.text,
+                        "imgUrl": [],
+                      },
+                    );
+                    if (response.statusCode == 201) {
+                      final body = jsonDecode(response.body);
+                      ref
+                          .read(ticketProvider.notifier)
+                          .addTicket(body['ticket']);
+                      handleTicketRouting(Ticket.fromJson(body['ticket']));
+                      context.maybePop();
+                    }
+                  } catch (e) {
+                    showToast("Failed to create ticket", context: context);
+                  }
+                } else {
+                  showToast(
+                    "Subject and description can't empty",
+                    context: context,
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
