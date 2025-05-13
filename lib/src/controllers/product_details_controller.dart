@@ -14,6 +14,12 @@ class ProductDetailsController extends GetxController {
   int _productQuantity = 1;
   int get productQuantity => _productQuantity;
 
+  @override
+  void onInit() {
+    super.onInit();
+    getTotalPrice();
+  }
+
   void setProductId(String productId) {
     _productId = productId;
     _productQuantity = 1;
@@ -59,7 +65,7 @@ class ProductDetailsController extends GetxController {
         selectedCustomizations.isNotEmpty
             ? selectedCustomizations
                 .map((i) => i.price)
-                .fold(0.0, (a, b) => a + b!)
+                .fold(0.0, (a, b) => a + b)
             : 0.0;
 
     double totalSingleItemPrice =

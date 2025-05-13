@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:campuscravings/src/src.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 @RoutePage()
 class RaiseTicketPage extends ConsumerStatefulWidget {
@@ -43,7 +41,6 @@ class _RaiseTicketPageState extends ConsumerState<RaiseTicketPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           title: Text(
             "Raise ticket",
             style: Theme.of(context).textTheme.titleMedium,

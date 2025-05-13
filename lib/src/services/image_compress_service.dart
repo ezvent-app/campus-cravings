@@ -17,12 +17,14 @@ Future<String?> compressImageToBase64(
     final compressedBytes = await FlutterImageCompress.compressWithFile(
       file.absolute.path,
       quality: estimatedQuality,
+      keepExif: true,
+      autoCorrectionAngle: false
     );
 
     if (compressedBytes != null) {
       return base64Encode(compressedBytes);
     } else {
-      return null; // Compression failed
+      return null;
     }
   } catch (e) {
     print('Compression error: $e');

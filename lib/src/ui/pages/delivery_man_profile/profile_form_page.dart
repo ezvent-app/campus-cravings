@@ -5,7 +5,6 @@ import 'package:campuscravings/src/controllers/user_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -191,47 +190,6 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                       );
                                     } else {
                                       log("Image compression failed.");
-                                    }
-
-                                    final originalBytes =
-                                        await file.readAsBytes();
-                                    final originalSize =
-                                        originalBytes.length; // in bytes
-                                    const targetSize = 102400; // 100KB in bytes
-
-                                    int estimatedQuality =
-                                        (targetSize / originalSize * 100)
-                                            .clamp(10, 95)
-                                            .toInt();
-
-                                    final compressResult =
-                                        await FlutterImageCompress.compressWithFile(
-                                          file.absolute.path,
-                                          quality: estimatedQuality,
-                                          rotate: 90,
-                                        );
-
-                                    log("Original size: $originalSize");
-                                    log(
-                                      "Compressed size: ${compressResult?.length ?? 0}",
-                                    );
-
-                                    if (compressResult != null) {
-                                      final base64Image = base64Encode(
-                                        compressResult,
-                                      );
-                                      ref
-                                          .read(signUpProvider.notifier)
-                                          .state = {
-                                        ...ref.read(signUpProvider),
-                                        'imgBase64':
-                                            'data:image/${result.files.single.extension};base64,$base64Image',
-                                      };
-                                      log(
-                                        "Base64 Length: ${base64Image.length}",
-                                      );
-                                    } else {
-                                      log("Compression failed.");
                                     }
                                   }
                                 }
