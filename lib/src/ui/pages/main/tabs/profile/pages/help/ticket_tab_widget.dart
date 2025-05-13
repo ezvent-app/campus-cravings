@@ -126,7 +126,7 @@ class TicketTabWidget extends ConsumerWidget {
                           .read(ticketProvider.notifier)
                           .addTicket(body['ticket']);
                       handleTicketRouting(Ticket.fromJson(body['ticket']));
-                      context.back();
+                      context.maybePop();
                     }
                   } catch (e) {
                     showToast("Failed to create ticket", context: context);
