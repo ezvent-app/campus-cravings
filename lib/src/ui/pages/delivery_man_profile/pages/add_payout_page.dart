@@ -1,3 +1,4 @@
+import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/web_view_striper.dart';
 
@@ -74,23 +75,18 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
                   isLoading: _isLoading,
                   btnTitle: locale.stripe,
                   onTap: () async {
-                    // RiderPayoutRepo repo = RiderPayoutRepo();
-                    // repo.generateOnboardingLink(riderId!);
+                    setState(() => _isLoading = true);
 
-                    setState(() {
-                      _isLoading = true;
-                    });
+                    final payout = ref.read(paymentSetupProvider);
+                    final url = payout['url'] ?? widget.url;
 
-                    if (widget.url.isNotEmpty) {
-                      openStripeView(context, widget.url);
+                    if (url != null && url.isNotEmpty) {
+                      openStripeView(context, ref, url); // Pass ref here ✅
+                    } else {
+                      showToast(context: context, "Invalid Stripe link.");
+                    }
 
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      // context.router.replaceAll([MainRoute()]);
-                    } else {}
-
-                    ref.read(paymentSetupProvider.notifier).state = {};
+                    setState(() => _isLoading = false);
                   },
                 );
               },
@@ -105,23 +101,38 @@ class _AddPayoutPageState extends ConsumerState<AddPayoutPage> {
 
 final paymentSetupProvider = StateProvider<Map<String, dynamic>>((ref) => {});
 
-void openStripeView(BuildContext context, String link) async {
-  String buildUrl() {
-    String baseUrl = link;
-    final Uri uri = Uri.parse(baseUrl);
-    return uri.toString();
-  }
+void openStripeView(BuildContext context, WidgetRef ref, String link) async {
+  String url = Uri.parse(link).toString();
+  print("Opening Stripe URL: $url");
 
-  String url = buildUrl();
-  print("URL: $url");
   String? result = await Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => StripeWebView(url)),
   );
 
-  if (result != null) {
-    print("Success! Callback URL: $result");
-  } else {
-    print("WebView closed without callback.");
+  if (result == 'back_pressed') {
+    print("User pressed back from Stripe WebView");
+
+    final riderId = StorageHelper().getRiderId();
+    if (riderId != null) {
+      showToast(context: context, "Refreshing...");
+      RiderPayoutRepo repo = RiderPayoutRepo();
+
+      final newData = await repo.generateOnboardingLink(
+        riderId,
+        'http://restaurantmanager.campuscravings.co/$riderId?verified=true',
+        'http://restaurantmanager.campuscravings.co/login',
+        context,
+      );
+
+      if (newData != null) {
+        final newUrl = newData['data']['url'];
+        // ✅ Store the new URL in the provider for the user to open later
+        ref.read(paymentSetupProvider.notifier).state = {'url': newUrl};
+        showToast(context: context, "Tap Stripe again to continue.");
+      } else {
+        showToast(context: context, "Failed to regenerate Stripe link.");
+      }
+    }
   }
 }
