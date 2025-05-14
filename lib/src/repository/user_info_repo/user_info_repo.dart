@@ -18,6 +18,7 @@ class UserInfoRepository {
         final user = UserModel.fromJson(data);
         final isRider = data['userInfo']['isDelivery'];
         StorageHelper().saveRiderProfileComplete(isRider);
+        StorageHelper().saveUserId(data['userInfo']['_id']);
 
         print('Parsed UserModel: ${user.toJson()}');
         return UserModel.fromJson(data);

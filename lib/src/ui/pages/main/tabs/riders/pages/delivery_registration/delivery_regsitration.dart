@@ -1,13 +1,14 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:campuscravings/src/constants/storageHelper.dart';
+import 'package:campuscravings/src/repository/rider_delivery_repo/rider_regsitration_repo.dart';
 import 'package:campuscravings/src/src.dart';
-import 'package:flutter/material.dart';
+import 'package:campuscravings/src/ui/widgets/web_view_striper.dart';
 
 @RoutePage()
-class DeliveryRegistrationPage extends StatelessWidget {
+class DeliveryRegistrationPage extends ConsumerWidget {
   const DeliveryRegistrationPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -44,9 +45,50 @@ class DeliveryRegistrationPage extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        context.pushRoute(StudentProfileDetailsRoute());
-                      },
+                      onPressed:
+                          () => context.pushRoute(StudentProfileDetailsRoute()),
+
+                      // () async {
+                      //   final userID = StorageHelper().getUserId();
+
+                      //   try {
+                      //     final response = await RiderRegsRepo()
+                      //         .riderRegStatusMethod(userID!, context);
+                      //     final status = response.data.status;
+                      //     final riderId = response.data.id;
+
+                      //     if (status.toLowerCase() == "pending") {
+                      //       // ❌ NO StorageHelper here
+                      //       // ✅ Fetch onboarding link directly
+                      //       RiderPayoutRepo repo = RiderPayoutRepo();
+
+                      //       final onboardingResponse = await repo
+                      //           .regenerateOnboardingLink(
+                      //             riderId,
+                      //             'http://restaurantmanager.campuscravings.co/$riderId?verified=true',
+                      //             'http://restaurantmanager.campuscravings.co/login',
+                      //             context,
+                      //           );
+
+                      //       final onboardingUrl =
+                      //           onboardingResponse?['data']['url'];
+
+                      //       if (onboardingUrl != null &&
+                      //           onboardingUrl.isNotEmpty) {
+                      //         StripeView(context, ref, onboardingUrl, riderId);
+                      //       } else if (response.message == "No Rider Found") {
+                      //         context.pushRoute(StudentProfileDetailsRoute());
+                      //       }
+                      //     } else if (response.message == "No Rider Found") {
+                      //       context.pushRoute(StudentProfileDetailsRoute());
+                      //     }
+                      //   } catch (e) {
+                      //     // showToast(
+                      //     //   context: context,
+                      //     //   "Error occurred. Please try again.",
+                      //     // );
+                      //   }
+                      // },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
                         foregroundColor: Colors.white,
@@ -72,5 +114,46 @@ class DeliveryRegistrationPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+void StripeView(
+  BuildContext context,
+  WidgetRef ref,
+  String link,
+  String id,
+) async {
+  String url = Uri.parse(link).toString();
+  print("Opening Stripe URL: $url");
+
+  String? result = await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => StripeWebView(url)),
+  );
+
+  if (result == 'back_pressed') {
+    print("User pressed back from Stripe WebView");
+
+    final riderId = id;
+    if (riderId != null) {
+      showToast(context: context, "Refreshing...");
+      RiderPayoutRepo repo = RiderPayoutRepo();
+
+      final newData = await repo.regenerateOnboardingLink(
+        riderId,
+        'http://restaurantmanager.campuscravings.co/$riderId?verified=true',
+        'http://restaurantmanager.campuscravings.co/login',
+        context,
+      );
+
+      if (newData != null) {
+        final newUrl = newData['data']['url'];
+        // ✅ Store the new URL in the provider for the user to open later
+        ref.read(paymentSetupProvider.notifier).state = {'url': newUrl};
+        showToast(context: context, "Tap Stripe again to continue.");
+      } else {
+        showToast(context: context, "Failed to regenerate Stripe link.");
+      }
+    }
   }
 }

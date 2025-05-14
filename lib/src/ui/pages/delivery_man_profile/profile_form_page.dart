@@ -428,7 +428,8 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                               "phoneNumber":
                                                   signUpNotifer['phoneNumber'],
                                               "isCustomer": true,
-                                              "isDelivery": false,
+                                              "isDelivery":
+                                                  isActive, //for webhook later make this false
                                               "email": email,
                                               "imgUrl":
                                                   signUpNotifer['imgBase64'],
