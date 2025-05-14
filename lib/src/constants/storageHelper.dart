@@ -34,9 +34,12 @@ class StorageHelper {
   }
 
   void clear() {
-    prefs.erase(); // Clears all keys from default storage
-    tempBox.erase(); // Clears all keys from temporary storage (if used)
-    print("Storage cleared on logout.");
+    prefs.erase();
+    tempBox.erase();
+    GetStorage().erase();
+    GetStorage('TempData').erase();
+
+    print("✅ All persistent storage cleared successfully on logout.");
   }
 
   //create a methods to save the data below
