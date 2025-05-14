@@ -368,7 +368,11 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       height: 50,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          if (cartItemsNotifier.selectedSizeId.isEmpty) {
+                          if (controller
+                                  .productItemDetailModel!
+                                  .sizes
+                                  .isNotEmpty &&
+                              cartItemsNotifier.selectedSizeId.isEmpty) {
                             showToast(
                               'Please select a size first',
                               context: context,
