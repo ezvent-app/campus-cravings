@@ -7,14 +7,14 @@ class CartItem {
   final int quantity;
   final String image;
   final List<CustomizationModel> customization;
-  final String size;
+  final String? size;
   final double sizePrice;
   final List<double> restCoordinates;
 
   CartItem({
     required this.restCoordinates,
     required this.sizePrice,
-    required this.size,
+    this.size,
     required this.image,
     required this.id,
     required this.name,
@@ -44,11 +44,16 @@ class CartItem {
 
 extension CartItemToJson on CartItem {
   Map<String, dynamic> toOrderItemJson() {
-    return {
+    final Map<String, dynamic> data = {
       "item_id": id,
       "quantity": quantity,
       "customizations": customization.map((e) => e.id).toList(),
-      "size": size,
     };
+
+    if (size != null && size!.isNotEmpty) {
+      data["size"] = size;
+    }
+
+    return data;
   }
 }

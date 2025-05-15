@@ -36,6 +36,29 @@ class RiderPayoutRepo {
     }
   }
 
+  Future<Map<String, dynamic>?> regenerateOnboardingLink(
+    String id,
+    String successUrl,
+    String failureUrl,
+    BuildContext context,
+  ) async {
+    try {
+      final response = await services.getAPI(
+        '/payments/onboard/$id?successUrl=$successUrl&failureUrl=$failureUrl',
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data;
+      } else {
+        throw Exception('Failed to generate onboarding link');
+      }
+    } catch (e) {
+      Logger().e('Error while generating onboarding link: $e');
+      return null;
+    }
+  }
+
   Future<dynamic> changeUserStatus(String id) async {
     try {
       final response = await services.getAPI(

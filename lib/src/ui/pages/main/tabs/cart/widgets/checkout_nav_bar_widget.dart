@@ -1,22 +1,32 @@
 import 'package:campuscravings/src/src.dart';
 
-class CheckoutNavBarWidget extends StatelessWidget {
-  const CheckoutNavBarWidget({super.key, required this.cartItems});
+class CheckoutNavBarWidget extends ConsumerWidget {
+  const CheckoutNavBarWidget({super.key});
 
-  final List cartItems;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartItems = ref.watch(cartItemsProvider);
+
+    final subtotal = cartItems
+        .map(
+          (item) =>
+              (item.price +
+                  item.sizePrice +
+                  item.customization.fold(0.0, (sum, c) => sum + c.price)) *
+              item.quantity,
+        )
+        .fold(0.0, (a, b) => a + b);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Column(
-          mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Sub Total", style: Theme.of(context).textTheme.bodyLarge),
             Text(
-              "\$${cartItems.map((item) => item.price + item.sizePrice + item.customization.fold(0.0, (sum, customItem) => sum + customItem.price) * item.quantity).fold(0.0, (a, b) => a + b).toStringAsFixed(2)}",
+              "\$${subtotal.toStringAsFixed(2)}",
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ],

@@ -67,9 +67,7 @@ class PlaceOrderRepository {
 
   Future<List<double>> fetchRiderLocation(String orderId) async {
     try {
-      final response = await _services.getAPI(
-        '/rider/riderLocation/$orderId',
-      );
+      final response = await _services.getAPI('/rider/riderLocation/$orderId');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);

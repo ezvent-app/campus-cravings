@@ -100,13 +100,25 @@ class StripeWebViewState extends State<StripeWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Setup Stripe Account'),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, 'back_pressed');
+        return false;
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: const Text('Setup Stripe Account'),
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context, 'back_pressed');
+            },
+          ),
+        ),
+        body: WebViewWidget(controller: controller),
       ),
-      body: WebViewWidget(controller: controller),
     );
   }
 }
