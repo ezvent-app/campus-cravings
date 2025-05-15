@@ -23,6 +23,8 @@ class DeliveryOrdersTabWidget extends ConsumerStatefulWidget {
 
 class _ConsumerDeliveryOrdersTabWidgetState
     extends ConsumerState<DeliveryOrdersTabWidget> {
+  bool _isLoading = false;
+  bool _isAccepting = false;
   late Timer timer;
   Timer? _orderCycleTimer;
   bool _isMounted = true;
@@ -275,7 +277,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
             max(riderLocation.longitude, customerLocation.longitude),
           ),
         );
-        mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+        mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 20));
       } else {
         mapController.animateCamera(
           CameraUpdate.newLatLngZoom(riderLocation, 10),
@@ -435,242 +437,262 @@ class _ConsumerDeliveryOrdersTabWidgetState
       context: context,
       isDismissible: false,
       builder: (context) {
-        return SizedBox(
-          height: 350,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setStateDialog) {
+            return SizedBox(
+              height: 350,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '\$${order.price.toStringAsFixed(2)}',
-                          style: Theme.of(context).textTheme.titleSmall,
+                        Row(
+                          children: [
+                            Text(
+                              '\$${order.price.toStringAsFixed(2)}',
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                            width(10),
+                            Text(
+                              order.guaranteedLabel,
+                              style: Theme.of(context).textTheme.bodyMedium!
+                                  .copyWith(color: AppColors.black),
+                            ),
+                          ],
                         ),
-                        width(10),
-                        Text(
-                          order.guaranteedLabel,
-                          style: Theme.of(context).textTheme.bodyMedium!
-                              .copyWith(color: AppColors.black),
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final countdown =
+                                ref.watch(riderProvider)['countdown'];
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 50,
+                                  child: CircularProgressIndicator(
+                                    value: countdown / 10,
+                                    strokeWidth: 10,
+                                    backgroundColor: Colors.grey.shade300,
+                                    color: AppColors.accent,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ],
                     ),
-                    Consumer(
-                      builder: (context, ref, child) {
-                        final countdown = ref.watch(riderProvider)['countdown'];
-                        return Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                              height: 50,
-                              width: 50,
-                              child: CircularProgressIndicator(
-                                value: countdown / 10,
-                                strokeWidth: 10,
-                                backgroundColor: Colors.grey.shade300,
-                                color: AppColors.accent,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
+                    Text(
+                      '${order.distance} mi',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
                     ),
-                  ],
-                ),
-                Text(
-                  '${order.distance} mi',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
-                ),
-                Text(
-                  order.deliveryTime,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
-                ),
-                Divider(color: AppColors.dividerColor),
-                Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Text(
+                      order.deliveryTime,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
+                    ),
+                    Divider(color: AppColors.dividerColor),
+                    Column(
                       children: [
-                        Column(
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Card(
-                              margin: EdgeInsets.zero,
-                              color: AppColors.buttonGradient1,
-                              shape: StadiumBorder(),
-                              child: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.white,
-                              ),
+                            Column(
+                              children: [
+                                Card(
+                                  margin: EdgeInsets.zero,
+                                  color: AppColors.buttonGradient1,
+                                  shape: StadiumBorder(),
+                                  child: Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                height(5),
+                                _buildDottedLine(),
+                                height(5),
+                                Icon(
+                                  Icons.location_pin,
+                                  color: Colors.red,
+                                  size: 30,
+                                ),
+                              ],
                             ),
-                            height(5),
-                            _buildDottedLine(),
-                            height(5),
-                            Icon(
-                              Icons.location_pin,
-                              color: Colors.red,
-                              size: 30,
+                            width(10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Pickup',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(color: AppColors.black),
+                                  ),
+                                  Text(
+                                    order.pickupItem,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  height(48),
+                                  Text(
+                                    order.dropoffLabel,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(color: AppColors.black),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        width(10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Pickup',
-                                style: Theme.of(context).textTheme.bodyMedium!
-                                    .copyWith(color: AppColors.black),
-                              ),
-                              Text(
-                                order.pickupItem,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              height(48),
-                              Text(
-                                order.dropoffLabel,
-                                style: Theme.of(context).textTheme.bodyMedium!
-                                    .copyWith(color: AppColors.black),
-                              ),
-                            ],
+                      ],
+                    ),
+                    Divider(color: AppColors.dividerColor),
+                    height(10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: size.width * .4,
+                          child: Consumer(
+                            builder: (context, ref, child) {
+                              return RoundedButtonWidget(
+                                isLoading: _isAccepting,
+                                btnTitle: "Accept",
+                                onTap: () async {
+                                  setStateDialog(() {
+                                    _isLoading = true;
+                                  });
+
+                                  timer.cancel(); // pause timer
+
+                                  final isAccept = ref.read(riderProvider);
+                                  ref.read(riderProvider.notifier).state = {
+                                    ...isAccept,
+                                    'isAccept': true,
+                                  };
+
+                                  final body = {
+                                    "estimated_time":
+                                        order.deliveryDurationInMinutes,
+                                    "orderId": order.id,
+                                  };
+
+                                  try {
+                                    final riderDeliveryResponse = await ref
+                                        .read(
+                                          acceptedByRiderProvider(body).future,
+                                        );
+
+                                    if (riderDeliveryResponse == null) {
+                                      Logger().e("Failed to accept the order.");
+                                      return;
+                                    }
+
+                                    final customerCoords =
+                                        riderDeliveryResponse
+                                            .order
+                                            ?.addresses
+                                            ?.coordinates
+                                            ?.coordinates;
+
+                                    if (customerCoords == null ||
+                                        customerCoords.length < 2) {
+                                      Logger().e(
+                                        "Invalid customer coordinates",
+                                      );
+                                      return;
+                                    }
+
+                                    setState(() {
+                                      _remainingOrders.clear();
+                                    });
+
+                                    final newCustomerLocation = LatLng(
+                                      customerCoords[0],
+                                      customerCoords[1],
+                                    );
+
+                                    await _initializeMap(newCustomerLocation);
+
+                                    ref
+                                        .read(riderDeliveryProvider.notifier)
+                                        .state = riderDeliveryResponse;
+
+                                    _orderCycleTimer?.cancel();
+
+                                    Navigator.pop(context);
+                                  } catch (e) {
+                                    Logger().e("Error accepting order: $e");
+                                  } finally {
+                                    setStateDialog(() {
+                                      _isLoading = false;
+                                    });
+                                  }
+                                },
+                              );
+                            },
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(color: AppColors.dividerColor),
-                height(10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: size.width * .4,
-                      child: Consumer(
-                        builder: (context, ref, child) {
-                          return RoundedButtonWidget(
-                            btnTitle: "Accept",
-                            onTap: () async {
+
+                        width(10),
+                        SizedBox(
+                          width: size.width * .4,
+                          child: OutlinedButton(
+                            onPressed: () {
                               final isAccept = ref.read(riderProvider);
+
                               ref.read(riderProvider.notifier).state = {
                                 ...isAccept,
-                                'isAccept': true,
+                                'isAccept': false,
                               };
-
-                              final body = {
-                                "estimated_time":
-                                    order.deliveryDurationInMinutes,
-                                "orderId": order.id,
-                              };
-
-                              try {
-                                final riderDeliveryResponse = await ref.read(
-                                  acceptedByRiderProvider(body).future,
-                                );
-
-                                if (riderDeliveryResponse == null) {
-                                  Logger().e("Failed to accept the order.");
-                                  return;
-                                }
-
-                                dev.log(
-                                  "Order Accepted: ${riderDeliveryResponse.order?.sId}",
-                                );
-
-                                final customerCoords =
-                                    riderDeliveryResponse
-                                        .order
-                                        ?.addresses
-                                        ?.coordinates
-                                        ?.coordinates;
-
-                                if (customerCoords == null ||
-                                    customerCoords.length < 2) {
-                                  Logger().e("Invalid customer coordinates");
-                                  return;
-                                }
-
-                                setState(() {
-                                  _remainingOrders.clear();
-                                });
-
-                                final newCustomerLocation = LatLng(
-                                  customerCoords[0],
-                                  customerCoords[1],
-                                );
-                                dev.log(
-                                  "CUSTOMER LOCATION $newCustomerLocation",
-                                );
-                                await _initializeMap(newCustomerLocation);
-
-                                ref.read(riderDeliveryProvider.notifier).state =
-                                    riderDeliveryResponse;
-                                timer.cancel();
-                                _orderCycleTimer?.cancel();
-
-                                Navigator.pop(context);
-                              } catch (e) {
-                                Logger().e("Error accepting order: $e");
+                              Navigator.pop(context);
+                              // Remove the current order from remaining orders
+                              setState(() {
+                                _remainingOrders.removeAt(0);
+                              });
+                              // Continue cycling if there are more orders
+                              if (_remainingOrders.isNotEmpty) {
+                                _cycleOrders(_remainingOrders);
                               }
                             },
-                          );
-                        },
-                      ),
-                    ),
-                    width(10),
-                    SizedBox(
-                      width: size.width * .4,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          final isAccept = ref.read(riderProvider);
-
-                          ref.read(riderProvider.notifier).state = {
-                            ...isAccept,
-                            'isAccept': false,
-                          };
-                          Navigator.pop(context);
-                          // Remove the current order from remaining orders
-                          setState(() {
-                            _remainingOrders.removeAt(0);
-                          });
-                          // Continue cycling if there are more orders
-                          if (_remainingOrders.isNotEmpty) {
-                            _cycleOrders(_remainingOrders);
-                          }
-                        },
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          side: BorderSide(color: Colors.black),
-                          padding: EdgeInsets.symmetric(vertical: 11),
-                        ),
-                        child: Text(
-                          'Decline',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium!.copyWith(
-                            color: AppColors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
+                            style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              side: BorderSide(color: Colors.black),
+                              padding: EdgeInsets.symmetric(vertical: 11),
+                            ),
+                            child: Text(
+                              'Decline',
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium!.copyWith(
+                                color: AppColors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );
