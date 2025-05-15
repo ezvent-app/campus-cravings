@@ -182,7 +182,7 @@ class OrdersDetailsPage extends StatelessWidget {
                                                     ).textTheme.titleSmall,
                                               ),
                                               Text(
-                                                "${sizeNames![index]} ",
+                                                sizeNames![index] ?? '',
                                                 style:
                                                     Theme.of(
                                                       context,
@@ -190,6 +190,25 @@ class OrdersDetailsPage extends StatelessWidget {
                                               ),
                                             ],
                                           ),
+
+                                          // Row(
+                                          //   children: [
+                                          //     Text(
+                                          //       "Size: ",
+                                          //       style:
+                                          //           Theme.of(
+                                          //             context,
+                                          //           ).textTheme.titleSmall,
+                                          //     ),
+                                          //     Text(
+                                          //       "${sizeNames![index]} ",
+                                          //       style:
+                                          //           Theme.of(
+                                          //             context,
+                                          //           ).textTheme.bodySmall,
+                                          //     ),
+                                          //   ],
+                                          // ),
                                         ],
                                       ),
                                     ],
