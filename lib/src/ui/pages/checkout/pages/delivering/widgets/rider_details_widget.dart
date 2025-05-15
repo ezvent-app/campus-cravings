@@ -21,6 +21,7 @@ class RiderApiService {
 
 // Rider details model
 class RiderDetails {
+  final String id;
   final String name;
   final String profileImageUrl;
   final String rating;
@@ -33,6 +34,7 @@ class RiderDetails {
   final String phoneNumber;
 
   RiderDetails({
+    required this.id,
     required this.name,
     required this.profileImageUrl,
     required this.rating,
@@ -47,6 +49,7 @@ class RiderDetails {
 
   factory RiderDetails.fromJson(Map<String, dynamic> json) {
     return RiderDetails(
+      id: json["_id"],
       name: json['user']['fullName'] as String,
       profileImageUrl: json['user']['imgUrl'] as String,
       rating: (json['rating']['average']).toString(),
@@ -85,9 +88,9 @@ class RiderInformationWidget extends ConsumerStatefulWidget {
 
   const RiderInformationWidget({
     required this.orderReviewSheetMethod,
-    Key? key,
+    super.key,
     required this.orderId,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<RiderInformationWidget> createState() =>

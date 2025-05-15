@@ -354,13 +354,15 @@ class DeliveryTabWidget extends ConsumerWidget {
                     final distance = _calculateDistanceInMiles(
                       customerLatLng,
                       LatLng(
-                        cartItems.first.restCoordinates[0],
-                        cartItems.first.restCoordinates[1],
+                        cartItems.isNotEmpty &&
+                                cartItems.first.restCoordinates.length == 2
+                            ? cartItems.first.restCoordinates[0]
+                            : 0.0,
+                        cartItems.isNotEmpty &&
+                                cartItems.first.restCoordinates.length == 2
+                            ? cartItems.first.restCoordinates[1]
+                            : 0.0,
                       ),
-                    );
-
-                    log(
-                      "CUSTOMER ${customerLatLng.toString()} RESTUARANT ${cartItems.first.restCoordinates}",
                     );
 
                     return FutureBuilder(

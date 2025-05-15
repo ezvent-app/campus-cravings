@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:campuscravings/src/src.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -65,13 +66,39 @@ class PlaceOrderRepository {
     }
   }
 
-  Future<List<double>> fetchRiderLocation(String orderId) async {
+  Future<String> fetchRiderID(String orderId) async {
     try {
-      final response = await _services.getAPI('/rider/riderLocation/$orderId');
+      final res = await _services.getAPI('/admin/order/$orderId');
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body);
+        log('Order Response: $data');
+
+        final orderId = data['order']['_id'];
+        log('Order ID: $orderId');
+
+        return orderId;
+      } else {
+        return Future.error(
+          'Failed to load data. Status code: ${res.statusCode}',
+        );
+      }
+    } catch (e) {
+      if (e is TimeoutException) {
+        return Future.error('Request timed out. Please try again.');
+      } else {
+        print(e.toString());
+        return Future.error('Something went wrong');
+      }
+    }
+  }
+
+  Future<List<double>> fetchRiderLocation(String riderId) async {
+    try {
+      final response = await _services.getAPI('/rider/riderLocation/$riderId');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        print('Response: $data');
+        log('Rider Response: $data');
 
         final coordinates = data['data']['coordinates'];
 

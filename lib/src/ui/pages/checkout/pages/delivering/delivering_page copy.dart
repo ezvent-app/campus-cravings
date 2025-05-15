@@ -130,7 +130,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   Map<String, Marker> markers = {};
   Set<Polyline> polylines = {};
 
-  LatLng? riderLocation;
+  LatLng riderLocation = const LatLng(40.7685, 74.9822); // Man Hattan
   LatLng customerLocation = const LatLng(40.7128, 74.0060); // New York
 
   getCustomerCurrentLocation() async {
@@ -142,7 +142,68 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
 
   LatLng? _lastRiderLocation;
   LatLng? _lastCustomerLocation;
-  bool _mapInitialized = false;
+
+  Future<void> _customerinitializeMap() async {
+    if (step != 3) return;
+
+    try {
+      final riderIcon = await CustomMapMarkerBuilder.fromWidget(
+        context: context,
+        marker: RiderMarkerWidget(),
+      );
+
+      final customerIcon = await CustomMapMarkerBuilder.fromWidget(
+        context: context,
+        marker: CustomerMarkerWidget(),
+      );
+
+      // Add markers
+      setState(() {
+        markers['rider'] = Marker(
+          markerId: MarkerId('rider'),
+          position: riderLocation,
+          icon: riderIcon,
+          infoWindow: InfoWindow(title: 'Rider'),
+        );
+
+        markers['customer'] = Marker(
+          markerId: MarkerId('customer'),
+          position: customerLocation,
+          icon: customerIcon,
+          infoWindow: InfoWindow(title: 'Customer'),
+        );
+      });
+
+      // Get route between points
+
+      // Zoom to fit both locations
+      final bounds = LatLngBounds(
+        southwest: LatLng(
+          riderLocation.latitude < customerLocation.latitude
+              ? riderLocation.latitude
+              : customerLocation.latitude,
+          riderLocation.longitude < customerLocation.longitude
+              ? riderLocation.longitude
+              : customerLocation.longitude,
+        ),
+        northeast: LatLng(
+          riderLocation.latitude > customerLocation.latitude
+              ? riderLocation.latitude
+              : customerLocation.latitude,
+          riderLocation.longitude > customerLocation.longitude
+              ? riderLocation.longitude
+              : customerLocation.longitude,
+        ),
+      );
+
+      mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+    } catch (e) {
+      print('....Error initializing map: $e');
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+    }
+  }
 
   void startRiderLocationUpdates() {
     _riderLocationTimer = Timer.periodic(Duration(seconds: 15), (timer) async {
@@ -153,16 +214,9 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
           final newLatLng = await _repository.fetchRiderLocation(riderId);
           dev.log("Rider location $newLatLng");
           final riderLatLng = LatLng(newLatLng[1], newLatLng[0]);
-          final isFirstLocation = riderLocation == null;
-
           setState(() {
             riderLocation = riderLatLng;
           });
-
-          if (isFirstLocation && !_mapInitialized) {
-            await _initializeMap();
-            _mapInitialized = true;
-          }
           updateMarkerPosition('rider', riderLatLng);
         } else {
           final riderDetails = await RiderApiService().fetchRiderDetails(
@@ -207,7 +261,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
 
     final updatedMarker = marker.copyWith(
       positionParam: newLatLng,
-      rotationParam: _getBearingBetweenTwoPoints(oldLatLng!, newLatLng),
+      rotationParam: _getBearingBetweenTwoPoints(oldLatLng, newLatLng),
     );
 
     setState(() {
@@ -220,28 +274,25 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   }
 
   Future<void> _initializeMap() async {
-    if (step != 3) return;
-
     try {
       setState(() {
         markers.clear();
         polylines.clear();
       });
-      if (riderLocation != null) {
-        final riderIcon = await CustomMapMarkerBuilder.fromWidget(
-          context: context,
-          marker: RiderMarkerWidget(),
-        );
 
-        setState(() {
-          markers['rider'] = Marker(
-            markerId: MarkerId('rider'),
-            position: riderLocation!,
-            icon: riderIcon,
-            infoWindow: InfoWindow(title: 'Rider'),
-          );
-        });
-      }
+      final riderIcon = await CustomMapMarkerBuilder.fromWidget(
+        context: context,
+        marker: RiderMarkerWidget(),
+      );
+
+      setState(() {
+        markers['rider'] = Marker(
+          markerId: MarkerId('rider'),
+          position: riderLocation,
+          icon: riderIcon,
+          infoWindow: InfoWindow(title: 'Rider'),
+        );
+      });
 
       final customerIcon = await CustomMapMarkerBuilder.fromWidget(
         context: context,
@@ -262,15 +313,15 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
       // Zoom to fit both locations
       final bounds = LatLngBounds(
         southwest: LatLng(
-          min(riderLocation!.latitude, customerLocation.latitude),
-          min(riderLocation!.longitude, customerLocation.longitude),
+          min(riderLocation.latitude, customerLocation.latitude),
+          min(riderLocation.longitude, customerLocation.longitude),
         ),
         northeast: LatLng(
-          max(riderLocation!.latitude, customerLocation.latitude),
-          max(riderLocation!.longitude, customerLocation.longitude),
+          max(riderLocation.latitude, customerLocation.latitude),
+          max(riderLocation.longitude, customerLocation.longitude),
         ),
       );
-      mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
+      mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
     } catch (e) {
       print('Error initializing map: $e');
       ScaffoldMessenger.of(
@@ -286,10 +337,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         googleApiKey: apiKey,
         request: PolylineRequest(
-          origin: PointLatLng(
-            riderLocation!.latitude,
-            riderLocation!.longitude,
-          ),
+          origin: PointLatLng(riderLocation.latitude, riderLocation.longitude),
           destination: PointLatLng(
             customerLocation.latitude,
             customerLocation.longitude,
@@ -411,7 +459,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                   : Expanded(
                     child: GoogleMap(
                       initialCameraPosition: CameraPosition(
-                        target: riderLocation ?? customerLocation,
+                        target: riderLocation,
                         zoom: 12.0,
                       ),
 
@@ -423,10 +471,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                         mapController = controller;
                         WidgetsBinding.instance.addPostFrameCallback((_) async {
                           await Future.delayed(Duration(seconds: 1));
-                          if (!_mapInitialized) {
-                            await _initializeMap();
-                            _mapInitialized = true;
-                          }
+                          await _initializeMap();
                         });
                       },
                       myLocationEnabled: false,
