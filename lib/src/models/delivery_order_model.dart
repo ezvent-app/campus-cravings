@@ -33,8 +33,7 @@ class DeliveryOrder {
     double price =
         (orderData['total_price'] is int
             ? orderData['total_price'].toDouble()
-            : orderData['total_price']) /
-        100;
+            : orderData['total_price']);
 
     final restaurantCoords =
         restaurantData['restaurantCoords'] as List<dynamic>;

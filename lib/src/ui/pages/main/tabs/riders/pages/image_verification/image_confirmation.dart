@@ -112,20 +112,16 @@ class _ConsumerImageConfirmationPageState
                                         RiderDelvieryRepo repo =
                                             RiderDelvieryRepo();
                                         final response = await repo
-                                            .orderAcceptedByRider(
-                                              riderOrderId!,
-                                              {
-                                                "image_url": base64Image,
-                                                "status": "delivered",
-                                              },
-                                            );
+                                            .orderDeliverByRider({
+                                              "imageUrl": base64Image,
+                                              "orderId": riderOrderId,
+                                            });
 
                                         setStateDialog(() {
                                           _isLoading = false;
                                         });
 
-                                        if (response.message ==
-                                            'Order updated successfully') {
+                                        if (response.status == 'delivered') {
                                           final isAccept = ref.read(
                                             riderProvider,
                                           );
