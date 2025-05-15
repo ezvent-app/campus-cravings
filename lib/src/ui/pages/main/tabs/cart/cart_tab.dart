@@ -108,8 +108,7 @@ class CartTabPage extends ConsumerWidget {
                 }),
               ),
             height(40),
-            if (filteredCartItems.isNotEmpty)
-              CheckoutNavBarWidget(cartItems: filteredCartItems),
+            if (filteredCartItems.isNotEmpty) const CheckoutNavBarWidget(),
           ],
         ),
       ),

@@ -275,7 +275,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
             max(riderLocation.longitude, customerLocation.longitude),
           ),
         );
-        mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
+        mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
       } else {
         mapController.animateCamera(
           CameraUpdate.newLatLngZoom(riderLocation, 10),
@@ -582,7 +582,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                   return;
                                 }
 
-                                Logger().i(
+                                dev.log(
                                   "Order Accepted: ${riderDeliveryResponse.order?.sId}",
                                 );
 
@@ -604,8 +604,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
                                 });
 
                                 final newCustomerLocation = LatLng(
-                                  customerCoords[1],
                                   customerCoords[0],
+                                  customerCoords[1],
                                 );
                                 dev.log(
                                   "CUSTOMER LOCATION $newCustomerLocation",
