@@ -131,7 +131,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   Set<Polyline> polylines = {};
 
   LatLng? riderLocation;
-  LatLng customerLocation = const LatLng(40.7128, 74.0060); // New York
+  LatLng customerLocation = const LatLng(40.7128, -74.0060); // New York
 
   getCustomerCurrentLocation() async {
     final Position position = await Geolocator.getCurrentPosition();
@@ -152,16 +152,15 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
         if (riderId.isNotEmpty) {
           final newLatLng = await _repository.fetchRiderLocation(riderId);
           dev.log("Rider location $newLatLng");
-          final riderLatLng = LatLng(newLatLng[1], newLatLng[0]);
-          final isFirstLocation = riderLocation == null;
+          dev.log("customer location $customerLocation");
 
+          final riderLatLng = LatLng(newLatLng[1], newLatLng[0]);
           setState(() {
             riderLocation = riderLatLng;
           });
-
-          if (isFirstLocation && !_mapInitialized) {
-            await _initializeMap();
+          if (!_mapInitialized && riderLocation != null) {
             _mapInitialized = true;
+            await _initializeMap();
           }
           updateMarkerPosition('rider', riderLatLng);
         } else {
@@ -195,6 +194,10 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   }
 
   void updateMarkerPosition(String id, LatLng newLatLng) {
+    if (!markers.containsKey(id)) {
+      return;
+    }
+
     final oldLatLng =
         id == 'rider'
             ? _lastRiderLocation ?? riderLocation
@@ -220,19 +223,19 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
   }
 
   Future<void> _initializeMap() async {
-    if (step != 3) return;
+    // if (step != 3) return;
 
     try {
       setState(() {
-        markers.clear();
+        markers.clear(); // ✅ Clear first
         polylines.clear();
       });
+
       if (riderLocation != null) {
         final riderIcon = await CustomMapMarkerBuilder.fromWidget(
           context: context,
           marker: RiderMarkerWidget(),
         );
-
         setState(() {
           markers['rider'] = Marker(
             markerId: MarkerId('rider'),
@@ -247,7 +250,6 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
         context: context,
         marker: CustomerMarkerWidget(),
       );
-
       setState(() {
         markers['customer'] = Marker(
           markerId: MarkerId('customer'),
@@ -255,11 +257,14 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
           icon: customerIcon,
           infoWindow: InfoWindow(title: 'Customer'),
         );
+        dev.log(
+          "Customer marker added at: ${customerLocation.latitude}, ${customerLocation.longitude}",
+        );
+        dev.log("Customer marker exists: ${markers.containsKey('customer')}");
       });
 
       await _getRouteBetweenPoints(customerLocation);
 
-      // Zoom to fit both locations
       final bounds = LatLngBounds(
         southwest: LatLng(
           min(riderLocation!.latitude, customerLocation.latitude),
@@ -270,7 +275,8 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
           max(riderLocation!.longitude, customerLocation.longitude),
         ),
       );
-      mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
+
+      mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
     } catch (e) {
       print('Error initializing map: $e');
       ScaffoldMessenger.of(
@@ -348,93 +354,93 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
       ),
       body: Stack(
         children: [
-          Column(
-            children: [
-              height(10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      messages[step],
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    height(5),
-                    Row(
-                      children: [
-                        Text(
-                          subMessages[step] +
-                              ((step == 1 || step == 3)
-                                  ? ref.watch(
-                                        deliveringProvider,
-                                      )['estimated_time'] +
-                                      " minutes"
-                                  : ""),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                    Consumer(
-                      builder: (context, ref, child) {
-                        return Row(
-                          children: List.generate(5, (index) {
-                            return Expanded(
-                              child: Container(
-                                height: 4,
-                                margin: EdgeInsets.only(
-                                  right: index == 4 ? 0 : 9,
-                                  top: 12,
-                                  bottom: 12,
+          Positioned.fill(
+            child: Column(
+              children: [
+                height(10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        messages[step],
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      height(5),
+                      Row(
+                        children: [
+                          Text(
+                            subMessages[step] +
+                                ((step == 1 || step == 3)
+                                    ? ref.watch(
+                                          deliveringProvider,
+                                        )['estimated_time'] +
+                                        " minutes"
+                                    : ""),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          return Row(
+                            children: List.generate(5, (index) {
+                              return Expanded(
+                                child: Container(
+                                  height: 4,
+                                  margin: EdgeInsets.only(
+                                    right: index == 4 ? 0 : 9,
+                                    top: 12,
+                                    bottom: 12,
+                                  ),
+                                  color: Color(
+                                    index < step ? 0xff0F984A : 0xffE5E1E5,
+                                  ),
                                 ),
-                                color: Color(
-                                  index < step ? 0xff0F984A : 0xffE5E1E5,
-                                ),
-                              ),
-                            );
-                          }),
-                        );
-                      },
-                    ),
-                  ],
+                              );
+                            }),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-
-              step == 0
-                  ? Container(
+                if (step == 0)
+                  Container(
                     width: double.infinity,
                     height: 300,
                     padding: EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(color: Colors.grey.shade300),
                     child: PngAsset("prepare", width: 237, height: 287),
                   )
-                  : Expanded(
+                else
+                  Expanded(
                     child: GoogleMap(
                       initialCameraPosition: CameraPosition(
                         target: riderLocation ?? customerLocation,
-                        zoom: 12.0,
+                        zoom: 10.0,
                       ),
-
                       indoorViewEnabled: true,
                       trafficEnabled: true,
                       markers: markers.values.toSet(),
                       polylines: polylines,
-                      onMapCreated: (controller) {
+                      onMapCreated: (controller) async {
                         mapController = controller;
-                        WidgetsBinding.instance.addPostFrameCallback((_) async {
-                          await Future.delayed(Duration(seconds: 1));
-                          if (!_mapInitialized) {
-                            await _initializeMap();
-                            _mapInitialized = true;
-                          }
-                        });
+                        if (riderLocation != null && !_mapInitialized) {
+                          _mapInitialized = true;
+                          await _initializeMap();
+                        }
+                        setState(() {});
                       },
                       myLocationEnabled: false,
                       zoomControlsEnabled: true,
                     ),
                   ),
-            ],
+              ],
+            ),
           ),
+
           AnimatedDeliveryDetailsWrapper(
             step: step,
             orderId: widget.id!,
