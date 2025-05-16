@@ -415,7 +415,8 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                     child: PngAsset("prepare", width: 237, height: 287),
                   )
                 else
-                  Expanded(
+                  SizedBox(
+                    height: 300,
                     child: GoogleMap(
                       initialCameraPosition: CameraPosition(
                         target: riderLocation ?? customerLocation,

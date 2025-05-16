@@ -45,7 +45,7 @@ class _AddressFormPageState extends ConsumerState<AddressFormPage> {
                         ),
                         const Spacer(),
                         Align(
-                          alignment: Alignment.centerRight,
+                          alignment: Alignment.bottomRight,
                           child: Container(
                             margin: const EdgeInsets.only(
                               bottom: 18,

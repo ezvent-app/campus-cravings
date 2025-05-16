@@ -508,7 +508,7 @@ class DeliveryTabWidget extends ConsumerWidget {
   Future<dynamic> orderTipSheetMethod(BuildContext context) {
     List tipsList = [1, 5, 10, 15];
     final locale = AppLocalizations.of(context)!;
-
+    TextEditingController controller = TextEditingController();
     return showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -602,9 +602,11 @@ class DeliveryTabWidget extends ConsumerWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     return CustomTextField(
+                      controller: controller,
                       label: 'Enter tip',
                       hintText: '\$2',
                       textInputType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
                       onSubmitted:
                           (value) =>
                               ref.read(selectedTipProvider.notifier).state =
@@ -613,9 +615,17 @@ class DeliveryTabWidget extends ConsumerWidget {
                   },
                 ),
                 height(30),
-                RoundedButtonWidget(
-                  btnTitle: locale.confirm,
-                  onTap: () => Navigator.pop(context),
+                Consumer(
+                  builder: (context, ref, child) {
+                    return RoundedButtonWidget(
+                      btnTitle: locale.confirm,
+                      onTap: () {
+                        ref.read(selectedTipProvider.notifier).state =
+                            int.tryParse(controller.text)!;
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
                 ),
               ],
             ),

@@ -41,7 +41,7 @@ class _CheckOutAddNewAddressPageState
     double topPosition = hight * 0.35;
     double leftPosition = wdth * 0.99;
     double buttonWidth = wdth * 0.8;
-    double bottomPosition = hight * 0.6;
+    double bottomPosition = hight * 0.4;
     double adjustedLeftPosition = leftPosition - buttonWidth / 5;
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
@@ -89,7 +89,6 @@ class _CheckOutAddNewAddressPageState
           ),
           Positioned(
             bottom: bottomPosition,
-            top: topPosition,
             left: adjustedLeftPosition,
             right: 20,
             child: SizedBox(
