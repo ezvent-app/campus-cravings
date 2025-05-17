@@ -403,7 +403,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                           );
                         },
                       ),
-                    ],
+                    ]
                   ),
                 ),
                 if (step == 0)

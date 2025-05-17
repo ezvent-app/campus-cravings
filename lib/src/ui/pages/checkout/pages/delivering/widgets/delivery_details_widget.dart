@@ -50,210 +50,207 @@ class _DeliveryDetailsWidgetState extends ConsumerState<DeliveryDetailsWidget> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locale = AppLocalizations.of(context)!;
-    return Expanded(
-      child: SingleChildScrollView(
-        controller: widget.scrollController,
-
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            widget.step >= 3
-                ? RiderInformationWidget(
-                  orderId: widget.orderId,
-                  orderReviewSheetMethod: () {},
-                )
-                : SizedBox(),
-            Container(
-              margin: const EdgeInsets.only(top: 19),
-              height: 10,
-              color:
-                  widget.isMinHeight ? Colors.white : const Color(0xFFF5F5F5),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 24,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      widget.step >= 5
-                          ? Container(
-                            height: size.height * .26,
-                            padding: EdgeInsets.all(
-                              Dimensions.paddingSizeDefault,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  locale.deliveryComplete,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.titleSmall!.copyWith(
-                                    fontSize: 21,
-                                    fontWeight: FontWeight.w800,
-                                  ),
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      controller: widget.scrollController,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          widget.step >= 3
+              ? RiderInformationWidget(
+                orderId: widget.orderId,
+                orderReviewSheetMethod: () {},
+              )
+              : SizedBox(),
+          Container(
+            margin: const EdgeInsets.only(top: 19),
+            height: 10,
+            color: widget.isMinHeight ? Colors.white : const Color(0xFFF5F5F5),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 24,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    widget.step >= 5
+                        ? Container(
+                          height: size.height * .26,
+                          padding: EdgeInsets.all(
+                            Dimensions.paddingSizeDefault,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                locale.deliveryComplete,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.titleSmall!.copyWith(
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.w800,
                                 ),
-                                height(5),
-                                Container(
-                                  height: size.height * .17,
-                                  width: size.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    image: DecorationImage(
-                                      fit: BoxFit.fitWidth,
-                                      image: NetworkImage(
-                                        "https://s3-alpha-sig.figma.com/img/4f41/2318/07c864fa1ad0906cecdac853a6d4d38f?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=gbKWIlt239MAe2JvBH5lU31hP94h8Yk9EGf~u3oYUxIS5xAO0h7irSRwtfbneeBzZRjUJ8h9lRLJ8o9kQ0eJY7IRkNlTnjLP361dRw6Gxe8n5CpxfXHAfwDpHpUF2dUAR19j927ZPOpMzCsrWRTxkFCBLozGEOGe0L6084D6wznpQ4RPRZBf2p83L2FFHWB1JuI-ZF4X~C5CW7APtbaSihPpbN9sD-Q3Jt7eex99oul~SN0JKp~RpX7-mL6mwijT1afUyw~3AnHMNJHnxOhFFv9AXpv5UqebhhrnwAnnQDiAVJ9q1bKkykz3aJdC5hPGgdcuIGAva5j6qADz7NxUNQ__",
-                                      ),
+                              ),
+                              height(5),
+                              Container(
+                                height: size.height * .17,
+                                width: size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                    fit: BoxFit.fitWidth,
+                                    image: NetworkImage(
+                                      "https://s3-alpha-sig.figma.com/img/4f41/2318/07c864fa1ad0906cecdac853a6d4d38f?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=gbKWIlt239MAe2JvBH5lU31hP94h8Yk9EGf~u3oYUxIS5xAO0h7irSRwtfbneeBzZRjUJ8h9lRLJ8o9kQ0eJY7IRkNlTnjLP361dRw6Gxe8n5CpxfXHAfwDpHpUF2dUAR19j927ZPOpMzCsrWRTxkFCBLozGEOGe0L6084D6wznpQ4RPRZBf2p83L2FFHWB1JuI-ZF4X~C5CW7APtbaSihPpbN9sD-Q3Jt7eex99oul~SN0JKp~RpX7-mL6mwijT1afUyw~3AnHMNJHnxOhFFv9AXpv5UqebhhrnwAnnQDiAVJ9q1bKkykz3aJdC5hPGgdcuIGAva5j6qADz7NxUNQ__",
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          )
-                          : SizedBox(),
-                      widget.step != 0
-                          ? Container(
-                            margin: const EdgeInsets.only(top: 19),
-                            height: 10,
-                            color:
-                                widget.isMinHeight
-                                    ? Colors.white
-                                    : const Color(0xFFF5F5F5),
-                          )
-                          : SizedBox(),
-                      Text(
-                        locale.deliveryDetails,
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          fontSize: 21,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      height(24),
-                      Text(
-                        locale.address,
-                        style: TextStyle(
-                          color: Color(0xff434044),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        widget.address ?? 'Flat / Suite / Floor: 174',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: AppColors.black,
-                        ),
-                      ),
-                      const Divider(color: Color(0xFFF5F5F5), thickness: 1),
-                      const SizedBox(height: 20),
-                      Text(
-                        locale.orderSummary,
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          fontSize: 21,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        widget.storeName ?? 'Cafe Shop',
-                        style: TextStyle(
-                          color: Color(0xff656266),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      if (widget.items != null)
-                        ...List.generate(
-                          widget.items!.length,
-                          (index) => OrderSummaryWidget(
-                            number: index + 1,
-                            title: widget.items![index]["item_id"]["name"],
-                            size:
-                                widget.items![index]["item_id"]["sizes"] !=
-                                            null &&
-                                        widget
-                                                .items![index]["item_id"]["sizes"]
-                                                .length >
-                                            0
-                                    ? widget
-                                        .items![index]["item_id"]["sizes"][0]["name"]
-                                    : null,
-                            customizations:
-                                widget.items![index]["item_id"]["customization"] !=
-                                            null &&
-                                        widget
-                                                .items![index]["item_id"]["customization"]
-                                                .length >
-                                            0
-                                    ? widget
-                                        .items![index]["item_id"]["customization"]
-                                    : [],
+                              ),
+                            ],
                           ),
-                        ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              locale.total,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.titleSmall!.copyWith(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              '\$${widget.price ?? '0.00'}',
-                              style: Theme.of(
-                                context,
-                              ).textTheme.titleSmall!.copyWith(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(height: 10, color: const Color(0xFFF5F5F5)),
-                InkWellButtonWidget(
-                  onTap: () => deliveryNoteSheetMethod(context),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 25,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xffF5F5F5),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Text(
-                      locale.addDeliveryNote,
+                        )
+                        : SizedBox(),
+                    widget.step != 0
+                        ? Container(
+                          margin: const EdgeInsets.only(top: 19),
+                          height: 10,
+                          color:
+                              widget.isMinHeight
+                                  ? Colors.white
+                                  : const Color(0xFFF5F5F5),
+                        )
+                        : SizedBox(),
+                    Text(
+                      locale.deliveryDetails,
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 21,
+                        fontWeight: FontWeight.w800,
                       ),
+                    ),
+                    height(24),
+                    Text(
+                      locale.address,
+                      style: TextStyle(
+                        color: Color(0xff434044),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      widget.address ?? 'Flat / Suite / Floor: 174',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
+                    ),
+                    const Divider(color: Color(0xFFF5F5F5), thickness: 1),
+                    const SizedBox(height: 20),
+                    Text(
+                      locale.orderSummary,
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        fontSize: 21,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      widget.storeName ?? 'Cafe Shop',
+                      style: TextStyle(
+                        color: Color(0xff656266),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    if (widget.items != null)
+                      ...List.generate(
+                        widget.items!.length,
+                        (index) => OrderSummaryWidget(
+                          number: index + 1,
+                          title: widget.items![index]["item_id"]["name"],
+                          size:
+                              widget.items![index]["item_id"]["sizes"] !=
+                                          null &&
+                                      widget
+                                              .items![index]["item_id"]["sizes"]
+                                              .length >
+                                          0
+                                  ? widget
+                                      .items![index]["item_id"]["sizes"][0]["name"]
+                                  : null,
+                          customizations:
+                              widget.items![index]["item_id"]["customization"] !=
+                                          null &&
+                                      widget
+                                              .items![index]["item_id"]["customization"]
+                                              .length >
+                                          0
+                                  ? widget
+                                      .items![index]["item_id"]["customization"]
+                                  : [],
+                        ),
+                      ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            locale.total,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleSmall!.copyWith(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            '\$${widget.price ?? '0.00'}',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleSmall!.copyWith(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(height: 10, color: const Color(0xFFF5F5F5)),
+              InkWellButtonWidget(
+                onTap: () => deliveryNoteSheetMethod(context),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 25,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xffF5F5F5),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Text(
+                    locale.addDeliveryNote,
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
