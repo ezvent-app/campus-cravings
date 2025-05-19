@@ -18,3 +18,21 @@
 -keep class androidx.work.** { *; }
 -keep class androidx.window.** { *; }
 
+# CameraX + camera_android_camerax reflection-related rules
+-keep class androidx.camera.** { *; }
+-keep interface androidx.camera.** { *; }
+
+# Needed to avoid Enum reflection crash
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# Flutter plugin registrant
+-keep class io.flutter.plugins.** { *; }
+-keep class io.flutter.embedding.engine.FlutterEngine { *; }
+
+# Prevent stripping classes used via JNI/Reflection in CameraX
+-keep class androidx.lifecycle.** { *; }
+-keep class androidx.core.content.ContextCompat { *; }
+
