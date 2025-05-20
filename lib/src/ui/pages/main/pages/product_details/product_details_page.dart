@@ -385,6 +385,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               .read(cartItemsProvider.notifier)
                               .addItem(
                                 CartItem(
+                                  price:
+                                      controller.productItemDetailModel!.price,
                                   restCoordinates: widget.restCoordinates,
                                   sizePrice:
                                       cartItemsNotifier.selectedSizePrice,
@@ -403,7 +405,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   name:
                                       controller.productItemDetailModel?.name ??
                                       '',
-                                  price: controller.totalPrice,
+                                  totalPrice: controller.totalPrice,
                                   quantity: controller.productQuantity,
                                 ),
                               );
