@@ -377,6 +377,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                 markers: markers.values.toSet(),
                 polylines: polylines,
                 indoorViewEnabled: true,
+                zoomControlsEnabled: false,
                 trafficEnabled: true,
                 onMapCreated: (controller) {
                   mapController = controller;

@@ -9,6 +9,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
+      physics: NeverScrollableScrollPhysics(),
       routes: [
         HomeTabRoute(),
         OrdersTabRoute(),
@@ -16,7 +17,6 @@ class MainPage extends StatelessWidget {
         StorageHelper().getRiderProfilefileComplete() == true
             ? RidersTabRoute()
             : DeliveryRegistrationRoute(),
-        
 
         ProfileTabRoute(),
       ],

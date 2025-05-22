@@ -4,13 +4,10 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'src/constants/storageHelper.dart';
 
-late List<CameraDescription> cameras;
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageHelper.init();
   await SharePreferences.initPreferences();
-  cameras = await availableCameras();
   DependencyInjection.initialize();
   Stripe.publishableKey =
       'pk_test_51QrMKeKniJk5EBZPSfsTDIs4KX8BM5zOCVqH0qijocvmzk0C2N5UTZvRevsdnryUVAkGY0dZULjvZ7TCApAAy26R00AJ2DVGXS';
