@@ -16,7 +16,7 @@ class RestaurantRepository {
   }) async {
     try {
       final response = await _httpApiServices.getAPI(
-        '/restaurants/getNearbyRestaurants?latitude=33.5678&longitude=73.1234',
+        '/restaurants/getNearbyRestaurants?latitude=$lat&longitude=$lng',
       );
       if (response.statusCode != 200) return null;
       return (jsonDecode(response.body)['items'] as List)
