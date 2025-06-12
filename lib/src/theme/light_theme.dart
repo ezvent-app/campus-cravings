@@ -71,7 +71,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
     ),
     color: Colors.grey.shade100,
   ),
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: Colors.white,
     shadowColor: Colors.blueGrey,
     surfaceTintColor: Colors.blueGrey,

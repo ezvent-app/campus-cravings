@@ -6,7 +6,7 @@ export 'package:camerawesome/camerawesome_plugin.dart';
 export 'package:flutter/gestures.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
-export 'package:flutter_gen/gen_l10n/app_localizations.dart';
+export 'package:campuscravings/l10n/app_localizations.dart';
 export 'package:flutter_image_compress/flutter_image_compress.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
 export 'package:flutter_riverpod/flutter_riverpod.dart';
