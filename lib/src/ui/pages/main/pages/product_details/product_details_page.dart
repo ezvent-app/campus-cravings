@@ -110,7 +110,11 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   const Spacer(),
                                   IconButton(
                                     icon: CartCounterWidget(
-                                      count: cartItems.length,
+                                      count: cartItems.fold<int>(
+                                        0,
+                                        (sum, item) => sum + item.quantity,
+                                      ),
+
                                       color: AppColors.dividerColor,
                                     ),
                                     onPressed: () {
@@ -381,7 +385,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             return;
                           }
 
-                          ref
+                          final wasNew = ref
                               .read(cartItemsProvider.notifier)
                               .addItem(
                                 CartItem(
@@ -409,8 +413,15 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   quantity: controller.productQuantity,
                                 ),
                               );
-                          showToast("Added to cart", context: context);
+
+                          showToast(
+                            wasNew
+                                ? "Added to cart"
+                                : "Quantity updated in cart",
+                            context: context,
+                          );
                         },
+
                         label: Text(locale.addToCart),
                         icon: SvgAssets("shopping-cart", width: 16, height: 16),
                         style: ElevatedButton.styleFrom(

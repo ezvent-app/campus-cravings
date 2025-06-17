@@ -107,11 +107,7 @@ class CartTabPage extends ConsumerWidget {
                                     ),
                                 quantity: item.quantity,
                                 onQuantityDecrementChanged:
-                                    item.quantity <= 1
-                                        ? null
-                                        : () => cartNotifier.decrementQuantity(
-                                          index,
-                                        ),
+                                    () => cartNotifier.decrementQuantity(index),
                                 onQuantityIncrementChanged:
                                     item.quantity >= 10
                                         ? null
