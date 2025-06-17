@@ -167,6 +167,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                 children: [
                   CategoriesHorizontalWidget(),
                   PopularHorizontalWidget(),
+                  height(20),
                   NearbyRestaurantsWidget(),
                 ],
               ),

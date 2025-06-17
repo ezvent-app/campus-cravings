@@ -107,7 +107,7 @@ class _StudentProfileDetailsPageState
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(4),
               ],
-              label: "Batch Year*",
+              label: "Graduation Year*",
               onChanged: (value) {
                 if (value.isNotEmpty) {
                   ref.read(studentProfileProvider.notifier).state["batchYear"] =

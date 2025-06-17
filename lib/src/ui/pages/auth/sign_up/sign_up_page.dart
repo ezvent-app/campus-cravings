@@ -45,17 +45,12 @@ class SignUpPage extends ConsumerWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     height(3),
-                    DropDownWidget(
+                    DropDownWidgetme(
                       hintText: locale.selectUniversity,
                       universitiesList: ["Villanova University"],
-                      onChange: (value) {
-                        final university = ref.read(registerProvider);
-                        ref.read(registerProvider.notifier).state = {
-                          ...university,
-                          'university': value,
-                        };
-                      },
+                      selectedValue: "Villanova University",
                     ),
+
                     height(20),
                     CustomTextField(
                       label: locale.universityEmail,
@@ -158,7 +153,7 @@ class SignUpPage extends ConsumerWidget {
                             context.pushRoute(
                               ProfileFormRoute(
                                 newUser: true,
-                                uniName: university,
+                                uniName: 'Villanova University',
                                 email: email,
                                 password: confirmPassword,
                               ),

@@ -116,10 +116,13 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    side: const BorderSide(color: Colors.red),
-                    foregroundColor: Colors.red,
+                    side: const BorderSide(color: Colors.green),
+                    foregroundColor: Colors.green,
                   ),
-                  child: const Text("Image Uploaded ✅"),
+                  child: const Text(
+                    "Image Uploaded ✅",
+                    style: TextStyle(color: Colors.green),
+                  ),
                 )
                 : OutlinedButton(
                   onPressed: () async {
@@ -201,7 +204,7 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                   },
                 ),
                 Text(
-                  locale.iAgreeWith,
+                  'I agree with the ',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 InkWellButtonWidget(
