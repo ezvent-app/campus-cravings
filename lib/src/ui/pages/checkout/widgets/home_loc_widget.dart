@@ -4,20 +4,39 @@ import 'package:campuscravings/src/models/User%20Model/user_info_model.dart';
 import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
 
-class HomeLocationWidget extends ConsumerWidget {
-  HomeLocationWidget({
+class HomeLocationWidget extends ConsumerStatefulWidget {
+  const HomeLocationWidget({
     super.key,
     this.icon = Icons.keyboard_arrow_right,
     required this.title,
     required this.subTitle,
   });
+
   final IconData icon;
   final String title, subTitle;
 
+  @override
+  ConsumerState<HomeLocationWidget> createState() => _HomeLocationWidgetState();
+}
+
+class _HomeLocationWidgetState extends ConsumerState<HomeLocationWidget> {
   final UserInfoRepository _userRepository = UserInfoRepository();
+  Future<UserModel>? _userFuture;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    _userFuture = _userRepository.fetchUserProfile();
+  }
+
+  void _refreshUser() {
+    setState(() {
+      _userFuture = _userRepository.fetchUserProfile();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
 
     return Material(
@@ -35,7 +54,7 @@ class HomeLocationWidget extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: FutureBuilder<UserModel>(
-                      future: _userRepository.fetchUserProfile(),
+                      future: _userFuture,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -44,19 +63,19 @@ class HomeLocationWidget extends ConsumerWidget {
                           );
                         }
 
+                        final addresses = snapshot.data!.userInfo!.addresses!;
+
                         return Column(
                           children: [
                             ListView.separated(
                               shrinkWrap: true,
-                              itemCount:
-                                  snapshot.data!.userInfo!.addresses!
-                                      .take(2)
-                                      .length,
-                              physics: BouncingScrollPhysics(),
+                              itemCount: addresses.take(2).length,
+                              physics: const BouncingScrollPhysics(),
                               separatorBuilder: (context, index) => height(15),
                               itemBuilder: (context, index) {
-                                final address =
-                                    snapshot.data!.userInfo!.addresses![index];
+                                final address = addresses[index];
+                                final canDelete = addresses.length > 1;
+
                                 return Consumer(
                                   builder: (context, ref, child) {
                                     final isSelected = ref.watch(
@@ -102,6 +121,9 @@ class HomeLocationWidget extends ConsumerWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Text(
                                                           locale.home,
@@ -114,8 +136,15 @@ class HomeLocationWidget extends ConsumerWidget {
                                                                     .primary,
                                                           ),
                                                         ),
-                                                        if (address.address ==
-                                                            true)
+                                                        const SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        if (isSelected.value !=
+                                                                null &&
+                                                            isSelected
+                                                                    .value!
+                                                                    .selectedIndex ==
+                                                                index)
                                                           Container(
                                                             padding:
                                                                 const EdgeInsets.symmetric(
@@ -125,8 +154,7 @@ class HomeLocationWidget extends ConsumerWidget {
                                                                 ),
                                                             margin:
                                                                 const EdgeInsets.only(
-                                                                  left: 30,
-                                                                  bottom: 2,
+                                                                  left: 10,
                                                                 ),
                                                             decoration: BoxDecoration(
                                                               color:
@@ -150,6 +178,75 @@ class HomeLocationWidget extends ConsumerWidget {
                                                                     AppColors
                                                                         .primary,
                                                               ),
+                                                            ),
+                                                          ),
+                                                        const Spacer(),
+                                                        if (canDelete)
+                                                          GestureDetector(
+                                                            onTap: () async {
+                                                              final confirm = await showDialog<
+                                                                bool
+                                                              >(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (
+                                                                      ctx,
+                                                                    ) => AlertDialog(
+                                                                      title: const Text(
+                                                                        "Delete Address",
+                                                                      ),
+                                                                      content:
+                                                                          const Text(
+                                                                            "Are you sure you want to delete this address?",
+                                                                          ),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () => Navigator.of(
+                                                                                ctx,
+                                                                              ).pop(
+                                                                                false,
+                                                                              ),
+                                                                          child: const Text(
+                                                                            "Cancel",
+                                                                          ),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () => Navigator.of(
+                                                                                ctx,
+                                                                              ).pop(
+                                                                                true,
+                                                                              ),
+                                                                          child: const Text(
+                                                                            "Delete",
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                              );
+                                                              if (confirm ==
+                                                                  true) {
+                                                                await ref
+                                                                    .read(
+                                                                      locationProvider
+                                                                          .notifier,
+                                                                    )
+                                                                    .deleteAddress(
+                                                                      context:
+                                                                          context,
+                                                                      addressId:
+                                                                          address
+                                                                              .sId!,
+                                                                    );
+                                                                _refreshUser();
+                                                              }
+                                                            },
+                                                            child: const Icon(
+                                                              Icons.close,
+                                                              size: 18,
+                                                              color: Colors.red,
                                                             ),
                                                           ),
                                                       ],
@@ -218,17 +315,15 @@ class HomeLocationWidget extends ConsumerWidget {
                                                                             null &&
                                                                         isSelected.value!.selectedIndex ==
                                                                             index
-                                                                    ? Center(
-                                                                      child: Icon(
-                                                                        Icons
-                                                                            .done,
-                                                                        color:
-                                                                            AppColors.white,
-                                                                        size:
-                                                                            15,
-                                                                      ),
+                                                                    ? const Icon(
+                                                                      Icons
+                                                                          .done,
+                                                                      color:
+                                                                          AppColors
+                                                                              .white,
+                                                                      size: 15,
                                                                     )
-                                                                    : SizedBox(),
+                                                                    : const SizedBox(),
                                                           ),
                                                         ),
                                                       ],
@@ -260,7 +355,10 @@ class HomeLocationWidget extends ConsumerWidget {
             height: 48,
             margin: const EdgeInsets.only(left: 25, right: 25, top: 24),
             child: ElevatedButton(
-              onPressed: () => context.pushRoute(SavedAddressesRoute()),
+              onPressed: () async {
+                await context.pushRoute(SavedAddressesRoute());
+                _refreshUser();
+              },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -268,7 +366,7 @@ class HomeLocationWidget extends ConsumerWidget {
                 backgroundColor: const Color(0xffE7E7E7),
                 foregroundColor: AppColors.primary,
               ),
-              child: Text(
+              child: const Text(
                 "Change Address",
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),

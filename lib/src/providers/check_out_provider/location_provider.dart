@@ -106,7 +106,7 @@ class LocationNotifier extends AsyncNotifier<LocationModel> {
       if (res.statusCode == 200) {
         if (context.mounted) {
           showToast(body['message'], context: context);
-          context.replaceRoute(SavedAddressesRoute());
+          Navigator.pop(context, true);
         }
       } else {
         if (context.mounted) {
@@ -117,6 +117,34 @@ class LocationNotifier extends AsyncNotifier<LocationModel> {
       printThis('Saved JSON: $address');
     } catch (e) {
       printThis(e.toString());
+    } finally {
+      ref.read(addressSavingProvider.notifier).state = false;
+    }
+  }
+
+  Future<void> deleteAddress({
+    required BuildContext context,
+    required String addressId,
+  }) async {
+    try {
+      final loading = ref.read(addressSavingProvider.notifier);
+      loading.state = true;
+
+      final res = await services.deleteAPI("/user/deleteAddress/$addressId");
+
+      final body = jsonDecode(res.body);
+
+      if (res.statusCode == 200) {
+        if (context.mounted) {
+          showToast(body['message'], context: context);
+        }
+      } else {
+        if (context.mounted) {
+          showToast(body['message'], context: context);
+        }
+      }
+    } catch (e) {
+      printThis('Error deleting address: $e');
     } finally {
       ref.read(addressSavingProvider.notifier).state = false;
     }

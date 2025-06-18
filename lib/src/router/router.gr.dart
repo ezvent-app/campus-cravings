@@ -242,39 +242,18 @@ class ChangePasswordRouteArgs {
 
 /// generated route for
 /// [_i6.CheckOutAddNewAddressPage]
-class CheckOutAddNewAddressRoute
-    extends _i44.PageRouteInfo<CheckOutAddNewAddressRouteArgs> {
-  CheckOutAddNewAddressRoute({
-    _i45.Key? key,
-    List<_i44.PageRouteInfo>? children,
-  }) : super(
-         CheckOutAddNewAddressRoute.name,
-         args: CheckOutAddNewAddressRouteArgs(key: key),
-         initialChildren: children,
-       );
+class CheckOutAddNewAddressRoute extends _i44.PageRouteInfo<void> {
+  const CheckOutAddNewAddressRoute({List<_i44.PageRouteInfo>? children})
+    : super(CheckOutAddNewAddressRoute.name, initialChildren: children);
 
   static const String name = 'CheckOutAddNewAddressRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<CheckOutAddNewAddressRouteArgs>(
-        orElse: () => const CheckOutAddNewAddressRouteArgs(),
-      );
-      return _i6.CheckOutAddNewAddressPage(key: args.key);
+      return const _i6.CheckOutAddNewAddressPage();
     },
   );
-}
-
-class CheckOutAddNewAddressRouteArgs {
-  const CheckOutAddNewAddressRouteArgs({this.key});
-
-  final _i45.Key? key;
-
-  @override
-  String toString() {
-    return 'CheckOutAddNewAddressRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for
@@ -1359,36 +1338,18 @@ class RidersTabRoute extends _i44.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i39.SavedAddressesPage]
-class SavedAddressesRoute extends _i44.PageRouteInfo<SavedAddressesRouteArgs> {
-  SavedAddressesRoute({_i45.Key? key, List<_i44.PageRouteInfo>? children})
-    : super(
-        SavedAddressesRoute.name,
-        args: SavedAddressesRouteArgs(key: key),
-        initialChildren: children,
-      );
+class SavedAddressesRoute extends _i44.PageRouteInfo<void> {
+  const SavedAddressesRoute({List<_i44.PageRouteInfo>? children})
+    : super(SavedAddressesRoute.name, initialChildren: children);
 
   static const String name = 'SavedAddressesRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<SavedAddressesRouteArgs>(
-        orElse: () => const SavedAddressesRouteArgs(),
-      );
-      return _i39.SavedAddressesPage(key: args.key);
+      return const _i39.SavedAddressesPage();
     },
   );
-}
-
-class SavedAddressesRouteArgs {
-  const SavedAddressesRouteArgs({this.key});
-
-  final _i45.Key? key;
-
-  @override
-  String toString() {
-    return 'SavedAddressesRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for
