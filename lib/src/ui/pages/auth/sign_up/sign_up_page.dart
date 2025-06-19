@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/src.dart';
+import 'package:flutter/cupertino.dart';
 
 @RoutePage()
 // ignore: must_be_immutable
@@ -19,10 +20,27 @@ class SignUpPage extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PngAsset(
-                Images.loginHeader,
-                width: size.width,
-                height: size.height * .18,
+              Stack(
+                children: [
+                  PngAsset(
+                    Images.loginHeader,
+                    width: size.width,
+                    height: size.height * .18,
+                  ),
+                  Positioned(
+                    top: 10,
+                    left: 10,
+                    child: IconButton(
+                      icon: Icon(
+                        Platform.isIOS
+                            ? Icons.arrow_back_ios_new
+                            : Icons.arrow_back,
+                        color: Colors.black,
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
