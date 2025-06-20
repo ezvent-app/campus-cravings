@@ -100,28 +100,24 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                       bottom: Dimensions.paddingSizeDefault,
                     ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if (!widget.newUser)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Dimensions.paddingSizeDefault,
-                            ),
-                            child: IconButton(
-                              onPressed: () => context.maybePop(),
-                              icon: Icon(
-                                isIOS
-                                    ? Icons.arrow_back_ios_new
-                                    : Icons.arrow_back,
-                                size: 28,
-                              ),
-                            ),
-                          )
-                        else
-                          width(25),
                         Padding(
-                          padding: EdgeInsets.only(
-                            top: widget.newUser ? 12 : 4,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeDefault,
                           ),
+                          child: IconButton(
+                            onPressed: () => context.maybePop(),
+                            icon: Icon(
+                              isIOS
+                                  ? Icons.arrow_back_ios_new
+                                  : Icons.arrow_back,
+                              size: 28,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
                           child: Text(
                             widget.newUser
                                 ? locale.profileSetUp
