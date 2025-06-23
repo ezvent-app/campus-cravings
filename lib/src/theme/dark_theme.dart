@@ -68,7 +68,7 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
     onPrimaryContainer: Colors.pink,
     primaryContainer: Colors.white,
   ),
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: Colors.grey.shade900,
     shape: OutlineInputBorder(
       borderSide: BorderSide.none,
