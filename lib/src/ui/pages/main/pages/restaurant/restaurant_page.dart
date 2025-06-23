@@ -19,7 +19,15 @@ class RestaurantPage extends ConsumerWidget {
       },
       builder: (controller) {
         if (controller.isLoading) {
-          return _buildRestaurantDetailsShimmer(context);
+          return const Scaffold(
+            body: Center(
+              child: SizedBox(
+                height: 30,
+                width: 30,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+          );
         } else if (controller.isLoading == false &&
             controller.restaurantDetails == null) {
           return Scaffold(

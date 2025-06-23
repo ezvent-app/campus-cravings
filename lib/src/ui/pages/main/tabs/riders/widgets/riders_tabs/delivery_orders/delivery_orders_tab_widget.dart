@@ -418,8 +418,10 @@ class _ConsumerDeliveryOrdersTabWidgetState
                 )
                 : SizedBox(),
             isAccept["isAccept"]
-                ? AnimatedRidersDeliveryDetailsWrapper(
-                  riderDelivery: riderDeliveryPro,
+                ? GestureDetector(
+                  child: AnimatedRidersDeliveryDetailsWrapper(
+                    riderDelivery: riderDeliveryPro,
+                  ),
                 )
                 : SizedBox(),
           ],
