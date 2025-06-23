@@ -18,13 +18,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingTitle3 => 'Earn with Campus Cravings';
 
   @override
-  String get onboardingDesc1 => 'By Students, For Students. Campus meals, snacks, and drinks—delivered to your dorm or class.';
+  String get onboardingDesc1 =>
+      'By Students, For Students. Campus meals, snacks, and drinks—delivered to your dorm or class.';
 
   @override
-  String get onboardingDesc2 => 'Campus Cravings isn\'t just delivery—it\'s community. Connect, share interests, and meet classmates with every order.';
+  String get onboardingDesc2 =>
+      'Campus Cravings isn\'t just delivery—it\'s community. Connect, share interests, and meet classmates with every order.';
 
   @override
-  String get onboardingDesc3 => 'Earn cash by delivering and supporting your campus. Flexible hours, extra income, and helping classmates get their favorite meals.';
+  String get onboardingDesc3 =>
+      'Earn cash by delivering and supporting your campus. Flexible hours, extra income, and helping classmates get their favorite meals.';
 
   @override
   String get signIntoAccount => 'Sign in to your Account';
@@ -84,7 +87,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verification => 'Verification';
 
   @override
-  String get sendVerificationCode => 'We\'ve send you the verification code on';
+  String get sendVerificationCode => 'We\'ve sent you the verification code on';
 
   @override
   String get continueNext => 'Continue';
@@ -153,7 +156,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutYou => 'About You (Bio)';
 
   @override
-  String get whatDoYouWant => 'What do you want people you deliver to know about you?';
+  String get whatDoYouWant =>
+      'What do you want people you deliver to know about you?';
 
   @override
   String get deliveryProfile => 'Delivery Profile';
@@ -177,7 +181,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get disclaimer => 'Disclaimer: ';
 
   @override
-  String get socialSecurityInfo => 'Your Social Security Number and ID are required for background checks, work eligibility verification, and compliance with legal regulations, and will be securely stored as per our ';
+  String get socialSecurityInfo =>
+      'Your Social Security Number and ID are required for background checks, work eligibility verification, and compliance with legal regulations, and will be securely stored as per our ';
 
   @override
   String get privacyPolicy => 'Privacy Policy';
@@ -210,28 +215,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pushNotifications => 'Push Notifications';
 
   @override
-  String get enableNotifications => 'We highly recommend enabling notifications to stay updated on all your order statuses in real time.';
+  String get enableNotifications =>
+      'We highly recommend enabling notifications to stay updated on all your order statuses in real time.';
 
   @override
   String get smsNotifications => 'SMS Notifications';
 
   @override
-  String get enableSMSNotifications => 'Stay in the loop! Enable SMS notifications to receive real-time updates about your order statuses.';
+  String get enableSMSNotifications =>
+      'Stay in the loop! Enable SMS notifications to receive real-time updates about your order statuses.';
 
   @override
   String get emailNotifications => 'Email Notifications';
 
   @override
-  String get dontMissEmailNotifications => 'Don’t miss a thing! Turn on email notifications for detailed updates on all your orders.';
+  String get dontMissEmailNotifications =>
+      'Don’t miss a thing! Turn on email notifications for detailed updates on all your orders.';
 
   @override
   String get searching => 'Searching';
 
   @override
-  String get placeYourOrderOnTheRestaurant => 'Placing your order on the restaurant';
+  String get placeYourOrderOnTheRestaurant =>
+      'Placing your order on the restaurant';
 
   @override
-  String get reachingOutToActiveStudentzNearby => 'Reaching out to active students nearby!';
+  String get reachingOutToActiveStudentzNearby =>
+      'Reaching out to active students nearby!';
 
   @override
   String get slideToCancel => '       Slide to Cancel';
@@ -450,7 +460,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wantToLeaveTipFor => 'Want to leave tip for';
 
   @override
-  String get reviewAboutService => 'If you don’t mind, tell us how was service. This review will be used to improve our service to be better.';
+  String get reviewAboutService =>
+      'If you don’t mind, tell us how was service. This review will be used to improve our service to be better.';
 
   @override
   String get howWasYourOrder => 'How was your Order?';
@@ -471,7 +482,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sendMessage => 'Send a message';
 
   @override
-  String get yourOrderGoodHandsFellowComputerScienceStudent => 'Your order is in good hands with a fellow Computer Science student!';
+  String get yourOrderGoodHandsFellowComputerScienceStudent =>
+      'Your order is in good hands with a fellow Computer Science student!';
 
   @override
   String get viewProfile => 'View Profile';
@@ -555,7 +567,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get retry => 'Retry';
 
   @override
-  String get thankYouDeliveringOrderGreatJob => 'Thank you for delivering the order! Great job!';
+  String get thankYouDeliveringOrderGreatJob =>
+      'Thank you for delivering the order! Great job!';
 
   @override
   String get ok => 'OK';
@@ -609,8 +622,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registerDelivery => 'Register for Delivery';
 
   @override
-  String get whatDoYouWantKnowAboutYou => 'What do you want people you deliver to know about you?';
+  String get whatDoYouWantKnowAboutYou =>
+      'What do you want people you deliver to know about you?';
 
   @override
-  String get addInstructionsToHelpDelivery => 'Add Instruction to Help with Delivery (Optional)';
+  String get addInstructionsToHelpDelivery =>
+      'Add Instruction to Help with Delivery (Optional)';
 }

@@ -82,10 +82,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                     onPressed: () {
                       StorageHelper().getRiderProfilefileComplete() == true
                           ? context.pushRoute(RidersTabRoute())
-                          : showToast(
-                            context: context,
-                            "Please register as a rider first to access this feature.",
-                          );
+                          : context.pushRoute(DeliveryRegistrationRoute());
                     },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(

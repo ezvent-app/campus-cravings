@@ -36,13 +36,7 @@ class OtpNotifier extends StateNotifier<OtpState> {
   Timer? _timer;
 
   OtpNotifier()
-    : super(
-        OtpState(
-          otp: '',
-          remainingSeconds: 180, // 4 minutes 30 seconds
-          canResend: false,
-        ),
-      ) {
+    : super(OtpState(otp: '', remainingSeconds: 20, canResend: false)) {
     _startTimer();
   }
 
@@ -59,7 +53,7 @@ class OtpNotifier extends StateNotifier<OtpState> {
   // Start or restart the countdown timer
   void _startTimer() {
     _timer?.cancel(); // Cancel any existing timer
-    state = state.copyWith(remainingSeconds: 180, canResend: false);
+    state = state.copyWith(remainingSeconds: 20, canResend: false);
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (state.remainingSeconds > 0) {
@@ -110,7 +104,7 @@ class OtpNotifier extends StateNotifier<OtpState> {
     _timer?.cancel();
     state = OtpState(
       otp: '',
-      remainingSeconds: 180,
+      remainingSeconds: 20,
       canResend: false,
       isLoading: false,
     );
@@ -161,7 +155,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            locale.sendVerificationCode,
+            'We\'ve sent you the verification code on',
             style: Theme.of(context).textTheme.bodySmall,
           ),
           SizedBox(height: 5),
