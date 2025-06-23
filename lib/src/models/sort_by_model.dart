@@ -51,7 +51,9 @@ void showSortBottomSheet(BuildContext context) {
                       return InkWellButtonWidget(
                         onTap: () {
                           controller.setSelectedIndex(index: sort.index);
-                          controller.setSortByFastDelivery(value: sort.title == "Fast Delivery");
+                          controller.setSortByFastDelivery(
+                            value: sort.title == "Fast Delivery",
+                          );
                         },
                         child: ListTile(
                           splashColor: Colors.transparent,
@@ -69,18 +71,19 @@ void showSortBottomSheet(BuildContext context) {
                               color: isSelected ? Colors.black : Colors.white,
                               shape: BoxShape.circle,
                             ),
-                            child: isSelected
-                                ? Center(
-                              child: Container(
-                                width: 5,
-                                height: 5,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                            )
-                                : const SizedBox(),
+                            child:
+                                isSelected
+                                    ? Center(
+                                      child: Container(
+                                        width: 5,
+                                        height: 5,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    )
+                                    : const SizedBox(),
                           ),
                         ),
                       );
@@ -95,4 +98,3 @@ void showSortBottomSheet(BuildContext context) {
     },
   );
 }
-
