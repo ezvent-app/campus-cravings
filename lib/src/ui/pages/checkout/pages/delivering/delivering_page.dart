@@ -42,7 +42,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     "Your order has been completed",
   ];
   final subMessages = [
-    "Waiting for restaturatnt to accept the order",
+    "Waiting for the restaurant to accept the order",
     "Estimated Preparation Time: ",
     "Waiting for rider to pick up the order",
     "Estimated Delivery Time: ",
@@ -403,7 +403,7 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
                           );
                         },
                       ),
-                    ]
+                    ],
                   ),
                 ),
                 if (step == 0)

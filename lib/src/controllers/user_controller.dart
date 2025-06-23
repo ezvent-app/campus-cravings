@@ -18,6 +18,10 @@ class UserController extends StateNotifier<UserModel?> {
   UserController(this.ref) : super(null) {
     _initialize();
   }
+  Future<void> refreshUser() async {
+    state = null;
+    await fetchUser();
+  }
 
   Future<void> _initialize() async {
     if (state == null) {

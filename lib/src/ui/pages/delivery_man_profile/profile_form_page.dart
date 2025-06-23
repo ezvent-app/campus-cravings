@@ -100,28 +100,24 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                       bottom: Dimensions.paddingSizeDefault,
                     ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        if (!widget.newUser)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: Dimensions.paddingSizeDefault,
-                            ),
-                            child: IconButton(
-                              onPressed: () => context.maybePop(),
-                              icon: Icon(
-                                isIOS
-                                    ? Icons.arrow_back_ios_new
-                                    : Icons.arrow_back,
-                                size: 28,
-                              ),
-                            ),
-                          )
-                        else
-                          width(25),
                         Padding(
-                          padding: EdgeInsets.only(
-                            top: widget.newUser ? 12 : 4,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeDefault,
                           ),
+                          child: IconButton(
+                            onPressed: () => context.maybePop(),
+                            icon: Icon(
+                              isIOS
+                                  ? Icons.arrow_back_ios_new
+                                  : Icons.arrow_back,
+                              size: 28,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
                           child: Text(
                             widget.newUser
                                 ? locale.profileSetUp
@@ -289,22 +285,22 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                           },
                         ),
                         height(16),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 3),
-                          child: Text(
-                            widget.newUser ? locale.selectRole : locale.role,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ),
-                        DropDownWidget(
-                          universitiesList: _roles,
-                          onChange: (value) {
-                            setState(() {
-                              _selectedRole = value!;
-                            });
-                          },
-                          hintText: locale.selectRole,
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(bottom: 3),
+                        //   child: Text(
+                        //     widget.newUser ? locale.selectRole : locale.role,
+                        //     style: Theme.of(context).textTheme.bodySmall,
+                        //   ),
+                        // ),
+                        // DropDownWidget(
+                        //   universitiesList: _roles,
+                        //   onChange: (value) {
+                        //     setState(() {
+                        //       _selectedRole = value!;
+                        //     });
+                        //   },
+                        //   hintText: locale.selectRole,
+                        // ),
                         height(12),
                         if (widget.newUser)
                           Row(
@@ -344,7 +340,7 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                               width(7),
                               Text(
                                 widget.newUser
-                                    ? locale.registerForDelivery
+                                    ? "Also Register as a Delivery Person"
                                     : locale.registerDelivery,
                                 style: TextStyle(
                                   fontSize: Dimensions.fontSizeSmall,

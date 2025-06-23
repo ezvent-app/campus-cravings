@@ -1,21 +1,23 @@
 import 'package:campuscravings/src/models/near_by_restaurant_model.dart';
 
-class SearchModel{
+class SearchModel {
   final List<FoodItemModel> listOfFoodItemModel;
   final List<RestaurantSearchModel> listOfNearByRestaurantModel;
 
   SearchModel({
     required this.listOfFoodItemModel,
-    required this.listOfNearByRestaurantModel
+    required this.listOfNearByRestaurantModel,
   });
   factory SearchModel.fromJson(Map<String, dynamic> json) {
     return SearchModel(
-      listOfFoodItemModel: (json['FoodItems'] as List)
-          .map((e) => FoodItemModel.fromJson(e))
-          .toList(),
-      listOfNearByRestaurantModel: (json['restaurants'] as List)
-          .map((e) => RestaurantSearchModel.fromJson(e))
-          .toList(),
+      listOfFoodItemModel:
+          (json['FoodItems'] as List)
+              .map((e) => FoodItemModel.fromJson(e))
+              .toList(),
+      listOfNearByRestaurantModel:
+          (json['restaurants'] as List)
+              .map((e) => RestaurantSearchModel.fromJson(e))
+              .toList(),
     );
   }
 }
@@ -60,24 +62,29 @@ class FoodItemModel {
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
       description: json['description'] ?? '',
       estimatedPreparationTime: json['estimated_preparation_time'] ?? 0,
-      customization: (json['customization'] as List<dynamic>?)
-          ?.map((e) => Customization.fromJson(e))
-          .toList() ??
+      customization:
+          (json['customization'] as List<dynamic>?)
+              ?.map((e) => Customization.fromJson(e))
+              .toList() ??
           [],
-      sizes: (json['sizes'] as List<dynamic>?)
-          ?.map((e) => Size.fromJson(e))
-          .toList() ??
+      sizes:
+          (json['sizes'] as List<dynamic>?)
+              ?.map((e) => Size.fromJson(e))
+              .toList() ??
           [],
       calories: json['calories'] ?? 0,
-      image: (json['image'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ??
+      image:
+          (json['image'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
           [],
       category: Category.fromJson(json['category'] ?? {}),
       restaurant: json['restaurant'] ?? '',
-      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ??
+      createdAt:
+          DateTime.tryParse(json['createdAt'] ?? '') ??
           DateTime.fromMillisecondsSinceEpoch(0),
-      updatedAt: DateTime.tryParse(json['updatedAt'] ?? '') ??
+      updatedAt:
+          DateTime.tryParse(json['updatedAt'] ?? '') ??
           DateTime.fromMillisecondsSinceEpoch(0),
       v: json['__v'] ?? 0,
     );
@@ -89,11 +96,7 @@ class Customization {
   final String name;
   final double price;
 
-  Customization({
-    required this.id,
-    required this.name,
-    required this.price,
-  });
+  Customization({required this.id, required this.name, required this.price});
 
   factory Customization.fromJson(Map<String, dynamic> json) {
     return Customization(
@@ -109,11 +112,7 @@ class Size {
   final String name;
   final double price;
 
-  Size({
-    required this.id,
-    required this.name,
-    required this.price,
-  });
+  Size({required this.id, required this.name, required this.price});
 
   factory Size.fromJson(Map<String, dynamic> json) {
     return Size(
@@ -148,18 +147,19 @@ class Category {
       id: json['_id'] ?? '',
       name: json['name'] ?? '',
       description: json['description'] ?? '',
-      items: (json['items'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ??
+      items:
+          (json['items'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
           [],
-      createdAt: DateTime.tryParse(json['created_at'] ?? '') ??
+      createdAt:
+          DateTime.tryParse(json['created_at'] ?? '') ??
           DateTime.fromMillisecondsSinceEpoch(0),
       restaurant: json['restaurant'] ?? '',
       v: json['__v'] ?? 0,
     );
   }
 }
-
 
 class RestaurantSearchModel {
   String id;
@@ -297,10 +297,7 @@ class Address {
   Coordinates coordinates;
   String address;
 
-  Address({
-    required this.coordinates,
-    required this.address,
-  });
+  Address({required this.coordinates, required this.address});
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
@@ -310,10 +307,7 @@ class Address {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'coordinates': coordinates.toJson(),
-      'address': address,
-    };
+    return {'coordinates': coordinates.toJson(), 'address': address};
   }
 }
 
@@ -321,23 +315,19 @@ class Coordinates {
   String type;
   List<double> coordinates;
 
-  Coordinates({
-    required this.type,
-    required this.coordinates,
-  });
+  Coordinates({required this.type, required this.coordinates});
 
   factory Coordinates.fromJson(Map<String, dynamic> json) {
     return Coordinates(
       type: json['type'] as String,
-      coordinates: List<double>.from(json['coordinates'].map((x) => x.toDouble())),
+      coordinates: List<double>.from(
+        json['coordinates'].map((x) => x.toDouble()),
+      ),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'type': type,
-      'coordinates': coordinates,
-    };
+    return {'type': type, 'coordinates': coordinates};
   }
 }
 
@@ -345,10 +335,7 @@ class Ratings {
   double averageRating;
   int totalRatings;
 
-  Ratings({
-    required this.averageRating,
-    required this.totalRatings,
-  });
+  Ratings({required this.averageRating, required this.totalRatings});
 
   factory Ratings.fromJson(Map<String, dynamic> json) {
     return Ratings(
@@ -358,10 +345,6 @@ class Ratings {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'averageRating': averageRating,
-      'totalRatings': totalRatings,
-    };
+    return {'averageRating': averageRating, 'totalRatings': totalRatings};
   }
 }
-

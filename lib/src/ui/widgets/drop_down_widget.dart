@@ -38,21 +38,54 @@ class DropDownWidget extends StatelessWidget {
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
           ),
-          items: universitiesList
-              .map(
-                (i) => DropdownMenuItem(
-                  value: i,
-                  child: Text(
-                    i,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          items:
+              universitiesList
+                  .map(
+                    (i) => DropdownMenuItem(
+                      value: i,
+                      child: Text(
+                        i,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: AppColors.black,
                         ),
-                  ),
-                ),
-              )
-              .toList(),
+                      ),
+                    ),
+                  )
+                  .toList(),
           onChanged: onChange,
         ),
+      ),
+    );
+  }
+}
+
+class DropDownWidgetme extends StatelessWidget {
+  const DropDownWidgetme({
+    super.key,
+    required this.universitiesList,
+    required this.hintText,
+    this.selectedValue,
+  });
+
+  final List universitiesList;
+  final String hintText;
+  final String? selectedValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.textFieldBorder, width: 1.5),
+        color: AppColors.white,
+      ),
+      child: Text(
+        selectedValue ?? universitiesList.first,
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium!.copyWith(color: AppColors.black),
       ),
     );
   }

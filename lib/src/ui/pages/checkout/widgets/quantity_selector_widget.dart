@@ -46,12 +46,12 @@ class QuantitySelectorWidget extends ConsumerWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWellButtonWidget(
-                    onTap: quantity <= 1 ? null : onQuantityDecrementChanged,
+                    onTap: onQuantityDecrementChanged,
                     borderRadius: BorderRadius.circular(12),
                     child: Icon(
                       Icons.remove,
                       size: 20,
-                      color: quantity <= 1 ? Colors.grey : Colors.black,
+                      color: quantity <= 1 ? Colors.black : Colors.black,
                     ),
                   ),
                 ),

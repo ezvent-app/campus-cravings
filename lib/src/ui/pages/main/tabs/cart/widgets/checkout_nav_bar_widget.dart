@@ -52,7 +52,9 @@ class CheckoutNavBarWidget extends ConsumerWidget {
                   shape: const StadiumBorder(),
                   child: Center(
                     child: Text(
-                      cartItems.length.toString(),
+                      cartItems
+                          .fold<int>(0, (sum, item) => sum + item.quantity)
+                          .toString(),
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColors.white,

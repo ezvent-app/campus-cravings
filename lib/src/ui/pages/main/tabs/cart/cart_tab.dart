@@ -65,26 +65,36 @@ class CartTabPage extends ConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    item.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodyMedium!.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.black,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.clear, color: Colors.red),
-                                    onPressed: () {
-                                      cartNotifier.removeItem(item.id);
-                                    },
-                                  ),
-                                ],
+                              Text(
+                                item.name,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.black,
+                                ),
                               ),
+                              // Row(
+                              //   children: [
+                              //     Text(
+                              //       item.name,
+                              //       overflow: TextOverflow.ellipsis,
+                              //       style: Theme.of(
+                              //         context,
+                              //       ).textTheme.bodyMedium!.copyWith(
+                              //         fontWeight: FontWeight.w700,
+                              //         color: AppColors.black,
+                              //       ),
+                              //     ),
+                              //     IconButton(
+                              //       icon: Icon(Icons.clear, color: Colors.red),
+                              //       onPressed: () {
+                              //         cartNotifier.removeItem(item.id);
+                              //       },
+                              //     ),
+                              //   ],
+                              // ),
                               height(10),
                               QuantitySelectorWidget(
                                 price:
@@ -97,11 +107,7 @@ class CartTabPage extends ConsumerWidget {
                                     ),
                                 quantity: item.quantity,
                                 onQuantityDecrementChanged:
-                                    item.quantity <= 1
-                                        ? null
-                                        : () => cartNotifier.decrementQuantity(
-                                          index,
-                                        ),
+                                    () => cartNotifier.decrementQuantity(index),
                                 onQuantityIncrementChanged:
                                     item.quantity >= 10
                                         ? null

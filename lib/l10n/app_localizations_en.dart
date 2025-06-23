@@ -114,7 +114,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectRole => 'Select Role';
 
   @override
-  String get registerForDelivery => 'Also Register for Delivery';
+  String get registerForDelivery => 'Also Register As Delivery Person';
 
   @override
   String get next => 'Next';
@@ -168,7 +168,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get uploadCaptureImage => 'Upload Or Capture Image';
 
   @override
-  String get iAgreeWith => 'I agree with ';
+  String get iAgreeWith => 'I agree with the ';
 
   @override
   String get termsConditions => 'Terms and Conditions';

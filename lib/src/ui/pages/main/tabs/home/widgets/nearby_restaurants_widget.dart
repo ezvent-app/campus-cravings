@@ -44,7 +44,10 @@ class _NearbyRestaurantsWidgetState
                 } else if (controller.isLoading == false &&
                     controller.listOfNearByRestaurants.isEmpty) {
                   return const Center(
-                    child: Text('No nearby restaurants found'),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Text('No nearby restaurants found'),
+                    ),
                   );
                 }
                 return ListView.builder(

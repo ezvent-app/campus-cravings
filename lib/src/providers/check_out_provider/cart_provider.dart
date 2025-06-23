@@ -7,19 +7,44 @@ final cartItemsProvider = StateNotifierProvider<CartNotifier, List<CartItem>>(
 
 class CartNotifier extends StateNotifier<List<CartItem>> {
   CartNotifier() : super([]);
+  bool _isSameCustomization(
+    List<CustomizationModel> a,
+    List<CustomizationModel> b,
+  ) {
+    if (a.length != b.length) return false;
 
-  void addItem(CartItem item) {
-    final index = state.indexWhere((e) => e.id == item.id);
+    final sortedA = [...a]..sort((x, y) => x.id.compareTo(y.id));
+    final sortedB = [...b]..sort((x, y) => x.id.compareTo(y.id));
 
-    // if (index >= 0) {
-    //   final existingItem = state[index];
-    //   final newQuantity = (existingItem.quantity + item.quantity).clamp(1, 10);
-    //   final updatedItem = existingItem.copyWith(quantity: newQuantity);
-    //   state = [...state]..[index] = updatedItem;
-    // } else {
-    final newQuantity = item.quantity.clamp(1, 10);
-    state = [...state, item.copyWith(quantity: newQuantity)];
-    // }
+    for (int i = 0; i < sortedA.length; i++) {
+      if (sortedA[i].id != sortedB[i].id) return false;
+    }
+
+    return true;
+  }
+
+  bool addItem(CartItem newItem) {
+    final index = state.indexWhere(
+      (item) =>
+          item.id == newItem.id &&
+          item.size == newItem.size &&
+          _isSameCustomization(item.customization, newItem.customization),
+    );
+
+    if (index != -1) {
+      final existingItem = state[index];
+      final newQuantity = (existingItem.quantity + newItem.quantity).clamp(
+        1,
+        10,
+      );
+      final updatedItem = existingItem.copyWith(quantity: newQuantity);
+      state = [...state]..[index] = updatedItem;
+      return false;
+    } else {
+      final newQuantity = newItem.quantity.clamp(1, 10);
+      state = [...state, newItem.copyWith(quantity: newQuantity)];
+      return true;
+    }
   }
 
   void removeItem(String id) {
@@ -34,17 +59,19 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
       state.fold(0, (sum, item) => sum + (item.price * item.quantity));
 
   void incrementQuantity(int index) {
-    final updatedItem = state[index].copyWith(
-      quantity: state[index].quantity + 1,
-    );
+    final item = state[index];
+    final newQuantity = (item.quantity + 1).clamp(1, 10);
+    final updatedItem = item.copyWith(quantity: newQuantity);
     state = [...state]..[index] = updatedItem;
   }
 
   void decrementQuantity(int index) {
-    final currentQuantity = state[index].quantity;
-    if (currentQuantity > 1) {
-      final updatedItem = state[index].copyWith(quantity: currentQuantity - 1);
+    final item = state[index];
+    if (item.quantity > 1) {
+      final updatedItem = item.copyWith(quantity: item.quantity - 1);
       state = [...state]..[index] = updatedItem;
+    } else {
+      state = List.from(state)..removeAt(index);
     }
   }
 

@@ -306,7 +306,7 @@ abstract class AppLocalizations {
   /// No description provided for @registerForDelivery.
   ///
   /// In en, this message translates to:
-  /// **'Also Register for Delivery'**
+  /// **'Also Register As Delivery Person'**
   String get registerForDelivery;
 
   /// No description provided for @next.
@@ -414,7 +414,7 @@ abstract class AppLocalizations {
   /// No description provided for @iAgreeWith.
   ///
   /// In en, this message translates to:
-  /// **'I agree with '**
+  /// **'I agree with the '**
   String get iAgreeWith;
 
   /// No description provided for @termsConditions.

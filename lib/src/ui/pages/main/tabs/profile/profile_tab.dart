@@ -1,9 +1,8 @@
 import 'package:campuscravings/src/constants/storageHelper.dart'
     show StorageHelper;
 import 'package:campuscravings/src/controllers/user_controller.dart';
-import 'package:campuscravings/src/models/User%20Model/user_info_model.dart';
-import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:shimmer/shimmer.dart';
 
 @RoutePage()
 class ProfileTabPage extends ConsumerStatefulWidget {
@@ -14,6 +13,19 @@ class ProfileTabPage extends ConsumerStatefulWidget {
 }
 
 class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
+  bool _isFirstBuild = true;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_isFirstBuild) {
+      _isFirstBuild = false;
+      Future.microtask(() {
+        ref.read(userControllerProvider.notifier).refreshUser();
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -34,113 +46,162 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
+                    user == null
+                        ? Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
                           child: Row(
                             children: [
                               Container(
                                 width: 60,
                                 height: 60,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey,
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                child:
-                                    user?.imgUrl != null && user?.imgUrl != ''
-                                        ? ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            20,
-                                          ),
-                                          child: Image.network(
-                                            user!.imgUrl!,
-                                            fit: BoxFit.cover,
-                                            errorBuilder:
-                                                (context, error, stackTrace) =>
-                                                    const Center(
-                                                      child: Icon(
-                                                        Icons.person,
-                                                        size: 35,
-                                                        color: AppColors.white,
-                                                      ),
-                                                    ),
-                                          ),
-                                        )
-                                        : const Center(
-                                          child: Icon(
-                                            Icons.person,
-                                            size: 35,
-                                            color: AppColors.white,
-                                          ),
-                                        ),
                               ),
                               const SizedBox(width: 20),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "${user?.firstName} ${user?.lastName}",
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style:
-                                          Theme.of(
-                                            context,
-                                          ).textTheme.titleMedium,
+                                    Container(
+                                      height: 16,
+                                      width: 150,
+                                      color: Colors.white,
                                     ),
-                                    height(5),
-                                    InkWellButtonWidget(
-                                      onTap: () {
-                                        context.pushRoute(
-                                          ProfileFormRoute(newUser: false),
-                                        );
-                                      },
-                                      child: Text(
-                                        locale.editProfile,
-                                        style: TextStyle(
-                                          color: AppColors.lightText,
-                                        ),
-                                      ),
+                                    const SizedBox(height: 8),
+                                    Container(
+                                      height: 12,
+                                      width: 80,
+                                      color: Colors.white,
                                     ),
                                   ],
                                 ),
                               ),
+                              const SizedBox(width: 10),
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                            border: Border.all(
-                              color: const Color(0xFFF4F4F4),
-                              width: 2,
+                        )
+                        : Row(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child:
+                                        user?.imgUrl != null &&
+                                                user?.imgUrl != ''
+                                            ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              child: Image.network(
+                                                user!.imgUrl!,
+                                                fit: BoxFit.cover,
+                                                errorBuilder:
+                                                    (
+                                                      context,
+                                                      error,
+                                                      stackTrace,
+                                                    ) => const Center(
+                                                      child: Icon(
+                                                        Icons.person,
+                                                        size: 35,
+                                                        color: AppColors.white,
+                                                      ),
+                                                    ),
+                                              ),
+                                            )
+                                            : const Center(
+                                              child: Icon(
+                                                Icons.person,
+                                                size: 35,
+                                                color: AppColors.white,
+                                              ),
+                                            ),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${user?.firstName} ${user?.lastName}",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.titleMedium,
+                                        ),
+                                        height(5),
+                                        InkWellButtonWidget(
+                                          onTap: () {
+                                            context.pushRoute(
+                                              ProfileFormRoute(newUser: false),
+                                            );
+                                          },
+                                          child: Text(
+                                            locale.editProfile,
+                                            style: TextStyle(
+                                              color: AppColors.lightText,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWellButtonWidget(
-                              onTap: () {
-                                context.pushRoute(
-                                  ProfileFormRoute(newUser: false),
-                                );
-                              },
-                              borderRadius: BorderRadius.circular(8),
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: const Color(0xFFF4F4F4),
+                                  width: 2,
+                                ),
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWellButtonWidget(
+                                  onTap: () {
+                                    context.pushRoute(
+                                      ProfileFormRoute(newUser: false),
+                                    );
+                                  },
+                                  borderRadius: BorderRadius.circular(8),
 
-                              child: const Center(
-                                child: Icon(
-                                  Icons.keyboard_arrow_right,
-                                  size: 30,
-                                  color: Color(0xff443A39),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.keyboard_arrow_right,
+                                      size: 30,
+                                      color: Color(0xff443A39),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
                     ProfileGroupButton(
                       options: [
                         // ProfileOption(
@@ -207,6 +268,9 @@ class _ProfileTabPageState extends ConsumerState<ProfileTabPage> {
                                       ),
                                       TextButton(
                                         onPressed: () {
+                                          ref.invalidate(
+                                            userControllerProvider,
+                                          );
                                           StorageHelper().clear();
                                           Navigator.pop(context);
                                           context.replaceRoute(LoginRoute());

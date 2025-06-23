@@ -3,13 +3,18 @@ import 'package:campuscravings/src/repository/user_info_repo/user_info_repo.dart
 import 'package:campuscravings/src/src.dart';
 
 @RoutePage()
-class SavedAddressesPage extends ConsumerWidget {
-  SavedAddressesPage({super.key});
+class SavedAddressesPage extends ConsumerStatefulWidget {
+  const SavedAddressesPage({super.key});
 
+  @override
+  ConsumerState<SavedAddressesPage> createState() => _SavedAddressesPageState();
+}
+
+class _SavedAddressesPageState extends ConsumerState<SavedAddressesPage> {
   final UserInfoRepository _userRepository = UserInfoRepository();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
 
     return BaseWrapper(
@@ -21,17 +26,24 @@ class SavedAddressesPage extends ConsumerWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
+          if (!snapshot.hasData || snapshot.data!.userInfo!.addresses == null) {
+            return const Center(child: Text("No addresses found"));
+          }
+
+          final addresses = snapshot.data!.userInfo!.addresses!;
+
           return Column(
             children: [
               ListView.separated(
                 shrinkWrap: true,
-                itemCount: snapshot.data!.userInfo!.addresses!.length,
-                physics: BouncingScrollPhysics(),
+                itemCount: addresses.length,
+                physics: const BouncingScrollPhysics(),
                 separatorBuilder: (context, index) => height(15),
                 itemBuilder: (context, index) {
-                  final address = snapshot.data!.userInfo!.addresses![index];
+                  final address = addresses[index];
+
                   return InkWellButtonWidget(
-                    onTap: () async {},
+                    onTap: () {},
                     child: Card(
                       shape: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -57,6 +69,7 @@ class SavedAddressesPage extends ConsumerWidget {
                                           color: AppColors.primary,
                                         ),
                                       ),
+                                      const SizedBox(width: 8),
                                       if (address.address == true)
                                         Container(
                                           padding: const EdgeInsets.symmetric(
@@ -64,8 +77,7 @@ class SavedAddressesPage extends ConsumerWidget {
                                             vertical: 6,
                                           ),
                                           margin: const EdgeInsets.only(
-                                            left: 30,
-                                            bottom: 2,
+                                            left: 10,
                                           ),
                                           decoration: BoxDecoration(
                                             color: const Color(0xFFEBEBEB),
@@ -84,6 +96,7 @@ class SavedAddressesPage extends ConsumerWidget {
                                         ),
                                     ],
                                   ),
+                                  const SizedBox(height: 8),
                                   Text(
                                     address.address ?? '',
                                     style:
@@ -104,8 +117,14 @@ class SavedAddressesPage extends ConsumerWidget {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed:
-                      () => context.pushRoute(CheckOutAddNewAddressRoute()),
+                  onPressed: () async {
+                    final result = await context.pushRoute(
+                      CheckOutAddNewAddressRoute(),
+                    );
+                    if (result == true) {
+                      setState(() {});
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
