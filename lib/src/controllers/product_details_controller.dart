@@ -13,6 +13,7 @@ class ProductDetailsController extends GetxController {
   bool get isLoading => _isLoading;
   int _productQuantity = 1;
   int get productQuantity => _productQuantity;
+  String selectedSizeId = '';
 
   void setProductId(String productId) {
     _productId = productId;
@@ -23,16 +24,32 @@ class ProductDetailsController extends GetxController {
     try {
       _isLoading = true;
       update();
+
       _productItemDetailModel = await _productRepository.getProductItemDetails(
         itemId: _productId,
       );
+
+      final item = _productItemDetailModel!;
+      selectedCustomizations = [];
+      // Reset size price and id to defaults
+      selectedSizePrice = 0.0;
+      selectedSizeId = item.sizes.first.id ?? "";
+
+      // Auto-select smallest size only if base price is 0 and sizes exist
+      if (item.price == 0 && item.sizes.isNotEmpty) {
+        item.sizes.sort((a, b) => a.price.compareTo(b.price));
+        final smallestSize = item.sizes.first;
+
+        selectedSizePrice = smallestSize.price;
+        selectedSizeId = smallestSize.id;
+      }
+
+      getTotalPrice();
       _isLoading = false;
       update();
-      return;
     } catch (e) {
       _isLoading = false;
       update();
-      return;
     }
   }
 

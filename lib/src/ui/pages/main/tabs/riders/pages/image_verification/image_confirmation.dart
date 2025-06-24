@@ -110,7 +110,8 @@ class _ConsumerImageConfirmationPageState
                                             RiderDelvieryRepo();
                                         final response = await repo
                                             .orderDeliverByRider({
-                                              "imageUrl": base64Image,
+                                              "imageUrl":
+                                                  "https://fastly.picsum.photos/id/1015/536/354.jpg?hmac=x7KEhPoOftwPXIgnQoTQzNtVUqaPYwndK8n1x_9rWuM",
                                               "orderId": riderOrderId,
                                             });
 

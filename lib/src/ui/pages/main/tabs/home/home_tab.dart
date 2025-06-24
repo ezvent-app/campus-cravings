@@ -1,5 +1,7 @@
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
+import 'package:campuscravings/src/controllers/product_catalog_controller.dart';
+import 'package:campuscravings/src/controllers/resturant_controller.dart';
 import 'package:campuscravings/src/controllers/user_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/pages/main/tabs/home/search_page.dart';
@@ -189,15 +191,21 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                   ),
                 ),
                 Expanded(
-                  child: ListView(
-                    physics: BouncingScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    children: [
-                      CategoriesHorizontalWidget(),
-                      PopularHorizontalWidget(),
-                      height(20),
-                      NearbyRestaurantsWidget(),
-                    ],
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      Get.find<RestaurantController>().getNearByRestaurants();
+                      Get.find<ProductCatalogController>().getPopularItems();
+                    },
+                    child: ListView(
+                      physics: BouncingScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      children: [
+                        CategoriesHorizontalWidget(),
+                        PopularHorizontalWidget(),
+                        height(20),
+                        NearbyRestaurantsWidget(),
+                      ],
+                    ),
                   ),
                 ),
               ],

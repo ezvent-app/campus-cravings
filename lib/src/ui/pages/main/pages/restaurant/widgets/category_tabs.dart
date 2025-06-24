@@ -181,7 +181,46 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                                                   ),
                                                   height(7),
                                                   Text(
-                                                    '\$${e.items[index].price.toStringAsFixed(2)}',
+                                                    () {
+                                                      final item =
+                                                          e.items[index];
+
+                                                      if (item.price == 0) {
+                                                        final customizationPrices =
+                                                            item.customization
+                                                                .map(
+                                                                  (c) =>
+                                                                      c.price,
+                                                                )
+                                                                .toList();
+                                                        final sizePrices =
+                                                            item.sizes
+                                                                .map(
+                                                                  (s) =>
+                                                                      s.price,
+                                                                )
+                                                                .toList();
+
+                                                        final allPrices = [
+                                                          ...customizationPrices,
+                                                          ...sizePrices,
+                                                        ];
+
+                                                        if (allPrices
+                                                            .isNotEmpty) {
+                                                          final minPrice =
+                                                              allPrices.reduce(
+                                                                (a, b) =>
+                                                                    a < b
+                                                                        ? a
+                                                                        : b,
+                                                              );
+                                                          return '\$${minPrice.toStringAsFixed(2)}';
+                                                        }
+                                                      }
+
+                                                      return '\$${item.price.toStringAsFixed(2)}';
+                                                    }(),
                                                     style:
                                                         Theme.of(
                                                           context,

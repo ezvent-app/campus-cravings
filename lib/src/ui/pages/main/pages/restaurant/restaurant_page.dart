@@ -93,7 +93,7 @@ class RestaurantPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      controller.restaurantDetails!.restaurant.brandName,
+                      controller.restaurantDetails!.restaurant.storeName,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const Divider(color: AppColors.dividerColor, height: 32),
