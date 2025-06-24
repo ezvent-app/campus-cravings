@@ -671,7 +671,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
           final LatLng? customerLatLng = getLatLngFromOrderAddress(
             address.value?.addresses,
           );
-          final LatLng restuarantLatLng = LatLng(
+          final LatLng restuarantLatLng = LatLng( 
             cartItems.first.restCoordinates[0],
             cartItems.first.restCoordinates[1],
           );
