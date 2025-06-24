@@ -276,7 +276,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.45,
                         child: Text(
-                          "${item?.brandName}",
+                          "${item?.storeName}",
                           style: TextStyle(
                             fontSize: 18,
                             color: Color(0xff443A39),

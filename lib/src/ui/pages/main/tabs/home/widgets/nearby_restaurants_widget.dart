@@ -86,7 +86,7 @@ class _NearbyRestaurantsWidgetState
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    restaurant.brandName,
+                                    restaurant.storeName,
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Color(0xff443A39),

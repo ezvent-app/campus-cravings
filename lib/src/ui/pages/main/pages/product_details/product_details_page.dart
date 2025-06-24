@@ -198,9 +198,14 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                       quantity: controller.productQuantity,
                                       price:
                                           controller
-                                              .productItemDetailModel
-                                              ?.price ??
-                                          0,
+                                                      .productItemDetailModel
+                                                      ?.price ==
+                                                  0
+                                              ? controller.selectedSizePrice
+                                              : controller
+                                                      .productItemDetailModel
+                                                      ?.price ??
+                                                  0,
                                       onQuantityDecrementChanged: () {
                                         controller.decrementProductQuantity();
                                       },
@@ -384,13 +389,17 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             );
                             return;
                           }
+                          final itemPrice =
+                              controller.productItemDetailModel!.price == 0
+                                  ? controller.selectedSizePrice
+                                  : controller.productItemDetailModel!.price;
 
                           final wasNew = ref
                               .read(cartItemsProvider.notifier)
                               .addItem(
                                 CartItem(
-                                  price:
-                                      controller.productItemDetailModel!.price,
+                                  price: itemPrice,
+
                                   restCoordinates: widget.restCoordinates,
                                   sizePrice:
                                       cartItemsNotifier.selectedSizePrice,
