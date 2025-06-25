@@ -1,5 +1,6 @@
 import 'package:campuscravings/src/controllers/product_details_controller.dart';
 import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
+import 'package:campuscravings/src/models/restaurant_details_model.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 import 'package:get/get.dart';
@@ -7,10 +8,12 @@ import 'package:get/get.dart';
 class CategoryTabs extends ConsumerStatefulWidget {
   final List<Product> products;
   final List<double> coordinates;
+  final String? initialItemId;
   const CategoryTabs({
     super.key,
     required this.products,
     required this.coordinates,
+    this.initialItemId,
   });
 
   @override
@@ -19,6 +22,7 @@ class CategoryTabs extends ConsumerStatefulWidget {
 
 class _CategoryTabsState extends ConsumerState<CategoryTabs>
     with TickerProviderStateMixin {
+  late Map<String, ScrollController> _scrollControllers;
   late TabController _tabController;
   late List<String> _categories;
   late bool _expandedTabBar;
@@ -35,12 +39,43 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
       length: Get.find<RestaurantDetailsController>().getCategoriesLength(),
       vsync: this,
     );
+
+    _scrollControllers = {
+      for (var category in _categories) category: ScrollController(),
+    };
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.initialItemId != null) {
+        final controller = Get.find<RestaurantDetailsController>();
+        final categories = controller.restaurantDetails!.categories;
+
+        for (var i = 0; i < categories.length; i++) {
+          final itemIndex = categories[i].items.indexWhere(
+            (item) => item.id == widget.initialItemId,
+          );
+
+          if (itemIndex != -1) {
+            _tabController.animateTo(i);
+            Future.delayed(const Duration(milliseconds: 400), () {
+              _scrollControllers[categories[i].name]?.animateTo(
+                itemIndex * 150.0, // Adjust if your item height differs
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeInOut,
+              );
+            });
+            break;
+          }
+        }
+      }
+    });
+
     super.initState();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _scrollControllers.values.forEach((c) => c.dispose());
     super.dispose();
   }
 
@@ -93,165 +128,121 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                 ),
               ),
               Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children:
-                      controller.restaurantDetails!.categories.map((e) {
-                        final categorizedProducts =
-                            widget.products.where((product) {
-                              return product.categories!.contains(e);
-                            }).toList();
-                        return ListView(
-                          padding: const EdgeInsets.only(top: 24),
-                          physics: BouncingScrollPhysics(),
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                              ),
-                              child: Text(
-                                e.name,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.black,
-                                ),
-                              ),
+                child: Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children:
+                        controller.restaurantDetails!.categories.map((
+                          category,
+                        ) {
+                          final isInitialItemView =
+                              widget.initialItemId != null;
+
+                          final items =
+                              isInitialItemView
+                                  ? category.items
+                                      .where(
+                                        (item) =>
+                                            item.id == widget.initialItemId,
+                                      )
+                                      .toList()
+                                  : category.items;
+
+                          // If in initialItemId mode and no items match, return an empty widget
+                          if (isInitialItemView && items.isEmpty) {
+                            return const Center(child: Text("No item found"));
+                          }
+
+                          return ListView.separated(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 20,
                             ),
-                            ListView.separated(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: e.items.length,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 20,
-                              ),
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 20,
-                                      ),
-                                    ],
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              final item = items[index];
+                              return Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 20,
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(28),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWellButtonWidget(
                                     borderRadius: BorderRadius.circular(28),
-                                  ),
-                                  child: Material(
-                                    color: Colors.transparent,
-                                    child: InkWellButtonWidget(
-                                      borderRadius: BorderRadius.circular(28),
-                                      onTap: () {
-                                        Get.find<ProductDetailsController>()
-                                            .setProductId(e.items[index].id);
-                                        context.pushRoute(
-                                          ProductDetailsRoute(
-                                            restCoordinates: widget.coordinates,
-                                          ),
-                                        );
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12),
-                                        child: Row(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                              child: CustomNetworkImage(
-                                                e.items[index].image[0],
-                                                fit: BoxFit.cover,
-                                                height: 100,
-                                                width: 100,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 16),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    e.items[index].name,
-                                                    style:
-                                                        Theme.of(
-                                                          context,
-                                                        ).textTheme.titleSmall,
-                                                  ),
-                                                  height(7),
-                                                  Text(
-                                                    () {
-                                                      final item =
-                                                          e.items[index];
-
-                                                      if (item.price == 0) {
-                                                        final customizationPrices =
-                                                            item.customization
-                                                                .map(
-                                                                  (c) =>
-                                                                      c.price,
-                                                                )
-                                                                .toList();
-                                                        final sizePrices =
-                                                            item.sizes
-                                                                .map(
-                                                                  (s) =>
-                                                                      s.price,
-                                                                )
-                                                                .toList();
-
-                                                        final allPrices = [
-                                                          ...customizationPrices,
-                                                          ...sizePrices,
-                                                        ];
-
-                                                        if (allPrices
-                                                            .isNotEmpty) {
-                                                          final minPrice =
-                                                              allPrices.reduce(
-                                                                (a, b) =>
-                                                                    a < b
-                                                                        ? a
-                                                                        : b,
-                                                              );
-                                                          return '\$${minPrice.toStringAsFixed(2)}';
-                                                        }
-                                                      }
-
-                                                      return '\$${item.price.toStringAsFixed(2)}';
-                                                    }(),
-                                                    style:
-                                                        Theme.of(
-                                                          context,
-                                                        ).textTheme.titleSmall,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SvgAssets(
-                                              'PlusButton',
-                                              width: 20,
-                                              height: 20,
-                                            ),
-                                            width(10),
-                                          ],
+                                    onTap: () {
+                                      Get.find<ProductDetailsController>()
+                                          .setProductId(item.id);
+                                      context.pushRoute(
+                                        ProductDetailsRoute(
+                                          restCoordinates: widget.coordinates,
                                         ),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Row(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              24,
+                                            ),
+                                            child: CustomNetworkImage(
+                                              item.image[0],
+                                              fit: BoxFit.cover,
+                                              height: 100,
+                                              width: 100,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 16),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  item.name,
+                                                  style:
+                                                      Theme.of(
+                                                        context,
+                                                      ).textTheme.titleSmall,
+                                                ),
+                                                const SizedBox(height: 7),
+                                                Text(
+                                                  _getItemPrice(item),
+                                                  style:
+                                                      Theme.of(
+                                                        context,
+                                                      ).textTheme.titleSmall,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SvgAssets(
+                                            'PlusButton',
+                                            width: 20,
+                                            height: 20,
+                                          ),
+                                          const SizedBox(width: 10),
+                                        ],
                                       ),
                                     ),
                                   ),
-                                );
-                              },
-                              separatorBuilder: (
-                                BuildContext context,
-                                int index,
-                              ) {
-                                return const SizedBox(height: 20);
-                              },
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                                ),
+                              );
+                            },
+                            separatorBuilder:
+                                (_, __) => const SizedBox(height: 20),
+                          );
+                        }).toList(),
+                  ),
                 ),
               ),
             ],
@@ -259,5 +250,18 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
         },
       ),
     );
+  }
+
+  String _getItemPrice(Item item) {
+    if (item.price == 0) {
+      final customizationPrices = item.customization.map((c) => c.price);
+      final sizePrices = item.sizes.map((s) => s.price);
+      final allPrices = [...customizationPrices, ...sizePrices];
+      if (allPrices.isNotEmpty) {
+        final minPrice = allPrices.reduce((a, b) => a < b ? a : b);
+        return '\$${minPrice.toStringAsFixed(2)}';
+      }
+    }
+    return '\$${item.price.toStringAsFixed(2)}';
   }
 }

@@ -1,7 +1,7 @@
 import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
+
 import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/restaurant_details_controller.dart';
 import '../../../../../src.dart';

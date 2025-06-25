@@ -6,7 +6,8 @@ import 'package:shimmer/shimmer.dart';
 
 @RoutePage()
 class RestaurantPage extends ConsumerWidget {
-  const RestaurantPage({super.key});
+  final String? initialItemId;
+  const RestaurantPage({super.key, this.initialItemId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -165,6 +166,7 @@ class RestaurantPage extends ConsumerWidget {
                         .addresses
                         .coordinates
                         .coordinates,
+                initialItemId: initialItemId,
               ),
             ],
           ),

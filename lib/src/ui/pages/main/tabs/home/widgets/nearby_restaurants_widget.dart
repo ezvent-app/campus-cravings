@@ -62,7 +62,7 @@ class _NearbyRestaurantsWidgetState
                         Get.find<RestaurantDetailsController>().setRestaurantId(
                           restaurant.id,
                         );
-                        context.pushRoute(const RestaurantRoute());
+                        context.pushRoute(RestaurantRoute());
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
