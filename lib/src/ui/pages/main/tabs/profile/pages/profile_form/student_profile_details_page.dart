@@ -121,9 +121,9 @@ class _StudentProfileDetailsPageState
                   }
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.grey.shade300),
                   ),
                   child: Row(
@@ -138,7 +138,7 @@ class _StudentProfileDetailsPageState
                               selectedYear.isNotEmpty
                                   ? Colors.black
                                   : Colors.grey,
-                          fontSize: 14,
+                          fontSize: 12,
                         ),
                       ),
                       Icon(Icons.arrow_drop_down, color: Colors.grey),
