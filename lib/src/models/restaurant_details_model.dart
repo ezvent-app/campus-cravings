@@ -24,8 +24,7 @@ class RestaurantDetailsModel {
 class Restaurant {
   final String id;
   final String storeName;
-  final String brandName;
-  final String floor;
+
   final String phoneNumber;
   final String cuisine;
   final String status;
@@ -40,8 +39,7 @@ class Restaurant {
   Restaurant({
     required this.id,
     required this.storeName,
-    required this.brandName,
-    required this.floor,
+
     required this.phoneNumber,
     required this.cuisine,
     required this.status,
@@ -56,28 +54,57 @@ class Restaurant {
 
   factory Restaurant.fromJson(Map<String, dynamic> json) {
     return Restaurant(
-      id: json['_id'],
-      storeName: json['storeName'],
-      brandName: json['brandName'],
-      floor: json['floor'].toString(),
-      phoneNumber: json['phoneNumber'].toString(),
-      cuisine: json['cuisine'],
-      status: json['status'],
-      deliveryMethods: List<String>.from(json['deliveryMethods']),
-      paymentMethods: List<String>.from(json['paymentMethods']),
-      restaurantImages: List<String>.from(json['restaurantImages']),
-      categories: List<String>.from(json['categories']),
-      addresses: Address.fromJson(json['addresses']),
-      ratings: Ratings.fromJson(json['ratings']),
-      openingHours: OpeningHours.fromJson(json['openingHours']),
+      id: json['_id'] ?? '',
+      storeName: json['storeName'] ?? '',
+      phoneNumber: json['phoneNumber']?.toString() ?? '',
+      cuisine: json['cuisine'] ?? '',
+      status: json['status'] ?? '',
+      deliveryMethods:
+          json['deliveryMethods'] != null
+              ? List<String>.from(json['deliveryMethods'])
+              : [],
+      paymentMethods:
+          json['paymentMethods'] != null
+              ? List<String>.from(json['paymentMethods'])
+              : [],
+      restaurantImages:
+          json['restaurantImages'] != null
+              ? List<String>.from(json['restaurantImages'])
+              : [],
+      categories:
+          json['categories'] != null
+              ? List<String>.from(json['categories'])
+              : [],
+      addresses:
+          json['addresses'] != null
+              ? Address.fromJson(json['addresses'])
+              : Address(
+                address: '',
+                coordinates: Coordinates(type: '', coordinates: []),
+              ),
+      ratings:
+          json['ratings'] != null
+              ? Ratings.fromJson(json['ratings'])
+              : Ratings(averageRating: 0, totalRatings: 0),
+      openingHours:
+          json['openingHours'] != null
+              ? OpeningHours.fromJson(json['openingHours'])
+              : OpeningHours(
+                monday: '',
+                tuesday: '',
+                wednesday: '',
+                thursday: '',
+                friday: '',
+                saturday: '',
+                sunday: '',
+              ),
     );
   }
 
   Map<String, dynamic> toJson() => {
     '_id': id,
     'storeName': storeName,
-    'brandName': brandName,
-    'floor': floor,
+
     'phoneNumber': phoneNumber,
     'cuisine': cuisine,
     'status': status,
@@ -99,8 +126,11 @@ class Address {
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
-      address: json['address'],
-      coordinates: Coordinates.fromJson(json['coordinates']),
+      address: json['address'] ?? '',
+      coordinates:
+          json['coordinates'] != null
+              ? Coordinates.fromJson(json['coordinates'])
+              : Coordinates(type: '', coordinates: []),
     );
   }
 
@@ -118,9 +148,9 @@ class Coordinates {
 
   factory Coordinates.fromJson(Map<String, dynamic> json) {
     return Coordinates(
-      type: json['type'],
+      type: json['type'] ?? '',
       coordinates: List<double>.from(
-        json['coordinates'].map((x) => x.toDouble()),
+        (json['coordinates'] ?? []).map((x) => (x as num).toDouble()),
       ),
     );
   }
@@ -136,8 +166,8 @@ class Ratings {
 
   factory Ratings.fromJson(Map<String, dynamic> json) {
     return Ratings(
-      averageRating: (json['averageRating'] as num).toDouble(),
-      totalRatings: json['totalRatings'],
+      averageRating: (json['averageRating'] as num?)?.toDouble() ?? 0.0,
+      totalRatings: json['totalRatings'] ?? 0,
     );
   }
 
@@ -168,13 +198,13 @@ class OpeningHours {
 
   factory OpeningHours.fromJson(Map<String, dynamic> json) {
     return OpeningHours(
-      monday: json['monday'],
-      tuesday: json['tuesday'],
-      wednesday: json['wednesday'],
-      thursday: json['thursday'],
-      friday: json['friday'],
-      saturday: json['saturday'],
-      sunday: json['sunday'],
+      monday: json['monday'] ?? 'Closed',
+      tuesday: json['tuesday'] ?? 'Closed',
+      wednesday: json['wednesday'] ?? 'Closed',
+      thursday: json['thursday'] ?? 'Closed',
+      friday: json['friday'] ?? 'Closed',
+      saturday: json['saturday'] ?? 'Closed',
+      sunday: json['sunday'] ?? 'Closed',
     );
   }
 

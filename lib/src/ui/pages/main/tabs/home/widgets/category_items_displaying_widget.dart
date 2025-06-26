@@ -1,5 +1,7 @@
 import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
 import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
+import 'package:campuscravings/src/models/User%20Model/nearby_restaurants_model.dart';
+import 'package:campuscravings/src/models/restaurant_details_model.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -133,7 +135,7 @@ class _CategoryDisplayingPageState extends State<CategoryDisplayingPage>
                                     ),
                                     height(4),
                                     Text(
-                                      '\$${item.price}',
+                                      _getItemPrice(item),
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w500,
@@ -219,5 +221,16 @@ class _CategoryDisplayingPageState extends State<CategoryDisplayingPage>
         ),
       ),
     );
+  }
+
+  String _getItemPrice(FoodItem item) {
+    if (item.price == 0) {
+      final sizePrices = item.sizes.map((s) => s.price);
+      if (sizePrices.isNotEmpty) {
+        final minSizePrice = sizePrices.reduce((a, b) => a < b ? a : b);
+        return '\$${minSizePrice.toStringAsFixed(2)}';
+      }
+    }
+    return '\$${item.price.toStringAsFixed(2)}';
   }
 }

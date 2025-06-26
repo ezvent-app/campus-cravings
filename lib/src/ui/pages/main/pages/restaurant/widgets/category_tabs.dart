@@ -26,19 +26,29 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
   late TabController _tabController;
   late List<String> _categories;
   late bool _expandedTabBar;
-
+  late List<Category> _visibleCategories;
   @override
   void initState() {
-    _categories = widget.products.expand((p) => p.categories!).toSet().toList();
-    if (_categories.contains('recommended')) {
-      _categories.remove('recommended');
-      _categories.insert(0, 'recommended');
+    final controller = Get.find<RestaurantDetailsController>();
+    final allCategories = controller.restaurantDetails!.categories;
+
+    // Filter to only the category containing the initial item
+    if (widget.initialItemId != null) {
+      _visibleCategories =
+          allCategories
+              .where(
+                (cat) =>
+                    cat.items.any((item) => item.id == widget.initialItemId),
+              )
+              .toList();
+    } else {
+      _visibleCategories = allCategories;
     }
+
+    _categories = _visibleCategories.map((c) => c.name).toList();
     _expandedTabBar = _categories.length > 3;
-    _tabController = TabController(
-      length: Get.find<RestaurantDetailsController>().getCategoriesLength(),
-      vsync: this,
-    );
+
+    _tabController = TabController(length: _categories.length, vsync: this);
 
     _scrollControllers = {
       for (var category in _categories) category: ScrollController(),
@@ -46,19 +56,16 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.initialItemId != null) {
-        final controller = Get.find<RestaurantDetailsController>();
-        final categories = controller.restaurantDetails!.categories;
-
-        for (var i = 0; i < categories.length; i++) {
-          final itemIndex = categories[i].items.indexWhere(
+        for (var i = 0; i < _visibleCategories.length; i++) {
+          final itemIndex = _visibleCategories[i].items.indexWhere(
             (item) => item.id == widget.initialItemId,
           );
 
           if (itemIndex != -1) {
             _tabController.animateTo(i);
             Future.delayed(const Duration(milliseconds: 400), () {
-              _scrollControllers[categories[i].name]?.animateTo(
-                itemIndex * 150.0, // Adjust if your item height differs
+              _scrollControllers[_visibleCategories[i].name]?.animateTo(
+                itemIndex * 150.0,
                 duration: const Duration(milliseconds: 400),
                 curve: Curves.easeInOut,
               );
@@ -113,7 +120,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                     controller: _tabController,
                     labelPadding: const EdgeInsets.symmetric(horizontal: 10),
                     tabs:
-                        controller.restaurantDetails!.categories.map((e) {
+                        _visibleCategories.map((e) {
                           return Tab(
                             child: Text(
                               e.name,
@@ -132,9 +139,7 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
                   child: TabBarView(
                     controller: _tabController,
                     children:
-                        controller.restaurantDetails!.categories.map((
-                          category,
-                        ) {
+                        _visibleCategories.map((category) {
                           final isInitialItemView =
                               widget.initialItemId != null;
 
@@ -254,12 +259,10 @@ class _CategoryTabsState extends ConsumerState<CategoryTabs>
 
   String _getItemPrice(Item item) {
     if (item.price == 0) {
-      final customizationPrices = item.customization.map((c) => c.price);
       final sizePrices = item.sizes.map((s) => s.price);
-      final allPrices = [...customizationPrices, ...sizePrices];
-      if (allPrices.isNotEmpty) {
-        final minPrice = allPrices.reduce((a, b) => a < b ? a : b);
-        return '\$${minPrice.toStringAsFixed(2)}';
+      if (sizePrices.isNotEmpty) {
+        final minSizePrice = sizePrices.reduce((a, b) => a < b ? a : b);
+        return '\$${minSizePrice.toStringAsFixed(2)}';
       }
     }
     return '\$${item.price.toStringAsFixed(2)}';

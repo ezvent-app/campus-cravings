@@ -1,4 +1,10 @@
+import 'dart:developer' as dev;
+
+import 'package:campuscravings/src/constants/storageHelper.dart';
+import 'package:campuscravings/src/controllers/location_controller.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 
 @RoutePage()
 class StudentProfileDetailsPage extends ConsumerStatefulWidget {
@@ -11,6 +17,7 @@ class StudentProfileDetailsPage extends ConsumerStatefulWidget {
 
 class _StudentProfileDetailsPageState
     extends ConsumerState<StudentProfileDetailsPage> {
+  bool _isLoading = false;
   OverlayEntry? _dropdownOverlay;
   final LayerLink _layerLink = LayerLink();
   final GlobalKey _fieldKey = GlobalKey();
@@ -23,11 +30,12 @@ class _StudentProfileDetailsPageState
 
   late final TextEditingController _clubController;
   late final FocusNode _clubFocusNode;
-
+  Position? _locationData;
+  HttpAPIServices services = HttpAPIServices();
   @override
   void initState() {
     super.initState();
-
+    getLocation();
     _majorController = TextEditingController();
     _majorFocusNode = FocusNode();
     _majorFocusNode.addListener(() {
@@ -66,6 +74,13 @@ class _StudentProfileDetailsPageState
         }
       }
     });
+  }
+
+  getLocation() async {
+    _locationData = await Get.find<LocationController>().getCurrentLocation();
+    dev.log(
+      ".............user current Lat ${_locationData!.latitude.toString()} long ${_locationData!.latitude.toString()}",
+    );
   }
 
   @override
@@ -207,7 +222,11 @@ class _StudentProfileDetailsPageState
             height(25),
             RoundedButtonWidget(
               btnTitle: locale.next,
-              onTap: () {
+              isLoading: _isLoading,
+              onTap: () async {
+                setState(() {
+                  _isLoading = true;
+                });
                 final aboutYou = ref.read(studentProfileProvider)["aboutYou"];
                 final batchYear = ref.read(studentProfileProvider)["batchYear"];
                 final majors = ref.read(majorsProvider);
@@ -219,16 +238,19 @@ class _StudentProfileDetailsPageState
                     "Please select your graduation year.",
                     context: context,
                   );
+                  setState(() => _isLoading = false);
                   return;
                 }
 
                 if (majors.isEmpty) {
                   showToast("Please add at least one major.", context: context);
+                  setState(() => _isLoading = false);
                   return;
                 }
 
                 if (minors.isEmpty) {
                   showToast("Please add at least one minor.", context: context);
+                  setState(() => _isLoading = false);
                   return;
                 }
 
@@ -237,6 +259,7 @@ class _StudentProfileDetailsPageState
                     "Please add at least one club or organization.",
                     context: context,
                   );
+                  setState(() => _isLoading = false);
                   return;
                 }
 
@@ -245,18 +268,67 @@ class _StudentProfileDetailsPageState
                     "Please write a short bio about yourself.",
                     context: context,
                   );
+                  setState(() => _isLoading = false);
                   return;
                 }
 
-                context.pushRoute(
-                  DeliverySetupRoute(
-                    aboutYou: aboutYou,
-                    batchYear: batchYear,
-                    majors: majors,
-                    minors: minors,
-                    clubs: clubs,
-                  ),
+                final response = await services.postAPI(
+                  url: '/rider/riderRegistration',
+                  map: {
+                    "bio": aboutYou,
+                    "batch_year": batchYear,
+                    "majors": minors,
+                    "monirs": minors,
+                    "club_organizations": clubs,
+                    "location": {
+                      "lat": _locationData!.latitude,
+                      "lng": _locationData!.longitude,
+                    }, // Replace with actual GPS
+                  },
                 );
+                final data = jsonDecode(response.body);
+                final riderId = data['data']['user'];
+                String successUrl =
+                    'http://restaurantmanager.campuscravings.co/$riderId?verified=true';
+                String failureUrl =
+                    'http://restaurantmanager.campuscravings.co/login';
+                if (response.statusCode == 201 || response.statusCode == 200) {
+                  StorageHelper().saveRiderId(riderId);
+                  StorageHelper().saveRiderProfileComplete(true);
+
+                  // Show loader before hitting onboarding API
+                  setState(() => _isLoading = true);
+
+                  RiderPayoutRepo repo = RiderPayoutRepo();
+                  await repo.generateOnboardingLink(
+                    riderId,
+                    successUrl,
+                    failureUrl,
+                    context,
+                  );
+
+                  setState(() => _isLoading = false);
+                } else if (response.statusCode == 400) {
+                  setState(() => _isLoading = false);
+                  showToast(
+                    context: context,
+                    "You are already registered as a rider!",
+                  );
+                } else {
+                  setState(() => _isLoading = false);
+
+                  String errorMessage = "Something went wrong";
+                  try {
+                    final decoded = jsonDecode(response.body);
+                    if (decoded is Map && decoded.containsKey("message")) {
+                      errorMessage = decoded["message"];
+                    }
+                  } catch (_) {
+                    // If decoding fails, use default error message
+                  }
+
+                  showToast(context: context, errorMessage);
+                }
               },
             ),
             height(30),
