@@ -214,7 +214,18 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
             //showSortBottomSheet(context) is not used in this code, so it has been removed the code is existing
 
             // Overlay positioned under filter+search row
-            if (showFilterOverlay)
+            if (showFilterOverlay) ...[
+              Positioned.fill(
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      showFilterOverlay = false;
+                    });
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child: Container(),
+                ),
+              ),
               Positioned(
                 right: 22,
                 top: _filterOffset.dy,
@@ -300,6 +311,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                   ),
                 ),
               ),
+            ],
           ],
         ),
       ),
