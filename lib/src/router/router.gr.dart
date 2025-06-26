@@ -1306,18 +1306,44 @@ class RaiseTicketRouteArgs {
 
 /// generated route for
 /// [_i37.RestaurantPage]
-class RestaurantRoute extends _i44.PageRouteInfo<void> {
-  const RestaurantRoute({List<_i44.PageRouteInfo>? children})
-    : super(RestaurantRoute.name, initialChildren: children);
+class RestaurantRoute extends _i44.PageRouteInfo<RestaurantRouteArgs> {
+  RestaurantRoute({
+    _i45.Key? key,
+    String? initialItemId,
+    List<_i44.PageRouteInfo>? children,
+  }) : super(
+         RestaurantRoute.name,
+         args: RestaurantRouteArgs(key: key, initialItemId: initialItemId),
+         initialChildren: children,
+       );
 
   static const String name = 'RestaurantRoute';
 
   static _i44.PageInfo page = _i44.PageInfo(
     name,
     builder: (data) {
-      return const _i37.RestaurantPage();
+      final args = data.argsAs<RestaurantRouteArgs>(
+        orElse: () => const RestaurantRouteArgs(),
+      );
+      return _i37.RestaurantPage(
+        key: args.key,
+        initialItemId: args.initialItemId,
+      );
     },
   );
+}
+
+class RestaurantRouteArgs {
+  const RestaurantRouteArgs({this.key, this.initialItemId});
+
+  final _i45.Key? key;
+
+  final String? initialItemId;
+
+  @override
+  String toString() {
+    return 'RestaurantRouteArgs{key: $key, initialItemId: $initialItemId}';
+  }
 }
 
 /// generated route for

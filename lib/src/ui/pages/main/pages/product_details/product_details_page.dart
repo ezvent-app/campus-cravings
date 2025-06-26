@@ -219,45 +219,45 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   padding: EdgeInsets.only(top: 20),
                                   child: Row(
                                     children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              locale.calories,
-                                              style: TextStyle(
-                                                color: Color(0xff27261E),
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                SvgAssets(
-                                                  'calories',
-                                                  height: 16,
-                                                  width: 16,
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    top: 5,
-                                                    left: 5,
-                                                  ),
-                                                  child: Text(
-                                                    '${controller.productItemDetailModel?.calories} ${locale.kCal}',
-                                                    style: TextStyle(
-                                                      color: Color(0xff27261E),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      // Expanded(
+                                      //   child: Column(
+                                      //     crossAxisAlignment:
+                                      //         CrossAxisAlignment.start,
+                                      //     children: [
+                                      //       Text(
+                                      //         locale.calories,
+                                      //         style: TextStyle(
+                                      //           color: Color(0xff27261E),
+                                      //           fontWeight: FontWeight.w500,
+                                      //         ),
+                                      //       ),
+                                      //       Row(
+                                      //         children: [
+                                      //           SvgAssets(
+                                      //             'calories',
+                                      //             height: 16,
+                                      //             width: 16,
+                                      //           ),
+                                      //           Padding(
+                                      //             padding: EdgeInsets.only(
+                                      //               top: 5,
+                                      //               left: 5,
+                                      //             ),
+                                      //             child: Text(
+                                      //               '${controller.productItemDetailModel?.calories} ${locale.kCal}',
+                                      //               style: TextStyle(
+                                      //                 color: Color(0xff27261E),
+                                      //                 fontWeight:
+                                      //                     FontWeight.w600,
+                                      //                 fontSize: 16,
+                                      //               ),
+                                      //             ),
+                                      //           ),
+                                      //         ],
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:

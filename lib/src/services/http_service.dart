@@ -8,14 +8,14 @@ class HttpService {
   static final HttpService _instance = HttpService._internal();
   factory HttpService() => _instance;
   // local host url
-  final String _baseUrl = "http://192.168.18.26:5000/api";
+  final String _baseUrl = "http://192.168.18.53:5000/api";
 
   //production
   // final String _baseUrl = "https://campuscravings.co/api";
 
   HttpService._internal();
 
-  final Map<String, String> _headers = {"Content-Type": "application/json"}; 
+  final Map<String, String> _headers = {"Content-Type": "application/json"};
 
   void setToken(String token) {
     _headers["x-access-token"] = token;
@@ -27,7 +27,7 @@ class HttpService {
     if (token != null) {
       setToken(token);
       log(_baseUrl);
-    } else { 
+    } else {
       log("Token Not Found");
     }
   }
