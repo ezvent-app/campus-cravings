@@ -55,13 +55,16 @@ class _CategoryDisplayingPageState extends State<CategoryDisplayingPage>
                   }
                   if (controller.listOfFoodItemModel.isEmpty) {
                     return Center(
-                      child: Text(
-                        'No items available under the "${widget.category}" category at the moment.',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                      child: SizedBox(
+                        width: 300,
+                        child: Text(
+                          'No items available under the "${widget.category}" category at the moment.',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     );
                   }
