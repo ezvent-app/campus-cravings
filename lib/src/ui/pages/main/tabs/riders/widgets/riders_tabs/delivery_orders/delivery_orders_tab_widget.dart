@@ -385,6 +385,7 @@ class _ConsumerDeliveryOrdersTabWidgetState
                 ),
                 markers: markers.values.toSet(),
                 polylines: polylines,
+
                 indoorViewEnabled: true,
                 zoomControlsEnabled: false,
                 trafficEnabled: true,
@@ -396,11 +397,12 @@ class _ConsumerDeliveryOrdersTabWidgetState
                   });
                 },
                 myLocationEnabled: false,
+                myLocationButtonEnabled: false,
               ),
             ),
             Positioned(
               bottom: Platform.isIOS ? 30 : 20,
-              left: Platform.isIOS ? 20 : 16,
+              right: Platform.isIOS ? 20 : 16,
               child: FloatingActionButton(
                 backgroundColor:
                     Platform.isIOS ? Colors.grey[200] : Colors.white,
