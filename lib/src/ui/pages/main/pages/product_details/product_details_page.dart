@@ -43,7 +43,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
             body: Center(child: Text('Product Details Not Found')),
           );
         }
-        controller.getTotalPrice();
+        // controller.getTotalPrice();
         return Scaffold(
           body: Column(
             children: [
