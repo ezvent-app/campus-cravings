@@ -58,7 +58,12 @@ class DeliveryTabWidget extends ConsumerWidget {
     final cartNotifier = ref.read(cartItemsProvider.notifier);
     final address = ref.watch(locationProvider);
     final subtotal = cartItems
-        .map((item) => item.price * item.quantity)
+        .map(
+          (item) =>
+              (item.price +
+                  item.customization.fold(0.0, (sum, c) => sum + c.price)) *
+              item.quantity,
+        )
         .fold(0.0, (a, b) => a + b);
 
     final tip = ref.watch(selectedTipProvider);
@@ -186,7 +191,12 @@ class DeliveryTabWidget extends ConsumerWidget {
                                                 ? null
                                                 : () => cartNotifier
                                                     .incrementQuantity(index),
-                                        price: item.price,
+                                        price:
+                                            item.price +
+                                            item.customization.fold(
+                                              0.0,
+                                              (sum, c) => sum + c.price,
+                                            ),
                                         quantity: item.quantity,
                                       ),
                                     ],
@@ -301,7 +311,7 @@ class DeliveryTabWidget extends ConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 12),
                         child: Text(
-                          "\$${cartItems.map((item) => item.price * item.quantity).fold(0.0, (a, b) => a + b).toStringAsFixed(2)}",
+                          "\$${subtotal.toStringAsFixed(2)}",
                           textAlign: TextAlign.end,
                           style: TextStyle(
                             color: Color(0xff424242),
@@ -671,7 +681,7 @@ class CheckPlaceOrderButtonWidget extends ConsumerWidget {
           final LatLng? customerLatLng = getLatLngFromOrderAddress(
             address.value?.addresses,
           );
-          final LatLng restuarantLatLng = LatLng(
+          final LatLng restuarantLatLng = LatLng( 
             cartItems.first.restCoordinates[0],
             cartItems.first.restCoordinates[1],
           );

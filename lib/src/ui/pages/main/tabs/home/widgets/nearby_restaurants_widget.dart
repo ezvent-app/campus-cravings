@@ -55,14 +55,14 @@ class _NearbyRestaurantsWidgetState
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    final restaurant =
-                        controller.getFilteredRestaurants()[index];
+                    final restaurant = controller
+                        .getFilteredRestaurants()[index];
                     return InkWellButtonWidget(
                       onTap: () {
                         Get.find<RestaurantDetailsController>().setRestaurantId(
                           restaurant.id,
                         );
-                        context.pushRoute(const RestaurantRoute());
+                        context.pushRoute(RestaurantRoute());
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -86,7 +86,7 @@ class _NearbyRestaurantsWidgetState
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    restaurant.brandName,
+                                    restaurant.storeName,
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Color(0xff443A39),

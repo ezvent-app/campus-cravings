@@ -459,7 +459,25 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                             response.body,
                                           );
                                           log("JSON $data");
+
                                           if (response.statusCode == 201) {
+                                            if (context.mounted) {
+                                              final userId =
+                                                  data['user']['_id'];
+                                              StorageHelper().saveUserId(
+                                                userId,
+                                              );
+                                              context.pushRoute(
+                                                OtpRoute(
+                                                  email: email,
+                                                  isRyder: isActive,
+                                                ),
+                                              );
+                                            }
+                                          } else if (response.statusCode ==
+                                                  500 &&
+                                              data['message'] ==
+                                                  "This user is not verified yet!") {
                                             if (context.mounted) {
                                               context.pushRoute(
                                                 OtpRoute(
@@ -468,8 +486,6 @@ class _ProfileFormPageState extends ConsumerState<ProfileFormPage> {
                                                 ),
                                               );
                                             }
-                                            final userId = data['user']['_id'];
-                                            StorageHelper().saveUserId(userId);
                                           } else {
                                             showToast(
                                               data['message'] ??

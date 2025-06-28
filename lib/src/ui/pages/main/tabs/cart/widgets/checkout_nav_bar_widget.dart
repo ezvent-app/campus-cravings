@@ -1,4 +1,6 @@
+import 'package:campuscravings/src/controllers/product_details_controller.dart';
 import 'package:campuscravings/src/src.dart';
+import 'package:get/get.dart';
 
 class CheckoutNavBarWidget extends ConsumerWidget {
   const CheckoutNavBarWidget({super.key});
@@ -10,9 +12,11 @@ class CheckoutNavBarWidget extends ConsumerWidget {
     final subtotal = cartItems
         .map(
           (item) =>
-              (item.price +
-                  item.sizePrice +
-                  item.customization.fold(0.0, (sum, c) => sum + c.price)) *
+              (item.price == 0
+                  ? item.sizePrice +
+                      item.customization.fold(0.0, (sum, c) => sum + c.price)
+                  : item.price +
+                      item.customization.fold(0.0, (sum, c) => sum + c.price)) *
               item.quantity,
         )
         .fold(0.0, (a, b) => a + b);

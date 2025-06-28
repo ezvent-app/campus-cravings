@@ -16,11 +16,11 @@ Future<void> main() async {
 
 class App extends StatelessWidget {
   App({super.key});
-  final _appRouter = AppRouter();
+  final _appRouter = AppRouter(); 
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
+    return ProviderScope( 
       child: MaterialApp.router(
         title: "Campus Cravings",
         debugShowCheckedModeBanner: false,
@@ -28,7 +28,6 @@ class App extends StatelessWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         theme: lightTheme,
         routerConfig: _appRouter.config(),
-        // home: ImageCaptureScreen(),
       ),
     );
   }

@@ -6,7 +6,8 @@ import 'package:shimmer/shimmer.dart';
 
 @RoutePage()
 class RestaurantPage extends ConsumerWidget {
-  const RestaurantPage({super.key});
+  final String? initialItemId;
+  const RestaurantPage({super.key, this.initialItemId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +20,15 @@ class RestaurantPage extends ConsumerWidget {
       },
       builder: (controller) {
         if (controller.isLoading) {
-          return _buildRestaurantDetailsShimmer(context);
+          return const Scaffold(
+            body: Center(
+              child: SizedBox(
+                height: 30,
+                width: 30,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+          );
         } else if (controller.isLoading == false &&
             controller.restaurantDetails == null) {
           return Scaffold(
@@ -85,7 +94,7 @@ class RestaurantPage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      controller.restaurantDetails!.restaurant.brandName,
+                      controller.restaurantDetails!.restaurant.storeName,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const Divider(color: AppColors.dividerColor, height: 32),
@@ -157,6 +166,7 @@ class RestaurantPage extends ConsumerWidget {
                         .addresses
                         .coordinates
                         .coordinates,
+                initialItemId: initialItemId,
               ),
             ],
           ),

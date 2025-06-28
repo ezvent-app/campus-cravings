@@ -25,6 +25,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
     extends ConsumerState<DeliveryOrdersTabWidget> {
   bool _isLoading = false;
   bool _isAccepting = false;
+  final isRiderTabActiveProvider = StateProvider<bool>((ref) => false);
+
   late Timer timer;
   Timer? _orderCycleTimer;
   bool _isMounted = true;
@@ -35,6 +37,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ref.read(isRiderTabActiveProvider.notifier).state = true;
+      }
       _setupSocket();
     });
     startTimer();
@@ -133,6 +138,9 @@ class _ConsumerDeliveryOrdersTabWidgetState
 
   @override
   void dispose() {
+    if (mounted) {
+      ref.read(isRiderTabActiveProvider.notifier).state = false;
+    }
     timer.cancel();
     _orderCycleTimer?.cancel();
     _locationUpdateTimer?.cancel();
@@ -347,7 +355,8 @@ class _ConsumerDeliveryOrdersTabWidgetState
     double buttonWidth = wdth * 0.8;
 
     ref.listen(deliveryOrdersProvider, (previous, next) {
-      if (next.isNotEmpty && !_hasShownBottomSheet) {
+      final isTabActive = ref.read(isRiderTabActiveProvider);
+      if (isTabActive && next.isNotEmpty && !_hasShownBottomSheet) {
         _hasShownBottomSheet = true;
         _remainingOrders = List.from(next);
         _cycleOrders(next);
@@ -389,37 +398,64 @@ class _ConsumerDeliveryOrdersTabWidgetState
                 myLocationEnabled: false,
               ),
             ),
+            Positioned(
+              bottom: Platform.isIOS ? 30 : 20,
+              left: Platform.isIOS ? 20 : 16,
+              child: FloatingActionButton(
+                backgroundColor:
+                    Platform.isIOS ? Colors.grey[200] : Colors.white,
+                elevation: Platform.isIOS ? 1 : 4,
+                onPressed: () {
+                  mapController.animateCamera(
+                    CameraUpdate.newLatLng(riderLocation),
+                  );
+                },
+                child: Icon(
+                  Icons.my_location,
+                  color: Platform.isIOS ? Colors.black : Colors.blue,
+                ),
+              ),
+            ),
 
             isAccept["isAccept"]
                 ? Positioned(
                   top: topPosition,
                   left: leftPosition - buttonWidth / 2,
-                  child: Card(
-                    color: AppColors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    margin: EdgeInsets.all(10),
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          SvgAssets("rider_dir", width: 28, height: 28),
-                          width(10),
-                          Text(
-                            "Navigation",
-                            style: Theme.of(context).textTheme.titleSmall!
-                                .copyWith(color: AppColors.white),
-                          ),
-                        ],
+                  child: GestureDetector(
+                    onTap: () {
+                      mapController.animateCamera(
+                        CameraUpdate.newLatLng(riderLocation),
+                      );
+                    },
+                    child: Card(
+                      color: AppColors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      margin: EdgeInsets.all(10),
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          children: [
+                            SvgAssets("rider_dir", width: 28, height: 28),
+                            width(10),
+                            Text(
+                              "Navigation",
+                              style: Theme.of(context).textTheme.titleSmall!
+                                  .copyWith(color: AppColors.white),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 )
                 : SizedBox(),
             isAccept["isAccept"]
-                ? AnimatedRidersDeliveryDetailsWrapper(
-                  riderDelivery: riderDeliveryPro,
+                ? GestureDetector(
+                  child: AnimatedRidersDeliveryDetailsWrapper(
+                    riderDelivery: riderDeliveryPro,
+                  ),
                 )
                 : SizedBox(),
           ],

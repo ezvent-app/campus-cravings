@@ -57,7 +57,7 @@ class _RidersDeliveryDetailsWidgetState
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
                 Text(
-                  "$storeName - $brandName",
+                  storeName,
                   style: Theme.of(
                     context,
                   ).textTheme.bodyMedium!.copyWith(color: AppColors.black),

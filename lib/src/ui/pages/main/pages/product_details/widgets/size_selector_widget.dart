@@ -11,15 +11,40 @@ class SizeSelectorWidget extends ConsumerStatefulWidget {
 
 class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
   int _selectedSize = -1;
-  final List<ProductSize> sizes = const [
-    ProductSize(label: 'Size M', value: 0),
-    ProductSize(label: 'Size L', value: 4),
-  ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final controller = Get.find<ProductDetailsController>();
+      final sizes = controller.productItemDetailModel?.sizes;
+
+      if (controller.productItemDetailModel?.price == 0 &&
+          sizes != null &&
+          sizes.isNotEmpty) {
+        sizes.sort((a, b) => a.price.compareTo(b.price));
+        final smallestSize = sizes.first;
+
+        setState(() {
+          _selectedSize = 0;
+        });
+
+        final cartNotifier = ref.read(cartItemsProvider.notifier);
+        cartNotifier.selectSize(0, smallestSize.id, smallestSize.price);
+
+        controller.selectedSizePrice = smallestSize.price;
+        controller.selectedSizeId = smallestSize.id;
+        controller.getTotalPrice();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
     final cartNotifier = ref.read(cartItemsProvider.notifier);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -36,7 +61,7 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
             ),
             Expanded(
               child: Text(
-                locale.chooseAnyoneFromTheOptions,
+                'Choose from the options',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
@@ -57,6 +82,7 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                       _selectedSize = index;
                       cartNotifier.selectSize(index, size.id, size.price);
                       controller.selectedSizePrice = size.price;
+                      controller.selectedSizeId = size.id;
                       controller.getTotalPrice();
                     });
                   },
@@ -96,14 +122,13 @@ class _SizeSelectorWidgetState extends ConsumerState<SizeSelectorWidget> {
                   ),
                 );
               },
-              separatorBuilder: (BuildContext context, int index) {
-                return const Divider(
-                  color: AppColors.dividerColor,
-                  height: 0,
-                  endIndent: 25,
-                  indent: 25,
-                );
-              },
+              separatorBuilder:
+                  (context, index) => const Divider(
+                    color: AppColors.dividerColor,
+                    height: 0,
+                    endIndent: 25,
+                    indent: 25,
+                  ),
             );
           },
         ),

@@ -1,7 +1,6 @@
 import 'package:campuscravings/src/constants/storageHelper.dart';
 import 'package:campuscravings/src/repository/rider_delivery_repo/delivery_repository.dart';
 import 'package:campuscravings/src/src.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class ImageConfirmationPage extends ConsumerStatefulWidget {
   final XFile image;
@@ -82,19 +81,17 @@ class _ConsumerImageConfirmationPageState
                                     PngAsset("happy", width: 160, height: 160),
                                     Text(
                                       locale.deliveryComplete,
-                                      style:
-                                          Theme.of(
-                                            dialogContext,
-                                          ).textTheme.titleMedium,
+                                      style: Theme.of(
+                                        dialogContext,
+                                      ).textTheme.titleMedium,
                                     ),
                                     height(10),
                                     Text(
                                       locale.thankYouDeliveringOrderGreatJob,
                                       textAlign: TextAlign.center,
-                                      style:
-                                          Theme.of(
-                                            dialogContext,
-                                          ).textTheme.bodyMedium,
+                                      style: Theme.of(
+                                        dialogContext,
+                                      ).textTheme.bodyMedium,
                                     ),
                                     height(30),
                                     RoundedButtonWidget(
@@ -105,15 +102,16 @@ class _ConsumerImageConfirmationPageState
                                           _isLoading = true;
                                         });
 
-                                        String? riderOrderId =
-                                            StorageHelper().getRiderOrderId();
+                                        String? riderOrderId = StorageHelper()
+                                            .getRiderOrderId();
                                         String base64Image =
                                             await convertImageToBase64();
                                         RiderDelvieryRepo repo =
                                             RiderDelvieryRepo();
                                         final response = await repo
                                             .orderDeliverByRider({
-                                              "imageUrl": base64Image,
+                                              "imageUrl":
+                                                  "https://fastly.picsum.photos/id/1015/536/354.jpg?hmac=x7KEhPoOftwPXIgnQoTQzNtVUqaPYwndK8n1x_9rWuM",
                                               "orderId": riderOrderId,
                                             });
 

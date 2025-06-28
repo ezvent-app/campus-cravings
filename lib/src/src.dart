@@ -17,7 +17,6 @@ export 'package:shared_preferences/shared_preferences.dart';
 export 'package:simple_animations/animation_builder/mirror_animation_builder.dart';
 export 'package:slide_to_act/slide_to_act.dart';
 export 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 export 'constants/constants.dart';
 export 'exceptions/exceptions.dart';
 export 'models/models.dart';

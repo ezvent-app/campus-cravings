@@ -1,7 +1,9 @@
 import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
+import 'package:campuscravings/src/models/restaurant_details_model.dart';
+import 'package:campuscravings/src/models/search_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
+
 import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/restaurant_details_controller.dart';
 import '../../../../../src.dart';
@@ -160,7 +162,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             Get.find<RestaurantDetailsController>().setRestaurantId(
               item!.restaurant,
             );
-            context.pushRoute(RestaurantRoute());
+            context.pushRoute(RestaurantRoute(initialItemId: item.id));
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -220,7 +222,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     ),
                     height(2),
                     Text(
-                      '\$${item?.price}',
+                      _getItemPrice(item!),
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ],
@@ -276,7 +278,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.45,
                         child: Text(
-                          "${item?.brandName}",
+                          "${item?.storeName}",
                           style: TextStyle(
                             fontSize: 18,
                             color: Color(0xff443A39),
@@ -372,5 +374,16 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  String _getItemPrice(FoodItemModel item) {
+    if (item.price == 0) {
+      final sizePrices = item.sizes.map((s) => s.price);
+      if (sizePrices.isNotEmpty) {
+        final minSizePrice = sizePrices.reduce((a, b) => a < b ? a : b);
+        return '\$${minSizePrice.toStringAsFixed(2)}';
+      }
+    }
+    return '\$${item.price.toStringAsFixed(2)}';
   }
 }

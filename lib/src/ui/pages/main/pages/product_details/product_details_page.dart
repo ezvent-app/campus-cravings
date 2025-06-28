@@ -198,9 +198,14 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                       quantity: controller.productQuantity,
                                       price:
                                           controller
-                                              .productItemDetailModel
-                                              ?.price ??
-                                          0,
+                                                      .productItemDetailModel
+                                                      ?.price ==
+                                                  0
+                                              ? controller.selectedSizePrice
+                                              : controller
+                                                      .productItemDetailModel
+                                                      ?.price ??
+                                                  0,
                                       onQuantityDecrementChanged: () {
                                         controller.decrementProductQuantity();
                                       },
@@ -214,45 +219,45 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   padding: EdgeInsets.only(top: 20),
                                   child: Row(
                                     children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              locale.calories,
-                                              style: TextStyle(
-                                                color: Color(0xff27261E),
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                SvgAssets(
-                                                  'calories',
-                                                  height: 16,
-                                                  width: 16,
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                    top: 5,
-                                                    left: 5,
-                                                  ),
-                                                  child: Text(
-                                                    '${controller.productItemDetailModel?.calories} ${locale.kCal}',
-                                                    style: TextStyle(
-                                                      color: Color(0xff27261E),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      // Expanded(
+                                      //   child: Column(
+                                      //     crossAxisAlignment:
+                                      //         CrossAxisAlignment.start,
+                                      //     children: [
+                                      //       Text(
+                                      //         locale.calories,
+                                      //         style: TextStyle(
+                                      //           color: Color(0xff27261E),
+                                      //           fontWeight: FontWeight.w500,
+                                      //         ),
+                                      //       ),
+                                      //       Row(
+                                      //         children: [
+                                      //           SvgAssets(
+                                      //             'calories',
+                                      //             height: 16,
+                                      //             width: 16,
+                                      //           ),
+                                      //           Padding(
+                                      //             padding: EdgeInsets.only(
+                                      //               top: 5,
+                                      //               left: 5,
+                                      //             ),
+                                      //             child: Text(
+                                      //               '${controller.productItemDetailModel?.calories} ${locale.kCal}',
+                                      //               style: TextStyle(
+                                      //                 color: Color(0xff27261E),
+                                      //                 fontWeight:
+                                      //                     FontWeight.w600,
+                                      //                 fontSize: 16,
+                                      //               ),
+                                      //             ),
+                                      //           ),
+                                      //         ],
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
@@ -384,13 +389,17 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             );
                             return;
                           }
+                          final itemPrice =
+                              controller.productItemDetailModel!.price == 0
+                                  ? controller.selectedSizePrice
+                                  : controller.productItemDetailModel!.price;
 
                           final wasNew = ref
                               .read(cartItemsProvider.notifier)
                               .addItem(
                                 CartItem(
-                                  price:
-                                      controller.productItemDetailModel!.price,
+                                  price: itemPrice,
+
                                   restCoordinates: widget.restCoordinates,
                                   sizePrice:
                                       cartItemsNotifier.selectedSizePrice,

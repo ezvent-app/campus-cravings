@@ -1,5 +1,7 @@
+import 'package:campuscravings/src/controllers/product_details_controller.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:campuscravings/src/ui/widgets/custom_network_image.dart';
+import 'package:get/get.dart';
 
 @RoutePage()
 class CartTabPage extends ConsumerWidget {
@@ -15,7 +17,7 @@ class CartTabPage extends ConsumerWidget {
 
     // Filter out any null items
     final filteredCartItems = cartItems.where((item) => item != null).toList();
-
+    final productDetailsController = Get.find<ProductDetailsController>();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: isFromNavBar ? false : true,
@@ -98,13 +100,20 @@ class CartTabPage extends ConsumerWidget {
                               height(10),
                               QuantitySelectorWidget(
                                 price:
-                                    item.price +
-                                    item.sizePrice +
-                                    item.customization.fold(
-                                      0.0,
-                                      (sum, customItem) =>
-                                          sum + customItem.price,
-                                    ),
+                                    item.price == 0
+                                        ? item.sizePrice +
+                                            item.customization.fold(
+                                              0.0,
+                                              (sum, customItem) =>
+                                                  sum + customItem.price,
+                                            )
+                                        : item.price +
+                                            item.customization.fold(
+                                              0.0,
+                                              (sum, customItem) =>
+                                                  sum + customItem.price,
+                                            ),
+
                                 quantity: item.quantity,
                                 onQuantityDecrementChanged:
                                     () => cartNotifier.decrementQuantity(index),

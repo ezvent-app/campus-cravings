@@ -84,16 +84,40 @@ class MainPage extends StatelessWidget {
     String image,
     bool isSelected,
   ) {
-    return Tab(
-      icon: AnimatedScale(
-        duration: const Duration(milliseconds: 200),
-        scale: isSelected ? 1.2 : 1.0,
-        child: SvgAssets(
-          image,
-          color:
-              isSelected ? AppColors.black : AppColors.unselectedTabIconColor,
+    return Semantics(
+      label: _getTabLabel(index),
+      button: true,
+      child: Tab(
+        icon: ExcludeSemantics(
+          child: AnimatedScale(
+            duration: const Duration(milliseconds: 200),
+            scale: isSelected ? 1.2 : 1.0,
+            child: SvgAssets(
+              image,
+              color: isSelected
+                  ? AppColors.black
+                  : AppColors.unselectedTabIconColor,
+            ),
+          ),
         ),
       ),
     );
+  }
+
+  String _getTabLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'Home Tab';
+      case 1:
+        return 'Orders Tab';
+      case 2:
+        return 'Cart Tab';
+      case 3:
+        return 'Delivery Tab';
+      case 4:
+        return 'Profile Tab';
+      default:
+        return 'Tab';
+    }
   }
 }
