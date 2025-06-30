@@ -76,21 +76,16 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
     getCustomerCurrentLocation();
   }
 
-  // New method to setup socket properly
+  /// method to set up the socket connection and listen for updates
   void _setupSocket() async {
     if (!_isMounted) return;
-
     final socketController = ref.read(socketControllerProvider);
-
-    // First, ensure socket is connected before setting up listeners
     print("Socket status: ${ref.read(socketStateProvider).status}");
     if (ref.read(socketStateProvider).status != SocketStatus.connected) {
       final token = StorageHelper().getAccessToken();
       if (token == null) return;
       socketController.connect(token);
     }
-
-    // Only after connection is established, set up listeners
     if (_isMounted) {
       socketController.listenForStatusUpdates((Map<String, dynamic> data) {
         print(data['status']);
@@ -99,6 +94,13 @@ class _DeliveringPageState extends ConsumerState<DeliveringPage> {
             'status': data['status'],
             'estimated_time': data['estimated_time'],
           };
+          if (data['status'] == 'delivered') {
+            Future.delayed(Duration(seconds: 3), () {
+              if (context.mounted) {
+                context.router.replace(const HomeTabRoute());
+              }
+            });
+          }
         }
       });
 
