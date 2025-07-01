@@ -8,9 +8,12 @@ import 'package:http/http.dart' as http;
 class PlaceOrderRepository {
   final HttpAPIServices _services = HttpAPIServices();
 
+  //for test environment
   final String secretKey =
       "sk_test_51QrMKeKniJk5EBZPPrhvq7ZnLj6TyDgrysoi49s7BSfVqEOktmM1RUP1hBgypnHywmKZj6JbHdozImaPwHsQcdRd00N7qNfnDY";
-
+  //for live environment
+  // final String secretKey =
+  // "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";
   Map<String, dynamic>? paymentIntent;
 
   //CREATE ORDER API
