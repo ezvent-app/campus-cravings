@@ -45,8 +45,8 @@ class DeliveryRegistrationPage extends ConsumerWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed:
-                          () => context.pushRoute(StudentProfileDetailsRoute()),
+                      onPressed: () =>
+                          context.pushRoute(StudentProfileDetailsRoute()),
 
                       // () async {
                       //   final userID = StorageHelper().getUserId();
@@ -65,8 +65,8 @@ class DeliveryRegistrationPage extends ConsumerWidget {
                       //       final onboardingResponse = await repo
                       //           .regenerateOnboardingLink(
                       //             riderId,
-                      //             'http://restaurantmanager.campuscravings.co/$riderId?verified=true',
-                      //             'http://restaurantmanager.campuscravings.co/login',
+                      //             'https://restaurantmanager.campuscravings.co/$riderId?verified=true',
+                      //             'https://restaurantmanager.campuscravings.co/login',
                       //             context,
                       //           );
 
@@ -141,8 +141,8 @@ void StripeView(
 
       final newData = await repo.regenerateOnboardingLink(
         riderId,
-        'http://restaurantmanager.campuscravings.co/$riderId?verified=true',
-        'http://restaurantmanager.campuscravings.co/login',
+        'https://restaurantmanager.campuscravings.co/$riderId?verified=true',
+        'https://restaurantmanager.campuscravings.co/login',
         context,
       );
 

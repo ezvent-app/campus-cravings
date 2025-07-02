@@ -51,12 +51,11 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(9),
               ],
-              onChanged:
-                  (value) =>
-                      ref.read(deliverySetupProvider.notifier).state = {
-                        ...ref.read(deliverySetupProvider),
-                        'securityNumber': value,
-                      },
+              onChanged: (value) =>
+                  ref.read(deliverySetupProvider.notifier).state = {
+                    ...ref.read(deliverySetupProvider),
+                    'securityNumber': value,
+                  },
             ),
             height(16),
             Padding(
@@ -68,116 +67,120 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
             ),
             _isImageUploaded
                 ? OutlinedButton(
-                  onPressed: () async {
-                    FilePickerResult? result = await FilePicker.platform
-                        .pickFiles(type: FileType.image);
+                    onPressed: () async {
+                      FilePickerResult? result = await FilePicker.platform
+                          .pickFiles(type: FileType.image);
 
-                    if (result != null) {
-                      Uint8List? fileBytes = result.files.single.bytes;
-                      String? path = result.files.single.path;
+                      if (result != null) {
+                        Uint8List? fileBytes = result.files.single.bytes;
+                        String? path = result.files.single.path;
 
-                      if (kIsWeb) {
-                        if (fileBytes != null) {
-                          String base64Image = base64Encode(fileBytes);
-                          ref.read(deliverySetupProvider.notifier).state = {
-                            ...ref.read(deliverySetupProvider),
-                            'imgBase64': base64Image,
-                          };
-                          setState(() {
-                            _isImageUploaded = true;
-                          });
-                        }
-                      } else {
-                        if (path != null) {
-                          File file = File(path);
-                          final base64Image = await compressImageToBase64(file);
-
-                          if (base64Image != null) {
+                        if (kIsWeb) {
+                          if (fileBytes != null) {
+                            String base64Image = base64Encode(fileBytes);
                             ref.read(deliverySetupProvider.notifier).state = {
                               ...ref.read(deliverySetupProvider),
-                              'imgBase64':
-                                  'data:image/${result.files.single.extension};base64,$base64Image',
+                              'imgBase64': base64Image,
                             };
-                            log("Base64 Length: ${base64Image.length}");
-                          } else {
-                            log("Image compression failed.");
+                            setState(() {
+                              _isImageUploaded = true;
+                            });
                           }
+                        } else {
+                          if (path != null) {
+                            File file = File(path);
+                            final base64Image = await compressImageToBase64(
+                              file,
+                            );
 
-                          setState(() {
-                            _isImageUploaded = true;
-                          });
+                            if (base64Image != null) {
+                              ref.read(deliverySetupProvider.notifier).state = {
+                                ...ref.read(deliverySetupProvider),
+                                'imgBase64':
+                                    'data:image/${result.files.single.extension};base64,$base64Image',
+                              };
+                              log("Base64 Length: ${base64Image.length}");
+                            } else {
+                              log("Image compression failed.");
+                            }
+
+                            setState(() {
+                              _isImageUploaded = true;
+                            });
+                          }
                         }
+                      } else {
+                        showToast(context: context, "Image not selected");
                       }
-                    } else {
-                      showToast(context: context, "Image not selected");
-                    }
-                  }, // optional: disable after upload or keep the same logic
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                    }, // optional: disable after upload or keep the same logic
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      side: const BorderSide(color: Colors.green),
+                      foregroundColor: Colors.green,
                     ),
-                    side: const BorderSide(color: Colors.green),
-                    foregroundColor: Colors.green,
-                  ),
-                  child: const Text(
-                    "Image Uploaded ✅",
-                    style: TextStyle(color: Colors.green),
-                  ),
-                )
+                    child: const Text(
+                      "Image Uploaded ✅",
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  )
                 : OutlinedButton(
-                  onPressed: () async {
-                    FilePickerResult? result = await FilePicker.platform
-                        .pickFiles(type: FileType.image);
+                    onPressed: () async {
+                      FilePickerResult? result = await FilePicker.platform
+                          .pickFiles(type: FileType.image);
 
-                    if (result != null) {
-                      Uint8List? fileBytes = result.files.single.bytes;
-                      String? path = result.files.single.path;
+                      if (result != null) {
+                        Uint8List? fileBytes = result.files.single.bytes;
+                        String? path = result.files.single.path;
 
-                      if (kIsWeb) {
-                        if (fileBytes != null) {
-                          String base64Image = base64Encode(fileBytes);
-                          ref.read(deliverySetupProvider.notifier).state = {
-                            ...ref.read(deliverySetupProvider),
-                            'imgBase64': base64Image,
-                          };
-                          setState(() {
-                            _isImageUploaded = true;
-                          });
-                        }
-                      } else {
-                        if (path != null) {
-                          File file = File(path);
-                          final base64Image = await compressImageToBase64(file);
-
-                          if (base64Image != null) {
+                        if (kIsWeb) {
+                          if (fileBytes != null) {
+                            String base64Image = base64Encode(fileBytes);
                             ref.read(deliverySetupProvider.notifier).state = {
                               ...ref.read(deliverySetupProvider),
-                              'imgBase64':
-                                  'data:image/${result.files.single.extension};base64,$base64Image',
+                              'imgBase64': base64Image,
                             };
-                            log("Base64 Length: ${base64Image.length}");
-                          } else {
-                            log("Image compression failed.");
+                            setState(() {
+                              _isImageUploaded = true;
+                            });
                           }
+                        } else {
+                          if (path != null) {
+                            File file = File(path);
+                            final base64Image = await compressImageToBase64(
+                              file,
+                            );
 
-                          setState(() {
-                            _isImageUploaded = true;
-                          });
+                            if (base64Image != null) {
+                              ref.read(deliverySetupProvider.notifier).state = {
+                                ...ref.read(deliverySetupProvider),
+                                'imgBase64':
+                                    'data:image/${result.files.single.extension};base64,$base64Image',
+                              };
+                              log("Base64 Length: ${base64Image.length}");
+                            } else {
+                              log("Image compression failed.");
+                            }
+
+                            setState(() {
+                              _isImageUploaded = true;
+                            });
+                          }
                         }
+                      } else {
+                        showToast(context: context, "Image not selected");
                       }
-                    } else {
-                      showToast(context: context, "Image not selected");
-                    }
-                  },
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                    },
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      foregroundColor: const Color(0xff525252),
+                      side: const BorderSide(color: Color(0xff525252)),
                     ),
-                    foregroundColor: const Color(0xff525252),
-                    side: const BorderSide(color: Color(0xff525252)),
+                    child: Text(locale.uploadCaptureImage),
                   ),
-                  child: Text(locale.uploadCaptureImage),
-                ),
 
             Row(
               children: [
@@ -188,10 +191,9 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                       scale: 1.3,
                       child: Checkbox(
                         value: deliveryProvider.isAgree,
-                        onChanged:
-                            (value) => ref
-                                .read(deliveryProfileProvider.notifier)
-                                .updateTermsAndConditions(value!),
+                        onChanged: (value) => ref
+                            .read(deliveryProfileProvider.notifier)
+                            .updateTermsAndConditions(value!),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -255,103 +257,99 @@ class _DeliverySetupPageState extends ConsumerState<DeliverySetupPage> {
                 return RoundedButtonWidget(
                   isLoading: _isLoading,
                   btnTitle: locale.next,
-                  onTap:
-                      deliveryProvider.isAgree
-                          ? () async {
-                            setState(() {
-                              _isLoading = true;
-                            });
+                  onTap: deliveryProvider.isAgree
+                      ? () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
 
-                            final securityNumber =
-                                ref.read(
-                                  deliverySetupProvider,
-                                )["securityNumber"];
-                            final imgBase64 =
-                                ref.read(deliverySetupProvider)["imgBase64"];
+                          final securityNumber = ref.read(
+                            deliverySetupProvider,
+                          )["securityNumber"];
+                          final imgBase64 = ref.read(
+                            deliverySetupProvider,
+                          )["imgBase64"];
 
-                            if (securityNumber.isEmpty) {
-                              setState(() => _isLoading = false);
-                              showToast(context: context, "Please enter SSN.");
-                              return;
-                            }
+                          if (securityNumber.isEmpty) {
+                            setState(() => _isLoading = false);
+                            showToast(context: context, "Please enter SSN.");
+                            return;
+                          }
 
-                            if (securityNumber.length != 9) {
-                              setState(() => _isLoading = false);
-                              showToast(
-                                context: context,
-                                "SSN must be exactly 9 digits.",
-                              );
-                              return;
-                            }
+                          if (securityNumber.length != 9) {
+                            setState(() => _isLoading = false);
+                            showToast(
+                              context: context,
+                              "SSN must be exactly 9 digits.",
+                            );
+                            return;
+                          }
 
-                            if (imgBase64.isEmpty) {
-                              setState(() => _isLoading = false);
-                              showToast(
-                                context: context,
-                                "Please upload your National ID or proof of work permission.",
-                              );
-                              return;
-                            }
+                          if (imgBase64.isEmpty) {
+                            setState(() => _isLoading = false);
+                            showToast(
+                              context: context,
+                              "Please upload your National ID or proof of work permission.",
+                            );
+                            return;
+                          }
 
-                            final response = await services.postAPI(
-                              url: '/rider/riderRegistration',
-                              map: {
-                                "SSN": securityNumber,
-                                "national_id_image_url": imgBase64,
-                                "bio": widget.aboutYou,
-                                "batch_year": widget.batchYear,
-                                "majors": widget.majors,
-                                "monirs": widget.minors,
-                                "club_organizations": widget.clubs,
-                                "location": {
-                                  "lat": 37.7749,
-                                  "lng": -122.4194,
-                                }, // Replace with actual GPS
-                              },
+                          final response = await services.postAPI(
+                            url: '/rider/riderRegistration',
+                            map: {
+                              "SSN": securityNumber,
+                              "national_id_image_url": imgBase64,
+                              "bio": widget.aboutYou,
+                              "batch_year": widget.batchYear,
+                              "majors": widget.majors,
+                              "monirs": widget.minors,
+                              "club_organizations": widget.clubs,
+                              "location": {
+                                "lat": 37.7749,
+                                "lng": -122.4194,
+                              }, // Replace with actual GPS
+                            },
+                          );
+
+                          final data = jsonDecode(response.body);
+                          final riderId = data['data']['user'];
+
+                          String successUrl =
+                              'https://restaurantmanager.campuscravings.co/$riderId?verified=true';
+                          String failureUrl =
+                              'https://restaurantmanager.campuscravings.co/login';
+
+                          if (response.statusCode == 201 ||
+                              response.statusCode == 200) {
+                            StorageHelper().saveRiderId(riderId);
+                            StorageHelper().saveRiderProfileComplete(true);
+
+                            // Show loader before hitting onboarding API
+                            setState(() => _isLoading = true);
+
+                            RiderPayoutRepo repo = RiderPayoutRepo();
+                            await repo.generateOnboardingLink(
+                              riderId,
+                              successUrl,
+                              failureUrl,
+                              context,
                             );
 
-                            final data = jsonDecode(response.body);
-                            final riderId = data['data']['user'];
-
-                            String successUrl =
-                                'http://restaurantmanager.campuscravings.co/$riderId?verified=true';
-                            String failureUrl =
-                                'http://restaurantmanager.campuscravings.co/login';
-
-                            if (response.statusCode == 201 ||
-                                response.statusCode == 200) {
-                              StorageHelper().saveRiderId(riderId);
-                              StorageHelper().saveRiderProfileComplete(true);
-
-                              // Show loader before hitting onboarding API
-                              setState(() => _isLoading = true);
-
-                              RiderPayoutRepo repo = RiderPayoutRepo();
-                              await repo.generateOnboardingLink(
-                                riderId,
-                                successUrl,
-                                failureUrl,
-                                context,
-                              );
-
-                              setState(
-                                () => _isLoading = false,
-                              ); // Stop loader after onboarding API
-                            } else if (response.statusCode == 400) {
-                              setState(() => _isLoading = false);
-                              showToast(
-                                context: context,
-                                "You are already registered as a rider!",
-                              );
-                            } else {
-                              setState(() => _isLoading = false);
-                              showToast(
-                                context: context,
-                                "Something went wrong",
-                              );
-                            }
+                            setState(
+                              () => _isLoading = false,
+                            ); // Stop loader after onboarding API
+                          } else if (response.statusCode == 400) {
+                            setState(() => _isLoading = false);
+                            showToast(
+                              context: context,
+                              "You are already registered as a rider!",
+                            );
+                          } else {
+                            setState(() => _isLoading = false);
+                            showToast(context: context, "Something went wrong");
                           }
-                          : null,
+                        }
+                      : null,
                 );
               },
             ),

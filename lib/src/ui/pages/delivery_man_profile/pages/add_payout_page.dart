@@ -120,8 +120,8 @@ void openStripeView(BuildContext context, WidgetRef ref, String link) async {
 
       final newData = await repo.generateOnboardingLink(
         riderId,
-        'http://restaurantmanager.campuscravings.co/$riderId?verified=true',
-        'http://restaurantmanager.campuscravings.co/login',
+        'https://restaurantmanager.campuscravings.co/$riderId?verified=true',
+        'https://restaurantmanager.campuscravings.co/login',
         context,
       );
 

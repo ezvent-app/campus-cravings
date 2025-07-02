@@ -149,10 +149,9 @@ class _StudentProfileDetailsPageState
                             ? selectedYear
                             : "Select Graduation Year",
                         style: TextStyle(
-                          color:
-                              selectedYear.isNotEmpty
-                                  ? Colors.black
-                                  : Colors.grey,
+                          color: selectedYear.isNotEmpty
+                              ? Colors.black
+                              : Colors.grey,
                           fontSize: 12,
                         ),
                       ),
@@ -173,8 +172,9 @@ class _StudentProfileDetailsPageState
             ChipWrapWidget(
               items: majors,
               onRemove: (item) {
-                ref.read(majorsProvider.notifier).state =
-                    majors.where((i) => i != item).toList();
+                ref.read(majorsProvider.notifier).state = majors
+                    .where((i) => i != item)
+                    .toList();
               },
             ),
             height(16),
@@ -188,8 +188,9 @@ class _StudentProfileDetailsPageState
             ChipWrapWidget(
               items: minors,
               onRemove: (item) {
-                ref.read(minorsProvider.notifier).state =
-                    minors.where((i) => i != item).toList();
+                ref.read(minorsProvider.notifier).state = minors
+                    .where((i) => i != item)
+                    .toList();
               },
             ),
             height(16),
@@ -203,8 +204,9 @@ class _StudentProfileDetailsPageState
             ChipWrapWidget(
               items: clubs,
               onRemove: (item) {
-                ref.read(clubsProvider.notifier).state =
-                    clubs.where((i) => i != item).toList();
+                ref.read(clubsProvider.notifier).state = clubs
+                    .where((i) => i != item)
+                    .toList();
               },
             ),
             height(16),
@@ -289,9 +291,9 @@ class _StudentProfileDetailsPageState
                 final data = jsonDecode(response.body);
                 final riderId = data['data']['user'];
                 String successUrl =
-                    'http://restaurantmanager.campuscravings.co/$riderId?verified=true';
+                    'https://restaurantmanager.campuscravings.co/$riderId?verified=true';
                 String failureUrl =
-                    'http://restaurantmanager.campuscravings.co/login';
+                    'https://restaurantmanager.campuscravings.co/login';
                 if (response.statusCode == 201 || response.statusCode == 200) {
                   StorageHelper().saveRiderId(riderId);
                   StorageHelper().saveRiderProfileComplete(true);
@@ -344,73 +346,65 @@ class _StudentProfileDetailsPageState
     final offset = renderBox.localToGlobal(Offset.zero);
 
     _dropdownOverlay = OverlayEntry(
-      builder:
-          (context) => Positioned(
-            left: offset.dx,
-            top: offset.dy + size.height + 5,
-            width: size.width,
-            child: CompositedTransformFollower(
-              link: _layerLink,
-              showWhenUnlinked: false,
-              offset: Offset(0.0, size.height + 5.0),
-              child: Material(
-                elevation: 4,
-                borderRadius: BorderRadius.circular(8),
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: years.length,
-                  itemBuilder: (context, index) {
-                    final year = years[index];
-                    final selectedYear =
-                        ref.watch(studentProfileProvider)["batchYear"];
-                    final selected = selectedYear == year;
+      builder: (context) => Positioned(
+        left: offset.dx,
+        top: offset.dy + size.height + 5,
+        width: size.width,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0.0, size.height + 5.0),
+          child: Material(
+            elevation: 4,
+            borderRadius: BorderRadius.circular(8),
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              itemCount: years.length,
+              itemBuilder: (context, index) {
+                final year = years[index];
+                final selectedYear = ref.watch(
+                  studentProfileProvider,
+                )["batchYear"];
+                final selected = selectedYear == year;
 
-                    return InkWell(
-                      onTap: () {
-                        final current = ref.read(studentProfileProvider);
-                        ref.read(studentProfileProvider.notifier).state = {
-                          ...current,
-                          "batchYear": year,
-                        };
+                return InkWell(
+                  onTap: () {
+                    final current = ref.read(studentProfileProvider);
+                    ref.read(studentProfileProvider.notifier).state = {
+                      ...current,
+                      "batchYear": year,
+                    };
 
-                        _hideYearDropdown();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: selected ? Colors.black12 : Colors.white,
-                          borderRadius:
-                              index == 0
-                                  ? BorderRadius.vertical(
-                                    top: Radius.circular(8),
-                                  )
-                                  : index == years.length - 1
-                                  ? BorderRadius.vertical(
-                                    bottom: Radius.circular(8),
-                                  )
-                                  : BorderRadius.zero,
-                        ),
-                        child: Text(
-                          year,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color:
-                                selected ? Colors.black : Colors.grey.shade800,
-                            fontWeight:
-                                selected ? FontWeight.bold : FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    );
+                    _hideYearDropdown();
                   },
-                ),
-              ),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: selected ? Colors.black12 : Colors.white,
+                      borderRadius: index == 0
+                          ? BorderRadius.vertical(top: Radius.circular(8))
+                          : index == years.length - 1
+                          ? BorderRadius.vertical(bottom: Radius.circular(8))
+                          : BorderRadius.zero,
+                    ),
+                    child: Text(
+                      year,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: selected ? Colors.black : Colors.grey.shade800,
+                        fontWeight: selected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
+        ),
+      ),
     );
 
     Overlay.of(context).insert(_dropdownOverlay!);
