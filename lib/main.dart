@@ -1,7 +1,6 @@
 import 'package:campuscravings/src/di/dependency_injection.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-
 import 'src/constants/storageHelper.dart';
 
 Future<void> main() async {

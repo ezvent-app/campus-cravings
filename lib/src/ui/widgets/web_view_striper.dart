@@ -69,7 +69,7 @@ class StripeWebViewState extends State<StripeWebView> {
             if (request.url ==
                 'http://restaurantmanager.campuscravings.co/login') {
               print('Stripe onboarding failed or cancelled.');
-              Navigator.of(context).pop(); // Close the WebView
+              Navigator.of(context).pop();
               showToast(
                 context: context,
                 "Stripe onboarding failed or cancelled.",
