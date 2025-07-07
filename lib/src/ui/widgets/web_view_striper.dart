@@ -51,7 +51,7 @@ class StripeWebViewState extends State<StripeWebView> {
             String? userId = StorageHelper().getRiderId();
 
             if (request.url.startsWith(
-              'http://restaurantmanager.campuscravings.co/$userId?verified=true',
+              'https://restaurantmanager.campuscravings.co/$userId?verified=true',
             )) {
               // Call API
               repo
@@ -67,7 +67,7 @@ class StripeWebViewState extends State<StripeWebView> {
             }
             // Failure Case
             if (request.url ==
-                'http://restaurantmanager.campuscravings.co/login') {
+                'https://restaurantmanager.campuscravings.co/login') {
               print('Stripe onboarding failed or cancelled.');
               Navigator.of(context).pop();
               showToast(
