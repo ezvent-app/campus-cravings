@@ -31,7 +31,7 @@ class MainPage extends StatelessWidget {
                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 60)],
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 ),
-                height: 78,
+                height: 82,
                 width: double.infinity,
                 child: TabBar(
                   indicatorColor: Colors.transparent,
@@ -91,7 +91,7 @@ class MainPage extends StatelessWidget {
         icon: ExcludeSemantics(
           child: AnimatedScale(
             duration: const Duration(milliseconds: 200),
-            scale: isSelected ? 1.2 : 1.0,
+            scale: isSelected ? 1.2 : 1.2,
             child: SvgAssets(
               image,
               color: isSelected
