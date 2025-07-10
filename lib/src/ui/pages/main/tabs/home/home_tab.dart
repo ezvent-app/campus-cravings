@@ -269,7 +269,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                                     );
                                     setState(() {
                                       selectedSort = sort.title;
-                                      showFilterOverlay = false;
+                                      // showFilterOverlay = false;
                                     });
                                   },
                                   child: Row(
@@ -293,7 +293,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                                           );
                                           setState(() {
                                             selectedSort = sort.title;
-                                            showFilterOverlay = false;
+                                            // showFilterOverlay = false;
                                           });
                                         },
                                         materialTapTargetSize:
