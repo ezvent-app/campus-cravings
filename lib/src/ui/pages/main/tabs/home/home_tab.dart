@@ -195,6 +195,8 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                     onRefresh: () async {
                       Get.find<RestaurantController>().getNearByRestaurants();
                       Get.find<ProductCatalogController>().getPopularItems();
+                      Get.find<FoodAndRestaurantSearchController>()
+                          .fetchAllCategories(context);
                     },
                     child: ListView(
                       physics: BouncingScrollPhysics(),
