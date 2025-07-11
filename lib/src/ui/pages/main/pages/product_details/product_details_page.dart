@@ -65,11 +65,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               child: PageView.builder(
                                 physics: BouncingScrollPhysics(),
                                 controller: _pageController,
-                                itemCount:
-                                    controller
-                                        .productItemDetailModel
-                                        ?.images
-                                        .length,
+                                itemCount: controller
+                                    .productItemDetailModel
+                                    ?.images
+                                    .length,
                                 onPageChanged: (index) {
                                   setState(() {
                                     _selectedIndex = index;
@@ -148,10 +147,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(color: Colors.white),
-                                      color:
-                                          isSelected
-                                              ? Colors.white
-                                              : Colors.transparent,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.transparent,
                                     ),
                                   );
                                 },
@@ -177,7 +175,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '${controller.productItemDetailModel?.category.name}',
+                                          '${controller.productItemDetailModel?.category!.name}',
                                           style: TextStyle(
                                             color: Color(0xff27261E),
                                             fontWeight: FontWeight.w500,
@@ -198,14 +196,14 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                       quantity: controller.productQuantity,
                                       price:
                                           controller
-                                                      .productItemDetailModel
-                                                      ?.price ==
-                                                  0
-                                              ? controller.selectedSizePrice
-                                              : controller
-                                                      .productItemDetailModel
-                                                      ?.price ??
-                                                  0,
+                                                  .productItemDetailModel
+                                                  ?.price ==
+                                              0
+                                          ? controller.selectedSizePrice
+                                          : controller
+                                                    .productItemDetailModel
+                                                    ?.price ??
+                                                0,
                                       onQuantityDecrementChanged: () {
                                         controller.decrementProductQuantity();
                                       },
@@ -318,10 +316,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               .customization
                               .isNotEmpty)
                             CustomizationCheckboxWidget(
-                              customizations:
-                                  controller
-                                      .productItemDetailModel!
-                                      .customization,
+                              customizations: controller
+                                  .productItemDetailModel!
+                                  .customization,
                             ),
 
                           Padding(
@@ -391,8 +388,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           }
                           final itemPrice =
                               controller.productItemDetailModel!.price == 0
-                                  ? controller.selectedSizePrice
-                                  : controller.productItemDetailModel!.price;
+                              ? controller.selectedSizePrice
+                              : controller.productItemDetailModel!.price;
 
                           final wasNew = ref
                               .read(cartItemsProvider.notifier)
@@ -407,11 +404,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   customization: List.from(
                                     controller.selectedCustomizations,
                                   ),
-                                  image:
-                                      controller
-                                          .productItemDetailModel!
-                                          .images
-                                          .first,
+                                  image: controller
+                                      .productItemDetailModel!
+                                      .images
+                                      .first,
                                   id:
                                       controller.productItemDetailModel?.id ??
                                       '',

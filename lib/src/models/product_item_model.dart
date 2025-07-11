@@ -15,11 +15,11 @@ class ProductItemModel {
 
   factory ProductItemModel.fromJson(Map<String, dynamic> json) {
     return ProductItemModel(
-      id: json['_id'],
-      totalOrdered: json['totalOrdered'],
-      itemId: json['item_id'],
-      itemDetails: ItemDetails.fromJson(json['itemDetails']),
-      restaurant: Restaurant.fromJson(json['restaurant']),
+      id: json['_id']?.toString() ?? '',
+      totalOrdered: (json['orderCount'] as num?)?.toInt() ?? 0,
+      itemId: json['item_id']?.toString() ?? '',
+      itemDetails: ItemDetails.fromJson(json['itemDetails'] ?? {}),
+      restaurant: Restaurant.fromJson(json['restaurant'] ?? {}),
     );
   }
 }
@@ -55,22 +55,27 @@ class ItemDetails {
 
   factory ItemDetails.fromJson(Map<String, dynamic> json) {
     return ItemDetails(
-      id: json['_id'],
-      name: json['name'],
-      price: (json['price'] as num).toDouble(),
-      description: json['description'],
-      estimatedPreparationTime: json['estimated_preparation_time'],
-      customization: List<Customization>.from(
-        (json['customization'] as List).map((x) => Customization.fromJson(x)),
-      ),
-      sizes: List<Size>.from(
-        (json['sizes'] as List).map((x) => Size.fromJson(x)),
-      ),
-      image: List<String>.from(json['image']),
-      category: json['category'],
-      restaurant: json['restaurant'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
+      id: json['_id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      description: json['description']?.toString() ?? '',
+      estimatedPreparationTime:
+          (json['estimated_preparation_time'] as num?)?.toInt() ?? 0,
+      customization:
+          (json['customization'] as List<dynamic>?)
+              ?.map((x) => Customization.fromJson(x))
+              .toList() ??
+          [],
+      sizes:
+          (json['sizes'] as List<dynamic>?)
+              ?.map((x) => Size.fromJson(x))
+              .toList() ??
+          [],
+      image: (json['image'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      category: json['category']?.toString() ?? '',
+      restaurant: json['restaurant']?.toString() ?? '',
+      createdAt: json['createdAt']?.toString() ?? '',
+      updatedAt: json['updatedAt']?.toString() ?? '',
     );
   }
 }
@@ -84,9 +89,9 @@ class Customization {
 
   factory Customization.fromJson(Map<String, dynamic> json) {
     return Customization(
-      name: json['name'],
-      price: (json['price'] as num).toDouble(),
-      id: json['_id'],
+      name: json['name']?.toString() ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      id: json['_id']?.toString() ?? '',
     );
   }
 }
@@ -100,9 +105,9 @@ class Size {
 
   factory Size.fromJson(Map<String, dynamic> json) {
     return Size(
-      name: json['name'],
-      price: (json['price'] as num).toDouble(),
-      id: json['_id'],
+      name: json['name']?.toString() ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      id: json['_id']?.toString() ?? '',
     );
   }
 }
@@ -112,7 +117,7 @@ class Restaurant {
   final String cuisine;
   final Ratings ratings;
   final List<String> restaurantImages;
-  Address addresses;
+  final Address addresses;
 
   Restaurant({
     required this.storeName,
@@ -124,11 +129,15 @@ class Restaurant {
 
   factory Restaurant.fromJson(Map<String, dynamic> json) {
     return Restaurant(
-      storeName: json['storeName'],
-      cuisine: json['cuisine'],
-      ratings: Ratings.fromJson(json['ratings']),
-      restaurantImages: List<String>.from(json['restaurantImages']),
-      addresses: Address.fromJson(json['addresses']),
+      storeName: json['storeName']?.toString() ?? '',
+      cuisine: json['cuisine']?.toString() ?? '',
+      ratings: Ratings.fromJson(json['ratings'] ?? {}),
+      restaurantImages:
+          (json['restaurantImages'] as List?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      addresses: Address.fromJson(json['addresses'] ?? {}),
     );
   }
 }
@@ -141,8 +150,8 @@ class Ratings {
 
   factory Ratings.fromJson(Map<String, dynamic> json) {
     return Ratings(
-      averageRating: (json['averageRating'] as num).toDouble(),
-      totalRatings: json['totalRatings'],
+      averageRating: (json['averageRating'] as num?)?.toDouble() ?? 0.0,
+      totalRatings: (json['totalRatings'] as num?)?.toInt() ?? 0,
     );
   }
 }
@@ -155,8 +164,8 @@ class Address {
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
-      address: json['address'],
-      coordinates: Coordinates.fromJson(json['coordinates']),
+      address: json['address']?.toString() ?? '',
+      coordinates: Coordinates.fromJson(json['coordinates'] ?? {}),
     );
   }
 }
@@ -168,9 +177,11 @@ class Coordinates {
 
   factory Coordinates.fromJson(Map<String, dynamic> json) {
     return Coordinates(
-      coordinates: List<double>.from(
-        (json['coordinates'] as List).map((x) => (x as num).toDouble()),
-      ),
+      coordinates:
+          (json['coordinates'] as List?)
+              ?.map((x) => (x as num).toDouble())
+              .toList() ??
+          [],
     );
   }
 }

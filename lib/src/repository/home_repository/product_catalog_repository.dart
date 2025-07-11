@@ -19,15 +19,32 @@ class ProductRepository {
       final response = await _httpApiServices.getAPI(
         '/restaurants/getNearbyPopularFood?latitude=$lat&longitude=$lng',
       );
-      Logger().i(jsonDecode(response.body));
+
+      Logger().i('📥 PopularItems Response: ${response.body}');
 
       if (response.statusCode != 200) return null;
-      return (jsonDecode(response.body)['items'] as List)
-          .map((e) => ProductItemModel.fromJson(e))
-          .toList();
-    } catch (e) {
-      Logger().e('Error in getPopularItems: $e');
+
+      final decoded = jsonDecode(response.body);
+
+      final items = decoded['items'];
+
+      if (items is List) {
+        return items
+            .whereType<Map<String, dynamic>>()
+            .map((item) => ProductItemModel.fromJson(item))
+            .toList();
+      }
+
+      if (items is Map<String, dynamic> && items.containsKey('message')) {
+        Logger().w('⚠️ No popular items found: ${items['message']}');
+        return [];
+      }
+
+      Logger().e('❌ Unexpected items structure: $items');
+    } catch (e, stack) {
+      Logger().e('❌ Exception in getPopularItems', error: e, stackTrace: stack);
     }
+
     return null;
   }
 

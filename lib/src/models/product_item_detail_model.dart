@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class ProductItemDetailModel {
   final String id;
   final String name;
@@ -6,9 +8,8 @@ class ProductItemDetailModel {
   final int estimatedPreparationTime;
   final List<CustomizationModel> customization;
   final List<SizeOption> sizes;
-  final int calories;
   final List<String> images;
-  final Category category;
+  final Category? category;
   final String restaurant;
   final String createdAt;
   final String updatedAt;
@@ -22,7 +23,6 @@ class ProductItemDetailModel {
     required this.estimatedPreparationTime,
     required this.customization,
     required this.sizes,
-    required this.calories,
     required this.images,
     required this.category,
     required this.restaurant,
@@ -32,25 +32,35 @@ class ProductItemDetailModel {
   });
 
   factory ProductItemDetailModel.fromJson(Map<String, dynamic> json) {
+    log("🧪 ProductItemDetailModel input: $json");
+
     return ProductItemDetailModel(
-      id: json['_id'],
-      name: json['name'],
-      price: (json['price'] as num).toDouble(),
-      description: json['description'],
-      estimatedPreparationTime: json['estimated_preparation_time'],
+      id: json['_id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      description: json['description']?.toString() ?? '',
+      estimatedPreparationTime:
+          (json['estimated_preparation_time'] as num?)?.toInt() ?? 0,
       customization:
-          (json['customization'] as List)
-              .map((e) => CustomizationModel.fromJson(e))
-              .toList(),
+          (json['customization'] as List<dynamic>?)
+              ?.map(
+                (e) => CustomizationModel.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
       sizes:
-          (json['sizes'] as List).map((e) => SizeOption.fromJson(e)).toList(),
-      calories: json['calories'] ?? 0,
-      images: List<String>.from(json['image']),
-      category: Category.fromJson(json['category']),
-      restaurant: json['restaurant'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      v: json['__v'],
+          (json['sizes'] as List<dynamic>?)
+              ?.map((e) => SizeOption.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      images: (json['image'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      category: json['category'] is Map<String, dynamic>
+          ? Category.fromJson(json['category'] as Map<String, dynamic>)
+          : null,
+      restaurant: json['restaurant']?.toString() ?? '',
+      createdAt: json['createdAt']?.toString() ?? '',
+      updatedAt: json['updatedAt']?.toString() ?? '',
+      v: (json['__v'] as num?)?.toInt() ?? 0,
     );
   }
 }
@@ -68,9 +78,9 @@ class CustomizationModel {
 
   factory CustomizationModel.fromJson(Map<String, dynamic> json) {
     return CustomizationModel(
-      id: json['_id'],
-      name: json['name'],
-      price: (json['price'] as num).toDouble(),
+      id: json['_id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
     );
   }
 }
@@ -84,9 +94,9 @@ class SizeOption {
 
   factory SizeOption.fromJson(Map<String, dynamic> json) {
     return SizeOption(
-      id: json['_id'],
-      name: json['name'],
-      price: (json['price'] as num).toDouble(),
+      id: json['_id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
     );
   }
 }
@@ -98,6 +108,9 @@ class Category {
   Category({required this.id, required this.name});
 
   factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(id: json['_id'], name: json['name']);
+    return Category(
+      id: json['_id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+    );
   }
 }
