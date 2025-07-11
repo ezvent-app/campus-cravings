@@ -32,7 +32,6 @@ class ItemDetails {
   final int estimatedPreparationTime;
   final List<Customization> customization;
   final List<Size> sizes;
-  final int calories;
   final List<String> image;
   final String category;
   final String restaurant;
@@ -47,7 +46,6 @@ class ItemDetails {
     required this.estimatedPreparationTime,
     required this.customization,
     required this.sizes,
-    required this.calories,
     required this.image,
     required this.category,
     required this.restaurant,
@@ -63,10 +61,11 @@ class ItemDetails {
       description: json['description'],
       estimatedPreparationTime: json['estimated_preparation_time'],
       customization: List<Customization>.from(
-          (json['customization'] as List).map((x) => Customization.fromJson(x))),
+        (json['customization'] as List).map((x) => Customization.fromJson(x)),
+      ),
       sizes: List<Size>.from(
-          (json['sizes'] as List).map((x) => Size.fromJson(x))),
-      calories: json['calories'],
+        (json['sizes'] as List).map((x) => Size.fromJson(x)),
+      ),
       image: List<String>.from(json['image']),
       category: json['category'],
       restaurant: json['restaurant'],
@@ -81,11 +80,7 @@ class Customization {
   final double price;
   final String id;
 
-  Customization({
-    required this.name,
-    required this.price,
-    required this.id,
-  });
+  Customization({required this.name, required this.price, required this.id});
 
   factory Customization.fromJson(Map<String, dynamic> json) {
     return Customization(
@@ -101,11 +96,7 @@ class Size {
   final double price;
   final String id;
 
-  Size({
-    required this.name,
-    required this.price,
-    required this.id,
-  });
+  Size({required this.name, required this.price, required this.id});
 
   factory Size.fromJson(Map<String, dynamic> json) {
     return Size(
@@ -118,7 +109,6 @@ class Size {
 
 class Restaurant {
   final String storeName;
-  final String brandName;
   final String cuisine;
   final Ratings ratings;
   final List<String> restaurantImages;
@@ -126,7 +116,6 @@ class Restaurant {
 
   Restaurant({
     required this.storeName,
-    required this.brandName,
     required this.cuisine,
     required this.ratings,
     required this.restaurantImages,
@@ -136,7 +125,6 @@ class Restaurant {
   factory Restaurant.fromJson(Map<String, dynamic> json) {
     return Restaurant(
       storeName: json['storeName'],
-      brandName: json['brandName'],
       cuisine: json['cuisine'],
       ratings: Ratings.fromJson(json['ratings']),
       restaurantImages: List<String>.from(json['restaurantImages']),
@@ -149,10 +137,7 @@ class Ratings {
   final double averageRating;
   final int totalRatings;
 
-  Ratings({
-    required this.averageRating,
-    required this.totalRatings,
-  });
+  Ratings({required this.averageRating, required this.totalRatings});
 
   factory Ratings.fromJson(Map<String, dynamic> json) {
     return Ratings(
@@ -166,10 +151,7 @@ class Address {
   final String address;
   final Coordinates coordinates;
 
-  Address({
-    required this.address,
-    required this.coordinates,
-  });
+  Address({required this.address, required this.coordinates});
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
@@ -182,9 +164,7 @@ class Address {
 class Coordinates {
   final List<double> coordinates;
 
-  Coordinates({
-    required this.coordinates,
-  });
+  Coordinates({required this.coordinates});
 
   factory Coordinates.fromJson(Map<String, dynamic> json) {
     return Coordinates(

@@ -57,10 +57,6 @@ class FoodAndRestaurantSearchController extends GetxController {
         lng: location.longitude,
       );
 
-      // Logger().i(
-      //   "Fetched ${_categoryViewingModel?._categories.length ?? 0} categories",
-      // );
-
       _isOperationInProgress = false;
       update();
     } catch (e) {

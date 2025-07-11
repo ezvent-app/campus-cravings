@@ -1,6 +1,7 @@
 import 'package:campuscravings/src/controllers/food_and_restaurant_search_controller.dart';
 import 'package:campuscravings/src/controllers/product_catalog_controller.dart';
 import 'package:campuscravings/src/controllers/restaurant_details_controller.dart';
+import 'package:campuscravings/src/models/product_item_model.dart';
 import 'package:campuscravings/src/src.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
@@ -77,7 +78,9 @@ class _PopularHorizontalWidgetState
                           onTap: () {
                             Get.find<RestaurantDetailsController>()
                                 .setRestaurantId(item.itemDetails.restaurant);
-                            context.pushRoute(RestaurantRoute());
+                            context.pushRoute(
+                              RestaurantRoute(initialItemId: item.id),
+                            );
                           },
                           child: Column(
                             children: [
@@ -161,11 +164,10 @@ class _PopularHorizontalWidgetState
                                     ),
                                     height(2),
                                     Text(
-                                      '\$${item.itemDetails.price}',
-                                      style:
-                                          Theme.of(
-                                            context,
-                                          ).textTheme.titleSmall,
+                                      _getItemPrice(item.itemDetails),
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.titleSmall,
                                     ),
                                   ],
                                 ),
@@ -183,6 +185,17 @@ class _PopularHorizontalWidgetState
         );
       },
     );
+  }
+
+  String _getItemPrice(ItemDetails item) {
+    if (item.price == 0) {
+      final sizePrices = item.sizes.map((s) => s.price);
+      if (sizePrices.isNotEmpty) {
+        final minSizePrice = sizePrices.reduce((a, b) => a < b ? a : b);
+        return '\$${minSizePrice.toStringAsFixed(2)}';
+      }
+    }
+    return '\$${item.price.toStringAsFixed(2)}';
   }
 
   Widget productListShimmer() {
