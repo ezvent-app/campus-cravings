@@ -195,6 +195,8 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                     onRefresh: () async {
                       Get.find<RestaurantController>().getNearByRestaurants();
                       Get.find<ProductCatalogController>().getPopularItems();
+                      Get.find<FoodAndRestaurantSearchController>()
+                          .fetchAllCategories(context);
                     },
                     child: ListView(
                       physics: BouncingScrollPhysics(),
@@ -269,7 +271,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                                     );
                                     setState(() {
                                       selectedSort = sort.title;
-                                      showFilterOverlay = false;
+                                      // showFilterOverlay = false;
                                     });
                                   },
                                   child: Row(
@@ -293,7 +295,7 @@ class _HomeTabPageState extends ConsumerState<HomeTabPage> {
                                           );
                                           setState(() {
                                             selectedSort = sort.title;
-                                            showFilterOverlay = false;
+                                            // showFilterOverlay = false;
                                           });
                                         },
                                         materialTapTargetSize:

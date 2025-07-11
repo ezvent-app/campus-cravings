@@ -25,14 +25,15 @@ class ProductCatalogController extends GetxController {
       while (Get.find<LocationController>().isOperationInProgress) {
         await Future.delayed(Duration(milliseconds: 500));
       }
-      final location =
-          await Get.find<LocationController>().getCurrentLocation();
+      final location = await Get.find<LocationController>()
+          .getCurrentLocation();
       if (location == null) {
         _isLoading = false;
         update([popularItemBuilderId]);
         return;
       }
-      _listOfPopularItems = (await _homeRepository.getPopularItems(
+      _listOfPopularItems =
+          (await _homeRepository.getPopularItems(
             lat: location.latitude,
             lng: location.longitude,
           )) ??
@@ -49,25 +50,34 @@ class ProductCatalogController extends GetxController {
     return;
   }
 
-  List<ProductItemModel> getFilteredPopularItems(){
-    if(Get.find<FoodAndRestaurantSearchController>().sortByFastDelivery == false){
+  List<ProductItemModel> getFilteredPopularItems() {
+    if (Get.find<FoodAndRestaurantSearchController>().sortByFastDelivery ==
+        false) {
       return _listOfPopularItems;
     }
-    return List<ProductItemModel>.from(_listOfPopularItems)
-      ..sort((a, b) => getDistanceInMiles(
-        lat: a.restaurant.addresses.coordinates.coordinates[1],
-        lng: a.restaurant.addresses.coordinates.coordinates[0],
-      ).compareTo(
-        getDistanceInMiles(
-          lat: b.restaurant.addresses.coordinates.coordinates[1],
-          lng: b.restaurant.addresses.coordinates.coordinates[0],
-        ),
-      ));
+    return List<ProductItemModel>.from(_listOfPopularItems)..sort(
+      (a, b) =>
+          getDistanceInMiles(
+            lat: a.restaurant.addresses.coordinates.coordinates[1],
+            lng: a.restaurant.addresses.coordinates.coordinates[0],
+          ).compareTo(
+            getDistanceInMiles(
+              lat: b.restaurant.addresses.coordinates.coordinates[1],
+              lng: b.restaurant.addresses.coordinates.coordinates[0],
+            ),
+          ),
+    );
   }
 
-  double getDistanceInMiles({required double lat, required double lng}){
+  double getDistanceInMiles({required double lat, required double lng}) {
     final locationData = Get.find<LocationController>().locationData;
-    if(locationData == null) return 0.0;
-    return (Geolocator.distanceBetween(locationData.latitude,locationData.longitude, lat, lng)) / 1609.344;
+    if (locationData == null) return 0.0;
+    return (Geolocator.distanceBetween(
+          locationData.latitude,
+          locationData.longitude,
+          lat,
+          lng,
+        )) /
+        1609.344;
   }
 }

@@ -17,7 +17,7 @@ class ProductRepository {
   }) async {
     try {
       final response = await _httpApiServices.getAPI(
-        '/restaurants/getNearbyPopularFood?latitude=33.5678&longitude=73.1234',
+        '/restaurants/getNearbyPopularFood?latitude=$lat&longitude=$lng',
       );
       Logger().i(jsonDecode(response.body));
 

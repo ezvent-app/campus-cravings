@@ -1,4 +1,5 @@
 import 'package:campuscravings/src/models/User%20Model/nearby_restaurants_model.dart';
+import 'package:campuscravings/src/models/catagory_viewing_model.dart';
 import 'package:campuscravings/src/models/search_model.dart';
 import 'package:campuscravings/src/repository/home_repository/search_repository.dart';
 import 'package:campuscravings/src/src.dart';
@@ -28,6 +29,42 @@ class FoodAndRestaurantSearchController extends GetxController {
   int _selectedIndex = 0;
   int get selectedIndex => _selectedIndex;
   bool get sortByFastDelivery => _sortByFastDelivery;
+  CategoryViewingModel? _categoryViewingModel;
+  CategoryViewingModel? get categoryViewingModel => _categoryViewingModel;
+
+  Future<void> fetchAllCategories(BuildContext context) async {
+    try {
+      _isOperationInProgress = true;
+      update();
+
+      while (Get.find<LocationController>().isOperationInProgress) {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+
+      final location = await Get.find<LocationController>()
+          .getCurrentLocation();
+      if (location == null) {
+        if (context.mounted) {
+          showToast("Unable to get location", context: context);
+        }
+        _isOperationInProgress = false;
+        update();
+        return;
+      }
+
+      _categoryViewingModel = await _searchRepository.displayCategoriesName(
+        lat: location.latitude,
+        lng: location.longitude,
+      );
+
+      _isOperationInProgress = false;
+      update();
+    } catch (e) {
+      Logger().e("Error fetching categories: $e");
+      _isOperationInProgress = false;
+      update();
+    }
+  }
 
   Future<void> getSearchResults(BuildContext context) async {
     try {
@@ -40,8 +77,8 @@ class FoodAndRestaurantSearchController extends GetxController {
       while (Get.find<LocationController>().isOperationInProgress) {
         await Future.delayed(const Duration(milliseconds: 100));
       }
-      final location =
-          await Get.find<LocationController>().getCurrentLocation();
+      final location = await Get.find<LocationController>()
+          .getCurrentLocation();
       if (location == null) {
         _isOperationInProgress = false;
         update();
@@ -74,8 +111,8 @@ class FoodAndRestaurantSearchController extends GetxController {
         await Future.delayed(const Duration(milliseconds: 100));
       }
 
-      final location =
-          await Get.find<LocationController>().getCurrentLocation();
+      final location = await Get.find<LocationController>()
+          .getCurrentLocation();
       if (location == null) {
         Logger().w("Location not found.");
         _isOperationInProgress = false;
@@ -93,14 +130,15 @@ class FoodAndRestaurantSearchController extends GetxController {
         "Total categories: ${_nearbyRestaurantsResponse?.searchResult.categories.length}",
       );
 
-      final matchingCategories =
-          _nearbyRestaurantsResponse?.searchResult.categories
-              .where(
-                (cat) =>
-                    cat.name.trim().toLowerCase() ==
-                    categoryName.trim().toLowerCase(),
-              )
-              .toList();
+      final matchingCategories = _nearbyRestaurantsResponse
+          ?.searchResult
+          .categories
+          .where(
+            (cat) =>
+                cat.name.trim().toLowerCase() ==
+                categoryName.trim().toLowerCase(),
+          )
+          .toList();
 
       Logger().i(
         "Matched ${matchingCategories?.length} categories for '$categoryName'",
